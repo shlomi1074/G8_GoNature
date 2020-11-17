@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Users/Shlomi/git/G8_GoNature/G8_GoNautre/lib/jfoenix-8.0.10.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Shlomi/git/G8_GoNature/G8_GoNautre/lib/mail.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Shlomi/git/G8_GoNature/G8_GoNautre/lib/mysql-connector-java-8.0.20.jar"/>
+	<classpathentry kind="lib" path="lib/fontawesomefx-8.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
