@@ -1,0 +1,132 @@
+
+/* This are the theme colors for all the UI in the project */
+*{
+    -fx-primary : #2f3136;
+    -fx-secondary : #7FED9D;
+    -fx-primarytext : #d9d9d9;
+    -fx-prompttext : #9C9C9C;
+    -fx-blue: #1976D2;
+    -fx-red: #FF0000;
+    -fx-white: #FFFFFF
+
+}
+
+/* Main container in each screen */
+.root{
+	-fx-background-color: -fx-primary;
+}
+
+/* glyph icons  */
+.glyph-icon{
+    -fx-fill: -fx-primarytext;
+}
+
+/* labels settings */
+.label{
+    -fx-text-fill: -fx-white;
+    -fx-font-size: 10pt;
+}
+
+#menuLabel{
+	-fx-text-fill: -fx-secondary;
+}
+
+/* buttons settings */
+.button{
+    -fx-text-fill: -fx-primarytext;
+    -fx-text-fill: -fx-primarytext;
+    -fx-background-color: -fx-primary;
+    -fx-border-color: -fx-secondary;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-size: 12pt;
+}
+.button:hover, .button:focused{
+    -fx-border-color: -fx-secondary;
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-primary;
+}
+
+/* hamburger setting */
+.jfx-hamburger-icon{
+    -fx-spacing: 7;
+}
+
+.jfx-hamburger-icon StackPane{
+    -fx-background-color: -fx-secondary;
+    -fx-background-radius: 5px;
+}
+
+/* MainScreen menu */
+.toolbar-button{
+    -fx-border-color: transparent;
+    -fx-background-color: derive(-fx-primary, 10%);
+    
+    /* This two commands are important - override previous button radius settings */
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+}
+
+/* MainScreen menu setting */
+.toolbar-button:hover{
+    /* -fx-background-color: derive(-fx-secondary, 10%); - add opacity */ 
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-primary;
+}
+
+.toolbar-button:hover .glyph-icon, .toolbar-button:hover .glyph-icon{
+    -fx-fill: -fx-primary;
+}
+
+#line1, #line2{
+	-fx-stroke: -fx-secondary;
+	-fx-stroke-width: 0.7;
+	
+}
+
+#firstImageStack:hover, #secondImageStack:hover, #thirdImageStack:hover{
+	-fx-background-color: -fx-secondary;
+    -fx-background-radius: 30px;	
+}
+
+.text-field{
+	-fx-prompt-text-fill: -fx-prompttext;
+	-fx-text-fill: -fx-primarytext;
+    -fx-font-size : 12pt;
+    -jfx-focus-color: -fx-secondary;
+    -fx-text-fill: derive(-fx-secondary, 20%);
+}
+
+.text-area{
+	-fx-prompt-text-fill: -fx-prompttext;
+	-fx-text-fill: -fx-primarytext;
+    -fx-font-size : 12pt;
+    -jfx-focus-color: -fx-secondary;
+    -fx-text-fill: derive(-fx-secondary, 20%);
+}
+
+/* CONTACT US SECTION */
+#ContactUs-emailPane{
+	 -fx-background-color: -fx-primary;
+}
+
+.ContactUs-label{
+	-fx-font-size : 12pt;
+	-fx-text-fill: -fx-primarytext;
+}
+
+/* TRAVELER SCREEN SECTION */
+#profileTravelerButton, #orderTravelerButton, #viewOrdersButton, #viewMessagesButton{
+	-fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+}
+
+#midPane{
+	-fx-background-color: -fx-white;
+}
+
+#travelerLabel{
+	-fx-font-size : 30pt;
+	-fx-text-fill: -fx-primarytext;
+}
+
