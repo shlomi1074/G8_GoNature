@@ -9,20 +9,20 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="824.0" stylesheets="@../resources/darkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layouts.ContactUsController">
+<AnchorPane fx:id="test" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="824.0" stylesheets="@../resources/darkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layouts.ContactUsController">
    <children>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="559.0" prefWidth="324.0" style="-fx-background-color: #4b4f97;">
+      <AnchorPane fx:id="ourConcactsPane" minHeight="0.0" minWidth="0.0" prefHeight="559.0" prefWidth="324.0" style="-fx-background-color: #4b4f97;">
          <children>
             <Label layoutX="50.0" layoutY="430.0" text="To register as subscriber call:  *3636" />
-            <Label layoutX="53.0" layoutY="462.0" text="For general help call:  *3637" />
-            <Label layoutX="53.0" layoutY="493.0" text="support@goNature.com" textAlignment="CENTER" />
+            <Label layoutX="52.0" layoutY="465.0" text="For general help call:  *3637" />
+            <Label layoutX="53.0" layoutY="497.0" text="support@goNature.com" textAlignment="CENTER" />
             <Label layoutX="25.0" layoutY="24.0" style="-fx-font-weight: bold;" text="Our contacts" />
-            <FontAwesomeIconView glyphName="PHONE" layoutX="23.0" layoutY="447.0" size="14.0" />
-            <FontAwesomeIconView glyphName="PHONE" layoutX="23.0" layoutY="479.0" size="14.0" />
-            <FontAwesomeIconView glyphName="ENVELOPE" layoutX="22.0" layoutY="513.0" size="14.0" text="" />
-            <ImageView fitHeight="104.0" fitWidth="242.0" layoutX="34.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+            <FontAwesomeIconView glyphName="PHONE" layoutX="23.0" layoutY="448.0" size="14.0" />
+            <FontAwesomeIconView glyphName="PHONE" layoutX="22.0" layoutY="481.0" size="14.0" />
+            <FontAwesomeIconView glyphName="ENVELOPE" layoutX="22.0" layoutY="515.0" size="14.0" text="" />
+            <ImageView fitHeight="125.0" fitWidth="160.0" layoutX="34.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../Desktop/project%20%20stuff/לוגואים%20פארקים/gc.png" />
+                  <Image url="@../resources/images/gc.png" />
                </image>
             </ImageView>
          </children>

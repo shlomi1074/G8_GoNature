@@ -6,7 +6,7 @@
 
 <VBox alignment="TOP_RIGHT" prefHeight="445.0" prefWidth="154.0" styleClass="toolbar-container" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layouts.MainScreenMenuController">
    <children>
-      <JFXButton fx:id="orderVisit" contentDisplay="TOP" mnemonicParsing="false" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Order A Visit" textAlignment="CENTER">
+      <JFXButton fx:id="orderVisit" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#loadOrderVisit" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Order A Visit" textAlignment="CENTER">
          <graphic>
             <FontAwesomeIconView glyphName="SHOPPING_CART" size="25" />
          </graphic>
