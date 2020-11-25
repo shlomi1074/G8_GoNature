@@ -69,22 +69,33 @@ public class MemberLoginController implements Initializable {
 		loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	switchScene();
+        		/* NEED TO CHANGE WHEN WE IMPLEMNT LOGIN VIA DATABASE */
+            	String type = "service";
+            	if (type.equals("service"))
+            		switchScene("ServiceWorker.fxml", "GoNature8 - Service Worker",type);
+            	else if (type.equals("parkManager"))
+            		switchScene("ParkManager.fxml", "GoNature8 - Park Manager",type);
             }
         });
 	}
 	
-	private void switchScene() {
+	private void switchScene(String fxmlName, String title, String type) {
 		try {
 			Stage thisStage = getStage();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("UserScreenTemplate.fxml"));
-			userScreenController controller = new userScreenController("user", "password");
-			loader.setController(controller);
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
+			if (type.equals("service")) {
+				ServiceWorkerController controller = new ServiceWorkerController();
+				loader.setController(controller);
+			}
+			else if (type.equals("parkManager")) {
+				ParkManagerController controller = new ParkManagerController();
+				loader.setController(controller);
+			}
 			loader.load();
 			Parent p = loader.getRoot(); 
 			Stage newStage = new Stage(); 
 			
-			newStage.setTitle("user screen");
+			newStage.setTitle(title);
 			//stage.getIcons().add(new Image("url"));
 			newStage.setScene(new Scene(p)); 
 			newStage.setResizable(false);

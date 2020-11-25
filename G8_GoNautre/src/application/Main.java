@@ -11,6 +11,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 	        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("layouts/MainScreen.fxml"));
+			//Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("layouts/OrderVisit.fxml"));
 	        primaryStage.setTitle("GoNature System");
 	        primaryStage.setScene(new Scene(root));
 	        primaryStage.setResizable(true);

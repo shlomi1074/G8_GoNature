@@ -12,101 +12,108 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class MainScreenMenuController implements Initializable{
-	
+public class MainScreenMenuController implements Initializable {
 
-    @FXML
-    private JFXButton orderVisit;
+	@FXML
+	private JFXButton orderVisit;
 
-    @FXML
-    private JFXButton travelerLogin;
+	@FXML
+	private JFXButton travelerLogin;
 
-    @FXML
-    private JFXButton memberLogin;
+	@FXML
+	private JFXButton memberLogin;
 
-    @FXML
-    private JFXButton showPrices;
+	@FXML
+	private JFXButton showPrices;
 
-    @FXML
-    private JFXButton contactUs;
+	@FXML
+	private JFXButton contactUs;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@FXML
 	private void loadContactUs() {
 		switchScence("ContactUs.fxml", "GoNature8 - Contact Us");
 	}
-	
+
 	@FXML
 	private void loadMemberLogin() {
-		switchScenceWithController("MemberLogin.fxml", "GoNature8 - Member Login", false);
+		switchScenceWithController("MemberLogin.fxml", "GoNature8 - Member Login", 2);
 	}
-	
+
 	@FXML
 	private void loadTravelerLogin() {
-		switchScenceWithController("TravelerLogin.fxml", "GoNature8 - Traveler Login", true);
+		switchScenceWithController("TravelerLogin.fxml", "GoNature8 - Traveler Login", 1);
 	}
-	
-	
-	private void switchScence (String fxmlName, String screenTitle) {
+
+	@FXML
+	private void loadOrderVisit() {
+		switchScenceWithController("OrderVisit.fxml", "GoNature8 - Order A Visit", 3);
+	}
+
+	private void switchScence(String fxmlName, String screenTitle) {
 		try {
 			Stage thisStage = getStage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
 			loader.load();
-			Parent p = loader.getRoot(); 
-			Stage newStage = new Stage(); 
-			
+			Parent p = loader.getRoot();
+			Stage newStage = new Stage();
+
 			/* Block parent stage until child stage closes */
 			newStage.initModality(Modality.WINDOW_MODAL);
 			newStage.initOwner(thisStage);
-			
+
 			newStage.setTitle(screenTitle);
-			//stage.getIcons().add(new Image("url"));
-			newStage.setScene(new Scene(p)); 
+			// stage.getIcons().add(new Image("url"));
+			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
 			newStage.show();
 		} catch (IOException e) {
 			System.out.println("faild to load form");
 		}
 
-	} 
-	
-	private void switchScenceWithController (String fxmlName, String screenTitle, boolean isTravelerLogin) {
+	}
+
+	private void switchScenceWithController(String fxmlName, String screenTitle, int id) {
 		try {
 			Stage thisStage = getStage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
-			if (isTravelerLogin) {
+			if (id == 1) {
 				TravelerLoginController controller = new TravelerLoginController(thisStage);
 				loader.setController(controller);
-			}
-			else {
+			} else if (id == 2) {
 				MemberLoginController controller = new MemberLoginController(thisStage);
+				loader.setController(controller);
+			} else if (id == 3) {
+				OrderVisitController controller = new OrderVisitController();
 				loader.setController(controller);
 			}
 			loader.load();
-			Parent p = loader.getRoot(); 
-			Stage newStage = new Stage(); 
-			
+			Parent p = loader.getRoot();
+			Stage newStage = new Stage();
+
+			/* Block parent stage until child stage closes */
+			newStage.initModality(Modality.WINDOW_MODAL);
+			newStage.initOwner(thisStage);
+
 			newStage.setTitle(screenTitle);
-			//stage.getIcons().add(new Image("url"));
-			newStage.setScene(new Scene(p)); 
+			// stage.getIcons().add(new Image("url"));
+			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
 			newStage.show();
-			thisStage.close();
+			// thisStage.close();
 		} catch (IOException e) {
 			System.out.println("faild to load form");
 			e.printStackTrace();
 		}
 
 	}
-	
+
 	private Stage getStage() {
 		return (Stage) orderVisit.getScene().getWindow();
 	}
 }
-
-

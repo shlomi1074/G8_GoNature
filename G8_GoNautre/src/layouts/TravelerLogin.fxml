@@ -30,10 +30,10 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <JFXTextField layoutX="168.0" layoutY="211.0" prefHeight="55.0" prefWidth="265.0" promptText="ID number" />
-      <JFXTextField layoutX="168.0" layoutY="313.0" prefHeight="55.0" prefWidth="265.0" promptText="Subscriber number" />
+      <JFXTextField layoutX="168.0" layoutY="211.0" prefHeight="55.0" prefWidth="265.0" promptText="ID" />
+      <JFXTextField layoutX="168.0" layoutY="313.0" prefHeight="55.0" prefWidth="265.0" promptText="Subscriber Number" />
       <FontAwesomeIconView glyphName="ID_CARD_ALT" layoutX="109.0" layoutY="259.0" size="40" />
       <FontAwesomeIconView glyphName="ADDRESS_CARD" layoutX="109.0" layoutY="361.0" size="40" />
-      <JFXButton layoutX="112.0" layoutY="395.0" prefHeight="55.0" prefWidth="327.0" text="LOGIN" />
+      <JFXButton fx:id="loginButton" layoutX="112.0" layoutY="395.0" prefHeight="55.0" prefWidth="327.0" text="LOGIN" />
    </children>
 </AnchorPane>

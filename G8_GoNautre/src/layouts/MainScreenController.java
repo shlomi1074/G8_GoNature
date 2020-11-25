@@ -43,50 +43,50 @@ public class MainScreenController implements Initializable {
 
 	@FXML
 	private JFXHamburger hamburger;
-	
+
 	@FXML
 	private Label menuLabel;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
 		setFirstYouTubeVideo();
 		setDrawer();
-
 	}
 
 	@FXML
 	private void setFirstYouTubeVideo() {
 		youTube.getEngine().load("https://www.youtube.com/embed/QM5wVpOj9iI");
-
 	}
+
 	@FXML
 	private void setSecondYouTubeVideo() {
 		youTube.getEngine().load("https://www.youtube.com/embed/WWorX7kqC9g");
 	}
+
 	@FXML
 	private void setThirdYouTubeVideo() {
 		youTube.getEngine().load("https://www.youtube.com/embed/o8XbBa2Fhrg");
 	}
 
+	/* Set up the menu in the main screen using drawer */
 	private void setDrawer() {
 		try {
-			/* Connect the drawer with the menu layout*/
+			/* Connect the drawer with the menu layout */
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/MainScreenMenu.fxml"));
 			VBox menu = loader.load();
 			drawMenu.setSidePane(menu);
-			
+
 			// MainScreenMenuController controller = loader.getController();
-		} catch (IOException ex) {
+		} catch (IOException e) {
 			System.out.println("Could not load menu bar in mainScreen");
+			e.printStackTrace();
 		}
-		
+
 		/* Set how the drawer will function */
 		HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(hamburger);
 		task.setRate(-1);
 		hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> {
 			drawMenu.toggle();
-			System.out.println("clicked on hamburger"); // ToRemove
 		});
 		drawMenu.setOnDrawerOpening((event) -> {
 			AnchorPane.setRightAnchor(hamburger, 170.0);
