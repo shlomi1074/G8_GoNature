@@ -21,7 +21,7 @@
 
 .label {
     -fx-text-fill: -fx-primarytext;
-    -fx-font-size: 10pt;
+    -fx-font-size: 10.0pt;
 }
 
 .button {
@@ -29,9 +29,9 @@
     -fx-text-fill: -fx-primarytext;
     -fx-background-color: -fx-primary;
     -fx-border-color: -fx-secondary;
-    -fx-border-radius: 20px;
-    -fx-background-radius: 20px;
-    -fx-font-size: 12pt;
+    -fx-border-radius: 20.0px;
+    -fx-background-radius: 20.0px;
+    -fx-font-size: 12.0pt;
 }
 
 .button:hover, .button:focused {
@@ -43,27 +43,27 @@
 .text-field {
 	-fx-prompt-text-fill: -fx-prompttext;
 	-fx-text-fill: -fx-primarytext;
-    -fx-font-size : 10pt;
+    -fx-font-size : 10.0pt;
     -jfx-focus-color: -fx-secondary;
-    -fx-text-fill: derive(-fx-secondary, 20%);
+    -fx-text-fill: derive(-fx-secondary, 20.0%);
 }
 
 .text-area {
 	-fx-prompt-text-fill: -fx-prompttext;
 	-fx-text-fill: -fx-primarytext;
-    -fx-font-size : 10pt;
+    -fx-font-size : 10.0pt;
     -jfx-focus-color: -fx-secondary;
-    -fx-text-fill: derive(-fx-secondary, 20%);
+    -fx-text-fill: derive(-fx-secondary, 20.0%);
 }
 
 .combo-box {
-	-fx-font-size: 10pt;
+	-fx-font-size: 10.0pt;
 	-fx-prompt-text-fill: -fx-prompttext;
 	-fx-text-fill: -fx-secondary;
 }
 
 .titled-pane {
-	-fx-font-size: 14px;
+	-fx-font-size: 14.0px;
 }
 
 .titled-pane > .title > .glyph-icon {
@@ -76,12 +76,12 @@
 }
 
 .jfx-hamburger-icon {
-    -fx-spacing: 7;
+    -fx-spacing: 7.0;
 }
 
 .jfx-hamburger-icon StackPane {
     -fx-background-color: -fx-secondary;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 5.0px;
 }
 
 #line1, #line2 {
@@ -91,17 +91,17 @@
 
 #firstImageStack:hover, #secondImageStack:hover, #thirdImageStack:hover {
 	-fx-background-color: -fx-secondary;
-    -fx-background-radius: 30px;	
+    -fx-background-radius: 30.0px;	
 }
 
 /* MAIN SCREEN MENU SECTION*/
 .toolbar-button {
     -fx-border-color: transparent;
-    -fx-background-color: derive(-fx-primary, 10%);
+    -fx-background-color: derive(-fx-primary, 10.0%);
     
     /* This two commands are important - override previous button radius settings */
-    -fx-background-radius: 0px;
-    -fx-border-radius: 0px;
+    -fx-background-radius: 0.0px;
+    -fx-border-radius: 0.0px;
 }
 
 .toolbar-button:hover {
@@ -119,20 +119,20 @@
 }
 
 #ourConcactsPane > .label, #emailPane > .label {
-	-fx-font-size : 12pt;
+	-fx-font-size : 12.0pt;
 	-fx-text-fill: -fx-primarytext;
 }
 
 /* TRAVELER SCREEN SECTION */
 #userLabel {
-	-fx-font-size : 30pt;
+	-fx-font-size : 30.0pt;
 	-fx-text-fill: -fx-primarytext;
 }
 
 #vbox > .button {
-	-fx-background-radius: 0px;
-    -fx-border-radius: 0px;
-	-fx-border-width: 0px 1px 1px 1px;	
+	-fx-background-radius: 0.0px;
+    -fx-border-radius: 0.0px;
+	-fx-border-width: 0.0px 1.0px 1.0px 1.0px;	
 }
 
 /* ORDER VISIT SECTION */
@@ -145,8 +145,8 @@
 }
 
 .radio-button .radio {
-    -fx-border-radius: 15px;
-    -fx-padding: 1px;
+    -fx-border-radius: 15.0px;
+    -fx-padding: 1.0px;
 }
 
 .radio-button .radio:selected {
@@ -154,7 +154,7 @@
 }
 
 #paymentPane > .text-field {
-	-fx-font-size: 10pt;
+	-fx-font-size: 10.0pt;
 }
 
 /* MYABE CAN DELETE */
@@ -168,7 +168,7 @@
 }*/
 
 #timePicker {
-	-fx-font-size: 10pt;
+	-fx-font-size: 10.0pt;
 	-fx-prompt-text-fill: -fx-prompttext;
 	-fx-text-fill: -fx-secondary;
 }
@@ -178,12 +178,12 @@
 }
 
  #headerLabel {
- 	-fx-font-size: 20pt;
+ 	-fx-font-size: 20.0pt;
 }
 
 #topPane {
 	-fx-border-color: -fx-secondary;
-	-fx-border-width: 0px 0px 1px 0px;
+	-fx-border-width: 0.0px 0.0px 1.0px 0.0px;
 }
 
 

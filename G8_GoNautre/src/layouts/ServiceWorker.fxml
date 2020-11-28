@@ -28,17 +28,17 @@
          <children>
             <VBox fx:id="vbox" prefHeight="600.0" prefWidth="204.0">
                <children>
-                  <JFXButton fx:id="profileButton" prefHeight="153.0" prefWidth="204.0" text=" Profile">
+                  <JFXButton fx:id="profileButton" onMouseClicked="#loadProfile" prefHeight="153.0" prefWidth="204.0" text=" Profile">
                      <graphic>
                         <FontAwesomeIconView glyphName="USER" size="20" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="currentVisitorsButton" layoutX="10.0" layoutY="10.0" prefHeight="153.0" prefWidth="204.0" text="View Current Visitors">
+                  <JFXButton fx:id="currentVisitorsButton" layoutX="10.0" layoutY="10.0" onMouseClicked="#loadParkParameters" prefHeight="153.0" prefWidth="204.0" text="View Current Visitors">
                      <graphic>
                         <FontAwesomeIconView glyphName="GROUP" size="20" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="enterVisitorIDButton" layoutX="10.0" layoutY="136.0" prefHeight="153.0" prefWidth="204.0" text="Enter Visitors ID">
+                  <JFXButton fx:id="enterVisitorIDButton" layoutX="10.0" layoutY="136.0" onMouseClicked="#loadManageTraveler" prefHeight="153.0" prefWidth="204.0" text="Enter Visitors ID">
                      <graphic>
                         <FontAwesomeIconView glyphName="KEYBOARD_ALT" size="20" />
                      </graphic>

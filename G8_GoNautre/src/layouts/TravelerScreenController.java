@@ -55,7 +55,7 @@ public class TravelerScreenController implements Initializable{
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+		loadProfile();
 	}
 	
 	@FXML
@@ -64,5 +64,14 @@ public class TravelerScreenController implements Initializable{
 		Pane view = loader.loadPaneWithController("/layouts/OrderVisit.fxml", "orderVisit");
 		borderPane.setCenter(view);
 	}
+	
+	@FXML
+	private void loadProfile() {
+		FxmlUtil loader = new FxmlUtil();
+		Pane view = loader.loadPaneWithController("/layouts/Profile.fxml", "profile");
+		borderPane.setCenter(view);
+	}
+	
+	
 	
 }
