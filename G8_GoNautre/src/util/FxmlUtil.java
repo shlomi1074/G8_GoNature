@@ -1,13 +1,11 @@
 package util;
 
 import java.io.IOException;
-import java.net.URL;
-import application.Main;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import layouts.OrderVisitController;
-import layouts.TravelerScreenController;
+import layouts.ParkParametersController;
+import layouts.ProfileController;
 
 
 public class FxmlUtil {
@@ -23,6 +21,18 @@ public class FxmlUtil {
 			OrderVisitController controller = new OrderVisitController();
 			loader.setController(controller);
 		}
+		else if(controllerName.equals("profile")) {
+			ProfileController controller = new ProfileController();
+			loader.setController(controller);
+		}
+		else if(controllerName.equals("manageTraveler")) {
+			ProfileController controller = new ProfileController();
+			loader.setController(controller);
+		}	
+		else if(controllerName.equals("parkParameters")) {
+			ParkParametersController controller = new ParkParametersController();
+			loader.setController(controller);
+		}	
 		try {
 			loader.load();
 			view = loader.getRoot(); 

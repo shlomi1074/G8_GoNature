@@ -27,7 +27,7 @@
          <children>
             <VBox fx:id="vbox" prefHeight="600.0" prefWidth="204.0">
                <children>
-                  <JFXButton fx:id="profileTravelerButton" prefHeight="153.0" prefWidth="204.0" text=" Profile">
+                  <JFXButton fx:id="profileTravelerButton" onMouseClicked="#loadProfile" prefHeight="153.0" prefWidth="204.0" text=" Profile">
                      <graphic>
                         <FontAwesomeIconView glyphName="USER" size="20" />
                      </graphic>

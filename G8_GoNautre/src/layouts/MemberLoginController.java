@@ -70,7 +70,7 @@ public class MemberLoginController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
         		/* NEED TO CHANGE WHEN WE IMPLEMNT LOGIN VIA DATABASE */
-            	String type = "service";
+            	String type = "parkManager";
             	if (type.equals("service"))
             		switchScene("ServiceWorker.fxml", "GoNature8 - Service Worker",type);
             	else if (type.equals("parkManager"))
