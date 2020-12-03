@@ -1,5 +1,6 @@
 package layouts;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -9,11 +10,15 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
-
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.fxml.Initializable;
 
 public class OrderVisitController implements Initializable {
@@ -178,5 +183,43 @@ public class OrderVisitController implements Initializable {
 		if (typeComboBox.getSelectionModel().getSelectedItem() != null)
 			summaryType.setText(typeComboBox.getSelectionModel().getSelectedItem().toString());
 		summaryVisitors.setText(numOfVisitorsOrderVisit.getText());
+	}
+	
+	@FXML
+	private void placeOrderButton() {
+		/* Need to add alot of stuff */
+		
+		/* Test UI - need to delete */
+			loadRescheduleScreen();
+		/* End UI Test */
+	}
+	
+	private void loadRescheduleScreen() {
+		try {
+			Stage thisStage = getStage();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("Reschedule.fxml"));
+			RescheduleController controller = new RescheduleController();
+			loader.setController(controller);
+			loader.load();
+			Parent p = loader.getRoot();
+			Stage newStage = new Stage();
+
+			/* Block parent stage until child stage closes */
+			newStage.initModality(Modality.WINDOW_MODAL);
+			newStage.initOwner(thisStage);
+
+			newStage.setTitle("Reschedule");
+			newStage.setScene(new Scene(p));
+			newStage.setResizable(false);
+			newStage.show();
+		} catch (IOException e) {
+			System.out.println("faild to load form");
+			e.printStackTrace();
+		}
+
+	}
+	
+	private Stage getStage() {
+		return (Stage) summaryID.getScene().getWindow();
 	}
 }

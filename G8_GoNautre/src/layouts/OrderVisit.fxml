@@ -104,7 +104,7 @@
             <Label layoutX="22.0" layoutY="205.0" text="Type:" />
             <Label layoutX="23.0" layoutY="240.0" text="Visitors:" />
             <Label layoutX="23.0" layoutY="310.0" text="Total Price:" />
-            <JFXButton layoutX="19.0" layoutY="363.0" prefHeight="39.0" prefWidth="165.0" text="Place Order" />
+            <JFXButton fx:id="placeOrderBtn" layoutX="19.0" layoutY="363.0" onMouseClicked="#placeOrderButton" prefHeight="39.0" prefWidth="165.0" text="Place Order" />
             <Label fx:id="summaryID" layoutX="101.0" layoutY="65.0" />
             <Label fx:id="summaryPark" layoutX="101.0" layoutY="100.0" />
             <Label fx:id="summaryDate" layoutX="101.0" layoutY="135.0" />
