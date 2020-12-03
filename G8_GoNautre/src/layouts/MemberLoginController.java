@@ -57,9 +57,9 @@ public class MemberLoginController implements Initializable {
     @FXML
     private JFXButton loginButton;
 
-    
     private Stage parentStage;
     
+
     public MemberLoginController(Stage parentStage) {
     	this.parentStage = parentStage;
     }
@@ -75,6 +75,8 @@ public class MemberLoginController implements Initializable {
             		switchScene("ServiceWorker.fxml", "GoNature8 - Service Worker",type);
             	else if (type.equals("parkManager"))
             		switchScene("ParkManager.fxml", "GoNature8 - Park Manager",type);
+            	else if (type.equals("entrance"))
+            		switchScene("EntranceWorker.fxml", "GoNature8 - Park Manager",type);
             }
         });
 	}
@@ -89,6 +91,10 @@ public class MemberLoginController implements Initializable {
 			}
 			else if (type.equals("parkManager")) {
 				ParkManagerController controller = new ParkManagerController();
+				loader.setController(controller);
+			}
+			else if (type.equals("entrance")) {
+				EntranceWorkerController controller = new EntranceWorkerController();
 				loader.setController(controller);
 			}
 			loader.load();
