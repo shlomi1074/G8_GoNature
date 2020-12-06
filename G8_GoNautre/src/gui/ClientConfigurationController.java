@@ -41,7 +41,7 @@ public class ClientConfigurationController implements Initializable {
 
 	@FXML
 	private JFXButton startAppBtn;
-	
+
 	private Stage stage;
 
 	@Override
@@ -74,7 +74,7 @@ public class ClientConfigurationController implements Initializable {
 				e.printStackTrace();
 			}
 		else {
-			/* Show alert error */
+			/* NEED TO SHOW ALERT ERROR */
 		}
 
 	}
@@ -84,7 +84,7 @@ public class ClientConfigurationController implements Initializable {
 		if (ClientUI.chat != null) {
 			try {
 				Stage thisStage = getStage();
-				
+
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainScreen.fxml"));
 				MainScreenController controller = new MainScreenController();
 				loader.setController(controller);
@@ -101,16 +101,15 @@ public class ClientConfigurationController implements Initializable {
 				System.out.println("faild to load form");
 				e.printStackTrace();
 			}
-		}
-		else {
-			/* First connect */
+		} else {
+			/* NEED TO SHOW ALERT ERROR */
 		}
 	}
 
 	private Stage getStage() {
 		return stage;
 	}
-	
+
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}

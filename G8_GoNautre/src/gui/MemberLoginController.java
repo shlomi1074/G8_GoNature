@@ -71,7 +71,7 @@ public class MemberLoginController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				/* NEED TO CHANGE WHEN WE IMPLEMNT LOGIN VIA DATABASE */
-				String type = "entrance";
+				String type = "service";
 				if (type.equals("service"))
 					switchScene("ServiceWorker.fxml", "GoNature8 - Service Worker", type);
 				else if (type.equals("parkManager"))
@@ -87,24 +87,31 @@ public class MemberLoginController implements Initializable {
 	private void switchScene(String fxmlName, String title, String type) {
 		try {
 			Stage thisStage = getStage();
+			Stage newStage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
 			if (type.equals("service")) {
 				ServiceWorkerController controller = new ServiceWorkerController();
+				controller.setStage(newStage);
+				controller.setMainScreenStage(parentStage);
 				loader.setController(controller);
 			} else if (type.equals("parkManager")) {
 				ParkManagerController controller = new ParkManagerController();
+				controller.setStage(newStage);
+				controller.setMainScreenStage(parentStage);
 				loader.setController(controller);
 			} else if (type.equals("entrance")) {
 				EntranceWorkerController controller = new EntranceWorkerController();
+				controller.setStage(newStage);
+				controller.setMainScreenStage(parentStage);
 				loader.setController(controller);
 			} else if (type.equals("depManager")) {
 				DepartmentManagerController controller = new DepartmentManagerController();
+				controller.setStage(newStage);
+				controller.setMainScreenStage(parentStage);
 				loader.setController(controller);
 			}
 			loader.load();
 			Parent p = loader.getRoot();
-			Stage newStage = new Stage();
-
 			newStage.setTitle(title);
 			// stage.getIcons().add(new Image("url"));
 			newStage.setScene(new Scene(p));
