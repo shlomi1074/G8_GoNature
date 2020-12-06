@@ -6,7 +6,10 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+
+import client.ClientUI;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +20,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 
 public class MainScreenController implements Initializable {
 
@@ -46,11 +52,30 @@ public class MainScreenController implements Initializable {
 
 	@FXML
 	private Label menuLabel;
+	
+	private Stage stage;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		init();
+	}
+
+	private void init() {
 		setFirstYouTubeVideo();
 		setDrawer();
+		getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent we) {
+				ClientUI.chat.getClient().quit();
+			}
+		});
+		
+	}
+
+	private Stage getStage() {
+		return stage;
+	}
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 
 	@FXML
