@@ -48,7 +48,7 @@
                         <FontAwesomeIconView glyphName="USER_PLUS" size="20" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="logoutBtn" prefHeight="122.0" prefWidth="204.0" text="Logout">
+                  <JFXButton fx:id="logoutBtn" onMouseClicked="#logOut" prefHeight="122.0" prefWidth="204.0" text="Logout">
                      <graphic>
                         <FontAwesomeIconView glyphName="SIGN_OUT" size="20" />
                      </graphic>

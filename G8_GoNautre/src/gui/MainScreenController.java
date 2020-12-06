@@ -52,7 +52,7 @@ public class MainScreenController implements Initializable {
 
 	@FXML
 	private Label menuLabel;
-	
+
 	private Stage stage;
 
 	@Override
@@ -68,12 +68,13 @@ public class MainScreenController implements Initializable {
 				ClientUI.chat.getClient().quit();
 			}
 		});
-		
+
 	}
 
 	private Stage getStage() {
 		return stage;
 	}
+
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
