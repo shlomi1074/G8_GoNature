@@ -5,7 +5,6 @@
 package client;
 import common.*;
 import ocsf.client.*;
-
 import java.io.*;
 import java.util.ArrayList;
 
@@ -52,7 +51,6 @@ public class ChatClient extends AbstractClient {
 	 *
 	 * @param msg The message from the server.
 	 */
-	@SuppressWarnings("unchecked")
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
 	}

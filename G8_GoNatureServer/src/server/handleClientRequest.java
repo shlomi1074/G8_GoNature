@@ -32,7 +32,6 @@ public class handleClientRequest implements Runnable {
 	/* HERE WE NEED TO HANDLE THE CLIENT MSG */
 	@Override
 	public void run() {
-		System.out.println((String)msg);
 		try {
 			client.sendToClient("finished");
 		} catch (IOException e) {
