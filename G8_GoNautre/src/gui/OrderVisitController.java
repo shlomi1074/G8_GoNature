@@ -115,7 +115,7 @@ public class OrderVisitController implements Initializable {
 
 	@FXML
 	private Label summaryDate1;
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		accordion.setExpandedPane(identificationTP);
@@ -149,7 +149,7 @@ public class OrderVisitController implements Initializable {
 	private void initComboBoxes() {
 		parksComboBox.getItems().clear();
 		typeComboBox.getItems().clear();
-		
+
 		/* MAYBE NEED TO CHANGE TO DYNAMIC FROM THE DB IN THE FUTURE */
 		parksComboBox.getItems().addAll("Ardent Park", "Pine Park", "Linda Park");
 		typeComboBox.getItems().addAll("Solo Visit", "Family Visit", "Group Visit");
@@ -184,16 +184,16 @@ public class OrderVisitController implements Initializable {
 			summaryType.setText(typeComboBox.getSelectionModel().getSelectedItem().toString());
 		summaryVisitors.setText(numOfVisitorsOrderVisit.getText());
 	}
-	
+
 	@FXML
 	private void placeOrderButton() {
 		/* Need to add alot of stuff */
-		
+
 		/* Test UI - need to delete */
-			loadRescheduleScreen();
+		loadRescheduleScreen();
 		/* End UI Test */
 	}
-	
+
 	private void loadRescheduleScreen() {
 		try {
 			Stage thisStage = getStage();
@@ -218,7 +218,7 @@ public class OrderVisitController implements Initializable {
 		}
 
 	}
-	
+
 	private Stage getStage() {
 		return (Stage) summaryID.getScene().getWindow();
 	}

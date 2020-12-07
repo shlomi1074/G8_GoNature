@@ -5,8 +5,6 @@ package server;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import Util.sendToClient;
 import gui.ServerGUIController;
 import javafx.scene.paint.Color;
 import ocsf.server.*;
@@ -71,7 +69,8 @@ public class GoNatureServer extends AbstractServer {
 	 * @param
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-
+		handleClientRequest thread = new handleClientRequest(client, msg);
+		new Thread(thread).start();
 	}
 
 	/**
