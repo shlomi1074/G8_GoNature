@@ -65,23 +65,21 @@ public class MemberLoginController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		/* LOGIN BUTTON LISTENER - NEED TO CHANGE TO LOGIN VIA DATABASE */
-		loginButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				/* NEED TO CHANGE WHEN WE IMPLEMNT LOGIN VIA DATABASE */
-				String type = "service";
-				if (type.equals("service"))
-					switchScene("ServiceWorker.fxml", "GoNature8 - Service Worker", type);
-				else if (type.equals("parkManager"))
-					switchScene("ParkManager.fxml", "GoNature8 - Park Manager", type);
-				else if (type.equals("entrance"))
-					switchScene("EntranceWorker.fxml", "GoNature8 - Entrance Worker", type);
-				else if (type.equals("depManager"))
-					switchScene("DepartmentManagerScreen.fxml", "GoNature8 - Department Manager", type);
-			}
-		});
+
+	}
+
+	@FXML
+	private void loginButton() {
+		/* NEED TO CHANGE WHEN WE IMPLEMNT LOGIN VIA DATABASE */
+		String type = "service";
+		if (type.equals("service"))
+			switchScene("ServiceWorker.fxml", "GoNature8 - Service Worker", type);
+		else if (type.equals("parkManager"))
+			switchScene("ParkManager.fxml", "GoNature8 - Park Manager", type);
+		else if (type.equals("entrance"))
+			switchScene("EntranceWorker.fxml", "GoNature8 - Entrance Worker", type);
+		else if (type.equals("depManager"))
+			switchScene("DepartmentManagerScreen.fxml", "GoNature8 - Department Manager", type);
 	}
 
 	private void switchScene(String fxmlName, String title, String type) {
@@ -113,7 +111,6 @@ public class MemberLoginController implements Initializable {
 			loader.load();
 			Parent p = loader.getRoot();
 			newStage.setTitle(title);
-			// stage.getIcons().add(new Image("url"));
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
 			newStage.show();

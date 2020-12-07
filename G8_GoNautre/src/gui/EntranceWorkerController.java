@@ -18,39 +18,39 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import util.FxmlUtil;
 
-public class EntranceWorkerController implements Initializable{
-	
-    @FXML
-    private BorderPane borderPane;
+public class EntranceWorkerController implements Initializable {
 
-    @FXML
-    private AnchorPane topPane;
+	@FXML
+	private BorderPane borderPane;
 
-    @FXML
-    private Label userLabel;
+	@FXML
+	private AnchorPane topPane;
 
-    @FXML
-    private VBox vbox;
+	@FXML
+	private Label userLabel;
 
-    @FXML
-    private JFXButton profileButton;
+	@FXML
+	private VBox vbox;
 
-    @FXML
-    private JFXButton currentVisitorsButton;
+	@FXML
+	private JFXButton profileButton;
 
-    @FXML
-    private JFXButton enterVisitorIDButton;
-    
+	@FXML
+	private JFXButton currentVisitorsButton;
+
+	@FXML
+	private JFXButton enterVisitorIDButton;
+
 	private Stage stage;
 	private Stage mainScreenStage;
-    
+
 	FxmlUtil loader = new FxmlUtil();
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		init();
 	}
-	
+
 	private void init() {
 		loadProfile();
 		getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -72,25 +72,25 @@ public class EntranceWorkerController implements Initializable{
 	public void setMainScreenStage(Stage stage) {
 		this.mainScreenStage = stage;
 	}
-	
+
 	@FXML
 	private void loadProfile() {
-		Pane view = loader.loadPaneWithController("/gui/Profile.fxml", "profile");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/Profile.fxml", "profile");
 		borderPane.setCenter(view);
 	}
-	
+
 	@FXML
 	private void loadManageTraveler() {
-		Pane view = loader.loadPaneWithController("/gui/ManageTraveler.fxml", "manageTraveler");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/ManageTraveler.fxml", "manageTraveler");
 		borderPane.setCenter(view);
 	}
-	
+
 	@FXML
 	private void loadParkParameters() {
-		Pane view = loader.loadPaneWithController("/gui/ParkParameters.fxml", "parkParameters");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/ParkParameters.fxml", "parkParameters");
 		borderPane.setCenter(view);
 	}
-	
+
 	@FXML
 	private void logOut() {
 		getStage().close();

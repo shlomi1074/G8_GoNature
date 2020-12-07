@@ -12,30 +12,30 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
 public class CasualVisitController implements Initializable {
-	
-    @FXML
-    private JFXTextField idInputCasualVisit;
 
-    @FXML
-    private JFXTextField emailInputCasualVisit;
+	@FXML
+	private JFXTextField idInputCasualVisit;
 
-    @FXML
-    private JFXComboBox<?> typeComboBox;
+	@FXML
+	private JFXTextField emailInputCasualVisit;
 
-    @FXML
-    private JFXTextField numOfVisitorsCasualVisit;
+	@FXML
+	private JFXComboBox<?> typeComboBox;
 
-    @FXML
-    private Label headerLabel;
+	@FXML
+	private JFXTextField numOfVisitorsCasualVisit;
 
-    @FXML
-    private JFXButton placeOrderBtn;
+	@FXML
+	private Label headerLabel;
 
-    @FXML
-    private Label totalPriceLabel;
+	@FXML
+	private JFXButton placeOrderBtn;
 
-    @FXML
-    private JFXButton checkPriceBtn;
+	@FXML
+	private Label totalPriceLabel;
+
+	@FXML
+	private JFXButton checkPriceBtn;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

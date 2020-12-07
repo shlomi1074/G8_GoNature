@@ -49,7 +49,7 @@ public class ParkManagerController implements Initializable {
 
 	private Stage stage;
 	private Stage mainScreenStage;
-	
+
 	FxmlUtil loader = new FxmlUtil();
 
 	@Override
@@ -82,34 +82,34 @@ public class ParkManagerController implements Initializable {
 	@FXML
 	private void loadUpdateParameters() {
 		FxmlUtil loader = new FxmlUtil();
-		Pane view = loader.loadPaneWithOutController("/gui/UpdateParameters.fxml");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/UpdateParameters.fxml", "updateParameters");
 		borderPane.setCenter(view);
 	}
 
 	@FXML
 	private void loadCreateReports() {
-		Pane view = loader.loadPaneWithOutController("/gui/CreateReports.fxml");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/CreateReports.fxml", "createReport");
 		borderPane.setCenter(view);
 	}
 
 	@FXML
 	private void loadProfile() {
-		Pane view = loader.loadPaneWithController("/gui/Profile.fxml", "profile");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/Profile.fxml", "profile");
 		borderPane.setCenter(view);
 	}
 
 	@FXML
 	private void loadManageTraveler() {
-		Pane view = loader.loadPaneWithController("/gui/ManageTraveler.fxml", "manageTraveler");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/ManageTraveler.fxml", "manageTraveler");
 		borderPane.setCenter(view);
 	}
 
 	@FXML
 	private void loadParkParameters() {
-		Pane view = loader.loadPaneWithController("/gui/ParkParameters.fxml", "parkParameters");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/ParkParameters.fxml", "parkParameters");
 		borderPane.setCenter(view);
 	}
-	
+
 	@FXML
 	private void logOut() {
 		getStage().close();

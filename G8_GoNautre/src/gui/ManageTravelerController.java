@@ -18,29 +18,28 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ManageTravelerController implements Initializable {
-	
-    @FXML
-    private JFXTextField idTextField;
 
-    @FXML
-    private TableView<String> ordersTableView;
+	@FXML
+	private JFXTextField idTextField;
 
-    @FXML
-    private Button occVisitBtn;
+	@FXML
+	private TableView<String> ordersTableView;
 
-    @FXML
-    private Button confirmBtn;
+	@FXML
+	private Button occVisitBtn;
 
-    @FXML
-    private Button searchBtn;
+	@FXML
+	private Button confirmBtn;
 
+	@FXML
+	private Button searchBtn;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@FXML
 	private void loadCasualVisit() {
 		try {

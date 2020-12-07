@@ -55,7 +55,7 @@
             <Font size="20.0" />
          </font>
       </JFXPasswordField>
-      <JFXButton fx:id="loginButton" layoutX="84.0" layoutY="337.0" prefHeight="50.0" prefWidth="339.0" text="LOGIN" />
+      <JFXButton fx:id="loginButton" layoutX="84.0" layoutY="337.0" onMouseClicked="#loginButton" prefHeight="50.0" prefWidth="339.0" text="LOGIN" />
       <FontAwesomeIconView glyphName="USER" layoutX="96.0" layoutY="233.0" size="40" />
       <FontAwesomeIconView glyphName="LOCK" layoutX="97.0" layoutY="304.0" size="40" />
    </children>

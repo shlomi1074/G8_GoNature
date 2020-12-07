@@ -14,30 +14,30 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class RescheduleController implements Initializable{
-	
-    @FXML
-    private Label headerLabel;
+public class RescheduleController implements Initializable {
 
-    @FXML
-    private JFXTextArea rescheduleTextArea;
+	@FXML
+	private Label headerLabel;
 
-    @FXML
-    private JFXListView<Date> datesListView;
+	@FXML
+	private JFXTextArea rescheduleTextArea;
 
-    @FXML
-    private Button newTimeBtn;
+	@FXML
+	private JFXListView<Date> datesListView;
 
-    @FXML
-    private Button waitingListBtn;
+	@FXML
+	private Button newTimeBtn;
 
-    @FXML
-    private Label selectedTimeLabel;
+	@FXML
+	private Button waitingListBtn;
+
+	@FXML
+	private Label selectedTimeLabel;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		init();
-		
+
 	}
 
 	private void init() {
@@ -48,7 +48,7 @@ public class RescheduleController implements Initializable{
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
 

@@ -23,43 +23,43 @@ import javafx.stage.WindowEvent;
 import util.FxmlUtil;
 
 public class ServiceWorkerController implements Initializable {
-	
-    @FXML
-    private BorderPane borderPane;
 
-    @FXML
-    private AnchorPane topPane;
+	@FXML
+	private BorderPane borderPane;
 
-    @FXML
-    private Label userLabel;
+	@FXML
+	private AnchorPane topPane;
 
-    @FXML
-    private VBox vbox;
+	@FXML
+	private Label userLabel;
 
-    @FXML
-    private JFXButton profileButton;
+	@FXML
+	private VBox vbox;
 
-    @FXML
-    private JFXButton currentVisitorsButton;
+	@FXML
+	private JFXButton profileButton;
 
-    @FXML
-    private JFXButton enterVisitorIDButton;
+	@FXML
+	private JFXButton currentVisitorsButton;
 
-    @FXML
-    private JFXButton registerButton;
-    
-    private Stage stage;
-    private Stage mainScreenStage;
+	@FXML
+	private JFXButton enterVisitorIDButton;
+
+	@FXML
+	private JFXButton registerButton;
+
+	private Stage stage;
+	private Stage mainScreenStage;
 
 	FxmlUtil loader = new FxmlUtil();
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		init();
 
 	}
-	
-	private void init() {		
+
+	private void init() {
 		loadProfile();
 		getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
@@ -72,39 +72,39 @@ public class ServiceWorkerController implements Initializable {
 	private Stage getStage() {
 		return stage;
 	}
-	
+
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-	
+
 	public void setMainScreenStage(Stage stage) {
 		this.mainScreenStage = stage;
 	}
-	
+
 	@FXML
 	private void loadRegister() {
-		Pane view = loader.loadPaneWithOutController("/gui/AddSubscriber.fxml");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/AddSubscriber.fxml", "addSubSubscriber");
 		borderPane.setCenter(view);
 	}
-	
+
 	@FXML
 	private void loadProfile() {
-		Pane view = loader.loadPaneWithController("/gui/Profile.fxml", "profile");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/Profile.fxml", "profile");
 		borderPane.setCenter(view);
 	}
-	
+
 	@FXML
 	private void loadManageTraveler() {
-		Pane view = loader.loadPaneWithController("/gui/ManageTraveler.fxml", "manageTraveler");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/ManageTraveler.fxml", "manageTraveler");
 		borderPane.setCenter(view);
 	}
-	
+
 	@FXML
 	private void loadParkParameters() {
-		Pane view = loader.loadPaneWithController("/gui/ParkParameters.fxml", "parkParameters");
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/ParkParameters.fxml", "parkParameters");
 		borderPane.setCenter(view);
 	}
-	
+
 	@FXML
 	private void logOut() {
 		getStage().close();

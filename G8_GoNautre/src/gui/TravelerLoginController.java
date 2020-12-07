@@ -19,48 +19,48 @@ import javafx.stage.Stage;
 
 public class TravelerLoginController implements Initializable {
 
-    @FXML
-    private AnchorPane loginContainer;
+	@FXML
+	private AnchorPane loginContainer;
 
-    @FXML
-    private Rectangle rectangle;
+	@FXML
+	private Rectangle rectangle;
 
-    @FXML
-    private Label forgotPasswordLabel1;
+	@FXML
+	private Label forgotPasswordLabel1;
 
-    @FXML
-    private JFXButton loginButton;
-    
+	@FXML
+	private JFXButton loginButton;
+
 	private Stage parentStage;
-	
-	public TravelerLoginController(Stage parentStage){
+
+	public TravelerLoginController(Stage parentStage) {
 		this.parentStage = parentStage;
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		loginButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	switchScene();
-            }
-        });
+			@Override
+			public void handle(ActionEvent event) {
+				switchScene();
+			}
+		});
 
 	}
-	
+
 	private void switchScene() {
 		try {
 			Stage thisStage = getStage();
-			Stage newStage = new Stage(); 
+			Stage newStage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TravelerScreen.fxml"));
 			TravelerScreenController controller = new TravelerScreenController("user", "password");
 			loader.setController(controller);
 			controller.setStage(newStage);
 			controller.setMainScreenStage(parentStage);
 			loader.load();
-			Parent p = loader.getRoot(); 	
+			Parent p = loader.getRoot();
 			newStage.setTitle("user screen");
-			newStage.setScene(new Scene(p)); 
+			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
 			newStage.show();
 			thisStage.close();
@@ -70,10 +70,9 @@ public class TravelerLoginController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private Stage getStage() {
 		return (Stage) loginButton.getScene().getWindow();
 	}
-	
 
 }

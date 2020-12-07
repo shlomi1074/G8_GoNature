@@ -11,49 +11,49 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class AddSubscriberController implements Initializable{
-	
-    @FXML
-    private AnchorPane registerRootPane;
+public class AddSubscriberController implements Initializable {
 
-    @FXML
-    private Label orderVisitHeaderLabel;
+	@FXML
+	private AnchorPane registerRootPane;
 
-    @FXML
-    private JFXTextField emailInputOrderVisit;
+	@FXML
+	private Label orderVisitHeaderLabel;
 
-    @FXML
-    private JFXTextField firstNameInputRegister;
+	@FXML
+	private JFXTextField emailInputOrderVisit;
 
-    @FXML
-    private JFXTextField lastNameInputRegister;
+	@FXML
+	private JFXTextField firstNameInputRegister;
 
-    @FXML
-    private JFXTextField lastNameInputRegister1;
+	@FXML
+	private JFXTextField lastNameInputRegister;
 
-    @FXML
-    private JFXTextField lastNameInputRegister11;
+	@FXML
+	private JFXTextField lastNameInputRegister1;
 
-    @FXML
-    private JFXComboBox<String> typeComboBox;
+	@FXML
+	private JFXTextField lastNameInputRegister11;
 
-    @FXML
-    private Accordion accordion;
+	@FXML
+	private JFXComboBox<String> typeComboBox;
 
-    @FXML
-    private AnchorPane creditCardPane;
+	@FXML
+	private Accordion accordion;
 
-    @FXML
-    private AnchorPane paymentPane;
+	@FXML
+	private AnchorPane creditCardPane;
 
-    @FXML
-    private JFXTextField CardNumber;
+	@FXML
+	private AnchorPane paymentPane;
 
-    @FXML
-    private JFXTextField CCV;
+	@FXML
+	private JFXTextField CardNumber;
 
-    @FXML
-    private JFXDatePicker CardExpiryDate;
+	@FXML
+	private JFXTextField CCV;
+
+	@FXML
+	private JFXDatePicker CardExpiryDate;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -63,6 +63,5 @@ public class AddSubscriberController implements Initializable{
 	private void initComboBoxes() {
 		typeComboBox.getItems().addAll("Solo Account", "Family Account", "Guide Account");
 	}
-	
-	
+
 }
