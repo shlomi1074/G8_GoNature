@@ -12,5 +12,9 @@
 	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="lib" path="lib/jfoenix-8.0.10.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
+	<classpathentry kind="lib" path="lib/controlsfx-8.40.11.jar"/>
+	<classpathentry kind="lib" path="lib/fontawesomefx-commons-8.15.jar"/>
+	<classpathentry kind="lib" path="lib/fontawesomefx-fontawesome-4.7.0-5.jar"/>
+	<classpathentry kind="lib" path="lib/fontawesomefx-8.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 
 import client.ClientUI;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
