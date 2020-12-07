@@ -23,7 +23,7 @@ public class mysqlConnection {
 			 * Need to make sure the details are right for each MySQLDB.
 			 */
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/g8prototype?serverTimezone=UTC",
-					"root", "archer2030"); // pass changed
+					"root", "root"); // pass changed
 			System.out.println("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
 			System.out.println("SQLException: " + ex.getMessage());
