@@ -15,12 +15,11 @@
 
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1270.0" styleClass="custom-pane" stylesheets="@../resources/projectTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXDrawer fx:id="drawMenu" defaultDrawerSize="150.0" direction="RIGHT" resizableOnDrag="true" resizeContent="true" styleClass="jfx-drawer" />
+      <JFXDrawer fx:id="drawMenu" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true" styleClass="jfx-drawer" />
       <AnchorPane fx:id="rootAnchorPane">
          <children>
             <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label text="Light Mode" textFill="#f8f8f8" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
                   <VBox alignment="CENTER" prefHeight="768.0" prefWidth="1150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="225.0" prefWidth="225.0">
@@ -109,8 +108,8 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <JFXHamburger fx:id="hamburger" styleClass="jfx-hamburger-icon" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0" />
-            <Label fx:id="menuLabel" text="Menu" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="78.0" />
+            <JFXHamburger fx:id="hamburger" styleClass="jfx-hamburger-icon" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="50.0" />
+            <Label fx:id="menuLabel" text="Menu" AnchorPane.leftAnchor="17.0" AnchorPane.topAnchor="78.0" />
          </children>
       </AnchorPane>
    </children>

@@ -115,15 +115,15 @@ public class MainScreenController implements Initializable {
 			drawMenu.toggle();
 		});
 		drawMenu.setOnDrawerOpening((event) -> {
-			AnchorPane.setRightAnchor(hamburger, 170.0);
-			AnchorPane.setRightAnchor(menuLabel, 167.0);
+			AnchorPane.setLeftAnchor(hamburger, 170.0);
+			AnchorPane.setLeftAnchor(menuLabel, 167.0);
 			drawMenu.toFront();
 			task.setRate(task.getRate() * -1);
 			task.play();
 		});
 		drawMenu.setOnDrawerClosed((event) -> {
-			AnchorPane.setRightAnchor(hamburger, 20.0);
-			AnchorPane.setRightAnchor(menuLabel, 17.0);
+			AnchorPane.setLeftAnchor(hamburger, 20.0);
+			AnchorPane.setLeftAnchor(menuLabel, 17.0);
 			drawMenu.toBack();
 			task.setRate(task.getRate() * -1);
 			task.play();
