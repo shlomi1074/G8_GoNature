@@ -2,7 +2,6 @@ package client;
 
 import client.ClientController;
 import gui.ClientConfigurationController;
-import gui.ServiceWorkerController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -27,14 +26,6 @@ public class ClientUI extends Application {
 			primaryStage.setResizable(false);
 			primaryStage.show();
 			
-			
-			
-			
-//			controller.setStage(primaryStage);
-//			primaryStage.setTitle("GoNature System");
-//			primaryStage.setScene(new Scene(root));
-//			primaryStage.setResizable(false);
-//			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

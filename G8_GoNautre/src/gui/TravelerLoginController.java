@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,19 +20,25 @@ import javafx.stage.Stage;
 
 public class TravelerLoginController implements Initializable {
 
-	@FXML
-	private AnchorPane loginContainer;
+    @FXML
+    private AnchorPane loginContainer;
 
-	@FXML
-	private Rectangle rectangle;
+    @FXML
+    private Rectangle rectangle;
 
-	@FXML
-	private Label forgotPasswordLabel1;
+    @FXML
+    private Label forgotPasswordLabel1;
 
-	@FXML
-	private JFXButton loginButton;
+    @FXML
+    private JFXTextField idTextField;
 
-	private Stage parentStage;
+    @FXML
+    private JFXTextField subscriberIDTextField;
+
+    @FXML
+    private JFXButton loginButton;
+    
+    private Stage parentStage;
 
 	public TravelerLoginController(Stage parentStage) {
 		this.parentStage = parentStage;

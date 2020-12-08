@@ -43,7 +43,7 @@
                         <JFXDatePicker fx:id="datePicker" layoutX="180.0" layoutY="129.0" prefHeight="30.0" prefWidth="200.0" promptText="DD/MM/YYYY" />
                         <Label layoutX="29.0" layoutY="29.0" text="Permission Type:" />
                         <Label layoutX="141.0" layoutY="29.0" text="Guest" />
-                        <JFXTimePicker fx:id="timePicker" layoutX="180.0" layoutY="169.0" prefHeight="30.0" prefWidth="200.0" promptText="HH/mm" />
+                        <JFXTimePicker fx:id="timePicker" layoutX="180.0" layoutY="169.0" prefHeight="30.0" prefWidth="200.0" promptText="HH:mm" />
                         <JFXTextField fx:id="emailInputOrderVisit" layoutX="180.0" layoutY="249.0" prefHeight="30.0" prefWidth="200.0" promptText="Enter Your Email" />
                         <Label layoutX="29.0" layoutY="94.0" text="Choose Park To Visit:" />
                         <Label layoutX="29.0" layoutY="134.0" text="Pick The Date:" />

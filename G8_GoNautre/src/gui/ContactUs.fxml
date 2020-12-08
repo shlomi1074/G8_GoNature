@@ -20,9 +20,9 @@
             <FontAwesomeIconView glyphName="PHONE" layoutX="23.0" layoutY="448.0" size="14.0" />
             <FontAwesomeIconView glyphName="PHONE" layoutX="22.0" layoutY="481.0" size="14.0" />
             <FontAwesomeIconView glyphName="ENVELOPE" layoutX="22.0" layoutY="515.0" size="14.0" text="" />
-            <ImageView fitHeight="125.0" fitWidth="160.0" layoutX="34.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="160.0" fitWidth="184.0" layoutX="81.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resources/images/gc.png" />
+                  <Image url="@../resources/images/shortLogo.png" />
                </image>
             </ImageView>
          </children>
@@ -30,11 +30,11 @@
       <AnchorPane fx:id="emailPane" layoutX="324.0" minHeight="0.0" minWidth="0.0" prefHeight="559.0" prefWidth="514.0">
          <children>
             <Label layoutX="25.0" layoutY="24.0" style="-fx-font-weight: bold;" text="Send us a message" />
-            <JFXTextArea layoutX="54.0" layoutY="229.0" prefHeight="224.0" prefWidth="394.0" promptText="Write your meesage here" />
-            <JFXButton layoutX="50.0" layoutY="475.0" prefHeight="40.0" prefWidth="402.0" text="SEND" />
-            <JFXTextField layoutX="74.0" layoutY="87.0" prefHeight="37.0" prefWidth="170.0" promptText="Your name" />
-            <JFXTextField layoutX="298.0" layoutY="87.0" prefHeight="37.0" prefWidth="170.0" promptText="Your phone" />
-            <JFXTextField layoutX="74.0" layoutY="153.0" prefHeight="37.0" prefWidth="394.0" promptText="Email address" />
+            <JFXTextArea fx:id="textArea" layoutX="54.0" layoutY="229.0" prefHeight="224.0" prefWidth="394.0" promptText="Write your meesage here" />
+            <JFXButton fx:id="sendButton" layoutX="50.0" layoutY="475.0" prefHeight="40.0" prefWidth="402.0" text="SEND" />
+            <JFXTextField fx:id="nameTextField" layoutX="74.0" layoutY="87.0" prefHeight="37.0" prefWidth="170.0" promptText="Your name" />
+            <JFXTextField fx:id="phoneTextField" layoutX="298.0" layoutY="87.0" prefHeight="37.0" prefWidth="170.0" promptText="Your phone" />
+            <JFXTextField fx:id="emailTextField" layoutX="74.0" layoutY="153.0" prefHeight="37.0" prefWidth="394.0" promptText="Email address" />
             <FontAwesomeIconView glyphName="PHONE" layoutX="261.0" layoutY="119.0" size="25" />
             <FontAwesomeIconView glyphName="ENVELOPE" layoutX="34.0" layoutY="182.0" size="25" />
             <FontAwesomeIconView glyphName="USER" layoutX="38.0" layoutY="117.0" size="25" />

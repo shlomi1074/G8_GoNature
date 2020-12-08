@@ -68,8 +68,8 @@
                         <Label layoutX="80.0" layoutY="199.0" text="Enter End Date" />
                         <Label layoutX="80.0" layoutY="244.0" text="Enter Discount Percentage" />
                         <FontAwesomeIconView glyphName="PERCENT" layoutX="233.0" layoutY="111.0" size="50" text="" />
-                        <JFXDatePicker layoutX="264.0" layoutY="149.0" promptText="Start Date" />
-                        <JFXDatePicker layoutX="264.0" layoutY="194.0" promptText="End Date" />
+                        <JFXDatePicker fx:id="discountStartDate" layoutX="264.0" layoutY="149.0" promptText="Start Date" />
+                        <JFXDatePicker fx:id="discountEndDate" layoutX="264.0" layoutY="194.0" promptText="End Date" />
                      </children>
                   </AnchorPane>
               </content>
