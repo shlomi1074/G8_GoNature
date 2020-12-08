@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
+//re
 public class ClientUI extends Application {
 	public static ClientController chat;
 	@Override
