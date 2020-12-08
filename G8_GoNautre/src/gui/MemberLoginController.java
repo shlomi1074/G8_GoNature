@@ -1,22 +1,16 @@
 package gui;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
@@ -24,38 +18,39 @@ import javafx.stage.Stage;
 
 public class MemberLoginController implements Initializable {
 
-	@FXML
-	private AnchorPane loginContainer;
 
-	@FXML
-	private Rectangle rectangle;
+    @FXML
+    private AnchorPane loginContainer;
 
-	@FXML
-	private Label forgotPasswordLabel;
+    @FXML
+    private Rectangle rectangle;
 
-	@FXML
-	private AnchorPane personImageContainer;
+    @FXML
+    private Label forgotPasswordLabel;
 
-	@FXML
-	private ImageView userImageView;
+    @FXML
+    private AnchorPane personImageContainer;
 
-	@FXML
-	private AnchorPane lockImageContainer;
+    @FXML
+    private ImageView userImageView;
 
-	@FXML
-	private ImageView lockImageView;
+    @FXML
+    private AnchorPane lockImageContainer;
 
-	@FXML
-	private Label createAccountLabel;
+    @FXML
+    private ImageView lockImageView;
 
-	@FXML
-	private JFXTextField usernameTextField;
+    @FXML
+    private Label createAccountLabel;
 
-	@FXML
-	private JFXPasswordField passwordTextField;
+    @FXML
+    private JFXTextField idTextField;
 
-	@FXML
-	private JFXButton loginButton;
+    @FXML
+    private JFXPasswordField passwordTextField;
+
+    @FXML
+    private JFXButton loginButton;
 
 	private Stage parentStage;
 

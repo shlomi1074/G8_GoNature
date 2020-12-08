@@ -45,7 +45,7 @@
          </children>
       </AnchorPane>
       <Label fx:id="createAccountLabel" layoutX="110.0" layoutY="459.0" style="-fx-text-fill: white; -fx-opacity: 0.8; -fx-font-size: 14;" text="Don't have an account? Contect us at phone" />
-      <JFXTextField fx:id="usernameTextField" layoutX="143.0" layoutY="185.0" prefHeight="55.0" prefWidth="265.0" promptText="ID">
+      <JFXTextField fx:id="idTextField" layoutX="143.0" layoutY="185.0" prefHeight="55.0" prefWidth="265.0" promptText="ID">
          <font>
             <Font size="20.0" />
          </font>

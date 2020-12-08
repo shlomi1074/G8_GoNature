@@ -13,26 +13,45 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ManageTravelerController implements Initializable {
 
-	@FXML
-	private JFXTextField idTextField;
+    @FXML
+    private JFXTextField idTextField;
 
-	@FXML
-	private TableView<String> ordersTableView;
+    @FXML
+    private TableView<?> ordersTableView;
 
-	@FXML
-	private Button occVisitBtn;
+    @FXML
+    private TableColumn<?, ?> travelerIDCol;
 
-	@FXML
-	private Button confirmBtn;
+    @FXML
+    private TableColumn<?, ?> orderIDCol;
 
-	@FXML
-	private Button searchBtn;
+    @FXML
+    private TableColumn<?, ?> dateCol;
+
+    @FXML
+    private TableColumn<?, ?> timeCol;
+
+    @FXML
+    private TableColumn<?, ?> statusCol;
+
+    @FXML
+    private Button occVisitBtn;
+
+    @FXML
+    private Button confirmBtn;
+
+    @FXML
+    private Button searchBtn;
+
+    @FXML
+    private Label headerLabel;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

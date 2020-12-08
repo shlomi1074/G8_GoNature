@@ -13,47 +13,53 @@ import javafx.scene.layout.AnchorPane;
 
 public class AddSubscriberController implements Initializable {
 
-	@FXML
-	private AnchorPane registerRootPane;
+    @FXML
+    private AnchorPane registerRootPane;
 
-	@FXML
-	private Label orderVisitHeaderLabel;
+    @FXML
+    private Label headerLabel;
 
-	@FXML
-	private JFXTextField emailInputOrderVisit;
+    @FXML
+    private JFXTextField emailInputOrderVisit;
 
-	@FXML
-	private JFXTextField firstNameInputRegister;
+    @FXML
+    private JFXTextField firstNameInputRegister;
 
-	@FXML
-	private JFXTextField lastNameInputRegister;
+    @FXML
+    private JFXTextField lastNameInputRegister;
 
-	@FXML
-	private JFXTextField lastNameInputRegister1;
+    @FXML
+    private JFXTextField lastNameInputRegister1;
 
-	@FXML
-	private JFXTextField lastNameInputRegister11;
+    @FXML
+    private JFXTextField lastNameInputRegister11;
 
-	@FXML
-	private JFXComboBox<String> typeComboBox;
+    @FXML
+    private JFXComboBox<String> typeComboBox;
 
-	@FXML
-	private Accordion accordion;
+    @FXML
+    private Accordion accordion;
 
-	@FXML
-	private AnchorPane creditCardPane;
+    @FXML
+    private AnchorPane creditCardPane;
 
-	@FXML
-	private AnchorPane paymentPane;
+    @FXML
+    private AnchorPane paymentPane;
 
-	@FXML
-	private JFXTextField CardNumber;
+    @FXML
+    private JFXTextField CardNumber;
 
-	@FXML
-	private JFXTextField CCV;
+    @FXML
+    private JFXTextField CCV;
 
-	@FXML
-	private JFXDatePicker CardExpiryDate;
+    @FXML
+    private JFXDatePicker CardExpiryDate;
+
+    @FXML
+    private Label requiredFieldsLabel1;
+
+    @FXML
+    private Label requiredFieldsLabel11;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
