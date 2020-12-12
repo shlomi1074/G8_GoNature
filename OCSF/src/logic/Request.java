@@ -1,21 +1,17 @@
 package logic;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 
 public class Request {
-	private SimpleStringProperty requestId;
-	private SimpleStringProperty changeName;
-	private SimpleStringProperty newValue;
-	private SimpleStringProperty oldValue;
-	private SimpleStringProperty requestDate;
-	private SimpleIntegerProperty parkId;
-	private SimpleStringProperty requestStatus;
-
-	public Request(SimpleStringProperty requestId, SimpleStringProperty changeName, SimpleStringProperty newValue,
-			SimpleStringProperty oldValue, SimpleStringProperty requestDate, SimpleIntegerProperty parkId,
-			SimpleStringProperty requestStatus) {
-		super();
+	private String requestId;
+	private String changeName;
+	private String newValue;
+	private String oldValue;
+	private String requestDate;
+	private int parkId;
+	private String requestStatus;
+	
+	public Request(String requestId, String changeName, String newValue, String oldValue, String requestDate,
+			int parkId, String requestStatus) {
 		this.requestId = requestId;
 		this.changeName = changeName;
 		this.newValue = newValue;
@@ -25,60 +21,61 @@ public class Request {
 		this.requestStatus = requestStatus;
 	}
 
-	public SimpleStringProperty getRequestId() {
+	public String getRequestId() {
 		return requestId;
 	}
 
-	public void setRequestId(SimpleStringProperty requestId) {
+	public void setRequestId(String requestId) {
 		this.requestId = requestId;
 	}
 
-	public SimpleStringProperty getChangeName() {
+	public String getChangeName() {
 		return changeName;
 	}
 
-	public void setChangeName(SimpleStringProperty changeName) {
+	public void setChangeName(String changeName) {
 		this.changeName = changeName;
 	}
 
-	public SimpleStringProperty getNewValue() {
+	public String getNewValue() {
 		return newValue;
 	}
 
-	public void setNewValue(SimpleStringProperty newValue) {
+	public void setNewValue(String newValue) {
 		this.newValue = newValue;
 	}
 
-	public SimpleStringProperty getOldValue() {
+	public String getOldValue() {
 		return oldValue;
 	}
 
-	public void setOldValue(SimpleStringProperty oldValue) {
+	public void setOldValue(String oldValue) {
 		this.oldValue = oldValue;
 	}
 
-	public SimpleStringProperty getRequestDate() {
+	public String getRequestDate() {
 		return requestDate;
 	}
 
-	public void setRequestDate(SimpleStringProperty requestDate) {
+	public void setRequestDate(String requestDate) {
 		this.requestDate = requestDate;
 	}
 
-	public SimpleIntegerProperty getParkId() {
+	public int getParkId() {
 		return parkId;
 	}
 
-	public void setParkId(SimpleIntegerProperty parkId) {
+	public void setParkId(int parkId) {
 		this.parkId = parkId;
 	}
 
-	public SimpleStringProperty getRequestStatus() {
+	public String getRequestStatus() {
 		return requestStatus;
 	}
 
-	public void setRequestStatus(SimpleStringProperty requestStatus) {
+	public void setRequestStatus(String requestStatus) {
 		this.requestStatus = requestStatus;
 	}
-
+	
+	
 }

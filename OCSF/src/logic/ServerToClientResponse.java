@@ -3,9 +3,12 @@ package logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ServerToClientResponse <T> implements Serializable{
+public class ServerToClientResponse<T> implements Serializable {
+
+	// Shlomi
 	public enum Response {
-		IS_CONNECTED_RESPONSE, TRAVELER_LOGIN_ID_RESPONSE, SUBSCRIBER_LOGIN_ID_RESPONSE
+		IS_CONNECTED_RESPONSE, TRAVELER_LOGIN_ID_RESPONSE, SUBSCRIBER_LOGIN_ID_RESPONSE, VIEW_PARAMETERS_RESPONSE,
+		GET_SUBSCRIBER_RESPONSE, GET_ALL_PARKS_RESPONSE, GET_MAX_DISCOUNT_RESPONSE
 
 	}
 
@@ -14,7 +17,7 @@ public class ServerToClientResponse <T> implements Serializable{
 	private int rowsAffected;
 	private ArrayList<T> resultSet = new ArrayList<T>();
 	private int arrayListSize;
-	
+
 	public ServerToClientResponse(Response type) {
 		this.responseType = type;
 	}

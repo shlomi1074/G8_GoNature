@@ -1,62 +1,70 @@
 package logic;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import java.io.Serializable;
 
-public class Discount {
-	private SimpleStringProperty discountId;
-	private SimpleDoubleProperty amount;
-	private SimpleStringProperty startDate;
-	private SimpleStringProperty endDate;
-	private SimpleIntegerProperty parkId;
+public class Discount implements Serializable {
+	private String discountId;
+	private Double amount;
+	private String startDate;
+	private String endDate;
+	private int parkId;
+	private String status;
 
-	public Discount(SimpleStringProperty discountId, SimpleDoubleProperty amount, SimpleStringProperty startDate, SimpleStringProperty endDate, SimpleIntegerProperty parkId) {
+	public Discount(String discountId, Double amount, String startDate, String endDate, int parkId, String status) {
 		this.discountId = discountId;
 		this.amount = amount;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.parkId = parkId;
+		this.status = status;
 	}
 
-	public SimpleStringProperty getDiscountId() {
+	public String getDiscountId() {
 		return discountId;
 	}
 
-	public void setDiscountId(SimpleStringProperty discountId) {
+	public void setDiscountId(String discountId) {
 		this.discountId = discountId;
 	}
 
-	public SimpleDoubleProperty getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(SimpleDoubleProperty amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
-	public SimpleStringProperty getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(SimpleStringProperty startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public SimpleStringProperty getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(SimpleStringProperty endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 
-	public SimpleIntegerProperty getParkId() {
+	public int getParkId() {
 		return parkId;
 	}
 
-	public void setParkId(SimpleIntegerProperty parkId) {
+	public void setParkId(int parkId) {
 		this.parkId = parkId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

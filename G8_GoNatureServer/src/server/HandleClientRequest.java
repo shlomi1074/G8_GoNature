@@ -5,10 +5,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import Util.sendToClient;
 import logic.ClientToServerRequest;
 import logic.ClientToServerRequest.Request;
+import logic.Discount;
+import logic.Park;
 import logic.ServerToClientResponse;
 import logic.ServerToClientResponse.Response;
 import logic.Subscriber;
@@ -39,6 +40,7 @@ public class HandleClientRequest implements Runnable {
 	}
 
 	/* HERE WE NEED TO HANDLE THE CLIENT MSG */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void run() {
 		ServerToClientResponse response;
@@ -63,9 +65,37 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient("Finished Insert");
 				}
 				if (request.getRequestType().equals(Request.SUBSCRIBER_LOGIN_SUBID)) {	
-					Subscriber sub = mysqlFunction.GetSubscriberBySubId(request.getParameters());
+					Subscriber sub = mysqlFunction.getSubscriberBySubId(request.getParameters());
 					response = new ServerToClientResponse(Response.SUBSCRIBER_LOGIN_ID_RESPONSE);
 					response.setResultSet(new ArrayList<Traveler>(Arrays.asList(sub)));
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.VIEW_PARAMETERS)) {	
+					Park park = mysqlFunction.getPark(request.getParameters());
+					response = new ServerToClientResponse(Response.VIEW_PARAMETERS_RESPONSE);
+					response.setResultSet(new ArrayList<Park>(Arrays.asList(park)));
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_SUBSCRIBER)) {	
+					Subscriber sub = mysqlFunction.getSubscriberById(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_SUBSCRIBER_RESPONSE);
+					response.setResultSet(new ArrayList<Subscriber>(Arrays.asList(sub)));
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_ALL_PARKS)) {	
+					ArrayList<Park> parks = mysqlFunction.getAllParks(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_ALL_PARKS_RESPONSE);
+					response.setResultSet(parks);
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_MAX_DISCOUNT)) {	
+					Discount discount = mysqlFunction.getMaxDisount(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_MAX_DISCOUNT_RESPONSE);
+					response.setResultSet(new ArrayList<Discount>(Arrays.asList(discount)));
 					client.sendToClient(response);
 				}
 				client.sendToClient("");

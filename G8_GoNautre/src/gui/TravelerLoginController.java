@@ -46,8 +46,8 @@ public class TravelerLoginController implements Initializable {
 	private JFXButton loginButton;
 
 	private Stage parentStage;
-	public static Traveler traveler ;
-	public static Subscriber subscriber;
+	public static Traveler traveler = null;
+	public static Subscriber subscriber = null;
 
 	public TravelerLoginController(Stage parentStage) {
 		this.parentStage = parentStage;
@@ -55,8 +55,6 @@ public class TravelerLoginController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		traveler = null;
-		subscriber = null;
 		loginButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -69,6 +67,7 @@ public class TravelerLoginController implements Initializable {
 	private void loginButton() {
 		String id = idTextField.getText();
 		String subId = subscriberIDTextField.getText();
+		
 		if (id.isEmpty() && subId.isEmpty())
 			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Please fill one of the fields")
 					.showAndWait();
@@ -92,8 +91,8 @@ public class TravelerLoginController implements Initializable {
 				subscriber = (Subscriber) ChatClient.responseFromServer.getResultSet().get(0);
 				switchScene();
 			} else if (res == 2)
-				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error",
-						"There is no such subscriber id").showAndWait();
+				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error", "There is no such subscriber id")
+						.showAndWait();
 			else
 				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error", "You are already connected")
 						.showAndWait();
