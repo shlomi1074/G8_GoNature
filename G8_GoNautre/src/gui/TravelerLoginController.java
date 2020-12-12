@@ -6,6 +6,10 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
+import Controllers.AutenticationControl;
+import alerts.CustomAlerts;
+import client.ChatClient;
+import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,32 +17,37 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import logic.Subscriber;
+import logic.Traveler;
 
 public class TravelerLoginController implements Initializable {
 
-    @FXML
-    private AnchorPane loginContainer;
+	@FXML
+	private AnchorPane loginContainer;
 
-    @FXML
-    private Rectangle rectangle;
+	@FXML
+	private Rectangle rectangle;
 
-    @FXML
-    private Label forgotPasswordLabel1;
+	@FXML
+	private Label forgotPasswordLabel1;
 
-    @FXML
-    private JFXTextField idTextField;
+	@FXML
+	private JFXTextField idTextField;
 
-    @FXML
-    private JFXTextField subscriberIDTextField;
+	@FXML
+	private JFXTextField subscriberIDTextField;
 
-    @FXML
-    private JFXButton loginButton;
-    
-    private Stage parentStage;
+	@FXML
+	private JFXButton loginButton;
+
+	private Stage parentStage;
+	public static Traveler traveler ;
+	public static Subscriber subscriber;
 
 	public TravelerLoginController(Stage parentStage) {
 		this.parentStage = parentStage;
@@ -46,13 +55,50 @@ public class TravelerLoginController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		traveler = null;
+		subscriber = null;
 		loginButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				switchScene();
+				loginButton();
 			}
 		});
 
+	}
+
+	private void loginButton() {
+		String id = idTextField.getText();
+		String subId = subscriberIDTextField.getText();
+		if (id.isEmpty() && subId.isEmpty())
+			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Please fill one of the fields")
+					.showAndWait();
+		else if (!id.isEmpty() && !subId.isEmpty())
+			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Please fill only one of the fields")
+					.showAndWait();
+		else if (!id.isEmpty()) {
+			int res = AutenticationControl.loginById(id);
+			if (res == 0) {
+				traveler = (Traveler) ChatClient.responseFromServer.getResultSet().get(0);
+				switchScene();
+			} else if (res == 2)
+				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error",
+						"This Id has no orders yet.\nPlease make an order before login").showAndWait();
+			else
+				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error", "You are already connected")
+						.showAndWait();
+		} else {
+			int res = AutenticationControl.loginBySubId(subId);
+			if (res == 0) {
+				subscriber = (Subscriber) ChatClient.responseFromServer.getResultSet().get(0);
+				switchScene();
+			} else if (res == 2)
+				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error",
+						"There is no such subscriber id").showAndWait();
+			else
+				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error", "You are already connected")
+						.showAndWait();
+
+		}
 	}
 
 	private void switchScene() {
@@ -60,7 +106,8 @@ public class TravelerLoginController implements Initializable {
 			Stage thisStage = getStage();
 			Stage newStage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TravelerScreen.fxml"));
-			TravelerScreenController controller = new TravelerScreenController("user", "password");
+
+			TravelerScreenController controller = new TravelerScreenController();
 			loader.setController(controller);
 			controller.setStage(newStage);
 			controller.setMainScreenStage(parentStage);

@@ -1,6 +1,8 @@
 package logic;
 
-public class Traveler {
+import java.io.Serializable;
+
+public class Traveler implements Serializable{
 	private String travelerId;
 	private String firstName;
 	private String lastName;

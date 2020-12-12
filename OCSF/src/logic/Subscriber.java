@@ -1,13 +1,15 @@
 package logic;
 
-public class Subscriber extends Traveler {
-	private String subscriberNumber;
+import java.io.Serializable;
+
+public class Subscriber extends Traveler{
+	private int subscriberNumber;
 	private String creditCard;
 	private String subscriberType;
 	private int numberOfParticipants;
 
-	public Subscriber(String travelerId, String firstName, String lastName, String email, String phoneNumber,
-			String subscriberNumber, String creditCard, String subscriberType, int numberOfParticipants) {
+	public Subscriber(int subscriberNumber, String travelerId, String firstName, String lastName, String email, String phoneNumber,
+			 String creditCard, String subscriberType, int numberOfParticipants) {
 		super(travelerId, firstName, lastName, email, phoneNumber);
 		this.subscriberNumber = subscriberNumber;
 		this.creditCard = creditCard;
@@ -15,11 +17,11 @@ public class Subscriber extends Traveler {
 		this.numberOfParticipants = numberOfParticipants;
 	}
 
-	public String getSubscriberNumber() {
+	public int getSubscriberNumber() {
 		return subscriberNumber;
 	}
 
-	public void setSubscriberNumber(String subscriberNumber) {
+	public void setSubscriberNumber(int subscriberNumber) {
 		this.subscriberNumber = subscriberNumber;
 	}
 

@@ -2,13 +2,13 @@ package logic;
 
 public class Employees {
 	private int employeeId;
-	private String role;
+	private WorkerType role;
 	private int parkId;
 	private String firstName;
 	private String lastName;
 	private String email;
 
-	public Employees(int employeeId, String role, int parkId, String firstName, String lastName, String email) {
+	public Employees(int employeeId, WorkerType role, int parkId, String firstName, String lastName, String email) {
 		this.employeeId = employeeId;
 		this.role = role;
 		this.parkId = parkId;
@@ -25,11 +25,11 @@ public class Employees {
 		this.employeeId = employeeId;
 	}
 
-	public String getRole() {
+	public WorkerType getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(WorkerType role) {
 		this.role = role;
 	}
 
