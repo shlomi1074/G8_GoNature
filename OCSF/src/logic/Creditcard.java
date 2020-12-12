@@ -4,9 +4,9 @@ public class Creditcard {
 	private String subscriberId;
 	private String cardNumber;
 	private String cardExpiryDate;
-	private String cvc;
+	private int cvc;
 
-	public Creditcard(String subscriberId, String cardNumber, String cardExpiryDate, String cvc) {
+	public Creditcard(String subscriberId, String cardNumber, String cardExpiryDate, int cvc) {
 		this.subscriberId = subscriberId;
 		this.cardNumber = cardNumber;
 		this.cardExpiryDate = cardExpiryDate;
@@ -37,11 +37,11 @@ public class Creditcard {
 		this.cardExpiryDate = cardExpiryDate;
 	}
 
-	public String getCvc() {
+	public int getCvc() {
 		return cvc;
 	}
 
-	public void setCvc(String cvc) {
+	public void setCvc(int cvc) {
 		this.cvc = cvc;
 	}
 

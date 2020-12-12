@@ -13,7 +13,7 @@
 <AnchorPane fx:id="registerRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../resources/projectTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="headerLabel" layoutX="350.0" layoutY="23.0" text="Register Account" />
-      <JFXTextField fx:id="emailInputOrderVisit" layoutX="360.0" layoutY="209.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer Your Email" />
+      <JFXTextField fx:id="emailInputOrderVisit" layoutX="360.0" layoutY="209.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer Email" />
       <Label layoutX="250.0" layoutY="214.0" text="Your Email:" />
       <JFXTextField fx:id="firstNameInputRegister" layoutX="360.0" layoutY="89.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer First Name" />
       <Label layoutX="250.0" layoutY="94.0" text="First Name:" />

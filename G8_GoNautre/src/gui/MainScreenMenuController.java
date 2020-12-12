@@ -31,8 +31,15 @@ public class MainScreenMenuController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		initButtons();
+	}
 
+	private void initButtons() {
+		orderVisit.setFocusTraversable(false);
+		travelerLogin.setFocusTraversable(false);
+		memberLogin.setFocusTraversable(false);
+		showPrices.setFocusTraversable(false);
+		contactUs.setFocusTraversable(false);	
 	}
 
 	@FXML

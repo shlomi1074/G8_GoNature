@@ -50,7 +50,7 @@
                   </JFXButton>
                   <JFXButton fx:id="updateParametersButton" layoutX="10.0" layoutY="370.0" onMouseClicked="#loadViewRequests" prefHeight="102.0" prefWidth="204.0" text="Requests">
                      <graphic>
-                        <FontAwesomeIconView glyphName="CHECK" size="20" />
+                        <FontAwesomeIconView glyphName="LIST_UL" size="20" />
                      </graphic>
                   </JFXButton>
                   <JFXButton fx:id="logoutBtn" onMouseClicked="#logOut" prefHeight="102.0" prefWidth="204.0" text="Logout">

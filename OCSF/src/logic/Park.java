@@ -1,14 +1,14 @@
 package logic;
 
 public class Park {
-	private String parkId;
+	private int parkId;
 	private String parkName;
 	private int maxVisitors;
 	private int estimatedStayTime;
 	private int gapBetweenMaxAndCapacity;
 	private int currentVisitors;
 
-	public Park(String parkId, String parkName, int maxVisitors, int estimatedStayTime, int gapBetweenMaxAndCapacity,
+	public Park(int parkId, String parkName, int maxVisitors, int estimatedStayTime, int gapBetweenMaxAndCapacity,
 			int currentVisitors) {
 		super();
 		this.parkId = parkId;
@@ -19,11 +19,11 @@ public class Park {
 		this.currentVisitors = currentVisitors;
 	}
 
-	public String getParkId() {
+	public int getParkId() {
 		return parkId;
 	}
 
-	public void setParkId(String parkId) {
+	public void setParkId(int parkId) {
 		this.parkId = parkId;
 	}
 

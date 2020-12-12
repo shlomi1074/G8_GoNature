@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+
+import alerts.CustomAlerts;
 import client.ClientController;
 import client.ClientUI;
 import javafx.event.EventHandler;
@@ -13,6 +15,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -51,7 +55,8 @@ public class ClientConfigurationController implements Initializable {
 		/* When the user press close(X) */
 		getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
-				ClientUI.chat.getClient().quit();
+				if (ClientUI.chat != null)
+					ClientUI.chat.getClient().quit();
 			}
 		});
 
@@ -71,7 +76,12 @@ public class ClientConfigurationController implements Initializable {
 				e.printStackTrace();
 			}
 		else {
-			/* NEED TO SHOW ALERT ERROR */
+			new CustomAlerts(AlertType.ERROR, "Input Error", "Bad Input", "Please fill all the fields first")
+			.showAndWait();
+			new CustomAlerts(AlertType.WARNING, "Warning", "Warning topic", "Please fill all the fields first")
+			.showAndWait();
+			new CustomAlerts(AlertType.INFORMATION, "Information", "Info topic", "Please fill all the fields first")
+					.showAndWait();
 		}
 
 	}
@@ -81,7 +91,6 @@ public class ClientConfigurationController implements Initializable {
 		if (ClientUI.chat != null) {
 			try {
 				Stage thisStage = getStage();
-
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainScreen.fxml"));
 				MainScreenController controller = new MainScreenController();
 				loader.setController(controller);
@@ -99,7 +108,8 @@ public class ClientConfigurationController implements Initializable {
 				e.printStackTrace();
 			}
 		} else {
-			/* NEED TO SHOW ALERT ERROR */
+			new CustomAlerts(AlertType.ERROR, "Error Loading App", "No Server Connection",
+					"Please connect first to the server before loading the app").showAndWait();
 		}
 	}
 

@@ -49,7 +49,7 @@ public class ParkManagerController implements Initializable {
 
 	private Stage stage;
 	private Stage mainScreenStage;
-
+	
 	FxmlUtil loader = new FxmlUtil();
 
 	@Override

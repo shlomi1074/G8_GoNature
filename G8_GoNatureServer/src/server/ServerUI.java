@@ -19,7 +19,6 @@ public class ServerUI extends Application {
 
 	}
 
-	// public static void runServer(String p,)
 	public static void runServer(GoNatureServer sv) {
 		try {
 			sv.listen(); // Start listening for connections

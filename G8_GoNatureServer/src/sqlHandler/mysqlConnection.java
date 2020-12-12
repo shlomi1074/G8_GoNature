@@ -19,13 +19,14 @@ public class mysqlConnection {
 			throw ex;
 		}
 		try {
-			/*
-			 * Need to make sure the details are right for each MySQLDB.
-			 */
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/g8prototype?serverTimezone=UTC",
-					"root", "root"); // pass changed
+					"root", "root");
+			
+			/* How to handle multiple requests to the database */
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
 			System.out.println("SQL connection succeed");
-		} catch (SQLException ex) {/* handle any errors */
+		} catch (SQLException ex) {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());

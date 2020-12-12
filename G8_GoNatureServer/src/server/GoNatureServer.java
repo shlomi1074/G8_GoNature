@@ -69,7 +69,10 @@ public class GoNatureServer extends AbstractServer {
 	 * @param
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		handleClientRequest thread = new handleClientRequest(client, msg);
+		/* For each client's request a new thread is created 
+		 * Do not add any code in here.
+		 * Any other code should be in HandleClientRequest class */
+		HandleClientRequest thread = new HandleClientRequest(client, msg);
 		new Thread(thread).start();
 	}
 
@@ -114,7 +117,7 @@ public class GoNatureServer extends AbstractServer {
 		serverGUIController.updateTextAreaLog("Client Disonnected");
 	}
 
-	/* When The server closed this function called */
+	/* Called when The server closed  */
 	@Override
 	final protected void serverClosed() {
 		try {
