@@ -3,11 +3,12 @@ package logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ClientToServerRequest<T> implements Serializable{
+public class ClientToServerRequest<T> implements Serializable {
 
-
+	// Shlomi
 	public enum Request {
-		IS_CONNECTED, TRAVELER_LOGIN_ID, INSERT_TO_LOGGEDIN, SUBSCRIBER_LOGIN_SUBID
+		IS_CONNECTED, TRAVELER_LOGIN_ID, INSERT_TO_LOGGEDIN, SUBSCRIBER_LOGIN_SUBID, VIEW_PARAMETERS, GET_SUBSCRIBER,
+		GET_ALL_PARKS, GET_MAX_DISCOUNT
 
 	}
 

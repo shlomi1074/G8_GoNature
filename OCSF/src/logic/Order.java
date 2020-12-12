@@ -1,25 +1,20 @@
 package logic;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 public class Order {
-	private SimpleStringProperty orderId;
-	private SimpleStringProperty travelerId;
-	private SimpleIntegerProperty parkId;
-	private SimpleStringProperty orderDate;
-	private SimpleStringProperty orderTime;
-	private SimpleStringProperty orderType;
-	private SimpleIntegerProperty numberOfParticipants;
-	private SimpleStringProperty email;
-	private SimpleDoubleProperty price;
-	private SimpleStringProperty orderStatus;
+	private String orderId;
+	private String travelerId;
+	private int parkId;
+	private String orderDate;
+	private String orderTime;
+	private String orderType;
+	private int numberOfParticipants;
+	private String email;
+	private double price;
+	private String orderStatus;
 
-	public Order(SimpleStringProperty orderId, SimpleStringProperty travelerId, SimpleIntegerProperty parkId,
-			SimpleStringProperty orderDate, SimpleStringProperty orderTime, SimpleStringProperty orderType,
-			SimpleIntegerProperty numberOfParticipants, SimpleStringProperty email, SimpleDoubleProperty price,
-			SimpleStringProperty orderStatus) {
+	public Order(String orderId, String travelerId, int parkId, String orderDate, String orderTime, String orderType,
+			int numberOfParticipants, String email, double price, String orderStatus) {
+		super();
 		this.orderId = orderId;
 		this.travelerId = travelerId;
 		this.parkId = parkId;
@@ -32,83 +27,83 @@ public class Order {
 		this.orderStatus = orderStatus;
 	}
 
-	public SimpleStringProperty getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(SimpleStringProperty orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 
-	public SimpleStringProperty getTravelerId() {
+	public String getTravelerId() {
 		return travelerId;
 	}
 
-	public void setTravelerId(SimpleStringProperty travelerId) {
+	public void setTravelerId(String travelerId) {
 		this.travelerId = travelerId;
 	}
 
-	public SimpleIntegerProperty getParkId() {
+	public int getParkId() {
 		return parkId;
 	}
 
-	public void setParkId(SimpleIntegerProperty parkId) {
+	public void setParkId(int parkId) {
 		this.parkId = parkId;
 	}
 
-	public SimpleStringProperty getOrderDate() {
+	public String getOrderDate() {
 		return orderDate;
 	}
 
-	public void setOrderDate(SimpleStringProperty orderDate) {
+	public void setOrderDate(String orderDate) {
 		this.orderDate = orderDate;
 	}
 
-	public SimpleStringProperty getOrderTime() {
+	public String getOrderTime() {
 		return orderTime;
 	}
 
-	public void setOrderTime(SimpleStringProperty orderTime) {
+	public void setOrderTime(String orderTime) {
 		this.orderTime = orderTime;
 	}
 
-	public SimpleStringProperty getOrderType() {
+	public String getOrderType() {
 		return orderType;
 	}
 
-	public void setOrderType(SimpleStringProperty orderType) {
+	public void setOrderType(String orderType) {
 		this.orderType = orderType;
 	}
 
-	public SimpleIntegerProperty getNumberOfParticipants() {
+	public int getNumberOfParticipants() {
 		return numberOfParticipants;
 	}
 
-	public void setNumberOfParticipants(SimpleIntegerProperty numberOfParticipants) {
+	public void setNumberOfParticipants(int numberOfParticipants) {
 		this.numberOfParticipants = numberOfParticipants;
 	}
 
-	public SimpleStringProperty getEmail() {
+	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(SimpleStringProperty email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public SimpleDoubleProperty getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(SimpleDoubleProperty price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
-	public SimpleStringProperty getOrderStatus() {
+	public String getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(SimpleStringProperty orderStatus) {
+	public void setOrderStatus(String orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 

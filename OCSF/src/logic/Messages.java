@@ -1,17 +1,15 @@
 package logic;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 
 public class Messages {
-	private SimpleIntegerProperty messageId;
-	private SimpleStringProperty toId;
-	private SimpleStringProperty sendDate;
-	private SimpleStringProperty subject;
-	private SimpleStringProperty content;
-
-	public Messages(SimpleIntegerProperty messageId, SimpleStringProperty toId, SimpleStringProperty sendDate,
-			SimpleStringProperty subject, SimpleStringProperty content) {
+	private int messageId;
+	private String toId;
+	private String sendDate;
+	private String subject;
+	private String content;
+	
+	
+	public Messages(int messageId, String toId, String sendDate, String subject, String content) {
 		super();
 		this.messageId = messageId;
 		this.toId = toId;
@@ -19,45 +17,39 @@ public class Messages {
 		this.subject = subject;
 		this.content = content;
 	}
-
-	public SimpleIntegerProperty getMessageId() {
+	
+	
+	public int getMessageId() {
 		return messageId;
 	}
-
-	public void setMessageId(SimpleIntegerProperty messageId) {
+	public void setMessageId(int messageId) {
 		this.messageId = messageId;
 	}
-
-	public SimpleStringProperty getToId() {
+	public String getToId() {
 		return toId;
 	}
-
-	public void setToId(SimpleStringProperty toId) {
+	public void setToId(String toId) {
 		this.toId = toId;
 	}
-
-	public SimpleStringProperty getSendDate() {
+	public String getSendDate() {
 		return sendDate;
 	}
-
-	public void setSendDate(SimpleStringProperty sendDate) {
+	public void setSendDate(String sendDate) {
 		this.sendDate = sendDate;
 	}
-
-	public SimpleStringProperty getSubject() {
+	public String getSubject() {
 		return subject;
 	}
-
-	public void setSubject(SimpleStringProperty subject) {
+	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
-	public SimpleStringProperty getContent() {
+	public String getContent() {
 		return content;
 	}
-
-	public void setContent(SimpleStringProperty content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
-
+	
+	
+	
 }
