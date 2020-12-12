@@ -5,6 +5,7 @@ package client;
 
 import java.io.*;
 import common.ChatIF;
+import logic.ClientToServerRequest;
 
 /**
  * This class constructs the UI for a chat client. It implements the chat
@@ -57,6 +58,14 @@ public class ClientController implements ChatIF {
 	 */
 	public void accept(String str) {
 		client.handleMessageFromClientUI(str);
+	}
+	
+	/**
+	 * This method waits for input from the console. Once it is received, it sends
+	 * it to the client's message handler.
+	 */
+	public void accept(ClientToServerRequest<?> message) {
+		client.handleMessageFromClientUI(message);
 	}
 
 	/**

@@ -21,7 +21,7 @@
    <children>
       <Accordion fx:id="accordion" layoutX="89.0" layoutY="88.0" prefHeight="439.0" prefWidth="531.0">
         <panes>
-          <TitledPane fx:id="identificationTP" animated="false" onMouseClicked="#updateSummary" text="IDENTIFICATION">
+          <TitledPane fx:id="identificationTP" animated="false" text="IDENTIFICATION">
             <content>
               <AnchorPane fx:id="identificationAP" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="529.0">
                      <children>
@@ -35,14 +35,14 @@
                   <FontAwesomeIconView glyphName="ID_CARD" size="15" text="" />
                </graphic>
           </TitledPane>
-          <TitledPane fx:id="informationTP" animated="false" onMouseClicked="#updateSummary" text=" ENTER INFORAMTION">
+          <TitledPane fx:id="informationTP" animated="false" text=" ENTER INFORAMTION">
             <content>
               <AnchorPane fx:id="informationAP" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <JFXComboBox fx:id="parksComboBox" layoutX="180.0" layoutY="89.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Park" />
                         <JFXDatePicker fx:id="datePicker" layoutX="180.0" layoutY="129.0" prefHeight="30.0" prefWidth="200.0" promptText="DD/MM/YYYY" />
                         <Label layoutX="29.0" layoutY="29.0" text="Permission Type:" />
-                        <Label layoutX="141.0" layoutY="29.0" text="Guest" />
+                        <Label fx:id="permissionLabel" layoutX="141.0" layoutY="29.0" text="Guest" />
                         <JFXTimePicker fx:id="timePicker" layoutX="180.0" layoutY="169.0" prefHeight="30.0" prefWidth="200.0" promptText="HH:mm" />
                         <JFXTextField fx:id="emailInputOrderVisit" layoutX="180.0" layoutY="249.0" prefHeight="30.0" prefWidth="200.0" promptText="Enter Your Email" />
                         <Label layoutX="29.0" layoutY="94.0" text="Choose Park To Visit:" />
@@ -60,7 +60,7 @@
                   <FontAwesomeIconView glyphName="USER" size="15" />
                </graphic>
           </TitledPane>
-          <TitledPane fx:id="paymentTP" animated="false" onMouseClicked="#updateSummary" text="PAYMENT">
+          <TitledPane fx:id="paymentTP" animated="false" text="PAYMENT">
             <content>
               <AnchorPane fx:id="paymentAP" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" visible="false">
                      <children>
@@ -98,23 +98,25 @@
          <children>
             <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="439.0" stroke="#ebebebcc" strokeType="INSIDE" strokeWidth="2.0" width="200.0" />
             <Label layoutX="52.0" layoutY="20.0" text="Order Summary:" />
-            <Label layoutX="23.0" layoutY="65.0" text="ID:" />
-            <Label layoutX="23.0" layoutY="100.0" text="Park:" />
-            <Label layoutX="23.0" layoutY="135.0" text="Date:" />
-            <Label layoutX="22.0" layoutY="205.0" text="Type:" />
-            <Label layoutX="23.0" layoutY="240.0" text="Visitors:" />
-            <Label layoutX="23.0" layoutY="310.0" text="Total Price:" />
-            <JFXButton fx:id="placeOrderBtn" layoutX="19.0" layoutY="363.0" onMouseClicked="#placeOrderButton" prefHeight="39.0" prefWidth="165.0" text="Place Order" />
-            <Label fx:id="summaryID" layoutX="101.0" layoutY="65.0" />
-            <Label fx:id="summaryPark" layoutX="101.0" layoutY="100.0" />
-            <Label fx:id="summaryDate" layoutX="101.0" layoutY="135.0" />
-            <Label fx:id="summaryType" layoutX="100.0" layoutY="205.0" />
-            <Label fx:id="summaryVisitors" layoutX="101.0" layoutY="240.0" />
-            <Label fx:id="summaryTotalPrice" layoutX="101.0" layoutY="310.0" />
-            <Label layoutX="23.0" layoutY="170.0" text="Time:" />
-            <Label fx:id="summaryTime" layoutX="97.0" layoutY="170.0" />
-            <Label layoutX="23.0" layoutY="275.0" text="Payment:" />
-            <Label fx:id="summaryPayment" layoutX="101.0" layoutY="275.0" />
+            <Label layoutX="19.0" layoutY="56.0" text="ID:" />
+            <Label layoutX="19.0" layoutY="91.0" text="Park:" />
+            <Label layoutX="19.0" layoutY="126.0" text="Date:" />
+            <Label layoutX="19.0" layoutY="196.0" text="Type:" />
+            <Label layoutX="19.0" layoutY="231.0" text="Visitors:" />
+            <Label layoutX="19.0" layoutY="336.0" text="Total Price:" />
+            <JFXButton fx:id="placeOrderBtn" layoutX="19.0" layoutY="378.0" onMouseClicked="#placeOrderButton" prefHeight="39.0" prefWidth="165.0" text="Place Order" />
+            <Label fx:id="summaryID" layoutX="97.0" layoutY="56.0" />
+            <Label fx:id="summaryPark" layoutX="97.0" layoutY="91.0" />
+            <Label fx:id="summaryDate" layoutX="97.0" layoutY="126.0" />
+            <Label fx:id="summaryType" layoutX="97.0" layoutY="196.0" />
+            <Label fx:id="summaryVisitors" layoutX="97.0" layoutY="231.0" />
+            <Label fx:id="summaryTotalPrice" layoutX="97.0" layoutY="336.0" />
+            <Label layoutX="19.0" layoutY="161.0" text="Time:" />
+            <Label fx:id="summaryTime" layoutX="93.0" layoutY="161.0" />
+            <Label layoutX="19.0" layoutY="301.0" text="Payment:" />
+            <Label fx:id="summaryPayment" layoutX="97.0" layoutY="301.0" />
+            <Label layoutX="19.0" layoutY="266.0" text="Email:" />
+            <Label fx:id="summaryEmail" layoutX="97.0" layoutY="266.0" prefHeight="20.0" prefWidth="89.0" />
          </children>
       </AnchorPane>
    </children>

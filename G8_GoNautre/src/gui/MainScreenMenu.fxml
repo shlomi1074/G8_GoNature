@@ -23,7 +23,7 @@
       </JFXButton>
       <JFXButton fx:id="showPrices" contentDisplay="TOP" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Prices" textAlignment="CENTER">
          <graphic>
-            <FontAwesomeIconView glyphName="TABLE" size="25" />
+            <FontAwesomeIconView glyphName="ILS" size="25" />
          </graphic>
       </JFXButton>
       <JFXButton fx:id="contactUs" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#loadContactUs" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Contact Us" textAlignment="CENTER">

@@ -9,6 +9,10 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
+
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +24,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 public class OrderVisitController implements Initializable {
 
@@ -85,7 +93,10 @@ public class OrderVisitController implements Initializable {
 
 	@FXML
 	private JFXDatePicker CardExpiryDate;
-
+	
+	@FXML
+	private Label permissionLabel;
+	
 	@FXML
 	private Label orderVisitHeaderLabel;
 
@@ -106,21 +117,84 @@ public class OrderVisitController implements Initializable {
 
 	@FXML
 	private Label summaryVisitors;
-
+	
+	@FXML
+	private Label summaryEmail;
+	
 	@FXML
 	private Label summaryTotalPrice;
 
 	@FXML
 	private Label summaryTime;
 
-	@FXML
-	private Label summaryDate1;
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		accordion.setExpandedPane(identificationTP);
 		initComboBoxes();
 		initRadioBoxes();
+		initDatePicker();
+		initSummaryLabelsBindings();
+	}
+	
+	private void initSummaryLabelsBindings() {
+		summaryPark.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				if (arg2.equals("null"))
+					summaryPark.setVisible(false);
+				else
+					summaryPark.setVisible(true);
+			}
+        }); 
+		summaryDate.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				if (arg2.equals("null"))
+					summaryDate.setVisible(false);
+				else
+					summaryDate.setVisible(true);
+			}
+        }); 
+		summaryTime.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				if (arg2.equals("null"))
+					summaryTime.setVisible(false);
+				else
+					summaryTime.setVisible(true);
+			}
+        }); 
+		summaryType.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				if (arg2.equals("null"))
+					summaryType.setVisible(false);
+				else
+					summaryType.setVisible(true);
+			}
+        }); 
+		summaryID.textProperty().bind(Bindings.convert(idInputOrderVisit.textProperty()));
+		summaryPark.textProperty().bind(Bindings.convert(parksComboBox.valueProperty()));
+		summaryDate.textProperty().bind(Bindings.convert(datePicker.valueProperty()));
+		summaryTime.textProperty().bind(Bindings.convert(timePicker.valueProperty()));
+		summaryType.textProperty().bind(Bindings.convert(typeComboBox.valueProperty()));
+		summaryVisitors.textProperty().bind(Bindings.convert(numOfVisitorsOrderVisit.textProperty()));
+		summaryEmail.textProperty().bind(Bindings.convert(emailInputOrderVisit.textProperty()));
+	}
+
+	/* Setup the date picker */
+	private void initDatePicker() {
+		timePicker.set24HourView(true);
+		/* Disable the user from picking past dates */
+       datePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+
+                setDisable(empty || date.compareTo(today) < 0 );
+            }
+        });	
 	}
 
 	private void initRadioBoxes() {
@@ -169,20 +243,6 @@ public class OrderVisitController implements Initializable {
 			}
 		});
 
-	}
-
-	@FXML
-	private void updateSummary() {
-		summaryID.setText(idInputOrderVisit.getText());
-		if (parksComboBox.getSelectionModel().getSelectedItem() != null)
-			summaryPark.setText(parksComboBox.getSelectionModel().getSelectedItem().toString());
-		if (datePicker.getValue() != null)
-			summaryDate.setText(datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-		if (timePicker.getValue() != null)
-			summaryTime.setText(timePicker.getValue().format(DateTimeFormatter.ofPattern("H:m")));
-		if (typeComboBox.getSelectionModel().getSelectedItem() != null)
-			summaryType.setText(typeComboBox.getSelectionModel().getSelectedItem().toString());
-		summaryVisitors.setText(numOfVisitorsOrderVisit.getText());
 	}
 
 	@FXML

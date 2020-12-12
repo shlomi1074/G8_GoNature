@@ -1,14 +1,14 @@
 package logic;
 
 public class Employees {
-	private String employeeId;
-	private String role;
-	private String parkId;
+	private int employeeId;
+	private WorkerType role;
+	private int parkId;
 	private String firstName;
 	private String lastName;
 	private String email;
 
-	public Employees(String employeeId, String role, String parkId, String firstName, String lastName, String email) {
+	public Employees(int employeeId, WorkerType role, int parkId, String firstName, String lastName, String email) {
 		this.employeeId = employeeId;
 		this.role = role;
 		this.parkId = parkId;
@@ -17,27 +17,27 @@ public class Employees {
 		this.email = email;
 	}
 
-	public String getEmployeeId() {
+	public int getEmployeeId() {
 		return employeeId;
 	}
 
-	public void setEmployeeId(String employeeId) {
+	public void setEmployeeId(int employeeId) {
 		this.employeeId = employeeId;
 	}
 
-	public String getRole() {
+	public WorkerType getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(WorkerType role) {
 		this.role = role;
 	}
 
-	public String getParkId() {
+	public int getParkId() {
 		return parkId;
 	}
 
-	public void setParkId(String parkId) {
+	public void setParkId(int parkId) {
 		this.parkId = parkId;
 	}
 

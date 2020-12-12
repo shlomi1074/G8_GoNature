@@ -6,14 +6,14 @@ import javafx.beans.property.SimpleStringProperty;
 public class Request {
 	private SimpleStringProperty requestId;
 	private SimpleStringProperty changeName;
-	private SimpleIntegerProperty newValue;
-	private SimpleIntegerProperty oldValue;
+	private SimpleStringProperty newValue;
+	private SimpleStringProperty oldValue;
 	private SimpleStringProperty requestDate;
-	private SimpleStringProperty parkId;
+	private SimpleIntegerProperty parkId;
 	private SimpleStringProperty requestStatus;
 
-	public Request(SimpleStringProperty requestId, SimpleStringProperty changeName, SimpleIntegerProperty newValue,
-			SimpleIntegerProperty oldValue, SimpleStringProperty requestDate, SimpleStringProperty parkId,
+	public Request(SimpleStringProperty requestId, SimpleStringProperty changeName, SimpleStringProperty newValue,
+			SimpleStringProperty oldValue, SimpleStringProperty requestDate, SimpleIntegerProperty parkId,
 			SimpleStringProperty requestStatus) {
 		super();
 		this.requestId = requestId;
@@ -41,19 +41,19 @@ public class Request {
 		this.changeName = changeName;
 	}
 
-	public SimpleIntegerProperty getNewValue() {
+	public SimpleStringProperty getNewValue() {
 		return newValue;
 	}
 
-	public void setNewValue(SimpleIntegerProperty newValue) {
+	public void setNewValue(SimpleStringProperty newValue) {
 		this.newValue = newValue;
 	}
 
-	public SimpleIntegerProperty getOldValue() {
+	public SimpleStringProperty getOldValue() {
 		return oldValue;
 	}
 
-	public void setOldValue(SimpleIntegerProperty oldValue) {
+	public void setOldValue(SimpleStringProperty oldValue) {
 		this.oldValue = oldValue;
 	}
 
@@ -65,11 +65,11 @@ public class Request {
 		this.requestDate = requestDate;
 	}
 
-	public SimpleStringProperty getParkId() {
+	public SimpleIntegerProperty getParkId() {
 		return parkId;
 	}
 
-	public void setParkId(SimpleStringProperty parkId) {
+	public void setParkId(SimpleIntegerProperty parkId) {
 		this.parkId = parkId;
 	}
 

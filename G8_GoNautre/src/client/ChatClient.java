@@ -4,6 +4,9 @@
 
 package client;
 import common.*;
+import logic.ClientToServerRequest;
+import logic.ServerToClientResponse;
+import logic.ServerToClientResponse.Response;
 import ocsf.client.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -27,7 +30,7 @@ public class ChatClient extends AbstractClient {
 	 */
 	ChatIF clientUI;
 	public static boolean awaitResponse = false;
-
+	public static ServerToClientResponse responseFromServer;
 
 	// Constructors ****************************************************
 
@@ -53,6 +56,10 @@ public class ChatClient extends AbstractClient {
 	 */
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
+		if (msg instanceof ServerToClientResponse) {
+			ServerToClientResponse response = (ServerToClientResponse) msg;
+			responseFromServer = response;
+		}
 	}
 
 	/**
@@ -61,6 +68,32 @@ public class ChatClient extends AbstractClient {
 	 * @param message The message from the UI.
 	 */
 	public void handleMessageFromClientUI(String message) {
+		try {
+			openConnection();// in order to send more than one message
+			awaitResponse = true;
+
+			sendToServer(message);
+			// wait for response
+			while (awaitResponse) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			clientUI.display("Could not send message to server: Terminating client." + e);
+			quit();
+		}
+	}
+	
+	/**
+	 * This method handles all data coming from the UI
+	 *
+	 * @param message The message from the UI.
+	 */
+	public void handleMessageFromClientUI(ClientToServerRequest<?> message) {
 		try {
 			openConnection();// in order to send more than one message
 			awaitResponse = true;

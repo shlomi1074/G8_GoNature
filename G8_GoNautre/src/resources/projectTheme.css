@@ -6,9 +6,10 @@
     -fx-primarytext : #d9d9d9;
     -fx-prompttext : #9C9C9C;
     -fx-blue: #1976D2;
-    -fx-red: #FF0000;
+    -fx-red: #ff3d51;
     -fx-white: #FFFFFF;
 }
+
 
 /* GENERAL */
 .root {
@@ -26,7 +27,6 @@
 
 .button {
     -fx-text-fill: -fx-primarytext;
-    -fx-text-fill: -fx-primarytext;
     -fx-background-color: -fx-primary;
     -fx-border-color: -fx-secondary;
     -fx-border-radius: 20.0px;
@@ -34,9 +34,33 @@
     -fx-font-size: 12.0pt;
 }
 
-.button:hover, .button:focused {
+.button:hover{
     -fx-border-color: -fx-secondary;
     -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-primary;
+}
+
+.button:focused{
+    -fx-border-color: -fx-secondary;
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-primary;
+}
+
+.button:hover .glyph-icon, .button:focused .glyph-icon {
+    -fx-fill: -fx-primary;
+}
+#cancelRequestBtn, #cancelOrderBtn{
+	    -fx-border-color: -fx-red;
+}
+#cancelRequestBtn:hover, #cancelOrderBtn:hover{
+	-fx-border-color: -fx-red;
+    -fx-background-color: -fx-red;
+    -fx-text-fill: -fx-primary;
+}
+
+#cancelRequestBtn:focused, #cancelOrderBtn:focused{
+    -fx-border-color: -fx-red;
+    -fx-background-color: -fx-red;
     -fx-text-fill: -fx-primary;
 }
 
@@ -71,15 +95,15 @@
 }
 
 .table-view{
-    -fx-background-color: derive(-fx-primary, 10%);
-    -fx-font-size: 12px; 
-    -fx-border-color: derive(-fx-secondary, -60%);
+    -fx-background-color: derive(-fx-primary, 10.0%);
+    -fx-font-size: 12.0px; 
+    -fx-border-color: derive(-fx-secondary, -60.0%);
 }
 .table-view:focused{
-    -fx-background-color: derive(-fx-primary, 20%);
+    -fx-background-color: derive(-fx-primary, 20.0%);
 }
 .table-row-cell {
-    -fx-cell-size: 40px;
+    -fx-cell-size: 40.0px;
 }
 .table-view .column-header-background{
     -fx-background-color: -fx-primary;
@@ -106,12 +130,12 @@
     -fx-alignment: CENTER;  
 }
 .table-row-cell:even{
-    -fx-background-color: derive(-fx-primary, 10%);
+    -fx-background-color: derive(-fx-primary, 10.0%);
 }
 .table-row-cell:selected {
     -fx-background-color: -fx-secondary;
     -fx-text-fill: -fx-primary;
-    -fx-background-insets: 0;
+    -fx-background-insets: 0.0;
 }
 .table-row-cell:selected .table-cell{
     -fx-text-fill: -fx-primary;
@@ -133,9 +157,9 @@
 }
 .scroll-bar:horizontal .thumb,
 .scroll-bar:vertical .thumb{
-    -fx-background-color: derive(-fx-primary, 60%);
+    -fx-background-color: derive(-fx-primary, 60.0%);
     -fx-border-color: transparent;
-    -fx-background-radius: 5em;
+    -fx-background-radius: 5.0em;
 }
 .table-view .filler{
     -fx-fill: -fx-primary;
@@ -147,15 +171,15 @@
 }
 
 .list-view{
-    -fx-background-color: derive(-fx-primary, 10%);
-    -fx-font-size: 12px; 
-    -fx-border-color: derive(-fx-secondary, -60%);
+    -fx-background-color: derive(-fx-primary, 10.0%);
+    -fx-font-size: 12.0px; 
+    -fx-border-color: derive(-fx-secondary, -60.0%);
 }
 .list-view:focused{
-    -fx-background-color: derive(-fx-primary, 20%);
+    -fx-background-color: derive(-fx-primary, 20.0%);
 }
 .list-row-cell {
-    -fx-cell-size: 40px;
+    -fx-cell-size: 40.0px;
 }
 .list-view .column-header-background{
     -fx-background-color: -fx-primary;
@@ -183,12 +207,12 @@
     -fx-alignment: CENTER;  
 }
 .list-row-cell:even{
-    -fx-background-color: derive(-fx-primary, 10%);
+    -fx-background-color: derive(-fx-primary, 10.0%);
 }
 .list-row-cell:selected {
     -fx-background-color: -fx-secondary;
     -fx-text-fill: -fx-primary;
-    -fx-background-insets: 0;
+    -fx-background-insets: 0.0;
 }
 .list-row-cell:selected .table-cell{
     -fx-text-fill: -fx-primary;
@@ -243,7 +267,7 @@
 /* MAIN SCREEN MENU SECTION*/
 .toolbar-button {
     -fx-border-color: transparent;
-    -fx-background-color: derive(-fx-primary, 10.0%);
+    /*-fx-background-color: derive(-fx-primary, 10.0%);*/
     
     /* This two commands are important - override previous button radius settings */
     -fx-background-radius: 0.0px;
@@ -254,8 +278,12 @@
     -fx-background-color: -fx-secondary;
     -fx-text-fill: -fx-primary;
 }
+.toolbar-button:hover:focused {
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-primary;
+}
 
-.toolbar-button:hover .glyph-icon, .toolbar-button:hover .glyph-icon {
+.toolbar-button:hover .glyph-icon, .toolbar-button:focused .glyph-icon {
     -fx-fill: -fx-primary;
 }
 
@@ -334,5 +362,20 @@
 
 #rescheduleTextArea *.text{
 	-fx-text-alignment: center;
+}
+
+.jfx-date-picker > .arrow-button > .jfx-svg-glyph{
+    -fx-background-color: -fx-secondary;
+}
+
+.jfx-time-picker > .arrow-button > .jfx-svg-glyph{
+    -fx-background-color: -fx-secondary;
+}
+
+.jfx-date-picker .jfx-button{ 
+	-fx-background-color: -fx-secondary;
+}
+.jfx-date-picker .jfx-button{ 
+	-fx-background-color: -fx-secondary;
 }
 

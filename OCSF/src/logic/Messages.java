@@ -1,15 +1,16 @@
 package logic;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Messages {
-	private SimpleStringProperty messageId;
+	private SimpleIntegerProperty messageId;
 	private SimpleStringProperty toId;
 	private SimpleStringProperty sendDate;
 	private SimpleStringProperty subject;
 	private SimpleStringProperty content;
 
-	public Messages(SimpleStringProperty messageId, SimpleStringProperty toId, SimpleStringProperty sendDate,
+	public Messages(SimpleIntegerProperty messageId, SimpleStringProperty toId, SimpleStringProperty sendDate,
 			SimpleStringProperty subject, SimpleStringProperty content) {
 		super();
 		this.messageId = messageId;
@@ -19,11 +20,11 @@ public class Messages {
 		this.content = content;
 	}
 
-	public SimpleStringProperty getMessageId() {
+	public SimpleIntegerProperty getMessageId() {
 		return messageId;
 	}
 
-	public void setMessageId(SimpleStringProperty messageId) {
+	public void setMessageId(SimpleIntegerProperty messageId) {
 		this.messageId = messageId;
 	}
 

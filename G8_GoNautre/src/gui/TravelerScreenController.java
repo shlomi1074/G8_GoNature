@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
+import logic.Traveler;
 import util.FxmlUtil;
 
 public class TravelerScreenController implements Initializable {
@@ -51,16 +52,11 @@ public class TravelerScreenController implements Initializable {
 
 	private Stage stage;
 	private Stage mainScreenStage;
+	private Traveler travelerInfo;
+
 
 	FxmlUtil loader = new FxmlUtil();
 
-	String ID;
-	String password;
-
-	public TravelerScreenController(String username, String password) {
-		this.ID = username;
-		this.password = password;
-	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -118,6 +114,10 @@ public class TravelerScreenController implements Initializable {
 	private void logOut() {
 		getStage().close();
 		mainScreenStage.show();
+	}
+	
+	public void setTravelerInfo(Traveler travelerInfo) {
+		this.travelerInfo = travelerInfo;
 	}
 
 }

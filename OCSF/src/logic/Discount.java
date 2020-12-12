@@ -1,6 +1,7 @@
 package logic;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Discount {
@@ -8,9 +9,9 @@ public class Discount {
 	private SimpleDoubleProperty amount;
 	private SimpleStringProperty startDate;
 	private SimpleStringProperty endDate;
-	private SimpleStringProperty parkId;
+	private SimpleIntegerProperty parkId;
 
-	public Discount(SimpleStringProperty discountId, SimpleDoubleProperty amount, SimpleStringProperty startDate, SimpleStringProperty endDate, SimpleStringProperty parkId) {
+	public Discount(SimpleStringProperty discountId, SimpleDoubleProperty amount, SimpleStringProperty startDate, SimpleStringProperty endDate, SimpleIntegerProperty parkId) {
 		this.discountId = discountId;
 		this.amount = amount;
 		this.startDate = startDate;
@@ -50,11 +51,11 @@ public class Discount {
 		this.endDate = endDate;
 	}
 
-	public SimpleStringProperty getParkId() {
+	public SimpleIntegerProperty getParkId() {
 		return parkId;
 	}
 
-	public void setParkId(SimpleStringProperty parkId) {
+	public void setParkId(SimpleIntegerProperty parkId) {
 		this.parkId = parkId;
 	}
 

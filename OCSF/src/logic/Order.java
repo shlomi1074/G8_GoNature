@@ -1,24 +1,25 @@
 package logic;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Order {
 	private SimpleStringProperty orderId;
 	private SimpleStringProperty travelerId;
-	private SimpleStringProperty parkId; // int in DB
+	private SimpleIntegerProperty parkId;
 	private SimpleStringProperty orderDate;
 	private SimpleStringProperty orderTime;
 	private SimpleStringProperty orderType;
-	private SimpleStringProperty numberOfParticipants;
+	private SimpleIntegerProperty numberOfParticipants;
 	private SimpleStringProperty email;
-	private SimpleStringProperty price;
+	private SimpleDoubleProperty price;
 	private SimpleStringProperty orderStatus;
 
-	public Order(SimpleStringProperty orderId, SimpleStringProperty travelerId, SimpleStringProperty parkId,
+	public Order(SimpleStringProperty orderId, SimpleStringProperty travelerId, SimpleIntegerProperty parkId,
 			SimpleStringProperty orderDate, SimpleStringProperty orderTime, SimpleStringProperty orderType,
-			SimpleStringProperty numberOfParticipants, SimpleStringProperty email, SimpleStringProperty price,
+			SimpleIntegerProperty numberOfParticipants, SimpleStringProperty email, SimpleDoubleProperty price,
 			SimpleStringProperty orderStatus) {
-		super();
 		this.orderId = orderId;
 		this.travelerId = travelerId;
 		this.parkId = parkId;
@@ -47,11 +48,11 @@ public class Order {
 		this.travelerId = travelerId;
 	}
 
-	public SimpleStringProperty getParkId() {
+	public SimpleIntegerProperty getParkId() {
 		return parkId;
 	}
 
-	public void setParkId(SimpleStringProperty parkId) {
+	public void setParkId(SimpleIntegerProperty parkId) {
 		this.parkId = parkId;
 	}
 
@@ -79,11 +80,11 @@ public class Order {
 		this.orderType = orderType;
 	}
 
-	public SimpleStringProperty getNumberOfParticipants() {
+	public SimpleIntegerProperty getNumberOfParticipants() {
 		return numberOfParticipants;
 	}
 
-	public void setNumberOfParticipants(SimpleStringProperty numberOfParticipants) {
+	public void setNumberOfParticipants(SimpleIntegerProperty numberOfParticipants) {
 		this.numberOfParticipants = numberOfParticipants;
 	}
 
@@ -95,11 +96,11 @@ public class Order {
 		this.email = email;
 	}
 
-	public SimpleStringProperty getPrice() {
+	public SimpleDoubleProperty getPrice() {
 		return price;
 	}
 
-	public void setPrice(SimpleStringProperty price) {
+	public void setPrice(SimpleDoubleProperty price) {
 		this.price = price;
 	}
 

@@ -3,14 +3,13 @@ package logic;
 public class Visit {
 	private String visitId;
 	private String travelerId;
-	private String parkId;
+	private int parkId;
 	private String entrenceTime;
 	private String exitTime;
 	private String visitDate;
 
-	public Visit(String visitId, String travelerId, String parkId, String entrenceTime, String exitTime,
+	public Visit(String visitId, String travelerId, int parkId, String entrenceTime, String exitTime,
 			String visitDate) {
-		super();
 		this.visitId = visitId;
 		this.travelerId = travelerId;
 		this.parkId = parkId;
@@ -35,11 +34,11 @@ public class Visit {
 		this.travelerId = travelerId;
 	}
 
-	public String getParkId() {
+	public int getParkId() {
 		return parkId;
 	}
 
-	public void setParkId(String parkId) {
+	public void setParkId(int parkId) {
 		this.parkId = parkId;
 	}
 
