@@ -35,8 +35,7 @@ public class ParkParametersController implements Initializable {
 
 	// Shlomi
 	private void loadParameters() {
-		ParkControl.viewParkParameters("2"); // NEED TO BE CHANGED WHEN THERE IS MEMBER LOGIN
-		Park park = (Park) ChatClient.responseFromServer.getResultSet().get(0);
+		Park park = ParkControl.getParkById("2"); // NEED TO BE CHANGED WHEN THERE IS MEMBER LOGIN
 		if (park != null) 
 			setLabels(park);
 	}

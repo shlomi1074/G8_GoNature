@@ -1,6 +1,8 @@
 package logic;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable{
 	private String orderId;
 	private String travelerId;
 	private int parkId;
@@ -106,5 +108,6 @@ public class Order {
 	public void setOrderStatus(String orderStatus) {
 		this.orderStatus = orderStatus;
 	}
+
 
 }

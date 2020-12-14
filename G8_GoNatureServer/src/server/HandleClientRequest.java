@@ -9,6 +9,7 @@ import Util.sendToClient;
 import logic.ClientToServerRequest;
 import logic.ClientToServerRequest.Request;
 import logic.Discount;
+import logic.Order;
 import logic.Park;
 import logic.ServerToClientResponse;
 import logic.ServerToClientResponse.Response;
@@ -71,9 +72,17 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 				// Shlomi
-				if (request.getRequestType().equals(Request.VIEW_PARAMETERS)) {	
-					Park park = mysqlFunction.getPark(request.getParameters());
-					response = new ServerToClientResponse(Response.VIEW_PARAMETERS_RESPONSE);
+				if (request.getRequestType().equals(Request.GET_PARK_BY_ID)) {	
+					Park park = mysqlFunction.getParkById(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_PARK_BY_ID_RESPONSE);
+					response.setResultSet(new ArrayList<Park>(Arrays.asList(park)));
+					client.sendToClient(response);
+				}
+				
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_PARK_BY_NAME)) {	
+					Park park = mysqlFunction.getParkByName(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_PARK_BY_NAME_RESPONSE);
 					response.setResultSet(new ArrayList<Park>(Arrays.asList(park)));
 					client.sendToClient(response);
 				}
@@ -98,6 +107,37 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(new ArrayList<Discount>(Arrays.asList(discount)));
 					client.sendToClient(response);
 				}
+				
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_ORDERS_BETWEEN_DATES)) {	
+					ArrayList<Order> orders = mysqlFunction.getOrderBetweenTimes(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_ORDERS_BETWEEN_DATES_RESPONSE);
+					response.setResultSet(orders);
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.ADD_ORDER)) {	
+					boolean result = mysqlFunction.AddNewOrder(request.getObj());
+					response = new ServerToClientResponse(Response.ADD_ORDER_RESPONSE);
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.ADD_TRAVELER)) {	
+					boolean result = mysqlFunction.AddTraveler(request.getObj());
+					response = new ServerToClientResponse(Response.ADD_TRAVELER_RESPONSE);
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+				
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_RECENT_ORDER)) {	
+					Order order = mysqlFunction.getRecentOrder(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_RECENT_ORDER_RESPONSE);
+					response.setResultSet(new ArrayList<Order>(Arrays.asList(order)));
+					client.sendToClient(response);
+				}
+
 				client.sendToClient("");
 			} catch (IOException e) {
 				e.printStackTrace();

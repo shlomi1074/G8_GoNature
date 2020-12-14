@@ -9,10 +9,16 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 
+import Controllers.OrderControl;
+import alerts.CustomAlerts;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import logic.Order;
+import logic.OrderStatusName;
+import logic.Traveler;
 
 public class RescheduleController implements Initializable {
 
@@ -33,11 +39,14 @@ public class RescheduleController implements Initializable {
 
 	@FXML
 	private Label selectedTimeLabel;
+	
+	private Order order;
+	private Traveler traveler;
+
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		init();
-
 	}
 
 	private void init() {
@@ -50,6 +59,31 @@ public class RescheduleController implements Initializable {
 			}
 
 		}
+	}
+	
+	@FXML
+	private void enterWaitingList() {
+		this.order.setOrderStatus(OrderStatusName.pending.name());
+		if (OrderControl.addOrder(order, traveler)) {
+			System.out.println("Order added successfuly ");
+			new CustomAlerts(AlertType.INFORMATION, "Enter Waiting List", "Enter Waiting List", "You have been entered to the waiting list.\n"
+					+ "We will let you know if some one cancel their visit.").showAndWait();
+			/* NEED TO SEND EMAIL AND SEND MESSAGE */
+		} else {
+		}
+	}
+	
+	public void SetSelectedTimeLabel (String DateAndTime) {
+		this.selectedTimeLabel.setText(DateAndTime);
+	}
+	
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public void setTraveler(Traveler traveler) {
+		this.traveler = traveler;
+		
 	}
 
 }

@@ -24,7 +24,7 @@ public class AutenticationControl {
 		if (isConnected(id))
 			return 1;
 		else {
-			if (isTravelerExist(id)) {
+			if (TravelerControl.isTravelerExist(id)) {
 				insertTologgedinTable(id);
 				return 0;
 			}
