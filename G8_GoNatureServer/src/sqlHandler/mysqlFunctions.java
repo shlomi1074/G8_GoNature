@@ -10,10 +10,12 @@ import java.util.ArrayList;
 
 import logic.Discount;
 import logic.DiscountTb;
+import logic.Employees;
 import logic.Order;
 import logic.Park;
 import logic.Subscriber;
 import logic.Traveler;
+import logic.WorkerType;
 
 public class mysqlFunctions {
 
@@ -221,7 +223,7 @@ public class mysqlFunctions {
 			ResultSet res = query.executeQuery();
 
 			while (res.next())
-				orders.add(new Order(String.valueOf(res.getInt(1)), res.getString(2), res.getInt(3), res.getString(4),
+				orders.add(new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
 						res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
 						res.getString(10)));
 		} catch (SQLException e) {
@@ -291,7 +293,7 @@ public class mysqlFunctions {
 			query.setString(1, (String) parameters.get(0));
 			ResultSet res = query.executeQuery();
 			if (res.next())
-				order = new Order(String.valueOf(res.getInt(1)), res.getString(2), res.getInt(3), res.getString(4),
+				order = new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
 						res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
 						res.getString(10));
 		} catch (SQLException e) {
@@ -300,5 +302,238 @@ public class mysqlFunctions {
 		}
 		return order;
 	}
+	
+	/*Alon 12.12.20*/
+	public Employees isMemberExist(ArrayList<?> parameters) {
+		WorkerType wt;
+		Employees member = null;
+		String sql = "SELECT * FROM g8gonature.employeesidentification WHERE employeeId = ? AND password = ? ";
+		PreparedStatement query,query2;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setString(1, (String) parameters.get(0));
+			query.setString(2, (String) parameters.get(1));
+			ResultSet res = query.executeQuery();
+			if (res.next()) {
+				/*new query*/
+				sql = "SELECT * FROM g8gonature.employees WHERE employeeId = ?";
+				query2 = conn.prepareStatement(sql);
+				query2.setInt(1,Integer.parseInt((String)parameters.get(0)));//changed to int
+				res = query2.executeQuery();
+				if(res.next()) {
+					System.out.println(res.getString(2));
+					switch (res.getString(2)) {
+					case "Entrance":
+							wt=WorkerType.ENTRANCE;
+						break;
+					case "Park Manager":
+						wt=WorkerType.PARK_MANAGER;
+					break;
+					case "Service":
+						wt=WorkerType.SERVICE;
+					break;
+					case "Department Manager":
+						wt=WorkerType.DEPARTMENT_MANAGER;
+					break;
+					default:
+						throw new IllegalArgumentException("Wrong role type!");
+					}
+				member = new Employees(Integer.parseInt(res.getString(1)), wt , Integer.parseInt(res.getString(3)), res.getString(4),
+						res.getString(5),res.getString(6));
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Could not execute checkIfConnected query");
+			e.printStackTrace();
+		}
+		return member;
+	}
+	
+	public void removeFromLoggedInTable(ArrayList<?> parameters) {
+		String sql = "DELETE FROM g8gonature.loggedin WHERE id = ? ";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setString(1, (String) parameters.get(0));
+			query.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Could not execute checkIfConnected query");
+			e.printStackTrace();
+		}
+	}
+	/*End of Alon's 12.12.20 edit*/
+	
+	//ofir 
+	public boolean sendMessageToTraveler(ArrayList<?> parameters) {
+        String sql = "INSERT INTO g8gonature.messages (toId,sendDate,sendTime,subject,content,orderId) " + "VALUES (?,?,?,?,?,?)";
+        PreparedStatement query;
+        int res = 0;
+        try {
+            query = conn.prepareStatement(sql);
+            query.setString(1, (String) parameters.get(0));
+            query.setString(2, (String) parameters.get(1));
+            query.setString(3, (String) parameters.get(2));
+            query.setString(4, (String) parameters.get(3));
+            query.setString(5, (String) parameters.get(4));
+            query.setInt(6, Integer.parseInt((String) parameters.get(5)));
+            res = query.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Could not execute insertToLoggedInTable query");
+            e.printStackTrace();
+        }
+        return res == 1;
+    }
+	
+	// Ofir Avraham Vaknin
+		public ArrayList<Order> getAllOrdersForID(ArrayList<?> parameters) {
+			ArrayList<Order> orders = new ArrayList<Order>();
+
+			String sql = "SELECT * FROM g8gonature.order WHERE travelerId = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setInt(1, Integer.parseInt((String) parameters.get(0))); // was setString
+				ResultSet res = query.executeQuery();
+				while (res.next()) {
+					Order order = new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
+							res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
+							res.getString(10));
+					orders.add(order);
+				}
+
+			} catch (SQLException e) {
+				System.out.println("Could not execute getAllOrdersForId");
+				e.printStackTrace();
+			}
+			return orders;
+		}
+		
+		// Ofir Avraham Vaknin - Design Pattern
+			public ArrayList<Order> getAllOrdersForID() {
+				ArrayList<Order> orders = new ArrayList<Order>();
+
+				String sql = "SELECT * FROM g8gonature.order";
+				PreparedStatement query;
+				try {
+					query = conn.prepareStatement(sql);
+					ResultSet res = query.executeQuery();
+					while (res.next()) {
+						Order order = new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
+								res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
+								res.getString(10));
+						orders.add(order);
+					}
+
+				} catch (SQLException e) {
+					System.out.println("Could not execute getAllOrdersForId");
+					e.printStackTrace();
+				}
+				return orders;
+			}
+
+		// Ofir Avraham Vaknin
+		public boolean setOrderStatusWithIDandStatus(ArrayList<?> parameters) {
+			String sql = "UPDATE g8gonature.order SET orderStatus = ? WHERE orderId = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, (String) parameters.get(0));
+				query.setInt(2, Integer.parseInt((String) parameters.get(1)));
+				int res = query.executeUpdate();
+				return res == 1;
+			} catch (SQLException e) {
+				System.out.println("Could not execute getAllOrdersForId");
+				e.printStackTrace();
+			}
+			return false;
+		}
+
+		// Ofir Avraham Vaknin
+		public ArrayList<Order> findMatchingOrdersInWaitingList(ArrayList<?> parameters) {
+			// Need to send gap
+			ArrayList<Order> resultArray = new ArrayList<Order>();
+
+			String parkId = (String) parameters.get(0);
+			String maxVisitors = (String) parameters.get(1);
+			String estimatedStayTime = (String) parameters.get(2);
+			String date = (String) parameters.get(3);
+			String hour = (String) parameters.get(4);
+			String gap = (String) parameters.get(5);
+
+			int onlyHours = Integer.parseInt(hour.substring(0, 2));
+			int estimated = Integer.parseInt(estimatedStayTime);
+			int maxVisitor = Integer.parseInt(maxVisitors);
+			int gapInPark = Integer.parseInt(gap);
+
+			int maxAllowedInPark = maxVisitor - gapInPark;
+
+			String hourAfterEstimated = String.valueOf(onlyHours + estimated) + hour.substring(3);
+			String hourBeforeEstimated = String.valueOf(onlyHours - estimated) + hour.substring(3);
+		
+			
+			int beforeParticipants = numberOfParticipantsBetweenTwoHours(parkId, date, hourBeforeEstimated, hour);
+			beforeParticipants = beforeParticipants % 24;
+			int afterParticipants = numberOfParticipantsBetweenTwoHours(parkId, date, hourAfterEstimated, hour);
+			afterParticipants = beforeParticipants % 24;
+
+			// Max should be changed, Disscuss in group
+			//int maxParticipants = Math.max(beforeParticipants, afterParticipants);
+			int maxParticipants = beforeParticipants + afterParticipants;
+			
+
+			String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? AND "
+					+ "orderDate = ? AND orderTime BETWEEN ? AND ? AND orderStatus = ?";
+			ResultSet rs;
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, parkId);
+				query.setString(2, date);
+				query.setString(3, hourBeforeEstimated);
+				query.setString(4, hourAfterEstimated);
+				query.setString(5, "waiting");
+				rs = query.executeQuery();
+				while (rs.next()) {
+					if (rs.getInt(7) + maxParticipants < maxAllowedInPark) {
+						Order order = new Order(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4),
+								rs.getString(5), rs.getString(6), rs.getInt(7), rs.getString(8), rs.getDouble(9),
+								rs.getString(10));
+						resultArray.add(order);
+					}
+				}
+
+			} catch (SQLException e) {
+				System.out.println("Could not execute findMatchingOrdersInWaitingList");
+				e.printStackTrace();
+			}
+
+			return resultArray;
+		}
+
+		// Ofir Avraham Vaknin
+		private int numberOfParticipantsBetweenTwoHours(String parkId, String date, String hourBefore, String hour) {
+			String sql = "SELECT numberOfParticipants FROM g8gonature.order WHERE parkId = ? AND "
+					+ "orderDate = ? AND orderTime BETWEEN ? AND ? AND orderStatus = ?";
+			PreparedStatement query;
+			ResultSet rs;
+			int sum = 0;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, parkId);
+				query.setString(2, date);
+				query.setString(3, hourBefore);
+				query.setString(4, hour);
+				query.setString(5, "waiting");
+				rs = query.executeQuery();
+				while (rs.next()) {
+					sum += rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				System.out.println("Could not execute numberOfParticipantsBetweenTwoHours");
+				e.printStackTrace();
+			}
+			return sum;
+		}
 
 }

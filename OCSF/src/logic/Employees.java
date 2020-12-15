@@ -1,6 +1,8 @@
 package logic;
 
-public class Employees {
+import java.io.Serializable;
+
+public class Employees implements Serializable{
 	private int employeeId;
 	private WorkerType role;
 	private int parkId;

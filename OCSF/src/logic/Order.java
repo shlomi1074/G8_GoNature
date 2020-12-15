@@ -3,7 +3,7 @@ package logic;
 import java.io.Serializable;
 
 public class Order implements Serializable{
-	private String orderId;
+	private int orderId;
 	private String travelerId;
 	private int parkId;
 	private String orderDate;
@@ -14,7 +14,7 @@ public class Order implements Serializable{
 	private double price;
 	private String orderStatus;
 
-	public Order(String orderId, String travelerId, int parkId, String orderDate, String orderTime, String orderType,
+	public Order(int orderId, String travelerId, int parkId, String orderDate, String orderTime, String orderType,
 			int numberOfParticipants, String email, double price, String orderStatus) {
 		super();
 		this.orderId = orderId;
@@ -29,11 +29,11 @@ public class Order implements Serializable{
 		this.orderStatus = orderStatus;
 	}
 
-	public String getOrderId() {
+	public int getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(String orderId) {
+	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
 

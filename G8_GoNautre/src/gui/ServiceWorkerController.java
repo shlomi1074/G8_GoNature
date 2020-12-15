@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 
+import Controllers.AutenticationControl;
 import client.ClientUI;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -63,6 +64,7 @@ public class ServiceWorkerController implements Initializable {
 		loadProfile();
 		getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
+				AutenticationControl.userLogout(String.valueOf(MemberLoginController.member.getEmployeeId()));
 				mainScreenStage.close();
 				ClientUI.chat.getClient().quit();
 			}
@@ -89,6 +91,7 @@ public class ServiceWorkerController implements Initializable {
 
 	@FXML
 	private void loadProfile() {
+		loader.setWorker(true); //Alon 12.13.20
 		Pane view = loader.loadPaneToBorderPaneWithController("/gui/Profile.fxml", "profile");
 		borderPane.setCenter(view);
 	}
@@ -107,6 +110,7 @@ public class ServiceWorkerController implements Initializable {
 
 	@FXML
 	private void logOut() {
+		AutenticationControl.userLogout(String.valueOf(MemberLoginController.member.getEmployeeId()));
 		getStage().close();
 		mainScreenStage.show();
 	}

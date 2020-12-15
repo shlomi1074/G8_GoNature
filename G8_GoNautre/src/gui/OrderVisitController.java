@@ -7,21 +7,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXRadioButton;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXTimePicker;
-
+import com.jfoenix.controls.*;
+import Controllers.NotificationControl;
 import Controllers.OrderControl;
 import Controllers.ParkControl;
 import Controllers.TravelerControl;
-import Controllers.calculatePrice.CheckOut;
-import Controllers.calculatePrice.GuidePayAtParkCheckOut;
-import Controllers.calculatePrice.GuidePrePayCheckOut;
-import Controllers.calculatePrice.RegularCheckOut;
-import Controllers.calculatePrice.RegularpreOrderCheckOut;
-import Controllers.calculatePrice.SubscriberPreOrderCheckOut;
+import Controllers.calculatePrice.*;
 import alerts.CustomAlerts;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
@@ -48,6 +39,7 @@ import logic.Traveler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DateCell;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class OrderVisitController implements Initializable {
 
@@ -165,6 +157,7 @@ public class OrderVisitController implements Initializable {
 	private Order recentOrder;
 	private boolean isOrderFromMain = false;
 
+	/* Array with the allowed hours to make orders  8:00 - 18:00 */
 	private int[] AllowedHours = { 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 
 	@Override
@@ -177,12 +170,13 @@ public class OrderVisitController implements Initializable {
 
 	}
 
+	//shlomi
 	@FXML
 	private void placeOrderButton() {
 		// Shlomi
 		if (isValidInput()) {
 
-			Order order = new Order(null, summaryID.getText(), getSelectedParkId(), summaryDate.getText(),
+			Order order = new Order(0, summaryID.getText(), getSelectedParkId(), summaryDate.getText(),
 					summaryTime.getText(), summaryType.getText(), Integer.parseInt(summaryVisitors.getText()),
 					summaryEmail.getText(), CalculatePrice(), OrderStatusName.pending.name());
 
@@ -196,6 +190,18 @@ public class OrderVisitController implements Initializable {
 			if (OrderControl.addOrder(order, traveler)) {
 				System.out.println("Order added successfuly ");
 				recentOrder = OrderControl.getTravelerRecentOrder(traveler.getTravelerId());
+				/* Insert massage to data base */ /* NEED TO BE CHANGED WHEN ADDED MESSAGES */
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				LocalDateTime now = LocalDateTime.now();
+				String dateAndTime = dtf.format(now);
+				String date = dateAndTime.split(" ")[0];
+				String time = dateAndTime.split(" ")[1];
+				if (recentOrder != null)
+					NotificationControl.sendMessageToTraveler(traveler.getTravelerId(), date, time,
+							"Enter waiting list",
+							"You have been entered the waiting list." + "Order id: " + recentOrder.getOrderId()
+									+ "\nVisit date: " + recentOrder.getOrderDate() + " " + recentOrder.getOrderTime(),
+									String.valueOf(recentOrder.getOrderId()));
 				loadOrderConfirmation();
 
 				/* NEED TO SEND EMAIL AND SEND MESSAGE */
@@ -206,7 +212,7 @@ public class OrderVisitController implements Initializable {
 		}
 	}
 
-	/* This function returns the if of the selected park */
+	/* This function returns the name of the selected park */
 	private int getSelectedParkId() {
 		Park park = ParkControl.getParkByName(summaryPark.getText());
 		if (park != null)
@@ -490,6 +496,7 @@ public class OrderVisitController implements Initializable {
 
 	private void loadRescheduleScreen(Order order) {
 		try {
+			Stage newStage = new Stage();
 			Stage thisStage = getStage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Reschedule.fxml"));
 			RescheduleController controller = new RescheduleController();
@@ -497,9 +504,11 @@ public class OrderVisitController implements Initializable {
 			loader.load();
 			controller.SetSelectedTimeLabel(summaryDate.getText() + ", " + summaryTime.getText());
 			controller.setOrder(order);
+			controller.SetRescheduleStage(newStage);
+			if (isOrderFromMain)
+				thisStage.close();
 			controller.setTraveler(traveler);
 			Parent p = loader.getRoot();
-			Stage newStage = new Stage();
 
 			/* Block parent stage until child stage closes */
 			newStage.initModality(Modality.WINDOW_MODAL);
@@ -542,7 +551,7 @@ public class OrderVisitController implements Initializable {
 		}
 
 	}
-	
+
 	public void setOrderFromMain(boolean isOrderFromMain) {
 		this.isOrderFromMain = isOrderFromMain;
 	}

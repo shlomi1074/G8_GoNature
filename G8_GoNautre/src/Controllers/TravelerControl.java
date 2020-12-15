@@ -45,4 +45,20 @@ public class TravelerControl {
 
 	}
 
+	public static void deleteFromTravelerTable(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void insertSubscriberToSubscriberTable(String id, String firstName, String lastName, String email,
+			String phoneNumber, String cardNumber, String type, String numberOfParticipants) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void insertCardToCreditCardTable(String id, String cardNumber, String cardExpiryDate, String ccv) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

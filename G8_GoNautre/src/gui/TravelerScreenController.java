@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 
+import Controllers.AutenticationControl;
 import client.ClientUI;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -52,8 +53,6 @@ public class TravelerScreenController implements Initializable {
 
 	private Stage stage;
 	private Stage mainScreenStage;
-	private Traveler travelerInfo;
-
 
 	FxmlUtil loader = new FxmlUtil();
 
@@ -67,6 +66,8 @@ public class TravelerScreenController implements Initializable {
 	private void init() {
 		getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
+				AutenticationControl.userLogout(TravelerLoginController.traveler!=null ? 
+						TravelerLoginController.traveler.getTravelerId():TravelerLoginController.subscriber.getTravelerId());
 				mainScreenStage.close();
 				ClientUI.chat.getClient().quit();
 			}
@@ -94,6 +95,7 @@ public class TravelerScreenController implements Initializable {
 
 	@FXML
 	private void loadProfile() {
+		loader.setWorker(false); //Alon 12.13.20
 		Pane view = loader.loadPaneToBorderPaneWithController("/gui/Profile.fxml", "profile");
 		borderPane.setCenter(view);
 	}
@@ -112,12 +114,10 @@ public class TravelerScreenController implements Initializable {
 
 	@FXML
 	private void logOut() {
+		AutenticationControl.userLogout(TravelerLoginController.traveler!=null ? 
+				TravelerLoginController.traveler.getTravelerId():TravelerLoginController.subscriber.getTravelerId());
 		getStage().close();
 		mainScreenStage.show();
-	}
-	
-	public void setTravelerInfo(Traveler travelerInfo) {
-		this.travelerInfo = travelerInfo;
 	}
 
 }

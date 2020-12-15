@@ -13,15 +13,15 @@
 <AnchorPane fx:id="registerRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../resources/projectTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="headerLabel" layoutX="350.0" layoutY="23.0" text="Register Account" />
-      <JFXTextField fx:id="emailInputOrderVisit" layoutX="360.0" layoutY="209.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer Email" />
+      <JFXTextField fx:id="emailInputRegister" layoutX="360.0" layoutY="209.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer Email" />
       <Label layoutX="250.0" layoutY="214.0" text="Your Email:" />
-      <JFXTextField fx:id="firstNameInputRegister" layoutX="360.0" layoutY="89.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer First Name" />
-      <Label layoutX="250.0" layoutY="94.0" text="First Name:" />
-      <JFXTextField fx:id="lastNameInputRegister" layoutX="360.0" layoutY="129.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer Last Name" />
-      <Label layoutX="250.0" layoutY="134.0" text="Last Name:" />
-      <JFXTextField fx:id="lastNameInputRegister1" layoutX="360.0" layoutY="169.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer ID" />
+      <JFXTextField fx:id="fullNameInputRegister" layoutX="360.0" layoutY="89.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer Full Name" />
+      <Label layoutX="250.0" layoutY="94.0" text="Full Name:" />
+      <JFXTextField fx:id="phoneNumberInputRegister" layoutX="360.0" layoutY="129.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer Phone Number" />
+      <Label layoutX="250.0" layoutY="134.0" text="Phone Number:" />
+      <JFXTextField fx:id="idInputRegister" layoutX="360.0" layoutY="169.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer ID" />
       <Label layoutX="250.0" layoutY="174.0" text="ID:" />
-      <JFXTextField fx:id="lastNameInputRegister11" layoutX="576.0" layoutY="242.0" prefColumnCount="10" prefHeight="37.0" prefWidth="91.0" promptText="Family Size" />
+      <JFXTextField fx:id="familySize" layoutX="576.0" layoutY="242.0" prefColumnCount="10" prefHeight="37.0" prefWidth="91.0" promptText="Family Size" />
       <JFXComboBox fx:id="typeComboBox" layoutX="360.0" layoutY="249.0" prefHeight="25.0" prefWidth="200.0" promptText="Pick Account Type" />
       <Label layoutX="250.0" layoutY="254.0" text="Account Type:" />
       <Accordion fx:id="accordion" layoutX="210.0" layoutY="290.0" prefHeight="194.0" prefWidth="432.0">
@@ -50,7 +50,7 @@
             </TitledPane>
          </panes>
       </Accordion>
-      <JFXButton layoutX="360.0" layoutY="547.0" prefHeight="39.0" prefWidth="180.0" text="Add Account" />
+      <JFXButton fx:id="AddAcountBTN" layoutX="360.0" layoutY="547.0" prefHeight="39.0" prefWidth="180.0" text="Add Account" />
       <Label fx:id="requiredFieldsLabel11" layoutX="374.0" layoutY="62.0" style="-fx-text-fill: red;" text="* Please fill in all the fields" />
    </children>
 </AnchorPane>

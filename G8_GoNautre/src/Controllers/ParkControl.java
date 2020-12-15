@@ -6,6 +6,7 @@ import java.util.Arrays;
 import client.ChatClient;
 import client.ClientUI;
 import logic.ClientToServerRequest;
+import logic.OrderTb;
 import logic.ClientToServerRequest.Request;
 import logic.Park;
 
@@ -64,5 +65,15 @@ public class ParkControl {
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.getResultSet();
 		
+	}
+	
+	// Ofir Avraham Vaknin
+	// -1 indicate an error
+	public static int getParkIdByOrderId(ArrayList<OrderTb> orders,int orderId)
+	{
+		for(OrderTb o : orders)
+			if(o.getOrderId() == orderId)
+				return o.getParkId();
+		return -1;
 	}
 }
