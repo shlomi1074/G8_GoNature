@@ -205,7 +205,45 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 				
+				
 				/* End Ofir */
+				/* Lior */
+				if (request.getRequestType().equals(Request.DELETE_TRAVELER)) {
+					mysqlFunction.deleteFromTravelerTable(request.getParameters());
+					client.sendToClient("Finished Insert");
+					client.sendToClient("");
+				}
+				
+				if (request.getRequestType().equals(Request.INSERT_TO_SUBSCRIBER)) {
+					mysqlFunction.insertSubscriberToSubscriberTable(request.getParameters());
+					client.sendToClient("Finished Insert");
+					client.sendToClient("");
+				}
+				if (request.getRequestType().equals(Request.INSERT_TO_CREDITCARD)) {
+					mysqlFunction.insertCardToCreditCardTable(request.getParameters());
+					client.sendToClient("Finished Insert");
+					client.sendToClient("");
+				}
+				
+				if(request.getRequestType().equals(Request.MANAGER_REQUEST)) { // ofir n
+
+					mysqlFunction.insertAllNewRequestsFromParkManager(request.getParameters());
+
+					response = new ServerToClientResponse(Response.MANAGER_REQUEST_RESPONSE);
+					client.sendToClient(response);
+				}
+
+				
+				if(request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) { // ofir n
+
+					response = new ServerToClientResponse(Response.VIEW_MANAGER_REQUEST_RESPONSE);
+					response.setResultSet(mysqlFunction.GetRequestsFromDB());
+					
+					client.sendToClient(response);
+			
+				}
+				
+				
 
 				client.sendToClient("");
 			} catch (IOException e) {

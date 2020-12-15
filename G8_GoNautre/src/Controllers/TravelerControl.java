@@ -21,8 +21,11 @@ public class TravelerControl {
 		return subscriber;
 	}
 
-	// Shlomi 
-	/* This function get id and return true if there is subscriber or a regular traveler with this id */
+	// Shlomi
+	/*
+	 * This function get id and return true if there is subscriber or a regular
+	 * traveler with this id
+	 */
 	public static boolean isTravelerExist(String id) {
 		/* First we check if the id is subscriber */
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_SUBSCRIBER,
@@ -45,20 +48,27 @@ public class TravelerControl {
 
 	}
 
+	// Lior
 	public static void deleteFromTravelerTable(String id) {
-		// TODO Auto-generated method stub
-		
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.DELETE_TRAVELER,
+				new ArrayList<String>(Arrays.asList(id)));
+		ClientUI.chat.accept(request);
 	}
 
+	// Lior
 	public static void insertSubscriberToSubscriberTable(String id, String firstName, String lastName, String email,
 			String phoneNumber, String cardNumber, String type, String numberOfParticipants) {
-		// TODO Auto-generated method stub
-		
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.INSERT_TO_SUBSCRIBER,
+				new ArrayList<String>(Arrays.asList(id, firstName, lastName, email, phoneNumber, cardNumber, type,
+						numberOfParticipants)));
+		ClientUI.chat.accept(request);
 	}
 
+	// Lior
 	public static void insertCardToCreditCardTable(String id, String cardNumber, String cardExpiryDate, String ccv) {
-		// TODO Auto-generated method stub
-		
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.INSERT_TO_CREDITCARD,
+				new ArrayList<String>(Arrays.asList(id, cardNumber, cardExpiryDate, ccv)));
+		ClientUI.chat.accept(request);
 	}
 
 }

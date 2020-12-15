@@ -21,7 +21,7 @@
             <FontAwesomeIconView glyphName="USER_PLUS" size="25" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="showPrices" contentDisplay="TOP" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Prices" textAlignment="CENTER">
+      <JFXButton fx:id="showPrices" contentDisplay="TOP" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" onMouseClicked="#loadPrices" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Prices" textAlignment="CENTER">
          <graphic>
             <FontAwesomeIconView glyphName="ILS" size="25" />
          </graphic>

@@ -157,7 +157,7 @@ public class OrderVisitController implements Initializable {
 	private Order recentOrder;
 	private boolean isOrderFromMain = false;
 
-	/* Array with the allowed hours to make orders  8:00 - 18:00 */
+	/* Array with the allowed hours to make orders 8:00 - 18:00 */
 	private int[] AllowedHours = { 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 
 	@Override
@@ -170,7 +170,7 @@ public class OrderVisitController implements Initializable {
 
 	}
 
-	//shlomi
+	// shlomi
 	@FXML
 	private void placeOrderButton() {
 		// Shlomi
@@ -201,7 +201,7 @@ public class OrderVisitController implements Initializable {
 							"Enter waiting list",
 							"You have been entered the waiting list." + "Order id: " + recentOrder.getOrderId()
 									+ "\nVisit date: " + recentOrder.getOrderDate() + " " + recentOrder.getOrderTime(),
-									String.valueOf(recentOrder.getOrderId()));
+							String.valueOf(recentOrder.getOrderId()));
 				loadOrderConfirmation();
 
 				/* NEED TO SEND EMAIL AND SEND MESSAGE */
@@ -500,11 +500,12 @@ public class OrderVisitController implements Initializable {
 			Stage thisStage = getStage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Reschedule.fxml"));
 			RescheduleController controller = new RescheduleController();
+			controller.setOrder(order);
 			loader.setController(controller);
 			loader.load();
 			controller.SetSelectedTimeLabel(summaryDate.getText() + ", " + summaryTime.getText());
-			controller.setOrder(order);
 			controller.SetRescheduleStage(newStage);
+
 			if (isOrderFromMain)
 				thisStage.close();
 			controller.setTraveler(traveler);

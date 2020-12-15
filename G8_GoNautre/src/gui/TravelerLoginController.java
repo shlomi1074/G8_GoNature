@@ -55,13 +55,19 @@ public class TravelerLoginController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		init();
+
+	}
+	
+	private void init() {
+		TravelerLoginController.subscriber = null;
+		TravelerLoginController.traveler = null;
 		loginButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				loginButton();
 			}
 		});
-
 	}
 
 	private void loginButton() {

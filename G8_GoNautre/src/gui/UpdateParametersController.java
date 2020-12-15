@@ -1,12 +1,14 @@
+  
 package gui;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-
+import Controllers.RequestControl;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
@@ -71,6 +73,27 @@ public class UpdateParametersController implements Initializable {
     @FXML
     private JFXButton sendForApprovealButton;
 
+    
+    @FXML
+    public void sendForApprovealButton(ActionEvent event) { // ofir n
+    	System.out.println("check button");
+
+    	ArrayList<String> arrayOfTextRequests=new ArrayList<>();
+    	arrayOfTextRequests.add(newMaxVisitorsTextField.getText());
+    	arrayOfTextRequests.add(newEsitimatedTIme.getText());
+    	arrayOfTextRequests.add(gapTextField.getText());
+    	arrayOfTextRequests.add(discountStartDate.getAccessibleText());
+    	arrayOfTextRequests.add(discountEndDate.getAccessibleText());
+    	arrayOfTextRequests.add(discountPercentage.getText());
+
+    	RequestControl.addNewRequest(arrayOfTextRequests);
+    	
+    	
+    	
+    	
+    }
+    
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import client.ChatClient;
 import client.ClientUI;
+import gui.TravelerLoginController;
 import logic.ClientToServerRequest;
 import logic.ClientToServerRequest.Request;
 import logic.Employees;

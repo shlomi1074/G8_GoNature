@@ -69,7 +69,7 @@ public class OrderControl {
 
 	// Shlomi
 	/* This function check if there is enough place for a given order */
-	private static boolean isDateAvailable(Order order) {
+	public static boolean isDateAvailable(Order order) {
 		String parkId = String.valueOf(order.getParkId());
 		Park park = ParkControl.getParkById(parkId);
 		String timeToCheck = order.getOrderTime();
@@ -89,7 +89,7 @@ public class OrderControl {
 		int numberOfVisitors = 0; /* This variable holds the number of visitors on the relevant date */
 		for (Order ord : orders) {
 			numberOfVisitors += ord.getNumberOfParticipants();
-		} // 9 | 3
+		} 
 
 		/*
 		 * Check if the amount of visitors including this order exceeds the allowed
@@ -103,8 +103,7 @@ public class OrderControl {
 
 		return true;
 	}
-	
-	
+
 	/*
 	 * Ofir Avraham Vaknin
 	 */
@@ -120,6 +119,7 @@ public class OrderControl {
 		ArrayList<Order> orders = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
 	}
+
 	// Ofir Avraham Vaknin
 	public static ArrayList<Order> getAllOrders() {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ALL_ORDERS,
@@ -128,50 +128,48 @@ public class OrderControl {
 		ArrayList<Order> orders = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
 	}
-	
+
 	// Ofir Avraham Vaknin
-	public static ArrayList<OrderTb> convertOrderToOrderTb(ArrayList<Order> ordersArrayList)
-	{
+	public static ArrayList<OrderTb> convertOrderToOrderTb(ArrayList<Order> ordersArrayList) {
 		ArrayList<OrderTb> orderTbArrayList = new ArrayList<OrderTb>();
-		for (Order order : ordersArrayList) {	
+		for (Order order : ordersArrayList) {
 			OrderTb orderTb = new OrderTb(order);
 			orderTbArrayList.add(orderTb);
 		}
 		return orderTbArrayList;
 	}
-	
+
 	// Ofir Avraham Vaknin
-	public static boolean changeOrderStatus(String orderId,OrderStatusName statusName)
-	{
+	public static boolean changeOrderStatus(String orderId, OrderStatusName statusName) {
 		String status = statusName.name();
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.CHANGE_ORDER_STATUS_BY_ID,
-				new ArrayList<String>(Arrays.asList(status,orderId)));
+				new ArrayList<String>(Arrays.asList(status, orderId)));
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.isResult();
 	}
-	
+
 	// Ofir Avraham Vaknin
 	// Create message for him
-	public static void notifyPersonFromWaitingList(String date,String hour,Park park)
-	{
+	public static void notifyPersonFromWaitingList(String date, String hour, Park park) {
 		String parkId = String.valueOf(park.getParkId());
 		String maxVisitors = String.valueOf(park.getMaxVisitors());
 		String estimatedStayTime = String.valueOf(park.getEstimatedStayTime());
 		String gap = String.valueOf(park.getGapBetweenMaxAndCapacity());
-		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL,
-				new ArrayList<String>(Arrays.asList(parkId,maxVisitors,estimatedStayTime,date,hour,gap)));
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(
+				Request.GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL,
+				new ArrayList<String>(Arrays.asList(parkId, maxVisitors, estimatedStayTime, date, hour, gap)));
 		ClientUI.chat.accept(request);
 		ArrayList<Order> ordersThatMatchWaitingList = ChatClient.responseFromServer.getResultSet();
-		
-		//Send message to client - Function return boolean
+
+		// Send message to client - Function return boolean
 		Order o = ordersThatMatchWaitingList.get(0);
-		if(o.equals(null))
+		if (o.equals(null))
 			return;
-		String content = "A place for order number " + o.getOrderId()+" has cleared for you, you have one hour untill "
-				+ "it moves to the next person";
-		NotificationControl.sendMessageToTraveler(o.getTravelerId(), LocalDate.now().toString(), LocalTime.now().toString(),"Grab Your waiting list spot"
-				,content, String.valueOf(o.getOrderId()));
-			
+		String content = "A place for order number " + o.getOrderId()
+				+ " has cleared for you, you have one hour untill " + "it moves to the next person";
+		NotificationControl.sendMessageToTraveler(o.getTravelerId(), LocalDate.now().toString(),
+				LocalTime.now().toString(), "Grab Your waiting list spot", content, String.valueOf(o.getOrderId()));
+
 	}
 
 }

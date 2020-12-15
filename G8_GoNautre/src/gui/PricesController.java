@@ -1,0 +1,23 @@
+package gui;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import logic.GoNatureFinals;
+
+public class PricesController implements Initializable {
+	  @FXML
+	    private Label lblPrice;
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		init();
+	}
+	
+	public void init() {
+		lblPrice.setText(String.valueOf(GoNatureFinals.FULL_PRICE));
+	}
+}

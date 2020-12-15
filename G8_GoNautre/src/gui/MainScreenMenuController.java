@@ -39,7 +39,7 @@ public class MainScreenMenuController implements Initializable {
 		travelerLogin.setFocusTraversable(false);
 		memberLogin.setFocusTraversable(false);
 		showPrices.setFocusTraversable(false);
-		contactUs.setFocusTraversable(false);	
+		contactUs.setFocusTraversable(false);
 	}
 
 	@FXML
@@ -60,6 +60,11 @@ public class MainScreenMenuController implements Initializable {
 	@FXML
 	private void loadOrderVisit() {
 		switchScenceWithController("OrderVisit.fxml", "GoNature8 - Order A Visit", 3);
+	}
+
+	@FXML
+	private void loadPrices() {// Alon
+		switchScenceWithController("Prices.fxml", "GoNature8 - Prices", 4);
 	}
 
 	private void switchScence(String fxmlName, String screenTitle) {
@@ -98,6 +103,9 @@ public class MainScreenMenuController implements Initializable {
 			} else if (id == 3) {
 				OrderVisitController controller = new OrderVisitController();
 				controller.setOrderFromMain(true);
+				loader.setController(controller);
+			} else if (id == 4) { // Alon
+				PricesController controller = new PricesController();
 				loader.setController(controller);
 			}
 			loader.load();
