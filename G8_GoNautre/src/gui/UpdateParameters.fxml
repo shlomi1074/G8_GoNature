@@ -80,6 +80,6 @@
          </panes>
       </Accordion>
       <Label fx:id="headerLabel" layoutX="337.0" layoutY="22.0" text="Update Parameters" />
-      <JFXButton fx:id="sendForApprovealButton" layoutX="360.0" layoutY="547.0" text="SEND FOR APPROVAL" />
+      <JFXButton fx:id="sendForApprovealButton" layoutX="360.0" layoutY="547.0" onMouseClicked="#sendForApprovealButton" text="SEND FOR APPROVAL" />
    </children>
 </AnchorPane>

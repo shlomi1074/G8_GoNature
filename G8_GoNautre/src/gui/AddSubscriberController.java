@@ -128,9 +128,6 @@ public class AddSubscriberController implements Initializable {
 		String cardNumber = CardNumber.getText();
 		String cardExpiryDate = CardExpiryDate.getValue()==null ? "" : CardExpiryDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		String numberOfParticipants = familySize.getText();
-		
-		
-		
 		String ccv = CCV.getText();
 		
 		/* if user did not fill all required fields */
@@ -160,7 +157,6 @@ public class AddSubscriberController implements Initializable {
 			
 			TravelerControl.insertSubscriberToSubscriberTable(id, firstName, lastName, email, phoneNumber, cardNumber, type, numberOfParticipants);
 			//if user entered credit card info we enter it to credit card table
-			System.out.println(cardNumber + "lior is not happy");
 			if(!cardNumber.isEmpty()) {
 				TravelerControl.insertCardToCreditCardTable(id,cardNumber, cardExpiryDate, ccv);
 			}

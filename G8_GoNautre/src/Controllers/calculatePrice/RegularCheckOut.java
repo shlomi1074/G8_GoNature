@@ -2,7 +2,7 @@ package Controllers.calculatePrice;
 
 import Controllers.OrderControl;
 import logic.Discount;
-import logic.ParkPrices;
+import logic.GoNatureFinals;
 
 public class RegularCheckOut implements CheckOut {
 
@@ -10,7 +10,7 @@ public class RegularCheckOut implements CheckOut {
 	private int parkId;
 	private String visitDate;
 
-	private double fullPrice = ParkPrices.ENTRACNCE_PRICE;
+	private double fullPrice = GoNatureFinals.FULL_PRICE;
 
 	public RegularCheckOut(int numberOfVisitors, int parkId, String visitDate) {
 		this.numberOfVisitors = numberOfVisitors;

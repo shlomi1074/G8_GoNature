@@ -13,6 +13,7 @@ import logic.DiscountTb;
 import logic.Employees;
 import logic.Order;
 import logic.Park;
+import logic.Request;
 import logic.Subscriber;
 import logic.Traveler;
 import logic.WorkerType;
@@ -534,6 +535,139 @@ public class mysqlFunctions {
 				e.printStackTrace();
 			}
 			return sum;
+		}
+
+		/*Lior*/
+		public void deleteFromTravelerTable(ArrayList<?> parameters) {
+			String sql = "DELETE FROM g8gonature.traveler WHERE travelerId = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, (String) parameters.get(0));
+				query.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("Could not execute deleteFromTravelerTable query");
+				e.printStackTrace();
+			}
+		}
+		
+		/*Lior*/
+		public void insertSubscriberToSubscriberTable(ArrayList<?> parameters) {
+			String sql = "INSERT INTO g8gonature.subscriber (travelerId, firstName, lastName, email, phoneNumber, creditCard, subscriberType, numberOfParticipants) values (?,?,?,?,?,?,?,?)";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, (String) parameters.get(0));
+				query.setString(2, (String) parameters.get(1));
+				query.setString(3, (String) parameters.get(2));
+				query.setString(4, (String) parameters.get(3));
+				query.setString(5, (String) parameters.get(4));
+				query.setString(6, (String) parameters.get(5));
+				query.setString(7, (String) parameters.get(6));
+				query.setInt(8, Integer.parseInt((String) parameters.get(7)));
+				query.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("Could not execute insertSubscriberToSubscriberTable query");
+				e.printStackTrace();
+			}
+		}
+		
+		/*Lior*/
+		public void insertCardToCreditCardTable(ArrayList<?> parameters) {
+			String sql = "INSERT INTO g8gonature.creditcard (subscriberId, cardNumber, cardExpiryDate, CVC) values (?,?,?,?)";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, (String) parameters.get(0));
+				query.setString(2, (String) parameters.get(1));
+				query.setString(3, (String) parameters.get(2));
+				query.setInt(4, Integer.parseInt((String) parameters.get(3)));
+				query.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("Could not execute insertCardToCreditCardTable query");
+				e.printStackTrace();
+			}
+		}
+		
+		public void insertAllNewRequestsFromParkManager(ArrayList<?> managerRequests) { /// ofir n
+			
+			
+			String sql = "INSERT INTO g8gonature.request (changeName,newValue,requestStatus) values (?,?,?)";
+			String sql2 = "INSERT INTO g8gonature.discount (amount,startDate,endDate) values (?,?,?)";
+
+			
+			PreparedStatement query;
+			PreparedStatement query2;
+
+			try {
+				query = conn.prepareStatement(sql); // handles updates
+				
+			    if(managerRequests.get(0)!=null) {
+				query.setString(1, "UPDATE MAX VISITORS");
+				query.setString(2, (String) managerRequests.get(0));
+				query.setString(3, "pending");
+				query.executeUpdate();
+		
+			    }
+			    if(managerRequests.get(1)!=null) {
+
+				query.setString(1, "UPDATE MAX VISITORS");
+				query.setString(2, (String) managerRequests.get(1));
+				query.setString(3, "pending");
+				query.executeUpdate();
+			    }
+			
+			    if(managerRequests.get(2)!=null) {
+
+				query.setString(1, "UPDATE GAP");
+				query.setString(2, (String) managerRequests.get(2));
+				query.setString(3, "pending");
+				query.executeUpdate();
+			    }
+				
+			
+				query2=conn.prepareStatement(sql2); /// handles discount
+				
+
+			    if(managerRequests.get(3)!=null && managerRequests.get(4)!=null && managerRequests.get(5)!=null) {
+
+				
+				query2.setString(1, (String)managerRequests.get(5));
+				query2.setString(2, (String) managerRequests.get(3));
+				query2.setString(3, (String) managerRequests.get(4));
+				query2.executeUpdate();
+			    }
+			
+			} catch (SQLException e) {
+				System.out.println("Could not execute checkIfConnected query");
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+		
+		
+		public ArrayList<Request> GetRequestsFromDB() { /// ofir n
+			ArrayList<Request> requests = new ArrayList<>();
+			int i=0;
+			String sql = "SELECT * FROM g8gonature.request";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				ResultSet res = query.executeQuery();
+				
+				while (res.next()) {
+					requests.set(i,new Request(res.getString(1),res.getString(2),res.getString(3),null,null,0,res.getString(4))) ;
+				    i++;
+				}
+			} catch (SQLException e) {
+				System.out.println("Could not execute checkIfConnected query");
+				e.printStackTrace();
+			}
+
+			return requests;
+			
 		}
 
 }

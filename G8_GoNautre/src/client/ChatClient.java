@@ -3,14 +3,15 @@
 // license found at www.lloseng.com 
 
 package client;
+
 import common.*;
 import logic.ClientToServerRequest;
+import logic.Request;
 import logic.ServerToClientResponse;
 import logic.ServerToClientResponse.Response;
 import ocsf.client.*;
 import java.io.*;
 import java.util.ArrayList;
-
 
 /**
  * This class overrides some of the methods defined in the abstract superclass
@@ -31,6 +32,7 @@ public class ChatClient extends AbstractClient {
 	ChatIF clientUI;
 	public static boolean awaitResponse = false;
 	public static ServerToClientResponse responseFromServer;
+	public static ArrayList<Request> requestsWaitingForApproval=new ArrayList<>();
 
 	// Constructors ****************************************************
 
@@ -59,6 +61,14 @@ public class ChatClient extends AbstractClient {
 		if (msg instanceof ServerToClientResponse) {
 			ServerToClientResponse response = (ServerToClientResponse) msg;
 			responseFromServer = response;
+			
+			if (responseFromServer.getResponseType()
+					.equals(ServerToClientResponse.Response.VIEW_MANAGER_REQUEST_RESPONSE)) { // ofir n
+
+				requestsWaitingForApproval = (ArrayList<Request>) responseFromServer.getResultSet(); //// might cause an
+																										//// error
+
+			}
 		}
 	}
 
@@ -87,7 +97,7 @@ public class ChatClient extends AbstractClient {
 			quit();
 		}
 	}
-	
+
 	/**
 	 * This method handles all data coming from the UI
 	 *
@@ -115,7 +125,7 @@ public class ChatClient extends AbstractClient {
 	}
 
 	/* When The client closed this function called */
-	protected void connectionClosed() {		
+	protected void connectionClosed() {
 	}
 
 	/**
