@@ -232,7 +232,7 @@ public class OrderVisitController implements Initializable {
 			new CustomAlerts(AlertType.WARNING, "Bad Time", "Bad Time Input", "Time must be earlier than 18:00")
 					.showAndWait();
 		else if (Integer.parseInt(summaryVisitors.getText()) > 15
-				&& summaryType.getText().equals(OrderType.GROUP.toString())) {
+				&& summaryType.getText().equals(OrderType.GROUP.toString()) && permissionLabel.getText().equals("Guide")) {
 			new CustomAlerts(AlertType.WARNING, "Bad Input", "Invalid Visitor's Number",
 					"Group order can be up to 15 travelers").showAndWait();
 
