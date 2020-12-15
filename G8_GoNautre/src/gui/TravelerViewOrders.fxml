@@ -13,7 +13,6 @@
       <TableView fx:id="ordersTableView" layoutX="129.0" layoutY="122.0" prefHeight="242.0" prefWidth="662.0">
          <columns>
             <TableColumn fx:id="orderIdCol" prefWidth="75.0" text="Order ID" />
-            <TableColumn fx:id="orderDateCol" prefWidth="75.0" text="Order Date" />
             <TableColumn fx:id="visitDateCol" prefWidth="75.0" text="Visit Date" />
             <TableColumn fx:id="visitTimeCol" prefWidth="75.0" text="Visit Time" />
             <TableColumn fx:id="orderStatusCol" prefWidth="75.0" text="Order Status" />
@@ -26,16 +25,14 @@
       <Button fx:id="cancelOrderBtn" layoutX="213.0" layoutY="514.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="186.0" text="   Cancel Order" />
       <Label fx:id="headerLabel" layoutX="384.0" layoutY="45.0" text="Your Orders" />
       <Label layoutX="405.0" layoutY="415.0" text="Selected Order:" underline="true" />
-      <Label fx:id="orderIdTxt" layoutX="216.0" layoutY="463.0" prefHeight="20.0" prefWidth="90.0" text="123456789" />
-      <Label fx:id="orderDateTxt" layoutX="316.0" layoutY="463.0" prefWidth="90.0" text="11/12/2020" />
-      <Label fx:id="visitDateTxt" layoutX="420.0" layoutY="463.0" prefWidth="90.0" text="22/12/2020" />
-      <Label fx:id="visitTimeTxt" layoutX="520.0" layoutY="463.0" prefWidth="90.0" text="14:30" />
-      <Label fx:id="orderStatusTxt" layoutX="614.0" layoutY="463.0" prefWidth="90.0" text="Pending" />
-      <Label layoutX="216.0" layoutY="443.0" prefWidth="90.0" text="Order ID:" underline="true" />
-      <Label layoutX="316.0" layoutY="443.0" prefWidth="90.0" text="Order Date:" underline="true" />
-      <Label layoutX="420.0" layoutY="443.0" prefWidth="90.0" text="Visit Date:" underline="true" />
-      <Label layoutX="520.0" layoutY="443.0" prefWidth="90.0" text="Visit Time:" underline="true" />
-      <Label layoutX="614.0" layoutY="443.0" prefWidth="90.0" text="Order Status:" underline="true" />
+      <Label fx:id="orderIdTxt" layoutX="270.0" layoutY="455.0" prefHeight="20.0" prefWidth="90.0" />
+      <Label fx:id="visitDateTxt" layoutX="367.0" layoutY="455.0" prefWidth="90.0" />
+      <Label fx:id="visitTimeTxt" layoutX="467.0" layoutY="455.0" prefWidth="90.0" />
+      <Label fx:id="orderStatusTxt" layoutX="561.0" layoutY="455.0" prefWidth="90.0" />
+      <Label layoutX="270.0" layoutY="435.0" prefWidth="90.0" text="Order ID:" underline="true" />
+      <Label layoutX="367.0" layoutY="435.0" prefWidth="90.0" text="Visit Date:" underline="true" />
+      <Label layoutX="467.0" layoutY="435.0" prefWidth="90.0" text="Visit Time:" underline="true" />
+      <Label layoutX="561.0" layoutY="435.0" prefWidth="90.0" text="Order Status:" underline="true" />
       <Label layoutX="129.0" layoutY="364.0" text="*Double click on a row to select" />
       <FontAwesomeIconView glyphName="CLOSE" layoutX="249.0" layoutY="540.0" size="15" />
       <FontAwesomeIconView glyphName="CHECK" layoutX="540.0" layoutY="540.0" size="15" />

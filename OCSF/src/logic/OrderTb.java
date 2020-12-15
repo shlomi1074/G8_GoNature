@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class OrderTb {
-	private SimpleStringProperty orderId;
+	private SimpleIntegerProperty orderId;
 	private SimpleStringProperty travelerId;
 	private SimpleIntegerProperty parkId;
 	private SimpleStringProperty orderDate;
@@ -16,11 +16,11 @@ public class OrderTb {
 	private SimpleDoubleProperty price;
 	private SimpleStringProperty orderStatus;
 
-	public OrderTb(String orderId, String travelerId, int parkId,
+	public OrderTb(int orderId, String travelerId, int parkId,
 			String orderDate, String orderTime, String orderType,
 			int numberOfParticipants, String email, double price,
 			String orderStatus) {
-		this.orderId = new SimpleStringProperty(orderId);
+		this.orderId = new SimpleIntegerProperty(orderId);
 		this.travelerId = new SimpleStringProperty(travelerId);
 		this.parkId = new SimpleIntegerProperty(parkId);
 		this.orderDate = new SimpleStringProperty(orderDate);
@@ -32,11 +32,26 @@ public class OrderTb {
 		this.orderStatus = new SimpleStringProperty(orderStatus);
 	}
 
-	public String getOrderId() {
+	//Ofir Avraham Vaknin - Design pattern
+	public OrderTb(Order order)
+	{
+		this.orderId = new SimpleIntegerProperty(order.getOrderId());
+		this.travelerId = new SimpleStringProperty(order.getTravelerId());
+		this.parkId = new SimpleIntegerProperty(order.getParkId());
+		this.orderDate = new SimpleStringProperty(order.getOrderDate());
+		this.orderTime =new SimpleStringProperty(order.getOrderTime());
+		this.orderType = new SimpleStringProperty(order.getOrderType());
+		this.numberOfParticipants = new SimpleIntegerProperty(order.getNumberOfParticipants());
+		this.email = new SimpleStringProperty(order.getEmail());
+		this.price = new SimpleDoubleProperty(order.getPrice());
+		this.orderStatus = new SimpleStringProperty(order.getOrderStatus());			
+	}
+	
+	public int getOrderId() {
 		return orderId.get();
 	}
 
-	public void setOrderId(SimpleStringProperty orderId) {
+	public void setOrderId(SimpleIntegerProperty orderId) {
 		this.orderId = orderId;
 	}
 

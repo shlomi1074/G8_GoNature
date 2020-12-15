@@ -2,11 +2,13 @@ package gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import Controllers.ParkControl;
+import Controllers.TravelerControl;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import logic.Traveler;
+import javafx.scene.shape.Line;
+import logic.Subscriber;
 
 public class ProfileController implements Initializable {
 
@@ -33,19 +35,69 @@ public class ProfileController implements Initializable {
 
 	@FXML
 	private Label parkLabel;
+	
+	@FXML
+	private Line line;
+	
+	private boolean isWorker;//Alon 12.13.20
+	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		init();
 	}
 
-	/* NEED TO CHANGE TO IMPORT PROFILE DATA FROM DATABASE */
 	private void init() {
-//		profileParkLabel.setDisable(true);
-//		profileParkLabel.setVisible(false);
-//		parkLabel.setDisable(true);
-//		parkLabel.setVisible(false);
-//		profileAccountTypeLabel.setText("Family subscriber");
+		loadInfo();
 	}
+	
+	//Alon 13.12.2020
+	public void setWorker(boolean isWorker) {
+		this.isWorker = isWorker;
+	}
+	
+
+	/*
+	 * This function loads profile of current entity (Traveler/Subscriber/Employee)
+	 */
+	public void loadInfo() {
+		//Employee.
+		if(isWorker) { 
+			profileNameLabel.setText(MemberLoginController.member.getFirstName());
+			profileLastNameLabel.setText(MemberLoginController.member.getLastName());
+			profileIDLabel.setText(String.valueOf(MemberLoginController.member.getEmployeeId()));
+			ProfileEmailLabel.setText(MemberLoginController.member.getEmail());
+			String parkId = String.valueOf(MemberLoginController.member.getParkId());
+			profileParkLabel.setText(ParkControl.getParkName(parkId));
+			profileAccountTypeLabel.setText(MemberLoginController.member.getRole().getStr());
+		}
+		//Subscriber
+		else if(TravelerLoginController.traveler==null) {
+			profileNameLabel.setText(TravelerLoginController.subscriber.getFirstName());
+			profileLastNameLabel.setText(TravelerLoginController.subscriber.getLastName());
+			profileIDLabel.setText(TravelerLoginController.subscriber.getTravelerId());
+			ProfileEmailLabel.setText(TravelerLoginController.subscriber.getEmail());
+			profileParkLabel.setVisible(false);
+			parkLabel.setVisible(false);
+			line.setVisible(false);
+			profileAccountTypeLabel.setText(TravelerLoginController.subscriber.getSubscriberType());
+		}
+		//Traveler
+		else {
+			profileNameLabel.setText(TravelerLoginController.traveler.getFirstName());
+			profileLastNameLabel.setText(TravelerLoginController.traveler.getLastName());
+			profileIDLabel.setText(TravelerLoginController.traveler.getTravelerId());
+			ProfileEmailLabel.setText(TravelerLoginController.traveler.getEmail());
+			profileParkLabel.setVisible(false);
+			parkLabel.setVisible(false);
+			line.setVisible(false);
+			Subscriber subscriber = TravelerControl.getSubscriber(TravelerLoginController.traveler.getTravelerId());
+			if(subscriber==null)
+			profileAccountTypeLabel.setText("Guest");
+			else
+				profileAccountTypeLabel.setText(subscriber.getSubscriberType());
+		}
+	}
+	//Alon 13.12.2020 END
 
 }

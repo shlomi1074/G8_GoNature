@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 
 public class FxmlUtil {
 	private Pane view;
+	private boolean isWorker;//Alon 12.13.20
 
 	/**
 	 * This function loads fxml and it's controller
@@ -33,6 +34,7 @@ public class FxmlUtil {
 			loader.setController(controller);
 		} else if (controllerName.equals("profile")) {
 			ProfileController controller = new ProfileController();
+			controller.setWorker(isWorker);//Alon 12.13.20
 			loader.setController(controller);
 		} else if (controllerName.equals("manageTraveler")) {
 			ManageTravelerController controller = new ManageTravelerController();
@@ -68,6 +70,10 @@ public class FxmlUtil {
 
 		return view;
 
+	}
+
+	public void setWorker(boolean isWorker) {
+		this.isWorker = isWorker;
 	}
 
 }

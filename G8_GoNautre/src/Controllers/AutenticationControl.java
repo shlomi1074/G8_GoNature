@@ -7,6 +7,7 @@ import client.ChatClient;
 import client.ClientUI;
 import logic.ClientToServerRequest;
 import logic.ClientToServerRequest.Request;
+import logic.Employees;
 import logic.Subscriber;
 import logic.Traveler;
 
@@ -24,7 +25,7 @@ public class AutenticationControl {
 		if (isConnected(id))
 			return 1;
 		else {
-			if (isTravelerExist(id)) {
+			if (TravelerControl.isTravelerExist(id)) {
 				insertTologgedinTable(id);
 				return 0;
 			}
@@ -87,5 +88,47 @@ public class AutenticationControl {
 		return true;
 
 	}
+	
+/*Alon 12.12.20*/
+	
+	public static boolean isMemberExist(String id,String pass) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.MEMBER_LOGIN,
+				new ArrayList<String>(Arrays.asList(id,pass)));
+		ClientUI.chat.accept(request);
+		Employees member = (Employees) ChatClient.responseFromServer.getResultSet().get(0);
+		if (member == null)
+			return false;
+		return true;
+
+	}
+	
+	/**
+	 * This function handle the member(employee) login by subscriber id
+	 * 
+	 * @return 0 - on success
+	 * @return 1 - member already connected
+	 * @return 2 - member id does not exist
+	 */
+	
+	public static int memberLoginHandler(String id,String password) {
+		boolean connected =isConnected(id);
+		boolean mem_exsit = isMemberExist(id,password);
+		if(connected&&mem_exsit) 
+			return 1;
+		if(!connected&&mem_exsit) {
+			insertTologgedinTable(id);
+			return 0;
+		}
+		return 2;
+			
+	}
+
+	public static void userLogout(String id) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.LOGOUT,
+				new ArrayList<String>(Arrays.asList(id)));
+		ClientUI.chat.accept(request);
+	}
+	
+	/*End of Alon's 12.12.20 edit*/
 
 }

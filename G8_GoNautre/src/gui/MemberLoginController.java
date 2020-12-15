@@ -5,54 +5,59 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import Controllers.AutenticationControl;
+import alerts.CustomAlerts;
+import client.ChatClient;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import logic.Employees;
 
 public class MemberLoginController implements Initializable {
 
+	@FXML
+	private AnchorPane loginContainer;
 
-    @FXML
-    private AnchorPane loginContainer;
+	@FXML
+	private Rectangle rectangle;
 
-    @FXML
-    private Rectangle rectangle;
+	@FXML
+	private Label forgotPasswordLable;
 
-    @FXML
-    private Label forgotPasswordLabel;
+	@FXML
+	private AnchorPane personImageContainer;
 
-    @FXML
-    private AnchorPane personImageContainer;
+	@FXML
+	private ImageView userImageView;
 
-    @FXML
-    private ImageView userImageView;
+	@FXML
+	private AnchorPane lockImageContainer;
 
-    @FXML
-    private AnchorPane lockImageContainer;
+	@FXML
+	private ImageView lockImageView;
 
-    @FXML
-    private ImageView lockImageView;
+	@FXML
+	private Label createAccountLabel;
 
-    @FXML
-    private Label createAccountLabel;
+	@FXML
+	private JFXTextField idTextField;
 
-    @FXML
-    private JFXTextField idTextField;
+	@FXML
+	private JFXPasswordField passwordTextField;
 
-    @FXML
-    private JFXPasswordField passwordTextField;
-
-    @FXML
-    private JFXButton loginButton;
+	@FXML
+	private JFXButton loginButton;
 
 	private Stage parentStage;
+	public static Employees member; // Alon 12.12.20
 
 	public MemberLoginController(Stage parentStage) {
 		this.parentStage = parentStage;
@@ -64,17 +69,62 @@ public class MemberLoginController implements Initializable {
 	}
 
 	@FXML
+	private void recoverPassword() {
+		try {
+			Stage newStage = new Stage();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("RecoverPassword.fxml"));
+			loader.load();
+			Parent p = loader.getRoot();
+			newStage.setTitle("GoNature8 - Recover Password");
+			newStage.setScene(new Scene(p));
+			newStage.setResizable(false);
+			newStage.show();
+
+		} catch (Exception e) {
+			System.out.println("faild to load form");
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
 	private void loginButton() {
-		/* NEED TO CHANGE WHEN WE IMPLEMNT LOGIN VIA DATABASE */
-		String type = "service";
-		if (type.equals("service"))
-			switchScene("ServiceWorker.fxml", "GoNature8 - Service Worker", type);
-		else if (type.equals("parkManager"))
-			switchScene("ParkManager.fxml", "GoNature8 - Park Manager", type);
-		else if (type.equals("entrance"))
-			switchScene("EntranceWorker.fxml", "GoNature8 - Entrance Worker", type);
-		else if (type.equals("depManager"))
-			switchScene("DepartmentManagerScreen.fxml", "GoNature8 - Department Manager", type);
+		/* Alon 12.12.20 */
+		String id = idTextField.getText();
+		String pass = passwordTextField.getText();
+		if (id.isEmpty() || pass.isEmpty())
+			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Please fill all the fields").showAndWait();
+		else {
+			int res = AutenticationControl.memberLoginHandler(id, pass);
+			if (res == 0) {
+				member = (Employees) ChatClient.responseFromServer.getResultSet().get(0);
+				String member_type = member.getRole().getStr();
+				String fxmlName = member_type.replaceAll("\\s+", ""); // Trimming all white spaces.
+				System.out.println(member_type);
+				switch (fxmlName) {
+				case "DepartmentManager":
+					switchScene("DepartmentManagerScreen.fxml", "GoNature8 - Department Manager", member_type);
+					break;
+				case "ParkManager":
+					switchScene("ParkManager.fxml", "GoNature8 - Park Manager", member_type);
+					break;
+				case "Entrance":
+					switchScene("EntranceWorker.fxml", "GoNature8 - Entrance Worker", member_type);
+					break;
+				case "Service":
+					switchScene("ServiceWorker.fxml", "GoNature8 - Service Worker", member_type);
+					break;
+				default:
+					break;
+				}
+			} else if (res == 1) {
+				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error", "This employee is already logedin!")
+						.showAndWait();
+			} else {
+				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error", "Incorrect id or password!")
+						.showAndWait();
+			}
+		}
+
 	}
 
 	private void switchScene(String fxmlName, String title, String type) {
@@ -82,22 +132,22 @@ public class MemberLoginController implements Initializable {
 			Stage thisStage = getStage();
 			Stage newStage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
-			if (type.equals("service")) {
+			if (type.equals("Service")) {
 				ServiceWorkerController controller = new ServiceWorkerController();
 				controller.setStage(newStage);
 				controller.setMainScreenStage(parentStage);
 				loader.setController(controller);
-			} else if (type.equals("parkManager")) {
+			} else if (type.equals("Park Manager")) {
 				ParkManagerController controller = new ParkManagerController();
 				controller.setStage(newStage);
 				controller.setMainScreenStage(parentStage);
 				loader.setController(controller);
-			} else if (type.equals("entrance")) {
+			} else if (type.equals("Entrance")) {
 				EntranceWorkerController controller = new EntranceWorkerController();
 				controller.setStage(newStage);
 				controller.setMainScreenStage(parentStage);
 				loader.setController(controller);
-			} else if (type.equals("depManager")) {
+			} else if (type.equals("Department Manager")) {
 				DepartmentManagerController controller = new DepartmentManagerController();
 				controller.setStage(newStage);
 				controller.setMainScreenStage(parentStage);

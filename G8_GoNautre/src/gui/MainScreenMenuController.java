@@ -97,6 +97,7 @@ public class MainScreenMenuController implements Initializable {
 				loader.setController(controller);
 			} else if (id == 3) {
 				OrderVisitController controller = new OrderVisitController();
+				controller.setOrderFromMain(true);
 				loader.setController(controller);
 			}
 			loader.load();

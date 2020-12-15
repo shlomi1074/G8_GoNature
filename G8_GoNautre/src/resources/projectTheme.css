@@ -353,6 +353,7 @@
 
  #headerLabel {
  	-fx-font-size: 20.0pt;
+ 	-fx-font-weight: bold;
 }
 
 #topPane {
@@ -364,6 +365,7 @@
 	-fx-text-alignment: center;
 }
 
+
 .jfx-date-picker > .arrow-button > .jfx-svg-glyph{
     -fx-background-color: -fx-secondary;
 }
@@ -372,10 +374,12 @@
     -fx-background-color: -fx-secondary;
 }
 
-.jfx-date-picker .jfx-button{ 
-	-fx-background-color: -fx-secondary;
+.jfx-date-picker .jfx-button {
+	-fx-background-color: transparent;
+	-fx-effect: null;
 }
-.jfx-date-picker .jfx-button{ 
-	-fx-background-color: -fx-secondary;
+
+#forgotPasswordLink{
+	-fx-effect: null;
 }
 

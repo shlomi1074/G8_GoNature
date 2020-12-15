@@ -9,6 +9,8 @@ import Util.sendToClient;
 import logic.ClientToServerRequest;
 import logic.ClientToServerRequest.Request;
 import logic.Discount;
+import logic.Employees;
+import logic.Order;
 import logic.Park;
 import logic.ServerToClientResponse;
 import logic.ServerToClientResponse.Response;
@@ -71,9 +73,17 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 				// Shlomi
-				if (request.getRequestType().equals(Request.VIEW_PARAMETERS)) {	
-					Park park = mysqlFunction.getPark(request.getParameters());
-					response = new ServerToClientResponse(Response.VIEW_PARAMETERS_RESPONSE);
+				if (request.getRequestType().equals(Request.GET_PARK_BY_ID)) {	
+					Park park = mysqlFunction.getParkById(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_PARK_BY_ID_RESPONSE);
+					response.setResultSet(new ArrayList<Park>(Arrays.asList(park)));
+					client.sendToClient(response);
+				}
+				
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_PARK_BY_NAME)) {	
+					Park park = mysqlFunction.getParkByName(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_PARK_BY_NAME_RESPONSE);
 					response.setResultSet(new ArrayList<Park>(Arrays.asList(park)));
 					client.sendToClient(response);
 				}
@@ -98,6 +108,105 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(new ArrayList<Discount>(Arrays.asList(discount)));
 					client.sendToClient(response);
 				}
+				
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_ORDERS_BETWEEN_DATES)) {	
+					ArrayList<Order> orders = mysqlFunction.getOrderBetweenTimes(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_ORDERS_BETWEEN_DATES_RESPONSE);
+					response.setResultSet(orders);
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.ADD_ORDER)) {	
+					boolean result = mysqlFunction.AddNewOrder(request.getObj());
+					response = new ServerToClientResponse(Response.ADD_ORDER_RESPONSE);
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.ADD_TRAVELER)) {	
+					boolean result = mysqlFunction.AddTraveler(request.getObj());
+					response = new ServerToClientResponse(Response.ADD_TRAVELER_RESPONSE);
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+				
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_RECENT_ORDER)) {	
+					Order order = mysqlFunction.getRecentOrder(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_RECENT_ORDER_RESPONSE);
+					response.setResultSet(new ArrayList<Order>(Arrays.asList(order)));
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.SEND_MSG_TO_TRAVELER)) {
+					if (mysqlFunction.sendMessageToTraveler(request.getParameters()))
+						client.sendToClient("Success");
+					else
+						client.sendToClient("Failed");
+				}
+				
+				/*Alon 12.12.2020*/
+				if (request.getRequestType().equals(Request.MEMBER_LOGIN)) {
+					Employees member = mysqlFunction.isMemberExist(request.getParameters());//<-bug
+					response = new ServerToClientResponse(Response.MEMBER_LOGIN_RESPONSE);
+					response.setResultSet(new ArrayList<Employees>(Arrays.asList(member)));
+					client.sendToClient(response);
+				}
+				if (request.getRequestType().equals(Request.LOGOUT)) {
+					mysqlFunction.removeFromLoggedInTable(request.getParameters());
+					client.sendToClient("User logedout.");
+				}
+				/*End of Alon's 12.12.20 edit*/
+				
+				
+				/* Ofir */
+				// Ofir Avraham
+				// Imported Order
+				if (request.getRequestType().equals(Request.GET_ALL_ORDER_FOR_ID)) {
+					ArrayList<Order> orders = mysqlFunction.getAllOrdersForID(request.getParameters());
+					response = new ServerToClientResponse<>(Response.GET_ALL_ORDER_FOR_ID_RESPONSE);
+					response.setResultSet(orders);
+					client.sendToClient(response);
+				}
+				// Ofir Avraham Vaknin
+				if(request.getRequestType().equals(Request.CHANGE_ORDER_STATUS_BY_ID))
+				{
+					boolean res = mysqlFunction.setOrderStatusWithIDandStatus(request.getParameters());
+					response = new ServerToClientResponse<>(Response.CHANGE_ORDER_STATUS_BY_ID_RESPONSE);
+					response.setResult(res);
+					client.sendToClient(response);
+				}
+				
+				// Ofir Avraham Vaknin
+				if(request.getRequestType().equals(Request.GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL))
+				{
+					ArrayList<Order> orders = mysqlFunction.findMatchingOrdersInWaitingList(request.getParameters());
+					response = new ServerToClientResponse<>(Response.GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL_RESPONSE);
+					response.setResultSet(orders);
+					client.sendToClient(response);
+				}
+		
+				// Ofir Avraham Vaknin
+				if(request.getRequestType().equals(Request.SEND_MSG_TO_TRAVELER))
+				{
+					boolean result = mysqlFunction.sendMessageToTraveler(request.getParameters());
+					response = new ServerToClientResponse<>(Response.SEND_MSG_TO_TRAVELER_RESPONSE);
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+				
+				// Ofir Avraham Vaknin
+				if(request.getRequestType().equals(Request.GET_ALL_ORDERS))
+				{
+					ArrayList<Order> orders = mysqlFunction.getAllOrdersForID();
+					response = new ServerToClientResponse<>(Response.GET_ALL_ORDERS_RESPONSE);
+					response.setResultSet(orders);
+					client.sendToClient(response);
+				}
+				
+				/* End Ofir */
+
 				client.sendToClient("");
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -25,7 +25,7 @@
          </image>
       </ImageView>
       <Label fx:id="forgotPasswordLabel1" layoutX="120.0" layoutY="459.0" style="-fx-text-fill: white; -fx-opacity: 0.8; -fx-font-size: 14;" text="Not a subscriber yet? Contect us at phone" />
-      <Label layoutX="237.0" layoutY="261.0" text="OR" textAlignment="CENTER" textFill="#ffffffe7">
+      <Label layoutX="241.0" layoutY="261.0" text="OR" textAlignment="CENTER" textFill="#ffffffe7">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>

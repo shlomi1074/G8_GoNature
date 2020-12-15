@@ -1,19 +1,17 @@
 package logic;
 
 public enum WorkerType {
-	SERVICE,
-	ENTRANCE,
-	PARK_MANAGER,
-	DEPARTMENT_MANAGER;
+	ENTRANCE("Entrance"), SERVICE("Service"), PARK_MANAGER("Park Manager"), DEPARTMENT_MANAGER("Department Manager");
+	private String str;
 	
-	  @Override
-	  public String toString() {
-	    switch(this) {
-	      case SERVICE: return "Service";
-	      case ENTRANCE: return "Entrance";
-	      case PARK_MANAGER: return "Park Manager";
-	      case DEPARTMENT_MANAGER: return "Department Manager";
-	      default: throw new IllegalArgumentException();
-	    }
-	  }
+	WorkerType(String str) {
+		this.str = str;
+	}
+	public String getStr() {
+		return str;
+	}
+	public void setStr(String str) {
+		this.str = str;
+	}
+
 }

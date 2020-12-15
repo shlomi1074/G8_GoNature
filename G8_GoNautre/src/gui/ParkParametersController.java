@@ -2,9 +2,7 @@ package gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import Controllers.ParkControl;
-import client.ChatClient;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -35,8 +33,7 @@ public class ParkParametersController implements Initializable {
 
 	// Shlomi
 	private void loadParameters() {
-		ParkControl.viewParkParameters("2"); // NEED TO BE CHANGED WHEN THERE IS MEMBER LOGIN
-		Park park = (Park) ChatClient.responseFromServer.getResultSet().get(0);
+		Park park = ParkControl.getParkById(String.valueOf(MemberLoginController.member.getParkId()));
 		if (park != null) 
 			setLabels(park);
 	}
