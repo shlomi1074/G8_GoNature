@@ -11,68 +11,87 @@ import logic.ClientToServerRequest.Request;
 import logic.Park;
 
 public class ParkControl {
-	
+
 	// Shlomi
-	/* Gets a park by id  */
+	/**
+	 * This function gets park's id and returns Park object.
+	 * 
+	 * @param parkId - park's id
+	 * @return Park object
+	 */
 	public static Park getParkById(String parkId) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_PARK_BY_ID,
 				new ArrayList<String>(Arrays.asList(parkId)));
 		ClientUI.chat.accept(request);
 		Park park = (Park) ChatClient.responseFromServer.getResultSet().get(0);
 		return park;
-		
+
 	}
-	
+
 	// Shlomi
-	/* Gets a park by name  */
+	/**
+	 * This function gets park's name and returns Park object.
+	 * 
+	 * @param parkName
+	 * @return Park object
+	 */
 	public static Park getParkByName(String parkName) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_PARK_BY_NAME,
 				new ArrayList<String>(Arrays.asList(parkName)));
-		ClientUI.chat.accept(request);	
+		ClientUI.chat.accept(request);
 		Park park = (Park) ChatClient.responseFromServer.getResultSet().get(0);
 		return park;
 	}
-	
+
 	// Shlomi
-	/* Gets a list of the park's names  */
+	/**
+	 * This function returns an array list with all the park's names.
+	 * 
+	 * @return ArrayList<String> - all the park's names
+	 */
 	public static ArrayList<String> getParksNames() {
-		ArrayList<Park> parks= getAllParks();
+		ArrayList<Park> parks = getAllParks();
 		ArrayList<String> parksNames = new ArrayList<String>();
 		for (Park park : parks) {
 			parksNames.add(park.getParkName());
 		}
 		return parksNames;
-		
+
 	}
-	
+
 	// Shlomi
-	/* Gets a park by id  */
+	/**
+	 * This function gets park's id and returns the park name.
+	 * 
+	 * @param parkId
+	 * @return String - park name
+	 */
 	public static String getParkName(String parkId) {
-		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_PARK_BY_ID,
-				new ArrayList<String>(Arrays.asList(parkId)));
-		ClientUI.chat.accept(request);
-		Park park = (Park) ChatClient.responseFromServer.getResultSet().get(0);
+		Park park = getParkById(parkId);
 		if (park != null)
 			return park.getParkName();
 		return "Park";
-		
+
 	}
-	
+
 	// Shlomi
-	/* Gets all parks from the server */
+	/**
+	 * This function returns an array list with all the parks in the DB.
+	 * 
+	 * @return ArrayList<Park>
+	 */
 	public static ArrayList<Park> getAllParks() {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ALL_PARKS);
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.getResultSet();
-		
+
 	}
-	
+
 	// Ofir Avraham Vaknin
 	// -1 indicate an error
-	public static int getParkIdByOrderId(ArrayList<OrderTb> orders,int orderId)
-	{
-		for(OrderTb o : orders)
-			if(o.getOrderId() == orderId)
+	public static int getParkIdByOrderId(ArrayList<OrderTb> orders, int orderId) {
+		for (OrderTb o : orders)
+			if (o.getOrderId() == orderId)
 				return o.getParkId();
 		return -1;
 	}

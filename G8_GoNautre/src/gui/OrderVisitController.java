@@ -3,10 +3,16 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import com.jfoenix.controls.*;
 import Controllers.NotificationControl;
 import Controllers.OrderControl;
@@ -17,6 +23,8 @@ import alerts.CustomAlerts;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -26,23 +34,31 @@ import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logic.Messages;
 import logic.Order;
 import logic.OrderStatusName;
 import logic.OrderType;
 import logic.Park;
 import logic.Subscriber;
 import logic.Traveler;
+import resources.MsgTemplates;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.DateCell;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class OrderVisitController implements Initializable {
 
+	@FXML
+	private AnchorPane orderVisitRootPane;
 	@FXML
 	private Accordion accordion;
 
@@ -65,9 +81,6 @@ public class OrderVisitController implements Initializable {
 	private JFXDatePicker datePicker;
 
 	@FXML
-	private JFXTimePicker timePicker;
-
-	@FXML
 	private JFXTextField emailInputOrderVisit;
 
 	@FXML
@@ -87,6 +100,9 @@ public class OrderVisitController implements Initializable {
 
 	@FXML
 	private AnchorPane paymentPane;
+
+	@FXML
+	private JFXComboBox<String> timeComboBox;// shlomi
 
 	@FXML
 	private JFXTextField fullNameInput; // shlomi
@@ -146,6 +162,9 @@ public class OrderVisitController implements Initializable {
 	private Label summaryFullName;
 
 	@FXML
+	private ProgressIndicator pb;
+
+	@FXML
 	private Label summaryPhone; // shlomi
 
 	@FXML
@@ -154,11 +173,9 @@ public class OrderVisitController implements Initializable {
 	DecimalFormat df = new DecimalFormat("####0.00");
 	private Subscriber subscriber;
 	private Traveler traveler;
+	private Order order;
 	private Order recentOrder;
 	private boolean isOrderFromMain = false;
-
-	/* Array with the allowed hours to make orders 8:00 - 18:00 */
-	private int[] AllowedHours = { 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -170,46 +187,96 @@ public class OrderVisitController implements Initializable {
 
 	}
 
+	private boolean addOrderInBackgroundThread() {
+
+		order = new Order(0, summaryID.getText(), getSelectedParkId(), summaryDate.getText(), summaryTime.getText(),
+				summaryType.getText(), Integer.parseInt(summaryVisitors.getText()), summaryEmail.getText(),
+				CalculatePrice(), OrderStatusName.pending.name());
+
+		String[] travelerName = summaryFullName.getText().split(" ");
+		String travelerFirstName = travelerName[0];
+		String travelerLastName = travelerName.length == 1 ? "" : travelerName[1];
+
+		traveler = new Traveler(summaryID.getText(), travelerFirstName, travelerLastName, summaryEmail.getText(),
+				summaryPhone.getText());
+
+		if (OrderControl.addOrder(order, traveler)) {
+			System.out.println("Order added successfuly ");
+			recentOrder = OrderControl.getTravelerRecentOrder(traveler.getTravelerId());
+
+			/* Insert massage to data base */ /* NEED TO BE CHANGED WHEN ADDED MESSAGES */
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			LocalDateTime now = LocalDateTime.now();
+			String dateAndTime = dtf.format(now);
+			String date = dateAndTime.split(" ")[0];
+			String time = dateAndTime.split(" ")[1];
+			if (recentOrder != null) { // Insert email to the database
+				/* Create message content */
+				String emailContent = String.format(MsgTemplates.orderConfirmation[1].toString(),
+						String.valueOf(recentOrder.getOrderId()), summaryPark.getText().trim(),
+						recentOrder.getOrderDate(), recentOrder.getOrderTime(), recentOrder.getOrderType(),
+						String.valueOf(recentOrder.getNumberOfParticipants()), String.valueOf(recentOrder.getPrice()));
+
+				/* Add message to data base */
+				NotificationControl.sendMessageToTraveler(traveler.getTravelerId(), date, time,
+						MsgTemplates.orderConfirmation[0], emailContent, String.valueOf(recentOrder.getOrderId()));
+
+				/* Send message by mail */
+				Messages msg = new Messages(0, traveler.getTravelerId(), date, time,
+						MsgTemplates.orderConfirmation[0], emailContent, recentOrder.getOrderId());
+				NotificationControl.sendEmail(msg);
+				return true;
+			}
+			return false;
+		} else
+			return false;
+
+	}
+
 	// shlomi
 	@FXML
 	private void placeOrderButton() {
+
 		// Shlomi
 		if (isValidInput()) {
 
-			Order order = new Order(0, summaryID.getText(), getSelectedParkId(), summaryDate.getText(),
-					summaryTime.getText(), summaryType.getText(), Integer.parseInt(summaryVisitors.getText()),
-					summaryEmail.getText(), CalculatePrice(), OrderStatusName.pending.name());
+			Task<Boolean> task = new Task<Boolean>() {
+				@Override
+				protected Boolean call() throws Exception {
+					boolean res = false;
+					res = addOrderInBackgroundThread();
+					return res;
+				}
+			};
 
-			String[] travelerName = summaryFullName.getText().split(" ");
-			String travelerFirstName = travelerName[0];
-			String travelerLastName = travelerName.length == 1 ? "" : travelerName[1];
+			pb.setVisible(true);
+			orderVisitRootPane.setDisable(true);
+			new Thread(task).start();
+			task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, new EventHandler<WorkerStateEvent>() {
+				@Override
+				public void handle(WorkerStateEvent t) {
+					boolean res = false;
+					res = task.getValue();
+					pb.setVisible(false);
+					orderVisitRootPane.setDisable(false);
+					if (res) {
+						loadOrderConfirmation(); // load recipe
+					} else {
+						loadRescheduleScreen(order);
+					}
+				}
+			});
 
-			traveler = new Traveler(summaryID.getText(), travelerFirstName, travelerLastName, summaryEmail.getText(),
-					summaryPhone.getText());
-
-			if (OrderControl.addOrder(order, traveler)) {
-				System.out.println("Order added successfuly ");
-				recentOrder = OrderControl.getTravelerRecentOrder(traveler.getTravelerId());
-				/* Insert massage to data base */ /* NEED TO BE CHANGED WHEN ADDED MESSAGES */
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-				LocalDateTime now = LocalDateTime.now();
-				String dateAndTime = dtf.format(now);
-				String date = dateAndTime.split(" ")[0];
-				String time = dateAndTime.split(" ")[1];
-				if (recentOrder != null)
-					NotificationControl.sendMessageToTraveler(traveler.getTravelerId(), date, time,
-							"Enter waiting list",
-							"You have been entered the waiting list." + "Order id: " + recentOrder.getOrderId()
-									+ "\nVisit date: " + recentOrder.getOrderDate() + " " + recentOrder.getOrderTime(),
-							String.valueOf(recentOrder.getOrderId()));
-				loadOrderConfirmation();
-
-				/* NEED TO SEND EMAIL AND SEND MESSAGE */
-			} else {
-				loadRescheduleScreen(order);
-			}
+			task.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED, new EventHandler<WorkerStateEvent>() {
+				@Override
+				public void handle(WorkerStateEvent t) {
+					pb.setVisible(false);
+					orderVisitRootPane.setDisable(false);
+				}
+			});
 
 		}
+
 	}
 
 	/* This function returns the name of the selected park */
@@ -225,28 +292,64 @@ public class OrderVisitController implements Initializable {
 	/* This function check if All the input is valid */
 	private boolean isValidInput() {
 		if (!checkIfFilledAllFields())
-			new CustomAlerts(AlertType.WARNING, "Bad Input", "Bad Input", "Please fill all the fields").showAndWait();
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Bad Input", "Please fill all the fields").showAndWait();
 		else if (summaryID.getText().length() != 9)
-			new CustomAlerts(AlertType.WARNING, "Bad Input", "Bad ID Input", "Id length must be 9").showAndWait();
-		else if (!checkIfVisitTimeIsValid())
-			new CustomAlerts(AlertType.WARNING, "Bad Time", "Bad Time Input", "Time must be earlier than 18:00")
-					.showAndWait();
-		else if (Integer.parseInt(summaryVisitors.getText()) > 15
-				&& summaryType.getText().equals(OrderType.GROUP.toString()) && permissionLabel.getText().equals("Guide")) {
-			new CustomAlerts(AlertType.WARNING, "Bad Input", "Invalid Visitor's Number",
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Bad ID Input", "Id length must be 9").showAndWait();
+		else if (!checkIfOrderTimeIs24HouesFromNow()) {
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visit Time",
+					"Visit time must be atleast 24 hours from now").showAndWait();
+		} else if (Integer.parseInt(summaryVisitors.getText()) > 15
+				&& summaryType.getText().equals(OrderType.GROUP.toString())
+				&& permissionLabel.getText().equals("Guide")) {
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Group order can be up to 15 travelers").showAndWait();
-
 		} else if (subscriber != null && subscriber.getSubscriberType().equals("Family")
 				&& Integer.parseInt(summaryVisitors.getText()) > subscriber.getNumberOfParticipants()) {
-			new CustomAlerts(AlertType.ERROR, "Bad Time", "Invalid Visitor's Number",
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Your family account has " + subscriber.getNumberOfParticipants()
 							+ " members.\nThe number of visitors can not be higher than "
 							+ subscriber.getNumberOfParticipants()).showAndWait();
+		} else if (Integer.parseInt(summaryVisitors.getText()) < 1) {
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
+					"Visitor's number must be positive number and atleast 1. ").showAndWait();
+		} else if (!isValidEmailAddress(summaryEmail.getText())) {
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Email", "Please insert valid email. ")
+					.showAndWait();
+		} else if (!isNumeric(summaryVisitors.getText())) {
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
+					"Visitor's number must be a positive number and atleast 1. ").showAndWait();
+		} else if (!isNumeric(summaryID.getText())) {
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid ID Number", "ID number must be only numbers. ")
+					.showAndWait();
+		} else if (!isNumeric(summaryPhone.getText())) {
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Phone Number", "Phone number must be only numbers ")
+					.showAndWait();
 		} else {
 			return true;
 		}
 		return false;
 
+	}
+
+	/* check for valid email */
+	public boolean isValidEmailAddress(String email) {
+		boolean result = true;
+		try {
+			InternetAddress emailAddr = new InternetAddress(email);
+			emailAddr.validate();
+		} catch (AddressException ex) {
+			result = false;
+		}
+		return result;
+	}
+
+	public static boolean isNumeric(String str) {
+		try {
+			Integer.parseInt(str);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
 	// Shlomi
@@ -275,7 +378,19 @@ public class OrderVisitController implements Initializable {
 				&& !summaryVisitors.getText().isEmpty() && !summaryDate.getText().isEmpty()
 				&& !summaryDate.getText().equals("null")) {
 
-			CheckOut basic = new RegularCheckOut(Integer.parseInt(summaryVisitors.getText()), 1, summaryDate.getText());
+			int visitorsNumber = 0;
+			if (!isNumeric(summaryVisitors.getText())) {
+				System.out.println("not number");
+				return 0.0;
+			} else {
+				visitorsNumber = Integer.parseInt(summaryVisitors.getText());
+				if (visitorsNumber <= 0) {
+					System.out.println("bad number");
+					return 0.0;
+				}
+			}
+
+			CheckOut basic = new RegularCheckOut(visitorsNumber, 1, summaryDate.getText());
 			/* subscriber - Solo/family order */
 			if ((permissionLabel.getText().equals("Solo") || permissionLabel.getText().equals("Family"))
 					&& summaryType.getText().equals(OrderType.SOLO.toString())
@@ -289,15 +404,15 @@ public class OrderVisitController implements Initializable {
 				RegularpreOrderCheckOut checkOut = new RegularpreOrderCheckOut(basic);
 				return checkOut.getPrice();
 
-				/* guide - group order - pay online */
-			} else if (permissionLabel.getText().equals("Guide") && summaryPayment.getText().equals("Online")
+				/* group order - pay online */
+			} else if (summaryPayment.getText().equals("Online")
 					&& summaryType.getText().equals(OrderType.GROUP.toString())) {
 				GuidePrePayCheckOut checkOut = new GuidePrePayCheckOut(basic);
 				return checkOut.getPrice();
 
 			}
-			/* guide - group order - pay at the park */
-			else if (permissionLabel.getText().equals("Guide") && summaryPayment.getText().equals("At The Park")
+			/* group order - pay at the park */
+			else if (summaryPayment.getText().equals("At The Park")
 					&& summaryType.getText().equals(OrderType.GROUP.toString())) {
 				GuidePayAtParkCheckOut checkOut = new GuidePayAtParkCheckOut(basic);
 				return checkOut.getPrice();
@@ -308,17 +423,71 @@ public class OrderVisitController implements Initializable {
 		return 0.0;
 	}
 
-	// Shlomi
-	private boolean checkIfVisitTimeIsValid() {
-		int hour = Integer.parseInt(summaryTime.getText().split(":")[0]);
-		for (int i : AllowedHours) {
-			if (i == hour)
-				return true;
+	private boolean checkIfOrderTimeIs24HouesFromNow() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime now = LocalDateTime.now();
+		String currentDateAndTime = dtf.format(now);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Calendar c = Calendar.getInstance();
+		try {
+			c.setTime(sdf.parse(currentDateAndTime));
+		} catch (Exception e) {
+			System.out.println("order visit controller: checkIfOrderTimeIs24HouesFromNow function.");
+			e.printStackTrace();
 		}
-		return false;
+		// Number of Days to add
+		c.add(Calendar.DAY_OF_MONTH, 1);
+		currentDateAndTime = sdf.format(c.getTime());
+		Date orderDate = null;
+		Date dateOfTommorow = null;
+		try {
+			orderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+					.parse(summaryDate.getText() + " " + summaryTime.getText());
+			dateOfTommorow = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(currentDateAndTime);
+		} catch (ParseException e) {
+			System.out.println("order visit controller: checkIfOrderTimeIs24HouesFromNow function.");
+			e.printStackTrace();
+		}
+
+		if (dateOfTommorow.after(orderDate)) {
+			return false;
+		}
+		return true;
 	}
 
 	private void initLabels() {// shlomi
+
+		if (!isOrderFromMain) {
+			String id = "";
+			if (TravelerLoginController.traveler != null) {
+				id = TravelerLoginController.traveler.getTravelerId();
+				fullNameInput.setText(TravelerLoginController.traveler.getFirstName() + " "
+						+ TravelerLoginController.traveler.getLastName());
+				emailInputOrderVisit.setText(TravelerLoginController.traveler.getEmail());
+				phoneInput.setText(TravelerLoginController.traveler.getPhoneNumber());
+
+			} else {
+				id = TravelerLoginController.subscriber.getTravelerId();
+				fullNameInput.setText(TravelerLoginController.subscriber.getFirstName() + " "
+						+ TravelerLoginController.subscriber.getLastName());
+				emailInputOrderVisit.setText(TravelerLoginController.subscriber.getEmail());
+				phoneInput.setText(TravelerLoginController.subscriber.getPhoneNumber());
+			}
+			idInputOrderVisit.setText(id);
+			idInputOrderVisit.setDisable(true);
+			fullNameInput.setDisable(true);
+			emailInputOrderVisit.setDisable(true);
+			phoneInput.setDisable(true);
+
+			subscriber = TravelerControl.getSubscriber(id);
+			if (subscriber == null) {
+				permissionLabel.setText("Guest");
+			} else
+				permissionLabel.setText(subscriber.getSubscriberType());
+
+			initComboBoxes();
+
+		}
 		summaryPark.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
@@ -407,7 +576,7 @@ public class OrderVisitController implements Initializable {
 		summaryID.textProperty().bind(Bindings.convert(idInputOrderVisit.textProperty()));
 		summaryPark.textProperty().bind(Bindings.convert(parksComboBox.valueProperty()));
 		summaryDate.textProperty().bind(Bindings.convert(datePicker.valueProperty()));
-		summaryTime.textProperty().bind(Bindings.convert(timePicker.valueProperty()));
+		summaryTime.textProperty().bind(Bindings.convert(timeComboBox.valueProperty()));
 		summaryType.textProperty().bind(Bindings.convert(typeComboBox.valueProperty()));
 		summaryVisitors.textProperty().bind(Bindings.convert(numOfVisitorsOrderVisit.textProperty()));
 		summaryEmail.textProperty().bind(Bindings.convert(emailInputOrderVisit.textProperty()));
@@ -417,15 +586,14 @@ public class OrderVisitController implements Initializable {
 
 	/* Setup the date picker */
 	private void initDatePicker() {
-		timePicker.set24HourView(true);
 		/* Disable the user from picking past dates */
 		datePicker.setDayCellFactory(picker -> new DateCell() {
 			@Override
 			public void updateItem(LocalDate date, boolean empty) {
 				super.updateItem(date, empty);
 				LocalDate today = LocalDate.now();
-
 				setDisable(empty || date.compareTo(today) < 0);
+				// || date.compareTo(today) == 0
 			}
 		});
 	}
@@ -448,6 +616,7 @@ public class OrderVisitController implements Initializable {
 			paymentPane.setDisable(true);
 			summaryPayment.setText("At The Park");
 		}
+		summaryTotalPrice.setText(df.format(CalculatePrice()) + "₪");
 	}
 
 	@FXML
@@ -460,11 +629,13 @@ public class OrderVisitController implements Initializable {
 			paymentPane.setDisable(false);
 			summaryPayment.setText("Online");
 		}
+		summaryTotalPrice.setText(df.format(CalculatePrice()) + "₪");
 	}
 
 	private void initComboBoxes() {
 		parksComboBox.getItems().clear();
 		typeComboBox.getItems().clear();
+		timeComboBox.getItems().clear();
 
 		/* Set parks combobox to load dynamically from database */ // Shlomi
 		ArrayList<String> parksNames = ParkControl.getParksNames();
@@ -492,6 +663,10 @@ public class OrderVisitController implements Initializable {
 				}
 			}
 		});
+
+		ArrayList<String> availableTime = new ArrayList<>(Arrays.asList("08:00", "09:00", "10:00", "11:00", "12:00",
+				"13:00", "14:00", "15:00", "16:00", "17:00", "18:00"));
+		timeComboBox.getItems().addAll(availableTime);
 	}
 
 	private void loadRescheduleScreen(Order order) {
@@ -503,11 +678,13 @@ public class OrderVisitController implements Initializable {
 			controller.setOrder(order);
 			loader.setController(controller);
 			loader.load();
-			controller.SetSelectedTimeLabel(summaryDate.getText() + ", " + summaryTime.getText());
-			controller.SetRescheduleStage(newStage);
+			controller.setSelectedTimeLabel(summaryDate.getText() + ", " + summaryTime.getText());
+			controller.setRescheduleStage(newStage);
+			if (isOrderFromMain) {
+				controller.setOrderFromMain(true);
 
-			if (isOrderFromMain)
-				thisStage.close();
+			}
+			controller.setOrderStage(thisStage);
 			controller.setTraveler(traveler);
 			Parent p = loader.getRoot();
 

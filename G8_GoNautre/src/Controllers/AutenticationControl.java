@@ -65,6 +65,12 @@ public class AutenticationControl {
 
 	}
 
+	/**
+	 * This function get a traveler's id and ask the server to
+	 * insert it to "loggedIn" table.
+	 *  
+	 * @param id - the traveler's id.
+	 */
 	private static void insertTologgedinTable(String id) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.INSERT_TO_LOGGEDIN,
 				new ArrayList<String>(Arrays.asList(id)));
@@ -72,6 +78,12 @@ public class AutenticationControl {
 
 	}
 
+	/**
+	 * This function gets a user id and check if the user is connected to the system.
+	 *  
+	 * @param id - the user id (traveler of member)
+	 * @return true if connected, false otherwise.
+	 */
 	public static boolean isConnected(String id) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.IS_CONNECTED,
 				new ArrayList<String>(Arrays.asList(id)));
@@ -79,6 +91,12 @@ public class AutenticationControl {
 		return ChatClient.responseFromServer.isResult();
 	}
 
+	/**
+	 * This function gets an id and checks if there is such traveler with the same id.
+	 * 
+	 * @param id - the id to check
+	 * @return true if there is traveler with this id.
+	 */
 	public static boolean isTravelerExist(String id) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.TRAVELER_LOGIN_ID,
 				new ArrayList<String>(Arrays.asList(id)));

@@ -19,7 +19,7 @@ public class mysqlConnection {
 			throw ex;
 		}
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/g8prototype?serverTimezone=UTC",
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/g8gonature?serverTimezone=UTC",
 					"root", "root");
 			
 			/* How to handle multiple requests to the database */

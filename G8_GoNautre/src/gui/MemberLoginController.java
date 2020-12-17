@@ -18,7 +18,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import logic.Employees;
 
 public class MemberLoginController implements Initializable {
@@ -75,6 +77,9 @@ public class MemberLoginController implements Initializable {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("RecoverPassword.fxml"));
 			loader.load();
 			Parent p = loader.getRoot();
+			/* Block parent stage until child stage closes */
+			newStage.initModality(Modality.WINDOW_MODAL);
+			newStage.initOwner((Stage) loginButton.getScene().getWindow());
 			newStage.setTitle("GoNature8 - Recover Password");
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);

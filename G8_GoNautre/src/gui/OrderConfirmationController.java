@@ -53,6 +53,7 @@ public class OrderConfirmationController implements Initializable {
 
 	@FXML
 	private JFXButton finishBtn;
+
 	private Order order;
 	private Traveler traveler;
 	private String paymentMethod;
@@ -69,19 +70,19 @@ public class OrderConfirmationController implements Initializable {
 			summaryFullName.setText(traveler.getFirstName() + " " + traveler.getLastName());
 			summaryPhone.setText(traveler.getPhoneNumber());
 			summaryEmail.setText(traveler.getEmail());
-
 			summaryPark.setText(ParkControl.getParkName(order.getParkId() + ""));
 			summaryDate.setText(order.getOrderDate());
 			summaryTime.setText(order.getOrderTime());
 			summaryType.setText(order.getOrderType());
 			summaryVisitors.setText(order.getNumberOfParticipants() + "");
 			summaryPayment.setText(paymentMethod);
-			
+
 			totalPriceLabel.setText(order.getPrice() + "₪");
 		}
 
 	}
-	
+
+	/* On OK button click */
 	@FXML
 	private void closeStage() {
 		stage.close();
@@ -102,7 +103,5 @@ public class OrderConfirmationController implements Initializable {
 	public void setSummaryPayment(String paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
-	
-	
 
 }

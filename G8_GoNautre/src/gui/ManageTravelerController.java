@@ -68,8 +68,15 @@ public class ManageTravelerController implements Initializable {
 
 	@FXML
 	private Label headerLabel;
+	
+    @FXML
+    private Label orderIdTxt;
+
+    @FXML
+    private JFXTextField visitorsTextField;
 
 	private OrderTb clickedRow;
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

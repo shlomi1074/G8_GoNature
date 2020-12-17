@@ -6,10 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import Util.sendToClient;
+import controllers.EmailControl;
 import logic.ClientToServerRequest;
 import logic.ClientToServerRequest.Request;
 import logic.Discount;
 import logic.Employees;
+import logic.Messages;
 import logic.Order;
 import logic.Park;
 import logic.ServerToClientResponse;
@@ -66,73 +68,73 @@ public class HandleClientRequest implements Runnable {
 					mysqlFunction.insertToLoggedInTable(request.getParameters());
 					client.sendToClient("Finished Insert");
 				}
-				if (request.getRequestType().equals(Request.SUBSCRIBER_LOGIN_SUBID)) {	
+				if (request.getRequestType().equals(Request.SUBSCRIBER_LOGIN_SUBID)) {
 					Subscriber sub = mysqlFunction.getSubscriberBySubId(request.getParameters());
 					response = new ServerToClientResponse(Response.SUBSCRIBER_LOGIN_ID_RESPONSE);
 					response.setResultSet(new ArrayList<Traveler>(Arrays.asList(sub)));
 					client.sendToClient(response);
 				}
 				// Shlomi
-				if (request.getRequestType().equals(Request.GET_PARK_BY_ID)) {	
+				if (request.getRequestType().equals(Request.GET_PARK_BY_ID)) {
 					Park park = mysqlFunction.getParkById(request.getParameters());
 					response = new ServerToClientResponse(Response.GET_PARK_BY_ID_RESPONSE);
 					response.setResultSet(new ArrayList<Park>(Arrays.asList(park)));
 					client.sendToClient(response);
 				}
-				
+
 				// Shlomi
-				if (request.getRequestType().equals(Request.GET_PARK_BY_NAME)) {	
+				if (request.getRequestType().equals(Request.GET_PARK_BY_NAME)) {
 					Park park = mysqlFunction.getParkByName(request.getParameters());
 					response = new ServerToClientResponse(Response.GET_PARK_BY_NAME_RESPONSE);
 					response.setResultSet(new ArrayList<Park>(Arrays.asList(park)));
 					client.sendToClient(response);
 				}
 				// Shlomi
-				if (request.getRequestType().equals(Request.GET_SUBSCRIBER)) {	
+				if (request.getRequestType().equals(Request.GET_SUBSCRIBER)) {
 					Subscriber sub = mysqlFunction.getSubscriberById(request.getParameters());
 					response = new ServerToClientResponse(Response.GET_SUBSCRIBER_RESPONSE);
 					response.setResultSet(new ArrayList<Subscriber>(Arrays.asList(sub)));
 					client.sendToClient(response);
 				}
 				// Shlomi
-				if (request.getRequestType().equals(Request.GET_ALL_PARKS)) {	
+				if (request.getRequestType().equals(Request.GET_ALL_PARKS)) {
 					ArrayList<Park> parks = mysqlFunction.getAllParks(request.getParameters());
 					response = new ServerToClientResponse(Response.GET_ALL_PARKS_RESPONSE);
 					response.setResultSet(parks);
 					client.sendToClient(response);
 				}
 				// Shlomi
-				if (request.getRequestType().equals(Request.GET_MAX_DISCOUNT)) {	
+				if (request.getRequestType().equals(Request.GET_MAX_DISCOUNT)) {
 					Discount discount = mysqlFunction.getMaxDisount(request.getParameters());
 					response = new ServerToClientResponse(Response.GET_MAX_DISCOUNT_RESPONSE);
 					response.setResultSet(new ArrayList<Discount>(Arrays.asList(discount)));
 					client.sendToClient(response);
 				}
-				
+
 				// Shlomi
-				if (request.getRequestType().equals(Request.GET_ORDERS_BETWEEN_DATES)) {	
+				if (request.getRequestType().equals(Request.GET_ORDERS_BETWEEN_DATES)) {
 					ArrayList<Order> orders = mysqlFunction.getOrderBetweenTimes(request.getParameters());
 					response = new ServerToClientResponse(Response.GET_ORDERS_BETWEEN_DATES_RESPONSE);
 					response.setResultSet(orders);
 					client.sendToClient(response);
 				}
 				// Shlomi
-				if (request.getRequestType().equals(Request.ADD_ORDER)) {	
+				if (request.getRequestType().equals(Request.ADD_ORDER)) {
 					boolean result = mysqlFunction.AddNewOrder(request.getObj());
 					response = new ServerToClientResponse(Response.ADD_ORDER_RESPONSE);
 					response.setResult(result);
 					client.sendToClient(response);
 				}
 				// Shlomi
-				if (request.getRequestType().equals(Request.ADD_TRAVELER)) {	
+				if (request.getRequestType().equals(Request.ADD_TRAVELER)) {
 					boolean result = mysqlFunction.AddTraveler(request.getObj());
 					response = new ServerToClientResponse(Response.ADD_TRAVELER_RESPONSE);
 					response.setResult(result);
 					client.sendToClient(response);
 				}
-				
+
 				// Shlomi
-				if (request.getRequestType().equals(Request.GET_RECENT_ORDER)) {	
+				if (request.getRequestType().equals(Request.GET_RECENT_ORDER)) {
 					Order order = mysqlFunction.getRecentOrder(request.getParameters());
 					response = new ServerToClientResponse(Response.GET_RECENT_ORDER_RESPONSE);
 					response.setResultSet(new ArrayList<Order>(Arrays.asList(order)));
@@ -145,10 +147,10 @@ public class HandleClientRequest implements Runnable {
 					else
 						client.sendToClient("Failed");
 				}
-				
-				/*Alon 12.12.2020*/
+
+				/* Alon 12.12.2020 */
 				if (request.getRequestType().equals(Request.MEMBER_LOGIN)) {
-					Employees member = mysqlFunction.isMemberExist(request.getParameters());//<-bug
+					Employees member = mysqlFunction.isMemberExist(request.getParameters());// <-bug
 					response = new ServerToClientResponse(Response.MEMBER_LOGIN_RESPONSE);
 					response.setResultSet(new ArrayList<Employees>(Arrays.asList(member)));
 					client.sendToClient(response);
@@ -157,9 +159,8 @@ public class HandleClientRequest implements Runnable {
 					mysqlFunction.removeFromLoggedInTable(request.getParameters());
 					client.sendToClient("User logedout.");
 				}
-				/*End of Alon's 12.12.20 edit*/
-				
-				
+				/* End of Alon's 12.12.20 edit */
+
 				/* Ofir */
 				// Ofir Avraham
 				// Imported Order
@@ -170,42 +171,37 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 				// Ofir Avraham Vaknin
-				if(request.getRequestType().equals(Request.CHANGE_ORDER_STATUS_BY_ID))
-				{
+				if (request.getRequestType().equals(Request.CHANGE_ORDER_STATUS_BY_ID)) {
 					boolean res = mysqlFunction.setOrderStatusWithIDandStatus(request.getParameters());
 					response = new ServerToClientResponse<>(Response.CHANGE_ORDER_STATUS_BY_ID_RESPONSE);
 					response.setResult(res);
 					client.sendToClient(response);
 				}
-				
+
 				// Ofir Avraham Vaknin
-				if(request.getRequestType().equals(Request.GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL))
-				{
+				if (request.getRequestType().equals(Request.GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL)) {
 					ArrayList<Order> orders = mysqlFunction.findMatchingOrdersInWaitingList(request.getParameters());
 					response = new ServerToClientResponse<>(Response.GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL_RESPONSE);
 					response.setResultSet(orders);
 					client.sendToClient(response);
 				}
-		
+
 				// Ofir Avraham Vaknin
-				if(request.getRequestType().equals(Request.SEND_MSG_TO_TRAVELER))
-				{
+				if (request.getRequestType().equals(Request.SEND_MSG_TO_TRAVELER)) {
 					boolean result = mysqlFunction.sendMessageToTraveler(request.getParameters());
 					response = new ServerToClientResponse<>(Response.SEND_MSG_TO_TRAVELER_RESPONSE);
 					response.setResult(result);
 					client.sendToClient(response);
 				}
-				
+
 				// Ofir Avraham Vaknin
-				if(request.getRequestType().equals(Request.GET_ALL_ORDERS))
-				{
+				if (request.getRequestType().equals(Request.GET_ALL_ORDERS)) {
 					ArrayList<Order> orders = mysqlFunction.getAllOrdersForID();
 					response = new ServerToClientResponse<>(Response.GET_ALL_ORDERS_RESPONSE);
 					response.setResultSet(orders);
 					client.sendToClient(response);
 				}
-				
-				
+
 				/* End Ofir */
 				/* Lior */
 				if (request.getRequestType().equals(Request.DELETE_TRAVELER)) {
@@ -213,7 +209,7 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient("Finished Insert");
 					client.sendToClient("");
 				}
-				
+
 				if (request.getRequestType().equals(Request.INSERT_TO_SUBSCRIBER)) {
 					mysqlFunction.insertSubscriberToSubscriberTable(request.getParameters());
 					client.sendToClient("Finished Insert");
@@ -224,26 +220,26 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient("Finished Insert");
 					client.sendToClient("");
 				}
-				
-				if(request.getRequestType().equals(Request.MANAGER_REQUEST)) { // ofir n
 
+				if (request.getRequestType().equals(Request.MANAGER_REQUEST)) { // ofir n
 					mysqlFunction.insertAllNewRequestsFromParkManager(request.getParameters());
-
 					response = new ServerToClientResponse(Response.MANAGER_REQUEST_RESPONSE);
 					client.sendToClient(response);
 				}
 
-				
-				if(request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) { // ofir n
-
+				if (request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) { // ofir n
 					response = new ServerToClientResponse(Response.VIEW_MANAGER_REQUEST_RESPONSE);
 					response.setResultSet(mysqlFunction.GetRequestsFromDB());
-					
 					client.sendToClient(response);
-			
 				}
 				
-				
+				// Shlomi
+				if (request.getRequestType().equals(Request.SEND_EMAIL)) {
+					boolean result = EmailControl.sendEmail((Messages)request.getObj());
+					response = new ServerToClientResponse(Response.SEND_EMAIL_RESPONSE);
+					response.setResult(result);
+					client.sendToClient(response);
+				}
 
 				client.sendToClient("");
 			} catch (IOException e) {

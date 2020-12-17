@@ -93,7 +93,7 @@ public class AddSubscriberController implements Initializable {
 	}
 
 	private void initComboBoxes() {
-		typeComboBox.getItems().addAll("Solo Account", "Family Account", "Guide Account");
+		typeComboBox.getItems().addAll("Solo", "Family", "Guide");
 		
 		
 		/* Listener to type ComboBox. activate on every item selected */

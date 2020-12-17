@@ -27,13 +27,21 @@ public class OrderControl {
 	}
 
 	// Shlomi
-	/* This function add a new order if there is enough place in the park */
+	/**
+	 * This function gets a traveler and his order.
+	 * The function adds the order to DB if the date is available.
+	 * 
+	 * @param order - Order object 
+	 * @param traveler - Traveler object
+	 * @return true on success, false otherwise
+	 */
 	public static boolean addOrder(Order order, Traveler traveler) {
 		if ((order.getOrderStatus().equals(OrderStatusName.pending.name()) && isDateAvailable(order))
 				|| order.getOrderStatus().equals(OrderStatusName.waiting.name())) {
 			ClientToServerRequest<Order> request = new ClientToServerRequest<>(Request.ADD_ORDER);
 			request.setObj(order);
 			ClientUI.chat.accept(request);
+			
 			/* Add order */
 			if (ChatClient.responseFromServer.isResult()) {
 				if (TravelerControl.isTravelerExist(traveler.getTravelerId())) {
@@ -57,10 +65,15 @@ public class OrderControl {
 	}
 
 	// Shlomi
-	/* This function gets the most recent order of a traveler */
-	public static Order getTravelerRecentOrder(String id) {
+	/**
+	 * This function gets an id of a traveler and return his most recent order.
+	 * 
+	 * @param travelerId - the traveler id 
+	 * @return Order object - the traveler most recent order
+	 */
+	public static Order getTravelerRecentOrder(String travelerId) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_RECENT_ORDER,
-				new ArrayList<String>(Arrays.asList(id)));
+				new ArrayList<String>(Arrays.asList(travelerId)));
 		ClientUI.chat.accept(request);
 		Order order = (Order) ChatClient.responseFromServer.getResultSet().get(0);
 		return order;
@@ -68,7 +81,12 @@ public class OrderControl {
 	}
 
 	// Shlomi
-	/* This function check if there is enough place for a given order */
+	/**
+	 * This function gets an order and check if the order's date and time is available
+	 * 
+	 * @param order - the order to check
+	 * @return true if available, false otherwise
+	 */
 	public static boolean isDateAvailable(Order order) {
 		String parkId = String.valueOf(order.getParkId());
 		Park park = ParkControl.getParkById(parkId);
@@ -77,8 +95,8 @@ public class OrderControl {
 		int estimatedStayTime = park.getEstimatedStayTime();
 
 		String visitDate = order.getOrderDate();
-		String startTime = (hour - estimatedStayTime) + ":" + Integer.parseInt(timeToCheck.split(":")[1]);
-		String endTime = (hour + estimatedStayTime) + ":" + Integer.parseInt(timeToCheck.split(":")[1]);
+		String startTime = (hour - estimatedStayTime) + ":00";
+		String endTime = (hour + estimatedStayTime) + ":00";
 
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ORDERS_BETWEEN_DATES,
 				new ArrayList<String>(Arrays.asList(parkId, visitDate, startTime, endTime)));
