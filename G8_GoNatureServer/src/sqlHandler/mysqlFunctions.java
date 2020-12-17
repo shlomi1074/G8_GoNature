@@ -12,6 +12,7 @@ import logic.Discount;
 import logic.DiscountTb;
 import logic.Employees;
 import logic.Order;
+import logic.OrderStatusName;
 import logic.Park;
 import logic.Request;
 import logic.Subscriber;
@@ -208,12 +209,13 @@ public class mysqlFunctions {
 		}
 		return discount;
 	}
-
+	
+	
 	// shlomi
 	public ArrayList<Order> getOrderBetweenTimes(ArrayList<?> parameters) {
 		ArrayList<Order> orders = new ArrayList<Order>();
 
-		String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? and orderDate = ? and orderTime >= ? and orderTime <= ?";
+		String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? and orderDate = ? and orderTime >= ? and orderTime <= ? AND orderStatus != ?";
 		PreparedStatement query;
 		try {
 			query = conn.prepareStatement(sql);
@@ -221,6 +223,7 @@ public class mysqlFunctions {
 			query.setString(2, (String) parameters.get(1));
 			query.setString(3, (String) parameters.get(2));
 			query.setString(4, (String) parameters.get(3));
+			query.setString(4, OrderStatusName.cancel.name());
 			ResultSet res = query.executeQuery();
 
 			while (res.next())
@@ -344,7 +347,7 @@ public class mysqlFunctions {
 				}
 			}
 		} catch (SQLException e) {
-			System.out.println("Could not execute checkIfConnected query");
+			System.out.println("Could not execute isMemberExist query");
 			e.printStackTrace();
 		}
 		return member;
@@ -358,7 +361,7 @@ public class mysqlFunctions {
 			query.setString(1, (String) parameters.get(0));
 			query.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("Could not execute checkIfConnected query");
+			System.out.println("Could not execute removeFromLoggedInTable query");
 			e.printStackTrace();
 		}
 	}
@@ -380,7 +383,7 @@ public class mysqlFunctions {
             res = query.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("Could not execute insertToLoggedInTable query");
+            System.out.println("Could not execute sendMessageToTraveler query");
             e.printStackTrace();
         }
         return res == 1;
@@ -404,7 +407,7 @@ public class mysqlFunctions {
 				}
 
 			} catch (SQLException e) {
-				System.out.println("Could not execute getAllOrdersForId");
+				System.out.println("Could not execute getAllOrdersForID");
 				e.printStackTrace();
 			}
 			return orders;
@@ -444,7 +447,7 @@ public class mysqlFunctions {
 				int res = query.executeUpdate();
 				return res == 1;
 			} catch (SQLException e) {
-				System.out.println("Could not execute getAllOrdersForId");
+				System.out.println("Could not execute setOrderStatusWithIDandStatus");
 				e.printStackTrace();
 			}
 			return false;
@@ -662,12 +665,30 @@ public class mysqlFunctions {
 				    i++;
 				}
 			} catch (SQLException e) {
-				System.out.println("Could not execute checkIfConnected query");
+				System.out.println("Could not execute GetRequestsFromDB query");
 				e.printStackTrace();
 			}
 
 			return requests;
 			
+		}
+
+		public String getEmailByOrderID(int orderId) {
+			String sql = "SELECT order.email FROM g8gonature.order WHERE orderId = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setInt(1, orderId);
+				ResultSet res = query.executeQuery();
+				
+				if (res.next())
+					return res.getString(1);
+
+			} catch (SQLException e) {
+				System.out.println("Could not execute getEmailByOrderID");
+				e.printStackTrace();
+			}
+			return null;
 		}
 
 }

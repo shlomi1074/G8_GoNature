@@ -12,7 +12,12 @@ import logic.Subscriber;
 
 public class TravelerControl {
 
-	// Shlomi
+	/**
+	 * This function get an id and returns Subscriber object that match the given id.
+	 *  
+	 * @param id - the id of the subscriber
+	 * @return Subscriber object, null if not exist
+	 */
 	public static Subscriber getSubscriber(String id) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_SUBSCRIBER,
 				new ArrayList<String>(Arrays.asList(id)));
@@ -21,31 +26,29 @@ public class TravelerControl {
 		return subscriber;
 	}
 
-	// Shlomi
-	/*
-	 * This function get id and return true if there is subscriber or a regular
-	 * traveler with this id
+	/**
+	 * This function gets an id and check if there is a traveler (regular of subscriber)
+	 * that match this id.
+	 * 
+	 * @param id - the id to check 
+	 * @return true if the exist in the system, false otherwise
 	 */
 	public static boolean isTravelerExist(String id) {
 		/* First we check if the id is subscriber */
-		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_SUBSCRIBER,
-				new ArrayList<String>(Arrays.asList(id)));
-		ClientUI.chat.accept(request);
-		Subscriber subscriber = (Subscriber) ChatClient.responseFromServer.getResultSet().get(0);
+		Subscriber subscriber = getSubscriber(id);
 		if (subscriber != null) // If not null means the subscriber exist
 			return true;
 		else {
-			/* Now we check if the id is regular traveler */
-			request = new ClientToServerRequest<>(Request.TRAVELER_LOGIN_ID, new ArrayList<String>(Arrays.asList(id)));
+			/* If there is no subscriber with such id
+			 * we check if the id is regular traveler */
+			ClientToServerRequest request = new ClientToServerRequest<>(Request.TRAVELER_LOGIN_ID, new ArrayList<String>(Arrays.asList(id)));
 			ClientUI.chat.accept(request);
 			Traveler traveler = (Traveler) ChatClient.responseFromServer.getResultSet().get(0);
 			if (traveler != null) // If not null means the traveler exist
 				return true;
 
 		}
-
 		return false;
-
 	}
 
 	// Lior

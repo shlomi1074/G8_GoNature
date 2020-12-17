@@ -17,7 +17,7 @@ import javafx.scene.layout.Pane;
 
 public class FxmlUtil {
 	private Pane view;
-	private boolean isWorker;//Alon 12.13.20
+	private boolean isWorker; // true if it is member (park worker)
 
 	/**
 	 * This function loads fxml and it's controller

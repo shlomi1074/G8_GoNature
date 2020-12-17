@@ -9,5 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.21.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/G8_Common"/>
+	<classpathentry kind="lib" path="lib/mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

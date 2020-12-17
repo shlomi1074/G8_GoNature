@@ -40,7 +40,7 @@ public class GoNatureServer extends AbstractServer {
 
 	private ServerGUIController serverGUIController;
 
-	private Connection mysqlconnection;
+	public static Connection mysqlconnection;
 	private mysqlFunctions mysqlFunction;
 
 	public GoNatureServer(int port, ServerGUIController serverGUIController) throws Exception {

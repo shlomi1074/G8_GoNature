@@ -16,12 +16,12 @@
       <Label layoutX="145.0" layoutY="145.0" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white; -fx-opacity: 0.8; -fx-font-family: &quot;Lucida Console&quot;, Courier, monospace;" text="TRAVELER LOGIN" textAlignment="CENTER" />
       <ImageView fitHeight="80.0" fitWidth="105.0" layoutX="210.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../java/eclipse-workspace/login/src/assets/loginAssets/forest.png" />
+            <Image url="@../resources/images/forest.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="53.0" fitWidth="45.0" layoutX="293.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../java/eclipse-workspace/login/src/assets/loginAssets/plant.png" />
+            <Image url="@../resources/images/plant.png" />
          </image>
       </ImageView>
       <Label fx:id="forgotPasswordLabel1" layoutX="120.0" layoutY="459.0" style="-fx-text-fill: white; -fx-opacity: 0.8; -fx-font-size: 14;" text="Not a subscriber yet? Contect us at phone" />
