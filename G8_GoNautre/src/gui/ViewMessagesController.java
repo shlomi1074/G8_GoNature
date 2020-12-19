@@ -3,11 +3,8 @@ package gui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXTextArea;
-
 import Controllers.NotificationControl;
-import Controllers.OrderControl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,8 +17,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import logic.Messages;
 import logic.MessagesTb;
-import logic.Order;
-import logic.OrderTb;
 import logic.Subscriber;
 import logic.Traveler;
 

@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.dnd.peer.DropTargetPeer;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
-
-import javax.print.attribute.standard.DateTimeAtCompleted;
-
 import Controllers.OrderControl;
 import Controllers.ParkControl;
 import alerts.CustomAlerts;
@@ -51,7 +47,7 @@ public class TravelerViewOrders implements Initializable {
 	private TableView<OrderTb> ordersTableView;
 
 	// int?
-	
+
 	@FXML
 	private TableColumn<OrderTb, Integer> orderIdCol;
 
@@ -104,6 +100,7 @@ public class TravelerViewOrders implements Initializable {
 			}
 		});
 
+		// Pull order from parks that the staff member is not part of
 	}
 
 	// Ofir Avraham Vaknin
@@ -154,7 +151,7 @@ public class TravelerViewOrders implements Initializable {
 		ordersTableView.setRowFactory(tv -> {
 			TableRow<OrderTb> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
-				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
 					OrderTb clickedRow = row.getItem();
 					orderIdTxt.setText(String.valueOf(clickedRow.getOrderId()));
 					visitDateTxt.setText(clickedRow.getOrderDate());
@@ -206,18 +203,23 @@ public class TravelerViewOrders implements Initializable {
 		}
 	}
 
-	// Ofir Avraham Vaknin
+	// Ofir Avraham Vaknin v2.
 	private void cancelButton() {
+		// Didnt choose order
 		if (orderIdTxt.getText().isEmpty()) {
 			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Please select one of the orders")
 					.showAndWait();
 			return;
 		}
-		if (orderStatusTxt.getText().equals("cancel") || orderStatusTxt.getText().equals("confirmed")) {
+		// order is already canceled, confirmed or completed.
+		// ENUM
+		if (orderStatusTxt.getText().equals("cancel") || orderStatusTxt.getText().equals("confirmed")
+				|| orderStatusTxt.getText().equals("completed")) {
 			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Order cannot be canceled").showAndWait();
 			return;
 		}
-		if (orderStatusTxt.getText().equals("waiting")) {
+		// Order is in waiting list or pending
+		if (orderStatusTxt.getText().equals("waiting") || orderStatusTxt.getText().equals("pending")) {
 			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(), OrderStatusName.cancel);
 			if (!orderControlResult) {
 				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
@@ -227,37 +229,40 @@ public class TravelerViewOrders implements Initializable {
 				loadTableView();
 				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order canceled")
 						.showAndWait();
-			}
-			return;
-		}
-		int res = isDateBetween2422(visitDateTxt.getText(), visitTimeTxt.getText());
-		switch (res) {
-		case -1:
-			new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
-					"Couldn't choose order to cancel, please try again later").showAndWait();
-			break;
-		case 1:
-			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "cancel date has passed").showAndWait();
-			break;
-		case 2:
-			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Too early to cancel").showAndWait();
-			break;
-		case 0:
-			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(), OrderStatusName.cancel);
-			if (!orderControlResult) {
-				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
-						"Could not cancel this order,please try again later.").showAndWait();
-			} else {
-				loadTableView();
-
-				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order canceled")
-						.showAndWait();
-
 				notifyNextPersonInWaitingListAfterCancel(Integer.parseInt(orderIdTxt.getText()), visitDateTxt.getText(),
 						visitTimeTxt.getText());
 			}
-			break;
+			return;
 		}
+		// Might be needed to later - ask team
+//		int res = isDateBetween2422(visitDateTxt.getText(), visitTimeTxt.getText());
+//		switch (res) {
+//		case -1:
+//			new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
+//					"Couldn't choose order to cancel, please try again later").showAndWait();
+//			break;
+//		case 1:
+//			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "cancel date has passed").showAndWait();
+//			break;
+//		case 2:
+//			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Too early to cancel").showAndWait();
+//			break;
+//		case 0:
+//			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(), OrderStatusName.cancel);
+//			if (!orderControlResult) {
+//				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
+//						"Could not cancel this order,please try again later.").showAndWait();
+//			} else {
+//				loadTableView();
+//
+//				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order canceled")
+//						.showAndWait();
+//
+//				notifyNextPersonInWaitingListAfterCancel(Integer.parseInt(orderIdTxt.getText()), visitDateTxt.getText(),
+//						visitTimeTxt.getText());
+//			}
+//			break;
+//		}
 	}
 
 	// Ofir Avraham Vaknin
@@ -304,10 +309,8 @@ public class TravelerViewOrders implements Initializable {
 		return 0;
 	}
 
-	
 	// Ofir Avraham Vaknin
-	private void clearLabals()
-	{
+	private void clearLabals() {
 		orderIdTxt.setText("");
 		visitDateTxt.setText("");
 		visitTimeTxt.setText("");

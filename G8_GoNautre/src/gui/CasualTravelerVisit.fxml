@@ -14,11 +14,13 @@
       <Label layoutX="190.0" layoutY="151.0" text="Order Type:" />
       <JFXComboBox fx:id="typeComboBox" layoutX="315.0" layoutY="144.0" prefHeight="30.0" prefWidth="172.0" promptText="Order Type" />
       <Label layoutX="190.0" layoutY="207.0" text="Visitor's Email" />
-      <JFXTextField fx:id="numOfVisitorsCasualVisit" disable="true" layoutX="487.0" layoutY="144.0" prefHeight="30.0" prefWidth="106.0" promptText="Visitor's Number" />
-      <Label fx:id="headerLabel" layoutX="278.0" layoutY="30.0" text="Casual Visit" />
+      <JFXTextField fx:id="numOfVisitorsCasualVisit" layoutX="494.0" layoutY="144.0" prefHeight="30.0" prefWidth="106.0" promptText="Visitor's Number" />
+      <Label fx:id="headerLabel" layoutX="297.0" layoutY="30.0" text="Casual Visit" />
       <JFXButton fx:id="placeOrderBtn" layoutX="268.0" layoutY="347.0" prefHeight="39.0" prefWidth="165.0" text="Place Order" />
       <Label layoutX="190.0" layoutY="263.0" text="Total Price:" />
-      <Label fx:id="totalPriceLabel" layoutX="315.0" layoutY="263.0" prefHeight="20.0" prefWidth="46.0" text="120" />
+      <Label fx:id="totalPriceLabel" layoutX="315.0" layoutY="263.0" prefHeight="20.0" prefWidth="46.0" />
       <JFXButton fx:id="checkPriceBtn" layoutX="364.0" layoutY="254.0" prefHeight="39.0" prefWidth="154.0" text="Check Price" />
+      <Label fx:id="permissionLabel" layoutX="600.0" layoutY="95.0" prefHeight="20.0" prefWidth="46.0" />
+      <Label layoutX="494.0" layoutY="95.0" prefHeight="20.0" prefWidth="82.0" text="Visitor's Type:" />
    </children>
 </AnchorPane>

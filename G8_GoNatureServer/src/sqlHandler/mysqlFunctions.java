@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import logic.Discount;
@@ -413,8 +414,8 @@ public class mysqlFunctions {
 			return orders;
 		}
 		
-		// Ofir Avraham Vaknin - Design Pattern
-			public ArrayList<Order> getAllOrdersForID() {
+		// Ofir Avraham Vaknin 
+			public ArrayList<Order> getAllOrders() {
 				ArrayList<Order> orders = new ArrayList<Order>();
 
 				String sql = "SELECT * FROM g8gonature.order";
@@ -767,6 +768,111 @@ public class mysqlFunctions {
 				e.printStackTrace();
 			}
 			return messeges;
+		}
+		
+		// Ofir Avraham Vaknin v2.
+		public boolean addVisit(ArrayList<?> parameters) {
+			// new
+			// ArrayList<String>(Arrays.asList(travelerId,parkId,enterTime,estimated,date)));
+
+			String enterTime = (String) parameters.get(2);
+			String estimated = (String) parameters.get(3);
+
+			LocalTime exitTime = LocalTime.parse(enterTime).plusHours(Integer.parseInt(estimated));
+			int res = 0;
+
+			String sql = "INSERT INTO g8gonature.visit (travelerId,parkId,entrenceTime,exitTime,visitDate) "
+					+ "VALUES (?,?,?,?,?)";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, (String) parameters.get(0));
+				query.setString(2, (String) parameters.get(1));
+				query.setString(3, (String) parameters.get(2));
+				query.setString(4, exitTime.toString());
+				query.setString(5, (String) parameters.get(4));
+				res = query.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("Could not execute addVisit query");
+				e.printStackTrace();
+			}
+			return res == 1;
+		}
+
+		// Ofir Avraham Vaknin v2.
+		public boolean updateNumberOfVisitors(ArrayList<?> parameters) {
+			// new
+			// ArrayList<String>(Arrays.asList(travelerId,parkId,enterTime,estimated,date)));
+
+			String parkId = (String) parameters.get(0);
+			int number = Integer.parseInt((String) parameters.get(1));
+
+			int res = 0;
+
+			String sql = "UPDATE g8gonature.park SET currentVisitors = ? WHERE parkId = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, (String) parameters.get(0));
+				query.setInt(2, number);
+				res = query.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("Could not execute updateNumberOfVisitors query");
+				e.printStackTrace();
+			}
+			return res == 1;
+		}
+
+		// Ofir Avraham Vaknin v2.
+		public ArrayList<Order> getOrdersForPark(ArrayList<?> parameters) {
+			int parkId = Integer.parseInt((String) parameters.get(0));
+			ArrayList<Order> orders = new ArrayList<Order>();
+
+			String sql = "SELECT * FROM g8gonature.order WHERE parkId = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setInt(1, parkId);
+				ResultSet res = query.executeQuery();
+				while (res.next()) {
+					Order order = new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
+							res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
+							res.getString(10));
+					orders.add(order);
+				}
+
+			} catch (SQLException e) {
+				System.out.println("Could not execute getOrdersForPark query");
+				e.printStackTrace();
+			}
+			return orders;
+
+		}
+
+		public ArrayList<Order> getOrderForTravelerInPark(ArrayList<?> parameters) {
+			int parkId = Integer.parseInt((String) parameters.get(0));
+			String travId = (String) parameters.get(1);
+			ArrayList<Order> orders = new ArrayList<Order>();
+
+			String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? AND travelerId = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setInt(1, parkId);
+				query.setString(2, travId);
+				ResultSet res = query.executeQuery();
+				while (res.next()) {
+					Order order = new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
+							res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
+							res.getString(10));
+					orders.add(order);
+				}
+
+			} catch (SQLException e) {
+				System.out.println("Could not execute getOrderForTravelerInPark query");
+				e.printStackTrace();
+			}
+			return orders;
 		}
 
 }

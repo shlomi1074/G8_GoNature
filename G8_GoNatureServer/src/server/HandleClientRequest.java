@@ -140,13 +140,6 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(new ArrayList<Order>(Arrays.asList(order)));
 					client.sendToClient(response);
 				}
-				// Shlomi
-				if (request.getRequestType().equals(Request.SEND_MSG_TO_TRAVELER)) {
-					if (mysqlFunction.sendMessageToTraveler(request.getParameters()))
-						client.sendToClient("Success");
-					else
-						client.sendToClient("Failed");
-				}
 
 				/* Alon 12.12.2020 */
 				if (request.getRequestType().equals(Request.MEMBER_LOGIN)) {
@@ -196,7 +189,7 @@ public class HandleClientRequest implements Runnable {
 
 				// Ofir Avraham Vaknin
 				if (request.getRequestType().equals(Request.GET_ALL_ORDERS)) {
-					ArrayList<Order> orders = mysqlFunction.getAllOrdersForID();
+					ArrayList<Order> orders = mysqlFunction.getAllOrders();
 					response = new ServerToClientResponse<>(Response.GET_ALL_ORDERS_RESPONSE);
 					response.setResultSet(orders);
 					client.sendToClient(response);
@@ -272,11 +265,53 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(new ArrayList<String>(Arrays.asList(email, password)));
 					client.sendToClient(response);
 				}
-				/*Lior*/
+				/* Lior */
 				if (request.getRequestType().equals(Request.GET_MESSAGES_BY_ID)) {
 					ArrayList<Messages> messages = mysqlFunction.getMessages(request.getParameters());
 					response = new ServerToClientResponse<>(Response.GET_MESSAGES_BY_ID_RESPONSE);
 					response.setResultSet(messages);
+					client.sendToClient(response);
+				}
+
+				// Ofir Avraham Vaknin v2.
+				if (request.getRequestType().equals(Request.ADD_VISIT)) {
+					response = new ServerToClientResponse(Response.ADD_VISIT_RESPONSE);
+					boolean result = mysqlFunction.addVisit(request.getParameters());
+					response.setResult(result);
+					client.sendToClient(response);
+
+				}
+
+				// Ofir Avraham Vaknin v2.
+				if (request.getRequestType().equals(Request.UPDATE_CURRENT_VISITORS_ID)) {
+					response = new ServerToClientResponse(Response.UPDATE_CURRENT_VISITORS_ID_RESPONSE);
+					boolean result = mysqlFunction.updateNumberOfVisitors(request.getParameters());
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+
+				// Ofir Avraham Vaknin v2.
+				// Using shlomi function - AddNewOrder
+				if (request.getRequestType().equals(Request.ADD_CASUAL_ORDER)) {
+					response = new ServerToClientResponse(Response.ADD_CASUAL_ORDER_RESPONSE);
+					boolean result = mysqlFunction.AddNewOrder(request.getObj());
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+
+				// Ofir Avraham Vaknin v2.
+				if (request.getRequestType().equals(Request.GET_ALL_ORDERS_FOR_PARK)) {
+					response = new ServerToClientResponse(Response.GET_ALL_ORDERS_FOR_PARK_RESPONSE);
+					ArrayList<Order> result = mysqlFunction.getOrdersForPark(request.getParameters());
+					response.setResultSet(result);
+					client.sendToClient(response);
+				}
+
+				// Ofir Avraham Vaknin v2.
+				if (request.getRequestType().equals(Request.GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER)) {
+					response = new ServerToClientResponse(Response.GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER_RESPONSE);
+					ArrayList<Order> result = mysqlFunction.getOrderForTravelerInPark(request.getParameters());
+					response.setResultSet(result);
 					client.sendToClient(response);
 				}
 

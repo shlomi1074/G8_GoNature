@@ -95,4 +95,15 @@ public class ParkControl {
 				return o.getParkId();
 		return -1;
 	}
+	
+	// Ofir Avraham Vaknin v2.
+	// respone hold if query succeeded
+	public static void updateCurrentVisitors(int pId,int num)
+	{	
+		String cVisitors = String.valueOf(num);
+		String parkId = String.valueOf(pId);
+		ClientToServerRequest<String> request = new ClientToServerRequest<String>(Request.UPDATE_CURRENT_VISITORS_ID,
+				new ArrayList<String>(Arrays.asList(cVisitors,parkId)));
+		ClientUI.chat.accept(request);
+	}
 }
