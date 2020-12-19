@@ -109,7 +109,7 @@ public class RescheduleController implements Initializable {
 				/* Send message by mail */
 				Messages msg = new Messages(0, traveler.getTravelerId(), date, time, MsgTemplates.orderConfirmation[0],
 						emailContent, recentOrder.getOrderId());
-				NotificationControl.sendMailInBackgeound(msg);
+				NotificationControl.sendMailInBackgeound(msg, null);
 
 				if (isOrderFromMain)
 					orderStage.close();
@@ -235,7 +235,6 @@ public class RescheduleController implements Initializable {
 			controller.setOrder(recentOrder);
 			controller.setTraveler(traveler);
 			controller.setSummaryPayment(String.valueOf(recentOrder.getPrice()));
-			controller.setStage(newStage);
 			loader.setController(controller);
 			loader.load();
 			Parent p = loader.getRoot();

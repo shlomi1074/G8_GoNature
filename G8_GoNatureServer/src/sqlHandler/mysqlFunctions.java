@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import logic.Discount;
 import logic.DiscountTb;
 import logic.Employees;
+import logic.Messages;
 import logic.Order;
 import logic.OrderStatusName;
 import logic.Park;
@@ -223,7 +224,7 @@ public class mysqlFunctions {
 			query.setString(2, (String) parameters.get(1));
 			query.setString(3, (String) parameters.get(2));
 			query.setString(4, (String) parameters.get(3));
-			query.setString(4, OrderStatusName.cancel.name());
+			query.setString(5, OrderStatusName.cancel.name());
 			ResultSet res = query.executeQuery();
 
 			while (res.next())
@@ -325,7 +326,6 @@ public class mysqlFunctions {
 				query2.setInt(1,Integer.parseInt((String)parameters.get(0)));//changed to int
 				res = query2.executeQuery();
 				if(res.next()) {
-					System.out.println(res.getString(2));
 					switch (res.getString(2)) {
 					case "Entrance":
 							wt=WorkerType.ENTRANCE;
@@ -689,6 +689,84 @@ public class mysqlFunctions {
 				e.printStackTrace();
 			}
 			return null;
+		}
+
+		public Employees getEmployeeById(ArrayList<?> parameters) {
+			Employees employee = null;
+			String sql = "SELECT * FROM g8gonature.employees WHERE employeeId = ? ";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, (String) parameters.get(0));
+				ResultSet res = query.executeQuery();
+
+				if (res.next()) {
+					WorkerType wt;
+					switch (res.getString(2)) {
+					case "Entrance":
+							wt=WorkerType.ENTRANCE;
+						break;
+					case "Park Manager":
+						wt=WorkerType.PARK_MANAGER;
+					break;
+					case "Service":
+						wt=WorkerType.SERVICE;
+					break;
+					case "Department Manager":
+						wt=WorkerType.DEPARTMENT_MANAGER;
+					break;
+					default:
+						throw new IllegalArgumentException("Wrong role type!");
+					}
+					employee = new Employees(res.getInt(1), wt, res.getInt(3), res.getString(4),
+							res.getString(5), res.getString(6));
+				}
+			} catch (SQLException e) {
+				System.out.println("Could not execute getEmployeeById query");
+				e.printStackTrace();
+			}
+
+			return employee;
+		}
+
+		public String getEmployeePasswordById(int employeeId) {
+			String sql = "SELECT employeesidentification.password FROM g8gonature.employeesidentification WHERE employeeId = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setInt(1, employeeId);
+				ResultSet res = query.executeQuery();
+				
+				if (res.next())
+					return res.getString(1);
+
+			} catch (SQLException e) {
+				System.out.println("Could not execute getEmployeePasswordById");
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		/* Lior */
+		public ArrayList<Messages> getMessages(ArrayList<?> parameters) {
+			ArrayList<Messages> messeges = new ArrayList<Messages>();
+			String sql = "SELECT * FROM g8gonature.messages WHERE toId = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, (String) parameters.get(0));
+				ResultSet res = query.executeQuery();
+				/*getting all messages from query into array list*/
+				while (res.next()) {
+					Messages message = new Messages(res.getInt(1), res.getString(2), res.getString(3), res.getString(4),
+							res.getString(5),res.getString(6),res.getInt(7));
+					messeges.add(message);
+				}
+			} catch (SQLException e) {
+				System.out.println("Could not execute getMessages");
+				e.printStackTrace();
+			}
+			return messeges;
 		}
 
 }

@@ -30,8 +30,15 @@ public class NotificationControl {
 	 * @param msg - the message to send
 	 * @return true on success, false otherwise.
 	 */
-	public static boolean sendEmail(Messages msg) {
-		ClientToServerRequest<Messages> request = new ClientToServerRequest<>(Request.SEND_EMAIL);
+	private static boolean sendEmail(Messages msg, String email) {
+		ClientToServerRequest<Messages> request = null;
+		if (email == null) {
+			request = new ClientToServerRequest<>(Request.SEND_EMAIL);
+		}
+		else {
+			request = new ClientToServerRequest<>(Request.SEND_EMAIL_WITH_EMAIL);
+			request.setInput(email);
+		}
 		request.setObj(msg);
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.isResult();
@@ -43,11 +50,11 @@ public class NotificationControl {
 	 * 
 	 * @param msg - the message to send
 	 */
-	public static void sendMailInBackgeound(Messages msg) {
+	public static void sendMailInBackgeound(Messages msg, String email) {
 		Task<Boolean> mailTask = new Task<Boolean>() {
 			@Override
 			protected Boolean call() throws Exception {
-				NotificationControl.sendEmail(msg);
+				NotificationControl.sendEmail(msg, email);
 				return true;
 			}
 		};
@@ -71,6 +78,16 @@ public class NotificationControl {
 			ex.printStackTrace();
 		}
 		return emailText.toString();
+	}
+	
+	/*Lior*/
+	public static ArrayList<Messages> getMessages(String id){
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_MESSAGES_BY_ID,
+				new ArrayList<String>(Arrays.asList(id)));
+		ClientUI.chat.accept(request);
+		ArrayList<Messages> messages = ChatClient.responseFromServer.getResultSet();
+		
+		return ChatClient.responseFromServer.getResultSet();
 	}
 
 }

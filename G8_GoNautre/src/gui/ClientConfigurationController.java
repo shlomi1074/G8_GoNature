@@ -48,7 +48,6 @@ public class ClientConfigurationController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		init();
-
 	}
 
 	private void init() {
@@ -77,9 +76,9 @@ public class ClientConfigurationController implements Initializable {
 			}
 		else {
 			new CustomAlerts(AlertType.ERROR, "Input Error", "Bad Input", "Please fill all the fields first")
-			.showAndWait();
+					.showAndWait();
 			new CustomAlerts(AlertType.WARNING, "Warning", "Warning topic", "Please fill all the fields first")
-			.showAndWait();
+					.showAndWait();
 			new CustomAlerts(AlertType.INFORMATION, "Information", "Info topic", "Please fill all the fields first")
 					.showAndWait();
 		}

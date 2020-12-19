@@ -85,11 +85,11 @@ public class OrderConfirmationController implements Initializable {
 	/* On OK button click */
 	@FXML
 	private void closeStage() {
-		stage.close();
+		getStage().close();
 	}
 
-	public void setStage(Stage stage) {
-		this.stage = stage;
+	public Stage getStage() {
+		return (Stage) totalPriceLabel.getScene().getWindow();
 	}
 
 	public void setOrder(Order recentOrder) {

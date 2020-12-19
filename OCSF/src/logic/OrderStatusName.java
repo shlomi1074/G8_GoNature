@@ -1,5 +1,5 @@
 package logic;
 
 public enum OrderStatusName {
-	confirmed,cancel,pending,waiting
+	confirmed,cancel,pending,waiting,completed
 }

@@ -105,6 +105,12 @@ public class DepartmentManagerController implements Initializable {
 		Pane view = loader.loadPaneToBorderPaneWithController("/gui/ViewRequestsForChanges.fxml", "viewRequests");
 		borderPane.setCenter(view);
 	}
+	
+	@FXML
+	private void loadReports() {
+		Pane view = loader.loadPaneToBorderPaneWithController("/gui/DepartmentManagerReports.fxml", "reports");
+		borderPane.setCenter(view);
+	}
 
 	@FXML
 	private void logOut() {

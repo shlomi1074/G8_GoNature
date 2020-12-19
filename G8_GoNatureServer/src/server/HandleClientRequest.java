@@ -232,12 +232,51 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(mysqlFunction.GetRequestsFromDB());
 					client.sendToClient(response);
 				}
-				
+
 				// Shlomi
 				if (request.getRequestType().equals(Request.SEND_EMAIL)) {
-					boolean result = EmailControl.sendEmail((Messages)request.getObj());
+					boolean result = EmailControl.sendEmail((Messages) request.getObj());
 					response = new ServerToClientResponse(Response.SEND_EMAIL_RESPONSE);
 					response.setResult(result);
+					client.sendToClient(response);
+				}
+
+				// Shlomi
+				if (request.getRequestType().equals(Request.SEND_EMAIL_WITH_EMAIL)) {
+					boolean result = EmailControl.sendEmailToWithEmailInput((Messages) request.getObj(),
+							request.getInput());
+					response = new ServerToClientResponse(Response.SEND_EMAIL_WITH_EMAIL_RESPONSE);
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_EMPLOYEE)) {
+					Employees employee = mysqlFunction.getEmployeeById(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_EMPLOYEE_RESPONSE);
+					response.setResultSet(new ArrayList<Employees>(Arrays.asList(employee)));
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_EMPLOYEE_PASSWORD)) {
+					Employees employee = mysqlFunction.getEmployeeById(request.getParameters());
+					String password;
+					String email;
+					if (employee == null) {
+						password = "";
+						email = "";
+					} else {
+						password = mysqlFunction.getEmployeePasswordById(employee.getEmployeeId());
+						email = employee.getEmail();
+					}
+					response = new ServerToClientResponse(Response.GET_EMPLOYEE_PASSWORD_RESPONSE);
+					response.setResultSet(new ArrayList<String>(Arrays.asList(email, password)));
+					client.sendToClient(response);
+				}
+				/*Lior*/
+				if (request.getRequestType().equals(Request.GET_MESSAGES_BY_ID)) {
+					ArrayList<Messages> messages = mysqlFunction.getMessages(request.getParameters());
+					response = new ServerToClientResponse<>(Response.GET_MESSAGES_BY_ID_RESPONSE);
+					response.setResultSet(messages);
 					client.sendToClient(response);
 				}
 

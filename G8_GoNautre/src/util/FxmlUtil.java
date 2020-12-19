@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import gui.AddSubscriberController;
 import gui.CreateReportsController;
+import gui.DepartmentManagerReportsController;
 import gui.ManageTravelerController;
 import gui.OrderVisitController;
 import gui.ParkParametersController;
@@ -61,6 +62,10 @@ public class FxmlUtil {
 			CreateReportsController controller = new CreateReportsController();
 			loader.setController(controller);
 		}
+		 else if (controllerName.equals("reports")) {
+			 DepartmentManagerReportsController controller = new DepartmentManagerReportsController();
+				loader.setController(controller);
+			}
 		try {
 			loader.load();
 			view = loader.getRoot();
