@@ -1,5 +1,6 @@
 package logic;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -7,20 +8,33 @@ public class MessagesTb {
 	private SimpleIntegerProperty messageId;
 	private SimpleStringProperty toId;
 	private SimpleStringProperty sendDate;
-	private SimpleStringProperty sendTime;
 	private SimpleStringProperty subject;
 	private SimpleStringProperty content;
+	private SimpleStringProperty sendTime;
 	private SimpleIntegerProperty orderId;
-
-	public MessagesTb(int messageId, String toId, String sendDate, String sendTime, String subject, String content,
-			int orderId) {
+	
+	public MessagesTb(int messageId, String toId, String sendDate, String sendTime,
+			String subject, String content, int orderId) {
 		this.messageId = new SimpleIntegerProperty(messageId);
 		this.toId = new SimpleStringProperty(toId);
 		this.sendDate = new SimpleStringProperty(sendDate);
-		this.sendTime = new SimpleStringProperty(sendTime);
-		this.subject = new SimpleStringProperty(subject);
-		this.content = new SimpleStringProperty(content);
+		this.subject =new SimpleStringProperty (subject);
+		this.content =new SimpleStringProperty (content);
+		/*Lior*/
+		this.sendTime =new SimpleStringProperty (sendTime);
 		this.orderId = new SimpleIntegerProperty(orderId);
+	}
+	
+	/*Lior*/
+	public MessagesTb(Messages message)
+	{
+		this.messageId = new SimpleIntegerProperty(message.getMessageId());
+		this.toId = new SimpleStringProperty(message.getToId());
+		this.sendDate = new SimpleStringProperty(message.getSendDate());
+		this.subject =new SimpleStringProperty (message.getSubject());
+		this.content =new SimpleStringProperty (message.getContent());
+		this.sendTime =new SimpleStringProperty (message.getSendDate());
+		this.orderId = new SimpleIntegerProperty(message.getOrderId());
 	}
 
 	public int getMessageId() {
@@ -46,14 +60,6 @@ public class MessagesTb {
 	public void setSendDate(SimpleStringProperty sendDate) {
 		this.sendDate = sendDate;
 	}
-	
-	public String getSendTime() {
-		return sendTime.get();
-	}
-
-	public void setSendTime(SimpleStringProperty sendTime) {
-		this.sendTime = sendTime;
-	}
 
 	public String getSubject() {
 		return subject.get();
@@ -71,12 +77,18 @@ public class MessagesTb {
 		this.content = content;
 	}
 	
-	public int getOrderId() {
-		return orderId.get();
+	public void setSendTime(SimpleStringProperty sendTime) {
+		this.sendTime = sendTime;
 	}
-
 	public void setOrderId(SimpleIntegerProperty orderId) {
 		this.orderId = orderId;
 	}
-
+	
+	public String getSendTime() {
+		return sendTime.get();
+	}
+	public int getOrderId() {
+		return orderId.get();
+	}
+	
 }

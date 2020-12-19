@@ -4,7 +4,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class RequestTb {
-	private SimpleStringProperty requestId;
+	private SimpleIntegerProperty requestId; //   private SimpleStringProperty requestId;  ofir n
+
 	private SimpleStringProperty changeName;
 	private SimpleStringProperty newValue;
 	private SimpleStringProperty oldValue;
@@ -12,11 +13,11 @@ public class RequestTb {
 	private SimpleIntegerProperty parkId;
 	private SimpleStringProperty requestStatus;
 
-	public RequestTb(String requestId, String changeName, String newValue,
-			String oldValue, String requestDate, int parkId,
+	public RequestTb(int requestId, String changeName, String newValue,
+			String oldValue, String requestDate, int parkId,//ofir n
 			String requestStatus) {
 		super();
-		this.requestId = new SimpleStringProperty(requestId);
+		this.requestId = new SimpleIntegerProperty(requestId); //ofir n
 		this.changeName = new SimpleStringProperty(changeName);
 		this.newValue = new SimpleStringProperty(newValue);
 		this.oldValue = new SimpleStringProperty(oldValue);
@@ -25,11 +26,11 @@ public class RequestTb {
 		this.requestStatus = new SimpleStringProperty(requestStatus);
 	}
 
-	public String getRequestId() {
+	public int getRequestId() {//ofir n
 		return requestId.get();
 	}
 
-	public void setRequestId(SimpleStringProperty requestId) {
+	public void setRequestId(SimpleIntegerProperty requestId) {
 		this.requestId = requestId;
 	}
 

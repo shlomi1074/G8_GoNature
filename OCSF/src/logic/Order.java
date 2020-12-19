@@ -28,6 +28,37 @@ public class Order implements Serializable{
 		this.price = price;
 		this.orderStatus = orderStatus;
 	}
+	
+	// Ofir Avraham Vaknin v2.
+	public Order(String travelerId, int parkId, String orderDate, String orderTime, String orderType,
+			int numberOfParticipants, String email, double price, String orderStatus) {
+		super();
+		this.orderId = 0;
+		this.travelerId = travelerId;
+		this.parkId = parkId;
+		this.orderDate = orderDate;
+		this.orderTime = orderTime;
+		this.orderType = orderType;
+		this.numberOfParticipants = numberOfParticipants;
+		this.email = email;
+		this.price = price;
+		this.orderStatus = orderStatus;
+	}
+	
+	// Ofir Avraham Vaknin v2.
+		public Order(OrderTb o) {
+			super();
+			this.orderId = 0;
+			this.travelerId = o.getTravelerId();
+			this.parkId = o.getParkId();
+			this.orderDate = o.getOrderDate();
+			this.orderTime = o.getOrderTime();
+			this.orderType = o.getOrderType();
+			this.numberOfParticipants = o.getNumberOfParticipants();
+			this.email = o.getEmail();
+			this.price = o.getPrice();
+			this.orderStatus = o.getOrderStatus();
+		}
 
 	public int getOrderId() {
 		return orderId;

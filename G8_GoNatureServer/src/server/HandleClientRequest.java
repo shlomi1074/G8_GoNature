@@ -140,13 +140,6 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(new ArrayList<Order>(Arrays.asList(order)));
 					client.sendToClient(response);
 				}
-				// Shlomi
-				if (request.getRequestType().equals(Request.SEND_MSG_TO_TRAVELER)) {
-					if (mysqlFunction.sendMessageToTraveler(request.getParameters()))
-						client.sendToClient("Success");
-					else
-						client.sendToClient("Failed");
-				}
 
 				/* Alon 12.12.2020 */
 				if (request.getRequestType().equals(Request.MEMBER_LOGIN)) {
@@ -196,7 +189,7 @@ public class HandleClientRequest implements Runnable {
 
 				// Ofir Avraham Vaknin
 				if (request.getRequestType().equals(Request.GET_ALL_ORDERS)) {
-					ArrayList<Order> orders = mysqlFunction.getAllOrdersForID();
+					ArrayList<Order> orders = mysqlFunction.getAllOrders();
 					response = new ServerToClientResponse<>(Response.GET_ALL_ORDERS_RESPONSE);
 					response.setResultSet(orders);
 					client.sendToClient(response);
@@ -232,13 +225,135 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(mysqlFunction.GetRequestsFromDB());
 					client.sendToClient(response);
 				}
-				
+
 				// Shlomi
 				if (request.getRequestType().equals(Request.SEND_EMAIL)) {
-					boolean result = EmailControl.sendEmail((Messages)request.getObj());
+					boolean result = EmailControl.sendEmail((Messages) request.getObj());
 					response = new ServerToClientResponse(Response.SEND_EMAIL_RESPONSE);
 					response.setResult(result);
 					client.sendToClient(response);
+				}
+
+				// Shlomi
+				if (request.getRequestType().equals(Request.SEND_EMAIL_WITH_EMAIL)) {
+					boolean result = EmailControl.sendEmailToWithEmailInput((Messages) request.getObj(),
+							request.getInput());
+					response = new ServerToClientResponse(Response.SEND_EMAIL_WITH_EMAIL_RESPONSE);
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_EMPLOYEE)) {
+					Employees employee = mysqlFunction.getEmployeeById(request.getParameters());
+					response = new ServerToClientResponse(Response.GET_EMPLOYEE_RESPONSE);
+					response.setResultSet(new ArrayList<Employees>(Arrays.asList(employee)));
+					client.sendToClient(response);
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.GET_EMPLOYEE_PASSWORD)) {
+					Employees employee = mysqlFunction.getEmployeeById(request.getParameters());
+					String password;
+					String email;
+					if (employee == null) {
+						password = "";
+						email = "";
+					} else {
+						password = mysqlFunction.getEmployeePasswordById(employee.getEmployeeId());
+						email = employee.getEmail();
+					}
+					response = new ServerToClientResponse(Response.GET_EMPLOYEE_PASSWORD_RESPONSE);
+					response.setResultSet(new ArrayList<String>(Arrays.asList(email, password)));
+					client.sendToClient(response);
+				}
+				/* Lior */
+				if (request.getRequestType().equals(Request.GET_MESSAGES_BY_ID)) {
+					ArrayList<Messages> messages = mysqlFunction.getMessages(request.getParameters());
+					response = new ServerToClientResponse<>(Response.GET_MESSAGES_BY_ID_RESPONSE);
+					response.setResultSet(messages);
+					client.sendToClient(response);
+				}
+
+				// Ofir Avraham Vaknin v2.
+				if (request.getRequestType().equals(Request.ADD_VISIT)) {
+					response = new ServerToClientResponse(Response.ADD_VISIT_RESPONSE);
+					boolean result = mysqlFunction.addVisit(request.getParameters());
+					response.setResult(result);
+					client.sendToClient(response);
+
+				}
+
+				// Ofir Avraham Vaknin v2.
+				if (request.getRequestType().equals(Request.UPDATE_CURRENT_VISITORS_ID)) {
+					response = new ServerToClientResponse(Response.UPDATE_CURRENT_VISITORS_ID_RESPONSE);
+					boolean result = mysqlFunction.updateNumberOfVisitors(request.getParameters());
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+
+				// Ofir Avraham Vaknin v2.
+				// Using shlomi function - AddNewOrder
+				if (request.getRequestType().equals(Request.ADD_CASUAL_ORDER)) {
+					response = new ServerToClientResponse(Response.ADD_CASUAL_ORDER_RESPONSE);
+					boolean result = mysqlFunction.AddNewOrder(request.getObj());
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+
+				// Ofir Avraham Vaknin v2.
+				if (request.getRequestType().equals(Request.GET_ALL_ORDERS_FOR_PARK)) {
+					response = new ServerToClientResponse(Response.GET_ALL_ORDERS_FOR_PARK_RESPONSE);
+					ArrayList<Order> result = mysqlFunction.getOrdersForPark(request.getParameters());
+					response.setResultSet(result);
+					client.sendToClient(response);
+				}
+
+				// Ofir Avraham Vaknin v2.
+				if (request.getRequestType().equals(Request.GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER)) {
+					response = new ServerToClientResponse(Response.GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER_RESPONSE);
+					ArrayList<Order> result = mysqlFunction.getOrderForTravelerInPark(request.getParameters());
+					response.setResultSet(result);
+					client.sendToClient(response);
+				}
+				
+				if(request.getRequestType().equals(Request.MANAGER_REQUEST)) { // ofir n
+
+					mysqlFunction.insertAllNewRequestsFromParkManager(request.getParameters());
+
+					response = new ServerToClientResponse(Response.MANAGER_REQUEST_RESPONSE);
+					client.sendToClient(response);
+				}
+
+
+				if(request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) { // ofir n
+
+					response = new ServerToClientResponse(Response.VIEW_MANAGER_REQUEST_RESPONSE);
+					response.setResultSet(mysqlFunction.GetRequestsFromDB());
+					//	System.out.println(response.getResultSet()+" **");
+					client.sendToClient(response);
+
+				}
+
+
+				if(request.getRequestType().equals(Request.CONFIRM_REQUEST)) { // ofir n
+
+					response = new ServerToClientResponse(Response.CONFIRM_REQUEST_RESPONSE);
+					if((int) request.getParameters().get(1)==1)
+						mysqlFunction.changeStatusOfRequest(true, (int) request.getParameters().get(0));
+
+					else {
+						mysqlFunction.changeStatusOfRequest(false, (int) request.getParameters().get(0));
+
+					}
+
+					client.sendToClient(response);
+
+				}
+
+				
+				if(request.getRequestType().equals(Request.CHANGE_PARK_PARAMETERS)) {
+					
+					
+					
 				}
 
 				client.sendToClient("");

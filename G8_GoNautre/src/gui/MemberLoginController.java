@@ -104,7 +104,6 @@ public class MemberLoginController implements Initializable {
 				member = (Employees) ChatClient.responseFromServer.getResultSet().get(0);
 				String member_type = member.getRole().getStr();
 				String fxmlName = member_type.replaceAll("\\s+", ""); // Trimming all white spaces.
-				System.out.println(member_type);
 				switch (fxmlName) {
 				case "DepartmentManager":
 					switchScene("DepartmentManagerScreen.fxml", "GoNature8 - Department Manager", member_type);

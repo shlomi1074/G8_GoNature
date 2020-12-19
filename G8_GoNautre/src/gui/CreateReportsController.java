@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
 
+import alerts.CustomAlerts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -90,7 +92,7 @@ public class CreateReportsController implements Initializable {
 	@FXML
 	private void createReportButton() {
 		if (monthCB.getSelectionModel().getSelectedIndex() == 0) {
-
+			new CustomAlerts(AlertType.ERROR, "Error", "Month Error", "Plesae choose month.").showAndWait();
 		} else {
 			switchScenceWithController();
 		}
@@ -108,7 +110,7 @@ public class CreateReportsController implements Initializable {
 	private void turnON_useageRB() {
 		totalVisitorsRB.setSelected(false);
 		IncomeRB.setSelected(false);
-		this.fxmlName = "/gui/IncomeReport.fxml";
+		this.fxmlName = "/gui/UseageReport.fxml";
 		screenTitle = "Useage Report";
 	}
 
@@ -137,14 +139,16 @@ public class CreateReportsController implements Initializable {
 				TotalVisitorsReportController controller = new TotalVisitorsReportController();
 				controller.setComment(commentTextArea.getText());
 				controller.setMonthNumber(monthCB.getSelectionModel().getSelectedIndex());
+				controller.setParkID(MemberLoginController.member.getParkId());
 				loader.setController(controller);
 			} else if (useageRB.isSelected()) {
+
+			} else if (IncomeRB.isSelected()) {
 				IncomeReportController controller = new IncomeReportController();
 				controller.setComment(commentTextArea.getText());
 				controller.setMonthNumber(monthCB.getSelectionModel().getSelectedIndex());
+				controller.setParkID(MemberLoginController.member.getParkId());
 				loader.setController(controller);
-			} else if (IncomeRB.isSelected()) {
-				// loader.setController(controller);
 			}
 			loader.load();
 			Parent p = loader.getRoot();

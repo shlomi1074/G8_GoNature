@@ -1,10 +1,10 @@
 package Controllers.calculatePrice;
 
-public class RegularpreOrderCheckOut extends CheckOutDecorator {
+public class RegularPreOrderCheckOut extends CheckOutDecorator {
 
 	private final double baseDiscount = 0.85;
 
-	public RegularpreOrderCheckOut(CheckOut tempCheckOut) {
+	public RegularPreOrderCheckOut(CheckOut tempCheckOut) {
 		super(tempCheckOut);
 	}
 

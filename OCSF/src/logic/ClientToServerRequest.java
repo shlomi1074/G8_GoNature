@@ -11,14 +11,17 @@ public class ClientToServerRequest<T> implements Serializable {
 		GET_ALL_PARKS, GET_MAX_DISCOUNT, GET_PARK_BY_NAME, GET_ORDERS_BETWEEN_DATES, ADD_ORDER, IS_TRAVELER_SUBSCRIBER,
 		ADD_TRAVELER, GET_RECENT_ORDER, MEMBER_LOGIN, LOGOUT, SEND_MSG_TO_TRAVELER, GET_ALL_ORDER_FOR_ID,
 		GET_ALL_ORDERS, CHANGE_ORDER_STATUS_BY_ID, GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL, INSERT_TO_SUBSCRIBER,
-		DELETE_TRAVELER, INSERT_TO_CREDITCARD,MANAGER_REQUEST,
-		VIEW_MANAGER_REQUEST, SEND_EMAIL 
+		DELETE_TRAVELER, INSERT_TO_CREDITCARD, MANAGER_REQUEST, GET_MESSAGES_BY_ID, VIEW_MANAGER_REQUEST, SEND_EMAIL,
+		GET_EMPLOYEE, GET_EMPLOYEE_PASSWORD, SEND_EMAIL_WITH_EMAIL, ADD_VISIT, UPDATE_CURRENT_VISITORS_ID,
+		ADD_CASUAL_ORDER, GET_ALL_ORDERS_FOR_PARK, GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER, CONFIRM_REQUEST,
+		CHANGE_PARK_PARAMETERS,
 
 	}
 
 	private Request requestType;
 	private ArrayList<T> parameters = new ArrayList<>();
 	private T obj;
+	private String input;
 
 	public ClientToServerRequest(Request requestType) {
 		this.requestType = requestType;
@@ -51,6 +54,14 @@ public class ClientToServerRequest<T> implements Serializable {
 
 	public void setRequestType(Request requestType) {
 		this.requestType = requestType;
+	}
+
+	public String getInput() {
+		return input;
+	}
+
+	public void setInput(String input) {
+		this.input = input;
 	}
 
 }

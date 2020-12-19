@@ -1,8 +1,9 @@
 package logic;
 
+import java.io.Serializable;
 
-public class Request {
-	private String requestId;
+public class Request implements Serializable { 
+	private int requestId;
 	private String changeName;
 	private String newValue;
 	private String oldValue;
@@ -10,7 +11,7 @@ public class Request {
 	private int parkId;
 	private String requestStatus;
 	
-	public Request(String requestId, String changeName, String newValue, String oldValue, String requestDate,
+	public Request(int requestId, String changeName, String newValue, String oldValue, String requestDate, // requestId- Stinrg to int -- ofir n
 			int parkId, String requestStatus) {
 		this.requestId = requestId;
 		this.changeName = changeName;
@@ -21,11 +22,11 @@ public class Request {
 		this.requestStatus = requestStatus;
 	}
 
-	public String getRequestId() {
+	public int getRequestId() {
 		return requestId;
 	}
 
-	public void setRequestId(String requestId) {
+	public void setRequestId(int requestId) {
 		this.requestId = requestId;
 	}
 

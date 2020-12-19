@@ -30,6 +30,22 @@ public class EmailControl {
     	
     }
     
+    public static boolean sendEmailToGoNature(Messages msg) {
+    	String sendTo = GoNatureFinals.GO_NATURE_EMAIL;
+    	String subject = msg.getSubject();
+		String messageToSend = msg.getContent();
+		return sendEmail(sendTo, subject, messageToSend);
+    	
+    }
+    
+    public static boolean sendEmailToWithEmailInput(Messages msg, String email) {
+    	String sendTo = email;
+    	String subject = msg.getSubject();
+		String messageToSend = msg.getContent();
+		return sendEmail(sendTo, subject, messageToSend);
+    	
+    }
+    
 	/* Send an email
 	 * Returns true on success
 	 */
@@ -44,7 +60,7 @@ public class EmailControl {
 		});
         
         
-        Message msg = prepareMessage(session, senderEmail, sendTo, messageToSend, subject);
+        Message msg = prepareMessage(session, senderEmail, sendTo, subject, messageToSend);
         if (msg != null) {
         	try {
                 // Send message  

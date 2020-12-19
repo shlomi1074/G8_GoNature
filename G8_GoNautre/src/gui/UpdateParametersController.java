@@ -1,4 +1,3 @@
-  
 package gui;
 
 import java.net.URL;
@@ -8,17 +7,22 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import Controllers.RequestControl;
+import alerts.CustomAlerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 
 public class UpdateParametersController implements Initializable {
 	
+	
 
+	
+	
     @FXML
     private AnchorPane updateParametersRootPane;
 
@@ -75,23 +79,39 @@ public class UpdateParametersController implements Initializable {
 
     
     @FXML
-    public void sendForApprovealButton(ActionEvent event) { // ofir n
-    	System.out.println("check button");
+    public void sendForApprovealButton() { // ofir n
 
     	ArrayList<String> arrayOfTextRequests=new ArrayList<>();
+
     	arrayOfTextRequests.add(newMaxVisitorsTextField.getText());
     	arrayOfTextRequests.add(newEsitimatedTIme.getText());
     	arrayOfTextRequests.add(gapTextField.getText());
-    	arrayOfTextRequests.add(discountStartDate.getAccessibleText());
-    	arrayOfTextRequests.add(discountEndDate.getAccessibleText());
+    	arrayOfTextRequests.add(discountStartDate.getValue().toString()); //
+    	arrayOfTextRequests.add(discountEndDate.getValue().toString()); // 
     	arrayOfTextRequests.add(discountPercentage.getText());
-
+    		
+    	System.out.println("cant add "+discountStartDate.getValue());
+    	
+    	Integer prakID=MemberLoginController.member.getParkId();
+    	arrayOfTextRequests.add(prakID.toString());
+    	
+    
+    	
+    	
     	RequestControl.addNewRequest(arrayOfTextRequests);
     	
-    	
+		new CustomAlerts(AlertType.CONFIRMATION, "Sent", "Sent", "New requests were sent to Department Manager").showAndWait();
+
     	
     	
     }
+    
+    
+    
+    
+    
+    
+    
     
     
 	@Override

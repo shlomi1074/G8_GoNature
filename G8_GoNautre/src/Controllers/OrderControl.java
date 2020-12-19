@@ -138,10 +138,9 @@ public class OrderControl {
 		return ChatClient.responseFromServer.getResultSet();
 	}
 
-	// Ofir Avraham Vaknin
+	// Ofir Avraham Vaknin v2.
 	public static ArrayList<Order> getAllOrders() {
-		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ALL_ORDERS,
-				new ArrayList<String>());
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ALL_ORDERS);
 		ClientUI.chat.accept(request);
 		ArrayList<Order> orders = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
@@ -189,5 +188,48 @@ public class OrderControl {
 				LocalTime.now().toString(), "Grab Your waiting list spot", content, String.valueOf(o.getOrderId()));
 
 	}
+	
+	// Ofir Avraham Vaknin v2.
+	public static boolean addVisit(OrderTb order) {
+		String travelerId = order.getTravelerId();
+		String parkId = String.valueOf(order.getParkId());
+		String date = order.getOrderDate();
+		String enterTime = order.getOrderTime();
+
+		Park park = ParkControl.getParkById(parkId);
+		String estimated = String.valueOf(park.getEstimatedStayTime());
+
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.ADD_VISIT,
+				new ArrayList<String>(Arrays.asList(travelerId, parkId, enterTime, estimated, date)));
+		ClientUI.chat.accept(request);
+
+		return ChatClient.responseFromServer.isResult();
+	}
+	
+	// Ofir Avrahm Vaknin v2.
+		public static boolean addCasualOrder(Order order) {
+			ClientToServerRequest<Order> request = new ClientToServerRequest<>(Request.ADD_CASUAL_ORDER);
+			request.setObj(order);
+			ClientUI.chat.accept(request);
+			return ChatClient.responseFromServer.isResult();
+		}
+
+		// Ofir Avraham Vaknin v2.
+		public static ArrayList<Order> getAllOrdersForParkId(int parkId) {
+			ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ALL_ORDERS_FOR_PARK,
+					new ArrayList<String>(Arrays.asList(String.valueOf(parkId))));
+			ClientUI.chat.accept(request);
+			ArrayList<Order> orders = ChatClient.responseFromServer.getResultSet();
+			return ChatClient.responseFromServer.getResultSet();
+		}
+
+		// Ofir Avraham Vaknin v2.
+		public static ArrayList<Order> getOrdersForTravelerInPark(String parkId, String id) {
+			ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER,
+					new ArrayList<String>(Arrays.asList(parkId,id)));
+			ClientUI.chat.accept(request);
+			ArrayList<Order> orders = ChatClient.responseFromServer.getResultSet();
+			return ChatClient.responseFromServer.getResultSet();
+		}
 
 }

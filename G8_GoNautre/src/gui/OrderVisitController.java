@@ -41,6 +41,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logic.GoNatureFinals;
 import logic.Messages;
 import logic.Order;
 import logic.OrderStatusName;
@@ -49,6 +50,7 @@ import logic.Park;
 import logic.Subscriber;
 import logic.Traveler;
 import resources.MsgTemplates;
+import util.UtilityFunctions;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.DateCell;
@@ -184,7 +186,6 @@ public class OrderVisitController implements Initializable {
 		initRadioBoxes();
 		initDatePicker();
 		initLabels(); // shlomi
-
 	}
 
 	private boolean addOrderInBackgroundThread() {
@@ -222,9 +223,9 @@ public class OrderVisitController implements Initializable {
 						MsgTemplates.orderConfirmation[0], emailContent, String.valueOf(recentOrder.getOrderId()));
 
 				/* Send message by mail */
-				Messages msg = new Messages(0, traveler.getTravelerId(), date, time,
-						MsgTemplates.orderConfirmation[0], emailContent, recentOrder.getOrderId());
-				NotificationControl.sendEmail(msg);
+				Messages msg = new Messages(0, traveler.getTravelerId(), date, time, MsgTemplates.orderConfirmation[0],
+						emailContent, recentOrder.getOrderId());
+				NotificationControl.sendMailInBackgeound(msg, null);
 				return true;
 			}
 			return false;
@@ -312,16 +313,16 @@ public class OrderVisitController implements Initializable {
 		} else if (Integer.parseInt(summaryVisitors.getText()) < 1) {
 			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Visitor's number must be positive number and atleast 1. ").showAndWait();
-		} else if (!isValidEmailAddress(summaryEmail.getText())) {
+		} else if (!UtilityFunctions.isValidEmailAddress(summaryEmail.getText())) {
 			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Email", "Please insert valid email. ")
 					.showAndWait();
-		} else if (!isNumeric(summaryVisitors.getText())) {
+		} else if (!UtilityFunctions.isNumeric(summaryVisitors.getText())) {
 			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Visitor's number must be a positive number and atleast 1. ").showAndWait();
-		} else if (!isNumeric(summaryID.getText())) {
+		} else if (!UtilityFunctions.isNumeric(summaryID.getText())) {
 			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid ID Number", "ID number must be only numbers. ")
 					.showAndWait();
-		} else if (!isNumeric(summaryPhone.getText())) {
+		} else if (!UtilityFunctions.isNumeric(summaryPhone.getText())) {
 			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Phone Number", "Phone number must be only numbers ")
 					.showAndWait();
 		} else {
@@ -329,27 +330,6 @@ public class OrderVisitController implements Initializable {
 		}
 		return false;
 
-	}
-
-	/* check for valid email */
-	public boolean isValidEmailAddress(String email) {
-		boolean result = true;
-		try {
-			InternetAddress emailAddr = new InternetAddress(email);
-			emailAddr.validate();
-		} catch (AddressException ex) {
-			result = false;
-		}
-		return result;
-	}
-
-	public static boolean isNumeric(String str) {
-		try {
-			Integer.parseInt(str);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
 	}
 
 	// Shlomi
@@ -379,13 +359,11 @@ public class OrderVisitController implements Initializable {
 				&& !summaryDate.getText().equals("null")) {
 
 			int visitorsNumber = 0;
-			if (!isNumeric(summaryVisitors.getText())) {
-				System.out.println("not number");
+			if (!UtilityFunctions.isNumeric(summaryVisitors.getText())) {
 				return 0.0;
 			} else {
 				visitorsNumber = Integer.parseInt(summaryVisitors.getText());
 				if (visitorsNumber <= 0) {
-					System.out.println("bad number");
 					return 0.0;
 				}
 			}
@@ -401,7 +379,7 @@ public class OrderVisitController implements Initializable {
 
 				/* guest order */
 			} else if (permissionLabel.getText().equals("Guest")) {
-				RegularpreOrderCheckOut checkOut = new RegularpreOrderCheckOut(basic);
+				RegularPreOrderCheckOut checkOut = new RegularPreOrderCheckOut(basic);
 				return checkOut.getPrice();
 
 				/* group order - pay online */
@@ -432,7 +410,6 @@ public class OrderVisitController implements Initializable {
 		try {
 			c.setTime(sdf.parse(currentDateAndTime));
 		} catch (Exception e) {
-			System.out.println("order visit controller: checkIfOrderTimeIs24HouesFromNow function.");
 			e.printStackTrace();
 		}
 		// Number of Days to add
@@ -445,7 +422,6 @@ public class OrderVisitController implements Initializable {
 					.parse(summaryDate.getText() + " " + summaryTime.getText());
 			dateOfTommorow = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(currentDateAndTime);
 		} catch (ParseException e) {
-			System.out.println("order visit controller: checkIfOrderTimeIs24HouesFromNow function.");
 			e.printStackTrace();
 		}
 
@@ -592,8 +568,7 @@ public class OrderVisitController implements Initializable {
 			public void updateItem(LocalDate date, boolean empty) {
 				super.updateItem(date, empty);
 				LocalDate today = LocalDate.now();
-				setDisable(empty || date.compareTo(today) < 0);
-				// || date.compareTo(today) == 0
+				setDisable(empty || date.compareTo(today) < 0 || date.compareTo(today) == 0);
 			}
 		});
 	}
@@ -652,7 +627,7 @@ public class OrderVisitController implements Initializable {
 		typeComboBox.valueProperty().addListener((obs, oldItem, newItem) -> {
 			if (newItem == null) {
 			} else {
-				if (newItem.toString().equals("Solo Visit")) {
+				if (newItem.toString().equals(OrderType.SOLO.toString())) {
 					numOfVisitorsOrderVisit.setText("1");
 					numOfVisitorsOrderVisit.setDisable(true);
 
@@ -664,9 +639,7 @@ public class OrderVisitController implements Initializable {
 			}
 		});
 
-		ArrayList<String> availableTime = new ArrayList<>(Arrays.asList("08:00", "09:00", "10:00", "11:00", "12:00",
-				"13:00", "14:00", "15:00", "16:00", "17:00", "18:00"));
-		timeComboBox.getItems().addAll(availableTime);
+		timeComboBox.getItems().addAll(GoNatureFinals.AVAILABLE_HOURS);
 	}
 
 	private void loadRescheduleScreen(Order order) {
@@ -697,7 +670,6 @@ public class OrderVisitController implements Initializable {
 			newStage.setResizable(false);
 			newStage.show();
 		} catch (IOException e) {
-			System.out.println("faild to load form");
 			e.printStackTrace();
 		}
 
@@ -712,7 +684,6 @@ public class OrderVisitController implements Initializable {
 			controller.setOrder(recentOrder);
 			controller.setTraveler(traveler);
 			controller.setSummaryPayment(summaryPayment.getText());
-			controller.setStage(newStage);
 			loader.setController(controller);
 			loader.load();
 			Parent p = loader.getRoot();
@@ -724,7 +695,6 @@ public class OrderVisitController implements Initializable {
 				thisStage.close();
 			newStage.show();
 		} catch (IOException e) {
-			System.out.println("faild to load form");
 			e.printStackTrace();
 		}
 

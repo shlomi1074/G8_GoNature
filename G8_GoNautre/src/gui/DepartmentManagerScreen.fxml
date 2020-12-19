@@ -43,7 +43,7 @@
                         <FontAwesomeIconView glyphName="KEYBOARD_ALT" size="20" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="createReportsButton" layoutX="10.0" layoutY="262.0" prefHeight="102.0" prefWidth="204.0" text="Reports">
+                  <JFXButton fx:id="createReportsButton" layoutX="10.0" layoutY="262.0" onMouseClicked="#loadReports" prefHeight="102.0" prefWidth="204.0" text="Reports">
                      <graphic>
                         <FontAwesomeIconView glyphName="BAR_CHART" size="20" />
                      </graphic>

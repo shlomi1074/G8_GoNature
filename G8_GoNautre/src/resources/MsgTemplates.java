@@ -31,5 +31,13 @@ public class MsgTemplates {
 	public static String[] errorWaitingList = { "Error Waiting Lis", "There was error trying to put you in the waiting list.\n" 
 	+ "Please try again later."
  };
+	
+	public static String[] passwordRecovery = { "GoNature Password Recovery", ""
+	+ "Hello,\n"
+	+ "Here are your login information:\n"
+	+ "ID: %s\n"
+	+ "Password: %s\n\n"
+	+ "GoNature8 Family."
+ };
 
 }

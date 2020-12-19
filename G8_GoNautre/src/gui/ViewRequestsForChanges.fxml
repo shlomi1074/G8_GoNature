@@ -21,7 +21,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TableView layoutX="460.0" layoutY="182.0" prefHeight="200.0" prefWidth="420.0">
+      <TableView fx:id="discountTable" layoutX="460.0" layoutY="182.0" prefHeight="200.0" prefWidth="420.0">
         <columns>
           <TableColumn fx:id="discountIdCol" prefWidth="39.0" text="ID" />
             <TableColumn fx:id="discountCol" prefWidth="127.0" text="Discount %" />

@@ -17,11 +17,8 @@ public class RequestControl {
 				arrayOfRequests);
 		
 		ClientUI.chat.accept(request);
-
-		
-		
-	}
 	
+	}
 	
 	public static void viewcurrentRequests() {
 		
@@ -29,6 +26,26 @@ public class RequestControl {
 				new ArrayList<>());
 		
 		ClientUI.chat.accept(request);
+	
+	}
+
+	
+	public static void changeRequestStatus(Integer requestID,boolean bool ) { // confirm if true, decline if false.
+
+		ArrayList<Integer> requestidList=new ArrayList<>();
+    	requestidList.add(requestID);
+    	if(bool)
+    		requestidList.add(1);
+    	
+    	else requestidList.add(0);
+		
+    	ClientToServerRequest<?> requestConfirm = new ClientToServerRequest<>(Request.CONFIRM_REQUEST,
+				requestidList);
+		
+		ClientUI.chat.accept(requestConfirm);
+
+
+	
 	
 	}
 

@@ -37,7 +37,7 @@ public class IncomeReportController implements Initializable{
 	    @FXML
 	    private JFXTextArea commentTextArea;
 	    
-	    private int parkID = MemberLoginController.member.getParkId();
+	    private int parkID;
 	    private int monthNumber;
 	    private String comment;
 	    
@@ -78,6 +78,10 @@ public class IncomeReportController implements Initializable{
 		
 		private Stage getStage() {
 			return (Stage) monthLabel.getScene().getWindow();
+		}
+		
+		public void setParkID(int parkID){
+			this.parkID = parkID;
 		}
 
 }

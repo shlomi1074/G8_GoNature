@@ -29,8 +29,8 @@
       <Label fx:id="headerLabel" layoutX="345.0" layoutY="32.0" text="Manage Traveler" />
       <Label layoutX="410.0" layoutY="439.0" text="Selected Order:" underline="true" />
       <Label layoutX="372.0" layoutY="459.0" prefWidth="90.0" text="Order ID:" underline="true" />
-      <Label fx:id="orderIdTxt" layoutX="374.0" layoutY="481.0" prefHeight="20.0" prefWidth="83.0" text="123" />
+      <Label fx:id="orderIdTxt" layoutX="374.0" layoutY="481.0" prefHeight="20.0" prefWidth="83.0" />
       <Label layoutX="468.0" layoutY="459.0" prefWidth="90.0" text="Arrived visitors:" underline="true" />
-      <JFXTextField fx:id="visitorsTextField" layoutX="468.0" layoutY="476.0" prefHeight="20.0" prefWidth="56.0" text="2" />
+      <JFXTextField fx:id="visitorsTextField" layoutX="468.0" layoutY="476.0" prefHeight="30.0" prefWidth="101.0" promptText="Arrived Visitors" />
    </children>
 </AnchorPane>
