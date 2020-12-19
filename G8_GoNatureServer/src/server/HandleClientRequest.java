@@ -314,6 +314,47 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(result);
 					client.sendToClient(response);
 				}
+				
+				if(request.getRequestType().equals(Request.MANAGER_REQUEST)) { // ofir n
+
+					mysqlFunction.insertAllNewRequestsFromParkManager(request.getParameters());
+
+					response = new ServerToClientResponse(Response.MANAGER_REQUEST_RESPONSE);
+					client.sendToClient(response);
+				}
+
+
+				if(request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) { // ofir n
+
+					response = new ServerToClientResponse(Response.VIEW_MANAGER_REQUEST_RESPONSE);
+					response.setResultSet(mysqlFunction.GetRequestsFromDB());
+					//	System.out.println(response.getResultSet()+" **");
+					client.sendToClient(response);
+
+				}
+
+
+				if(request.getRequestType().equals(Request.CONFIRM_REQUEST)) { // ofir n
+
+					response = new ServerToClientResponse(Response.CONFIRM_REQUEST_RESPONSE);
+					if((int) request.getParameters().get(1)==1)
+						mysqlFunction.changeStatusOfRequest(true, (int) request.getParameters().get(0));
+
+					else {
+						mysqlFunction.changeStatusOfRequest(false, (int) request.getParameters().get(0));
+
+					}
+
+					client.sendToClient(response);
+
+				}
+
+				
+				if(request.getRequestType().equals(Request.CHANGE_PARK_PARAMETERS)) {
+					
+					
+					
+				}
 
 				client.sendToClient("");
 			} catch (IOException e) {

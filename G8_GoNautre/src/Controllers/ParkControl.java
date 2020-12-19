@@ -106,4 +106,15 @@ public class ParkControl {
 				new ArrayList<String>(Arrays.asList(cVisitors,parkId)));
 		ClientUI.chat.accept(request);
 	}
+	
+	// ofir n
+	
+	public static void changeParkParameters(ArrayList<Integer> changedParameters) {
+		
+		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.CHANGE_PARK_PARAMETERS,changedParameters);
+		
+		ClientUI.chat.accept(request);
+
+		
+	}
 }

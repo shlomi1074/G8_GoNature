@@ -8,6 +8,7 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import logic.Discount;
 import logic.DiscountTb;
@@ -593,13 +594,16 @@ public class mysqlFunctions {
 			}
 		}
 		
-		public void insertAllNewRequestsFromParkManager(ArrayList<?> managerRequests) { /// ofir n
+public void insertAllNewRequestsFromParkManager(ArrayList<?> managerRequests) { 
 			
 			
-			String sql = "INSERT INTO g8gonature.request (changeName,newValue,requestStatus) values (?,?,?)";
-			String sql2 = "INSERT INTO g8gonature.discount (amount,startDate,endDate) values (?,?,?)";
+			String sql = "INSERT INTO g8gonature.request (changeName,newValue,requestDate,parkId,requestStatus) values (?,?,?,?,?)";
+			String sql2 = "INSERT INTO g8gonature.discount (amount,startDate,endDate,parkId,status) values (?,?,?,?,?)";
 
-			
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+            String parkID=(String) managerRequests.get(6);
+            
+            
 			PreparedStatement query;
 			PreparedStatement query2;
 
@@ -609,15 +613,19 @@ public class mysqlFunctions {
 			    if(managerRequests.get(0)!=null) {
 				query.setString(1, "UPDATE MAX VISITORS");
 				query.setString(2, (String) managerRequests.get(0));
-				query.setString(3, "pending");
+				query.setDate(3, date);
+				query.setInt(4, Integer.parseInt(parkID));
+				query.setString(5, "pending");
 				query.executeUpdate();
 		
 			    }
 			    if(managerRequests.get(1)!=null) {
 
-				query.setString(1, "UPDATE MAX VISITORS");
+				query.setString(1, "UPDATE ESTIMATED STAY TIME");
 				query.setString(2, (String) managerRequests.get(1));
-				query.setString(3, "pending");
+				query.setDate(3, date);
+				query.setInt(4, Integer.parseInt(parkID));
+				query.setString(5, "pending");
 				query.executeUpdate();
 			    }
 			
@@ -625,7 +633,9 @@ public class mysqlFunctions {
 
 				query.setString(1, "UPDATE GAP");
 				query.setString(2, (String) managerRequests.get(2));
-				query.setString(3, "pending");
+				query.setDate(3, date);
+				query.setInt(4, Integer.parseInt(parkID));
+				query.setString(5, "pending");
 				query.executeUpdate();
 			    }
 				
@@ -633,14 +643,21 @@ public class mysqlFunctions {
 				query2=conn.prepareStatement(sql2); /// handles discount
 				
 
-			    if(managerRequests.get(3)!=null && managerRequests.get(4)!=null && managerRequests.get(5)!=null) {
+			//    if(managerRequests.get(3)!=null && managerRequests.get(4)!=null && managerRequests.get(5)!=null) {
+
+				
+		//		System.out.println(managerRequests.get(3));  //
 
 				
 				query2.setString(1, (String)managerRequests.get(5));
-				query2.setString(2, (String) managerRequests.get(3));
-				query2.setString(3, (String) managerRequests.get(4));
+				query2.setString(2,  (String)managerRequests.get(3));  //
+				query2.setString(3, (String) managerRequests.get(4));  //
+		        query2.setInt(4, Integer.parseInt(parkID));
+				query2.setString(5, "pending");
+
+				
 				query2.executeUpdate();
-			    }
+		//	    }
 			
 			} catch (SQLException e) {
 				System.out.println("Could not execute checkIfConnected query");
@@ -652,7 +669,7 @@ public class mysqlFunctions {
 		
 		
 		
-		public ArrayList<Request> GetRequestsFromDB() { /// ofir n
+		public ArrayList<?> GetRequestsFromDB() { /// ofir n
 			ArrayList<Request> requests = new ArrayList<>();
 			int i=0;
 			String sql = "SELECT * FROM g8gonature.request";
@@ -662,17 +679,19 @@ public class mysqlFunctions {
 				ResultSet res = query.executeQuery();
 				
 				while (res.next()) {
-					requests.set(i,new Request(res.getString(1),res.getString(2),res.getString(3),null,null,0,res.getString(4))) ;
+					requests.add(i, new Request(res.getInt(1),res.getString(2),res.getString(3),null,null,0,res.getString(7)));	// id was changed to int from String
 				    i++;
 				}
 			} catch (SQLException e) {
-				System.out.println("Could not execute GetRequestsFromDB query");
+				System.out.println("Could not execute checkIfConnected query");
 				e.printStackTrace();
 			}
 
 			return requests;
 			
 		}
+		
+		
 
 		public String getEmailByOrderID(int orderId) {
 			String sql = "SELECT order.email FROM g8gonature.order WHERE orderId = ?";
@@ -874,5 +893,30 @@ public class mysqlFunctions {
 			}
 			return orders;
 		}
+		
+		public void changeStatusOfRequest(boolean bool,int requestsID) { // ofir n
+			
+			String sql;
+			
+			if(bool)
+			 sql = "UPDATE g8gonature.request SET requestStatus='confirmed' WHERE requestId="+requestsID;
+
+			else {sql = "UPDATE g8gonature.request SET requestStatus='declined' WHERE requestId="+requestsID;}
+
+			PreparedStatement query;
+
+			try {
+				query = conn.prepareStatement(sql);
+				query.executeUpdate();
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			
+			
+		}
+		
 
 }
