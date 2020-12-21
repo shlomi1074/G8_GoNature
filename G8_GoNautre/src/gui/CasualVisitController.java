@@ -29,6 +29,7 @@ import logic.Order;
 import logic.OrderStatusName;
 import logic.OrderTb;
 import logic.OrderType;
+import logic.Park;
 import logic.Subscriber;
 import util.UtilityFunctions;
 
@@ -64,7 +65,6 @@ public class CasualVisitController implements Initializable {
 
 	private int checkPriceCount = 0;
 	private Subscriber subscriber;
-	
 
 	// Ofir Avraham Vaknin v3.
 	@Override
@@ -207,35 +207,32 @@ public class CasualVisitController implements Initializable {
 
 		// Ofir Avraham Vaknin v3.
 		// Check if Family order is larger than the number of people in the sub.
-		if(orderType.equals(OrderType.FAMILY.toString()) && numOfVisitors > sub.getNumberOfParticipants())
-		{
+		if (orderType.equals(OrderType.FAMILY.toString()) && numOfVisitors > sub.getNumberOfParticipants()) {
 			popNotification(AlertType.ERROR, "Input Error", "Check number of participants");
 			return false;
 		}
-		
-		// if the order is for group , the order is done by a guide, number of visitors is larger than 
+
+		// if the order is for group , the order is done by a guide, number of visitors
+		// is larger than
 		// number of participants in the sub.
-		
+
 		// Ofir Avraham Vaknin v3.
-		if(orderType.equals(OrderType.GROUP.toString()) && sub.getSubscriberType().equals("Guide") 
-				&& numOfVisitors > sub.getNumberOfParticipants())
-		{
+		if (orderType.equals(OrderType.GROUP.toString()) && sub.getSubscriberType().equals("Guide")
+				&& numOfVisitors > sub.getNumberOfParticipants()) {
 			popNotification(AlertType.ERROR, "Input Error", "Check number of participants");
 			return false;
 		}
-		
+
 //		if (!orderType.equals(OrderType.SOLO.toString()) && numOfVisitors > sub.getNumberOfParticipants()) {
 //			popNotification(AlertType.ERROR, "Input Error", "Check number of participants");
 //			return false;
 //		}
-		
-	
-		
+
 		return true;
 	}
 
 	// Ofir Avraham Vaknin v3.
-	// Does guide count as subscriber ?? if no code should be adjust 
+	// Does guide count as subscriber ?? if no code should be adjust
 	private void checkPricebtnAction() {
 		double price = 0;
 
@@ -243,7 +240,7 @@ public class CasualVisitController implements Initializable {
 		String idOfTraveler = idInputCasualVisit.getText();
 		int numberOfVisitors = Integer.parseInt(numOfVisitorsCasualVisit.getText());
 		String orderType = currentOrderType();
-		//String email = emailInputCasualVisit.getText();
+		// String email = emailInputCasualVisit.getText();
 
 		// Setting up vars
 		Subscriber sub = null;
@@ -297,17 +294,20 @@ public class CasualVisitController implements Initializable {
 			OrderControl.addVisit(orderTb);
 			int updateNumber = ParkControl.getParkById(String.valueOf(parkId)).getCurrentVisitors() + numberOfVisitors;
 			ParkControl.updateCurrentVisitors(parkId, updateNumber);
+
+			Park park = ParkControl.getParkById(String.valueOf(MemberLoginController.member.getParkId()));
 			
-			
-			
+			// Shlomi + Ofir
+			ParkControl.updateIfParkFull(park);
+
 			popNotification(AlertType.INFORMATION, "Visit Added", "Traveler can continue to the park");
 			Stage stage = (Stage) idInputCasualVisit.getScene().getWindow();
 			// Ofir Avraham Vaknin v3.
-			ManageTravelerController manageTravelerController = (ManageTravelerController)stage.getUserData();
+			ManageTravelerController manageTravelerController = (ManageTravelerController) stage.getUserData();
 			manageTravelerController.loadTableView();
 			//
 			stage.close();
-			
+
 		} else {
 			popNotification(AlertType.ERROR, "System Error", "An error has occurred, please try again");
 		}

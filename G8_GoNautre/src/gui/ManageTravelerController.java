@@ -235,7 +235,10 @@ public class ManageTravelerController implements Initializable {
 		Park p = ParkControl.getParkById(String.valueOf(clickedRow.getParkId()));
 		int updateNumber = p.getCurrentVisitors() + numberOfParticipantsInCurrentOrder;
 		ParkControl.updateCurrentVisitors(clickedRow.getParkId(), updateNumber);
-
+		
+		// Shlomi + Ofir
+		ParkControl.updateIfParkFull(p);
+		
 		loadTableView();
 		new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Traveler can enter")
 				.showAndWait();

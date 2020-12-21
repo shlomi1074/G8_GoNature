@@ -1,5 +1,9 @@
 package Controllers;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -96,32 +100,56 @@ public class ParkControl {
 				return o.getParkId();
 		return -1;
 	}
-	
+
 	// Ofir Avraham Vaknin v2.
 	// respone hold if query succeeded
-	public static void updateCurrentVisitors(int pId,int num)
-	{	
+	public static void updateCurrentVisitors(int pId, int num) {
 		String cVisitors = String.valueOf(num);
 		String parkId = String.valueOf(pId);
 		ClientToServerRequest<String> request = new ClientToServerRequest<String>(Request.UPDATE_CURRENT_VISITORS_ID,
-				new ArrayList<String>(Arrays.asList(cVisitors,parkId)));
+				new ArrayList<String>(Arrays.asList(cVisitors, parkId)));
 		ClientUI.chat.accept(request);
 	}
-	
+
 	// ofir n
-	
+
 	public static void changeParkParameters(ArrayList<Integer> changedParameters) {
-		
-		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.CHANGE_PARK_PARAMETERS,changedParameters);
-		
+
+		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.CHANGE_PARK_PARAMETERS,
+				changedParameters);
+
 		ClientUI.chat.accept(request);
-		
+
 	}
-	
+
 	public static ArrayList<String> isParkIsFullAtDate(String date, String parkID) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.CHECK_IF_PARK_FULL_AT_DATE,
 				new ArrayList<String>(Arrays.asList(date, parkID)));
 		ClientUI.chat.accept(request);
 		return (ArrayList<String>) ChatClient.responseFromServer.getResultSet();
+	}
+
+	// Successed?
+	// Shlomi + Ofir edit 
+	public static void updateIfParkFull(Park park) {
+
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime now = LocalDateTime.now();
+        String dateAndTime = dtf.format(now);
+        String date = dateAndTime.split(" ")[0];
+        String time = dateAndTime.split(" ")[1];
+		
+	
+		String comment = "Full at: "+time;
+		
+		String parkId = String.valueOf(park.getParkId());
+		String maxVisitors = String.valueOf(park.getMaxVisitors());
+		
+		if (park.getCurrentVisitors() >= park.getMaxVisitors()) {
+			ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.INSERT_TO_FULL_PARK_DATE,
+					new ArrayList<String>(Arrays.asList(parkId,date,maxVisitors,comment)));
+			ClientUI.chat.accept(request);
+		}
+
 	}
 }
