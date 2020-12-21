@@ -42,7 +42,7 @@
                         <FontAwesomeIconView glyphName="ID_CARD" size="15" text="" />
                      </graphic>
                 </TitledPane>
-                <TitledPane fx:id="informationTP" animated="false" text=" ENTER INFORAMTION">
+                <TitledPane fx:id="informationTP" animated="false" text=" VISIT INFORAMTION">
                   <content>
                     <AnchorPane fx:id="informationAP" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>

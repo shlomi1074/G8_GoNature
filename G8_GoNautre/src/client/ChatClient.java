@@ -70,6 +70,16 @@ public class ChatClient extends AbstractClient {
 
 			}
 		}
+		
+		else if (msg instanceof String) {
+			String serverMsg = (String) msg;
+			if (serverMsg.equals("Finished")) {
+				System.out.println("Finished handle client request");
+			}
+			if (serverMsg.equals("Server closing")) {
+			}
+				
+		}
 	}
 
 	/**

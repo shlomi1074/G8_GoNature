@@ -29,12 +29,26 @@ public class ParkParametersController implements Initializable {
 	@FXML
 	private Label actualLabel;
 
+    @FXML
+    private Label chooseParkLabel;
+
 	@FXML
 	private JFXComboBox<String> parkComboBox;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		initComboBoxs();
+		if (MemberLoginController.member.getParkId() == 0) {
+			initComboBoxs();
+			chooseParkLabel.setVisible(true);
+			parkComboBox.setVisible(true);
+			parkComboBox.setDisable(false);
+		}
+		else {
+			chooseParkLabel.setVisible(false);
+			parkComboBox.setVisible(false);
+			parkComboBox.setDisable(true);
+			loadParameters(ParkControl.getParkById(String.valueOf(MemberLoginController.member.getParkId())));
+		}
 	}
 
 	private void initComboBoxs() {

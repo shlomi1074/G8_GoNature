@@ -272,8 +272,8 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(messages);
 					client.sendToClient(response);
 				}
-
-				// Ofir Avraham Vaknin v2.
+				
+				// Ofir Avraham Vaknin v3.
 				if (request.getRequestType().equals(Request.ADD_VISIT)) {
 					response = new ServerToClientResponse(Response.ADD_VISIT_RESPONSE);
 					boolean result = mysqlFunction.addVisit(request.getParameters());
@@ -282,7 +282,7 @@ public class HandleClientRequest implements Runnable {
 
 				}
 
-				// Ofir Avraham Vaknin v2.
+				// Ofir Avraham Vaknin v3.
 				if (request.getRequestType().equals(Request.UPDATE_CURRENT_VISITORS_ID)) {
 					response = new ServerToClientResponse(Response.UPDATE_CURRENT_VISITORS_ID_RESPONSE);
 					boolean result = mysqlFunction.updateNumberOfVisitors(request.getParameters());
@@ -290,7 +290,7 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 
-				// Ofir Avraham Vaknin v2.
+				// Ofir Avraham Vaknin v3.
 				// Using shlomi function - AddNewOrder
 				if (request.getRequestType().equals(Request.ADD_CASUAL_ORDER)) {
 					response = new ServerToClientResponse(Response.ADD_CASUAL_ORDER_RESPONSE);
@@ -299,7 +299,7 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 
-				// Ofir Avraham Vaknin v2.
+				// Ofir Avraham Vaknin v3.
 				if (request.getRequestType().equals(Request.GET_ALL_ORDERS_FOR_PARK)) {
 					response = new ServerToClientResponse(Response.GET_ALL_ORDERS_FOR_PARK_RESPONSE);
 					ArrayList<Order> result = mysqlFunction.getOrdersForPark(request.getParameters());
@@ -307,15 +307,15 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 
-				// Ofir Avraham Vaknin v2.
+				// Ofir Avraham Vaknin v3.
 				if (request.getRequestType().equals(Request.GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER)) {
 					response = new ServerToClientResponse(Response.GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER_RESPONSE);
 					ArrayList<Order> result = mysqlFunction.getOrderForTravelerInPark(request.getParameters());
 					response.setResultSet(result);
 					client.sendToClient(response);
 				}
-				
-				if(request.getRequestType().equals(Request.MANAGER_REQUEST)) { // ofir n
+
+				if (request.getRequestType().equals(Request.MANAGER_REQUEST)) { // ofir n
 
 					mysqlFunction.insertAllNewRequestsFromParkManager(request.getParameters());
 
@@ -323,21 +323,19 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 
-
-				if(request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) { // ofir n
+				if (request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) { // ofir n
 
 					response = new ServerToClientResponse(Response.VIEW_MANAGER_REQUEST_RESPONSE);
 					response.setResultSet(mysqlFunction.GetRequestsFromDB());
-					//	System.out.println(response.getResultSet()+" **");
+					// System.out.println(response.getResultSet()+" **");
 					client.sendToClient(response);
 
 				}
 
-
-				if(request.getRequestType().equals(Request.CONFIRM_REQUEST)) { // ofir n
+				if (request.getRequestType().equals(Request.CONFIRM_REQUEST)) { // ofir n
 
 					response = new ServerToClientResponse(Response.CONFIRM_REQUEST_RESPONSE);
-					if((int) request.getParameters().get(1)==1)
+					if ((int) request.getParameters().get(1) == 1)
 						mysqlFunction.changeStatusOfRequest(true, (int) request.getParameters().get(0));
 
 					else {
@@ -349,14 +347,31 @@ public class HandleClientRequest implements Runnable {
 
 				}
 
-				
-				if(request.getRequestType().equals(Request.CHANGE_PARK_PARAMETERS)) {
-					
-					
-					
+				if (request.getRequestType().equals(Request.CHANGE_PARK_PARAMETERS)) {
+
 				}
 
-				client.sendToClient("");
+				// Shlomi
+				if (request.getRequestType().equals(Request.CHECK_IF_PARK_FULL_AT_DATE)) {
+					response = new ServerToClientResponse(Response.CHECK_IF_PARK_FULL_AT_DATE_RESPONSE);
+					response.setResultSet(mysqlFunction.isParkIsFullAtDate(request.getParameters()));
+					client.sendToClient(response);
+				}
+
+				// Shlomi
+				if (request.getRequestType().equals(Request.DELETE_REPORT)) {
+					response = new ServerToClientResponse(Response.DELETE_REPORT_RESPONSE);
+					mysqlFunction.deleteReport(request.getParameters());
+					client.sendToClient("Finished");
+				}
+				// Shlomi
+				if (request.getRequestType().equals(Request.INSERT_REPORT)) {
+					response = new ServerToClientResponse(Response.INSERT_REPORT_RESPONSE);
+					response.setResult(mysqlFunction.insertReport(request.getParameters()));
+					client.sendToClient(response);
+				}
+
+				//client.sendToClient("Finished ");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

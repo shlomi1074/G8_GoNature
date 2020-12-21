@@ -14,7 +14,7 @@
 <Pane fx:id="paneMainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="500.0" stylesheets="@darkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ServerGUIController">
    <children>
       <Button fx:id="btnStartServer" layoutX="232.0" layoutY="141.0" mnemonicParsing="false" onAction="#startServer" prefHeight="39.0" prefWidth="125.0" text="Start server" />
-      <Label fx:id="headerLabel" layoutX="115.0" layoutY="78.0" text="G8_Prototype - Server">
+      <Label fx:id="headerLabel" layoutX="116.0" layoutY="83.0" text="G8_GoNature - Server">
          <font>
             <Font size="24.0" />
          </font>

@@ -5,19 +5,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-
 import Controllers.OrderControl;
 import Controllers.ParkControl;
 import Controllers.TravelerControl;
-import Controllers.WorkerControl;
 import Controllers.calculatePrice.CheckOut;
-import Controllers.calculatePrice.CheckOutDecorator;
 import Controllers.calculatePrice.GroupCasualCheckOut;
-import Controllers.calculatePrice.GuidePayAtParkCheckOut;
 import Controllers.calculatePrice.RegularCheckOut;
 import Controllers.calculatePrice.SubscriberPayAtParkCheckOut;
 import alerts.CustomAlerts;
@@ -27,7 +22,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
@@ -64,14 +58,15 @@ public class CasualVisitController implements Initializable {
 	@FXML
 	private JFXButton checkPriceBtn;
 
-	// Ofir Avraham Vaknin v2.
+	// Ofir Avraham Vaknin v3.
 	@FXML
 	private Label permissionLabel;
 
 	private int checkPriceCount = 0;
 	private Subscriber subscriber;
-	// Add listener to fill subscriber email if exist might be good
+	
 
+	// Ofir Avraham Vaknin v3.
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initComboBoxOrderType();
@@ -120,19 +115,6 @@ public class CasualVisitController implements Initializable {
 	public void initComboBoxOrderType() {
 
 		typeComboBox.getItems().clear();
-//		typeComboBox.getItems().addAll(Arrays.asList(OrderType.values()));
-//		typeComboBox.setOnAction(new EventHandler<ActionEvent>() {
-//			@Override
-//			public void handle(ActionEvent event) {
-//				if (currentOrderType().equals("Solo Visit")) {
-//					numOfVisitorsCasualVisit.setText("1");
-//					numOfVisitorsCasualVisit.setEditable(false);
-//				} else {
-//					numOfVisitorsCasualVisit.setText("");
-//					numOfVisitorsCasualVisit.setEditable(true);
-//				}
-//			}
-//		});
 
 		typeComboBox.getItems().addAll(Arrays.asList(OrderType.values()));
 		if (!permissionLabel.getText().equals("Family")) {
@@ -175,7 +157,7 @@ public class CasualVisitController implements Initializable {
 		});
 	}
 
-	// Ofir Avraham Vaknin v2.
+	// Ofir Avraham Vaknin v3.
 	// SOLO,FAMILY,GROUP, NULL
 	private String currentOrderType() {
 		if (typeComboBox.getValue() == null)
@@ -184,7 +166,7 @@ public class CasualVisitController implements Initializable {
 		return typeComboBox.getValue().toString();
 	}
 
-	// Ofir Avraham Vaknin v2.
+	// Ofir Avraham Vaknin v3.
 	// Might need to change enum names\ names in DB (Of types)
 	/*
 	 * 0 - success 1 - didnt fill the form properly 2 - cant order for group with
@@ -223,15 +205,36 @@ public class CasualVisitController implements Initializable {
 		if (sub == null)
 			return true;
 
-		if (!orderType.equals(OrderType.SOLO.toString()) && numOfVisitors > sub.getNumberOfParticipants()) {
+		// Ofir Avraham Vaknin v3.
+		// Check if Family order is larger than the number of people in the sub.
+		if(orderType.equals(OrderType.FAMILY.toString()) && numOfVisitors > sub.getNumberOfParticipants())
+		{
 			popNotification(AlertType.ERROR, "Input Error", "Check number of participants");
 			return false;
 		}
 		
+		// if the order is for group , the order is done by a guide, number of visitors is larger than 
+		// number of participants in the sub.
+		
+		// Ofir Avraham Vaknin v3.
+		if(orderType.equals(OrderType.GROUP.toString()) && sub.getSubscriberType().equals("Guide") 
+				&& numOfVisitors > sub.getNumberOfParticipants())
+		{
+			popNotification(AlertType.ERROR, "Input Error", "Check number of participants");
+			return false;
+		}
+		
+//		if (!orderType.equals(OrderType.SOLO.toString()) && numOfVisitors > sub.getNumberOfParticipants()) {
+//			popNotification(AlertType.ERROR, "Input Error", "Check number of participants");
+//			return false;
+//		}
+		
+	
+		
 		return true;
 	}
 
-	// Ofir Avraham Vaknin v2.
+	// Ofir Avraham Vaknin v3.
 	// Does guide count as subscriber ?? if no code should be adjust 
 	private void checkPricebtnAction() {
 		double price = 0;
@@ -240,7 +243,7 @@ public class CasualVisitController implements Initializable {
 		String idOfTraveler = idInputCasualVisit.getText();
 		int numberOfVisitors = Integer.parseInt(numOfVisitorsCasualVisit.getText());
 		String orderType = currentOrderType();
-		String email = emailInputCasualVisit.getText();
+		//String email = emailInputCasualVisit.getText();
 
 		// Setting up vars
 		Subscriber sub = null;
@@ -287,16 +290,24 @@ public class CasualVisitController implements Initializable {
 
 		Order order = new Order(idOfTraveler, parkId, LocalDate.now().toString(), LocalTime.now().toString(), orderType,
 				numberOfVisitors, email, Double.parseDouble(totalPriceLabel.getText()),
-				OrderStatusName.completed.name());
+				OrderStatusName.COMPLETED.toString());
 		OrderTb orderTb = new OrderTb(order);
 
 		if (OrderControl.addCasualOrder(order)) {
 			OrderControl.addVisit(orderTb);
 			int updateNumber = ParkControl.getParkById(String.valueOf(parkId)).getCurrentVisitors() + numberOfVisitors;
 			ParkControl.updateCurrentVisitors(parkId, updateNumber);
+			
+			
+			
 			popNotification(AlertType.INFORMATION, "Visit Added", "Traveler can continue to the park");
 			Stage stage = (Stage) idInputCasualVisit.getScene().getWindow();
+			// Ofir Avraham Vaknin v3.
+			ManageTravelerController manageTravelerController = (ManageTravelerController)stage.getUserData();
+			manageTravelerController.loadTableView();
+			//
 			stage.close();
+			
 		} else {
 			popNotification(AlertType.ERROR, "System Error", "An error has occurred, please try again");
 		}

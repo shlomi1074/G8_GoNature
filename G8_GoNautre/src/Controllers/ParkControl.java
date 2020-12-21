@@ -6,6 +6,7 @@ import java.util.Arrays;
 import client.ChatClient;
 import client.ClientUI;
 import logic.ClientToServerRequest;
+import logic.Order;
 import logic.OrderTb;
 import logic.ClientToServerRequest.Request;
 import logic.Park;
@@ -114,7 +115,13 @@ public class ParkControl {
 		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.CHANGE_PARK_PARAMETERS,changedParameters);
 		
 		ClientUI.chat.accept(request);
-
 		
+	}
+	
+	public static ArrayList<String> isParkIsFullAtDate(String date, String parkID) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.CHECK_IF_PARK_FULL_AT_DATE,
+				new ArrayList<String>(Arrays.asList(date, parkID)));
+		ClientUI.chat.accept(request);
+		return (ArrayList<String>) ChatClient.responseFromServer.getResultSet();
 	}
 }

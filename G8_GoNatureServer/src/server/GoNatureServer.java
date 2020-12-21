@@ -1,6 +1,3 @@
-// This file contains material supporting section 3.7 of the textbook:
-// "Object Oriented Software Engineering" and is issued under the open-source
-// license found at www.lloseng.com 
 package server;
 
 import java.sql.Connection;
@@ -15,40 +12,31 @@ import sqlHandler.mysqlFunctions;
  * This class overrides some of the methods in the abstract superclass in order
  * to give more functionality to the server.
  *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
- * @author Paul Holden
- * @version July 2000
+ * @author Shlomi Amar
+ * @author Alon Ivshin
+ * @author Ofir Vaknin
+ * @author Lior Keren
+ * @author Ofir Newman
+ * 
+ * @version December 2020
  */
 
 public class GoNatureServer extends AbstractServer {
-	// Class variables *************************************************
 
-	/**
-	 * The default port to listen on.
-	 */
-
-	// Constructors ****************************************************
-
-	/**
-	 * Constructs an instance of the echo server.
-	 *
-	 * @param port The port number to connect on.
-	 * 
-	 */
 
 	private ServerGUIController serverGUIController;
-
-	public static Connection mysqlconnection;
-	private mysqlFunctions mysqlFunction;
-
+	public static Connection mysqlconnection;	
+	/**
+	 * Constructs an instance of the GoNature Server.
+	 *
+	 * @param port The port number to connect on.
+	 * @param serverGUIController The Gui Controller of the server
+	 */
 	public GoNatureServer(int port, ServerGUIController serverGUIController) throws Exception {
 		super(port);
 		this.serverGUIController = serverGUIController;
 		try {
 			mysqlconnection = mysqlConnection.getInstance().getConnection();
-			mysqlFunction = new mysqlFunctions(mysqlconnection);
 			serverGUIController.updateTextAreaLog("Server Connected");
 			serverGUIController.updateTextAreaLog("DB Connected");
 			serverGUIController.setCircleColor(Color.GREEN);
@@ -63,15 +51,12 @@ public class GoNatureServer extends AbstractServer {
 
 	/**
 	 * This method handles any messages received from the client.
+	 * For each client's request a new thread is created 
 	 *
 	 * @param msg    The message received from the client.
 	 * @param client The connection from which the message originated.
-	 * @param
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		/* For each client's request a new thread is created 
-		 * Do not add any code in here.
-		 * Any other code should be in HandleClientRequest class */
 		HandleClientRequest thread = new HandleClientRequest(client, msg);
 		new Thread(thread).start();
 	}
@@ -99,6 +84,7 @@ public class GoNatureServer extends AbstractServer {
 	@Override
 	protected void clientConnected(ConnectionToClient client) {
 		serverGUIController.updateTextAreaLog(client.toString() + " Connected");
+		serverGUIController.updateTextAreaLog("Total connections to the server: " + this.getNumberOfClients());
 	}
 
 	/**
@@ -115,9 +101,13 @@ public class GoNatureServer extends AbstractServer {
 	 */
 	synchronized protected void clientException(ConnectionToClient client, Throwable exception) {
 		serverGUIController.updateTextAreaLog("Client Disonnected");
+		serverGUIController.updateTextAreaLog("Total connections to the server: " + (this.getNumberOfClients() - 1));
 	}
 
-	/* Called when The server closed  */
+	/**
+	 * Hook method.
+	 * Called when The server closed. After 'serverStopped' method.
+	 */
 	@Override
 	final protected void serverClosed() {
 		try {
@@ -130,4 +120,3 @@ public class GoNatureServer extends AbstractServer {
 	}
 
 }
-//End of EchoServer class

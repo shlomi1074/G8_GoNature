@@ -4,14 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.Statement;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import logic.Discount;
-import logic.DiscountTb;
 import logic.Employees;
 import logic.Messages;
 import logic.Order;
@@ -21,6 +17,7 @@ import logic.Request;
 import logic.Subscriber;
 import logic.Traveler;
 import logic.WorkerType;
+import logic.report;
 
 public class mysqlFunctions {
 
@@ -226,7 +223,7 @@ public class mysqlFunctions {
 			query.setString(2, (String) parameters.get(1));
 			query.setString(3, (String) parameters.get(2));
 			query.setString(4, (String) parameters.get(3));
-			query.setString(5, OrderStatusName.cancel.name());
+			query.setString(5, OrderStatusName.CANCELED.toString());
 			ResultSet res = query.executeQuery();
 
 			while (res.next())
@@ -820,9 +817,6 @@ public void insertAllNewRequestsFromParkManager(ArrayList<?> managerRequests) {
 
 		// Ofir Avraham Vaknin v2.
 		public boolean updateNumberOfVisitors(ArrayList<?> parameters) {
-			// new
-			// ArrayList<String>(Arrays.asList(travelerId,parkId,enterTime,estimated,date)));
-
 			String parkId = (String) parameters.get(0);
 			int number = Integer.parseInt((String) parameters.get(1));
 
@@ -867,7 +861,8 @@ public void insertAllNewRequestsFromParkManager(ArrayList<?> managerRequests) {
 			return orders;
 
 		}
-
+		
+		// Ofir Avraham Vaknin v2.
 		public ArrayList<Order> getOrderForTravelerInPark(ArrayList<?> parameters) {
 			int parkId = Integer.parseInt((String) parameters.get(0));
 			String travId = (String) parameters.get(1);
@@ -910,12 +905,72 @@ public void insertAllNewRequestsFromParkManager(ArrayList<?> managerRequests) {
 				query.executeUpdate();
 			
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 			
 			
+		}
+
+		public ArrayList<String> isParkIsFullAtDate(ArrayList<?> parameters) {
+			ArrayList<String> comment = new ArrayList<String>();
+
+			String sql = "SELECT comment FROM g8gonature.fullparkdate WHERE date = ? and parkId = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				query.setString(1, (String) parameters.get(0));
+				query.setInt(2,Integer.parseInt((String) parameters.get(1)));
+				ResultSet res = query.executeQuery();
+				
+				while (res.next())
+					comment.add(res.getString(1));
+				
+				if (comment.size() == 0)
+					comment.add("notFull");
+
+			} catch (SQLException e) {
+				System.out.println("Could not execute isParkIsFullAtDate");
+				e.printStackTrace();
+			}
+			return comment;
+		}
+
+		public void deleteReport(ArrayList<?> parameters) {
+			String sql = "DELETE FROM g8gonature.reports where reportType = ? and parkID = ? and month = ?";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				report r = (report) parameters.get(0);
+				query.setString(1, r.getReportType());
+				query.setInt(2,r.getParkID());
+				query.setInt(3,r.getMonth());
+				query.executeUpdate();
+
+			} catch (SQLException e) {
+				System.out.println("Could not execute deleteReport");
+				e.printStackTrace();
+			}
+		}
+
+		public boolean insertReport(ArrayList<?> parameters) {
+
+			String sql = "INSERT INTO g8gonature.reports  (reportType, parkID, month, comment)  values (?, ?,?,?)";
+			PreparedStatement query;
+			try {
+				query = conn.prepareStatement(sql);
+				report r = (report) parameters.get(0);
+				query.setString(1, r.getReportType());
+				query.setInt(2,r.getParkID());
+				query.setInt(3,r.getMonth());
+				query.setString(4,r.getComment());
+				query.executeUpdate();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Could not execute insertReport");
+				e.printStackTrace();
+				return false;
+			}
 		}
 		
 
