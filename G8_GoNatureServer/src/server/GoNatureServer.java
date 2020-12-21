@@ -45,6 +45,10 @@ public class GoNatureServer extends AbstractServer {
 			serverGUIController.updateTextAreaLog("Failed to load DB");
 			throw e;
 		}
+		
+		/* Create notify thread */
+		NotifyTravelers notifyTravelers = new NotifyTravelers(mysqlconnection);
+		new Thread(notifyTravelers).start();
 	}
 
 	// Instance methods ************************************************

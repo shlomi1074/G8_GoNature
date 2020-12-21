@@ -43,7 +43,7 @@ public class OrderControl {
 		Order recentOrder = null;
 		if (OrderControl.addOrder(order, traveler)) {
 			recentOrder = OrderControl.getTravelerRecentOrder(traveler.getTravelerId());
-
+			
 			/* Insert massage to data base */
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			LocalDateTime now = LocalDateTime.now();
@@ -82,8 +82,8 @@ public class OrderControl {
 	 * @return true on success, false otherwise
 	 */
 	public static boolean addOrder(Order order, Traveler traveler) {
-		if ((order.getOrderStatus().equals(OrderStatusName.PENDING.name()) && isDateAvailable(order))
-				|| order.getOrderStatus().equals(OrderStatusName.WAITING.name())) {
+		if ((order.getOrderStatus().equals(OrderStatusName.PENDING.toString()) && isDateAvailable(order))
+				|| order.getOrderStatus().equals(OrderStatusName.WAITING.toString())) {
 			ClientToServerRequest<Order> request = new ClientToServerRequest<>(Request.ADD_ORDER);
 			request.setObj(order);
 			ClientUI.chat.accept(request);

@@ -12,6 +12,7 @@ import logic.Employees;
 import logic.Messages;
 import logic.Order;
 import logic.OrderStatusName;
+import logic.OrderType;
 import logic.Park;
 import logic.Request;
 import logic.Subscriber;
@@ -978,4 +979,50 @@ public class mysqlFunctions {
 			return false;
 		}
 	}
+	
+	public ArrayList <Order> getPendingOrders(){
+		ArrayList<Order> orders = new ArrayList<Order>();
+		String sql = "SELECT * FROM g8gonature.order WHERE orderStatus = ?";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setString(1, OrderStatusName.PENDING.toString());
+			ResultSet res = query.executeQuery();
+			while (res.next()) {
+				Order order = new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
+						res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
+						res.getString(10));
+				orders.add(order);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute getAllOrdersForId");
+			e.printStackTrace();
+		}
+		return orders;
+	}
+	
+	public Order getOrderByID(int orderId) {
+		Order order = null;
+		String sql = "SELECT * FROM g8gonature.order WHERE orderId = ?";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, orderId);
+			ResultSet res = query.executeQuery();
+			if (res.next()) {
+				order = new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
+						res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
+						res.getString(10));
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute getAllOrdersForId");
+			e.printStackTrace();
+		}
+		return order;
+		
+	}
+	
+	
 }

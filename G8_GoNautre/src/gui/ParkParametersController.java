@@ -3,15 +3,17 @@ package gui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXComboBox;
-
 import Controllers.ParkControl;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import logic.Park;
 
+/**
+ * 
+ *
+ */
 public class ParkParametersController implements Initializable {
 
 	@FXML
@@ -29,8 +31,8 @@ public class ParkParametersController implements Initializable {
 	@FXML
 	private Label actualLabel;
 
-    @FXML
-    private Label chooseParkLabel;
+	@FXML
+	private Label chooseParkLabel;
 
 	@FXML
 	private JFXComboBox<String> parkComboBox;
@@ -42,8 +44,7 @@ public class ParkParametersController implements Initializable {
 			chooseParkLabel.setVisible(true);
 			parkComboBox.setVisible(true);
 			parkComboBox.setDisable(false);
-		}
-		else {
+		} else {
 			chooseParkLabel.setVisible(false);
 			parkComboBox.setVisible(false);
 			parkComboBox.setDisable(true);
@@ -52,7 +53,7 @@ public class ParkParametersController implements Initializable {
 	}
 
 	private void initComboBoxs() {
-		/* Set parks combobox to load dynamically from database */ // Shlomi
+		/* Set parks combo box to load dynamically from database */ // Shlomi
 		ArrayList<String> parksNames = ParkControl.getParksNames();
 		if (parksNames != null) {
 			parkComboBox.getItems().addAll(parksNames);
@@ -78,7 +79,9 @@ public class ParkParametersController implements Initializable {
 		currentLabel.setText(park.getCurrentVisitors() + "");
 		maxLabel.setText(park.getMaxVisitors() + "");
 		allowedLabel.setText(park.getGapBetweenMaxAndCapacity() + "");
-		actualLabel.setText((park.getMaxVisitors() - park.getCurrentVisitors()) + "");
+		int temp = park.getMaxVisitors() - park.getCurrentVisitors();
+		temp = temp < 0 ? 0 : temp;
+		actualLabel.setText(temp + "");
 	}
 
 }

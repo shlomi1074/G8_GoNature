@@ -185,7 +185,7 @@ public class RescheduleController implements Initializable {
 
 	@FXML
 	private void enterWaitingList() {
-		this.order.setOrderStatus(OrderStatusName.WAITING.name());
+		this.order.setOrderStatus(OrderStatusName.WAITING.toString());
 		if (OrderControl.addOrder(order, traveler)) {
 			System.out.println("Order added successfuly - waiting list");
 			/* NEED TO SEND EMAIL AND SEND MESSAGE */
