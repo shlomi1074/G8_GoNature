@@ -189,7 +189,7 @@ public class TravelerViewOrders implements Initializable {
 			break;
 		case 0:
 			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(),
-					OrderStatusName.confirmed);
+					OrderStatusName.CONFIRMED);
 			if (!orderControlResult) {
 				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
 						"Could not confirm this order,please try again later.").showAndWait();
@@ -220,7 +220,7 @@ public class TravelerViewOrders implements Initializable {
 		}
 		// Order is in waiting list or pending
 		if (orderStatusTxt.getText().equals("waiting") || orderStatusTxt.getText().equals("pending")) {
-			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(), OrderStatusName.cancel);
+			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(), OrderStatusName.CANCELED);
 			if (!orderControlResult) {
 				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
 						"Could not cancel this order,please try again later.").showAndWait();

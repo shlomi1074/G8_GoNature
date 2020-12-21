@@ -74,13 +74,14 @@ public class ManageTravelerController implements Initializable {
 	@FXML
 	private Label orderIdTxt;
 
-	// Ofir Avraham Vaknin v2.
+	// Ofir Avraham Vaknin v3.
 
 	@FXML
 	private JFXTextField visitorsTextField;
 
 	private OrderTb clickedRow;
 
+	// Ofir Avraham Vaknin v3.
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadTableView();
@@ -103,7 +104,7 @@ public class ManageTravelerController implements Initializable {
 
 	}
 
-	// Ofir Avraham Vaknin v2.
+	// Ofir Avraham Vaknin v3.
 	@FXML
 	private void loadCasualVisit() {
 		try {
@@ -122,7 +123,13 @@ public class ManageTravelerController implements Initializable {
 			newStage.setTitle("Casual Visit");
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
+			// Ofir v3
+			newStage.setUserData(this);
+			//
 			newStage.show();
+			
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("faild to load form");
@@ -133,7 +140,7 @@ public class ManageTravelerController implements Initializable {
 		return (Stage) occVisitBtn.getScene().getWindow();
 	}
 
-	// Ofir Avraham Vaknin
+	// Ofir Avraham Vaknin v3.
 	@FXML
 	public void loadTableView() {
 		ArrayList<Order> ordersArrayList = OrderControl.getAllOrdersForParkId(MemberLoginController.member.getParkId());
@@ -142,7 +149,7 @@ public class ManageTravelerController implements Initializable {
 		ordersTableView.setItems(getOrders(tbOrdersArrayList));
 	}
 
-	// Ofir Avraham Vaknin
+	// Ofir Avraham Vaknin v3.
 	private void init(ArrayList<OrderTb> orders) {
 
 		travelerIDCol.setCellValueFactory(new PropertyValueFactory<OrderTb, String>("travelerId"));
@@ -177,12 +184,13 @@ public class ManageTravelerController implements Initializable {
 		return ov;
 	}
 
+	// Ofir Avraham Vaknin v3.
 	private void clearLabels() {
 		orderIdTxt.setText("");
 		visitorsTextField.setText("");
 	}
 
-	// Ofir Avraham Vaknin v2.
+	// Ofir Avraham Vaknin v3.
 	private void confirmButton() {
 		// Did not choose row
 		if (clickedRow == null) {
@@ -213,7 +221,7 @@ public class ManageTravelerController implements Initializable {
 		// Order is good to confirm
 
 		// Change order status
-		OrderControl.changeOrderStatus(String.valueOf(clickedRow.getOrderId()), OrderStatusName.completed);
+		OrderControl.changeOrderStatus(String.valueOf(clickedRow.getOrderId()), OrderStatusName.COMPLETED);
 
 		// Changing the number of participants
 		Order tempOrder = new Order(clickedRow);
@@ -233,7 +241,7 @@ public class ManageTravelerController implements Initializable {
 				.showAndWait();
 	}
 
-	// Ofir Avraham Vaknin v2.
+	// Ofir Avraham Vaknin v3.
 	private boolean canTravelerEnter() {
 		LocalTime orderTime = LocalTime.parse(clickedRow.getOrderTime());
 		LocalDate orderDate = LocalDate.parse(clickedRow.getOrderDate());
@@ -244,7 +252,7 @@ public class ManageTravelerController implements Initializable {
 		// Or came late by at most 1 hour
 
 		// Order status is not valid
-		if (!clickedRow.getOrderStatus().equals(OrderStatusName.confirmed.name()))
+		if (!clickedRow.getOrderStatus().equals(OrderStatusName.CONFIRMED.toString()))
 			return false;
 
 		// Cant enter with that time
@@ -253,7 +261,7 @@ public class ManageTravelerController implements Initializable {
 		return false;
 	}
 
-	// Ofir Avraham Vaknin
+	// Ofir Avraham Vaknin V3.
 	private void searchTraveler() {
 
 		String id = idTextField.getText();

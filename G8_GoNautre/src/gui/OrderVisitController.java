@@ -10,11 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import com.jfoenix.controls.*;
-import Controllers.NotificationControl;
 import Controllers.OrderControl;
 import Controllers.ParkControl;
 import Controllers.TravelerControl;
@@ -34,25 +32,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logic.GoNatureFinals;
-import logic.Messages;
 import logic.Order;
 import logic.OrderStatusName;
 import logic.OrderType;
 import logic.Park;
 import logic.Subscriber;
 import logic.Traveler;
-import resources.MsgTemplates;
 import util.UtilityFunctions;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.DateCell;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -181,57 +174,12 @@ public class OrderVisitController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		Locale.setDefault(Locale.ENGLISH);
 		accordion.setExpandedPane(identificationTP);
 		initComboBoxes();
 		initRadioBoxes();
 		initDatePicker();
 		initLabels(); // shlomi
-	}
-
-	private boolean addOrderInBackgroundThread() {
-
-		order = new Order(0, summaryID.getText(), getSelectedParkId(), summaryDate.getText(), summaryTime.getText(),
-				summaryType.getText(), Integer.parseInt(summaryVisitors.getText()), summaryEmail.getText(),
-				CalculatePrice(), OrderStatusName.pending.name());
-
-		String[] travelerName = summaryFullName.getText().split(" ");
-		String travelerFirstName = travelerName[0];
-		String travelerLastName = travelerName.length == 1 ? "" : travelerName[1];
-
-		traveler = new Traveler(summaryID.getText(), travelerFirstName, travelerLastName, summaryEmail.getText(),
-				summaryPhone.getText());
-
-		if (OrderControl.addOrder(order, traveler)) {
-			System.out.println("Order added successfuly ");
-			recentOrder = OrderControl.getTravelerRecentOrder(traveler.getTravelerId());
-
-			/* Insert massage to data base */ /* NEED TO BE CHANGED WHEN ADDED MESSAGES */
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			LocalDateTime now = LocalDateTime.now();
-			String dateAndTime = dtf.format(now);
-			String date = dateAndTime.split(" ")[0];
-			String time = dateAndTime.split(" ")[1];
-			if (recentOrder != null) { // Insert email to the database
-				/* Create message content */
-				String emailContent = String.format(MsgTemplates.orderConfirmation[1].toString(),
-						String.valueOf(recentOrder.getOrderId()), summaryPark.getText().trim(),
-						recentOrder.getOrderDate(), recentOrder.getOrderTime(), recentOrder.getOrderType(),
-						String.valueOf(recentOrder.getNumberOfParticipants()), String.valueOf(recentOrder.getPrice()));
-
-				/* Add message to data base */
-				NotificationControl.sendMessageToTraveler(traveler.getTravelerId(), date, time,
-						MsgTemplates.orderConfirmation[0], emailContent, String.valueOf(recentOrder.getOrderId()));
-
-				/* Send message by mail */
-				Messages msg = new Messages(0, traveler.getTravelerId(), date, time, MsgTemplates.orderConfirmation[0],
-						emailContent, recentOrder.getOrderId());
-				NotificationControl.sendMailInBackgeound(msg, null);
-				return true;
-			}
-			return false;
-		} else
-			return false;
-
 	}
 
 	// shlomi
@@ -244,9 +192,21 @@ public class OrderVisitController implements Initializable {
 			Task<Boolean> task = new Task<Boolean>() {
 				@Override
 				protected Boolean call() throws Exception {
-					boolean res = false;
-					res = addOrderInBackgroundThread();
-					return res;
+
+					order = new Order(0, summaryID.getText(), getSelectedParkId(), summaryDate.getText(), summaryTime.getText(),
+							summaryType.getText(), Integer.parseInt(summaryVisitors.getText()), summaryEmail.getText(),
+							CalculatePrice(), OrderStatusName.PENDING.toString());
+
+					String[] travelerName = summaryFullName.getText().split(" ");
+					String travelerFirstName = travelerName[0];
+					String travelerLastName = travelerName.length == 1 ? "" : travelerName[1];
+
+					traveler = new Traveler(summaryID.getText(), travelerFirstName, travelerLastName, summaryEmail.getText(),
+							summaryPhone.getText());
+					recentOrder = OrderControl.addOrderAndNotify(order, traveler);
+					if (recentOrder != null)
+						return true;
+					return false;
 				}
 			};
 
@@ -300,12 +260,12 @@ public class OrderVisitController implements Initializable {
 			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visit Time",
 					"Visit time must be atleast 24 hours from now").showAndWait();
 		} else if (Integer.parseInt(summaryVisitors.getText()) > 15
-				&& summaryType.getText().equals(OrderType.GROUP.toString())
-				&& permissionLabel.getText().equals("Guide")) {
+				&& summaryType.getText().equals(OrderType.GROUP.toString())) {
 			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Group order can be up to 15 travelers").showAndWait();
 		} else if (subscriber != null && subscriber.getSubscriberType().equals("Family")
-				&& Integer.parseInt(summaryVisitors.getText()) > subscriber.getNumberOfParticipants()) {
+				&& Integer.parseInt(summaryVisitors.getText()) > subscriber.getNumberOfParticipants()
+				&& summaryType.getText().equals(OrderType.FAMILY.toString())) {
 			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Your family account has " + subscriber.getNumberOfParticipants()
 							+ " members.\nThe number of visitors can not be higher than "

@@ -19,6 +19,6 @@
          </columnResizePolicy>
       </TableView>
       <Label fx:id="headerLabel" layoutX="361.0" layoutY="44.0" text="Your Messages" />
-      <JFXTextArea fx:id="messageTextArea" layoutX="191.0" layoutY="371.0" />
+      <JFXTextArea fx:id="messageTextArea" editable="false" layoutX="191.0" layoutY="371.0" />
    </children>
 </Pane>

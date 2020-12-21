@@ -28,27 +28,22 @@
          <children>
             <VBox fx:id="vbox" prefHeight="600.0" prefWidth="204.0">
                <children>
-                  <JFXButton fx:id="profileButton" onMouseClicked="#loadProfile" prefHeight="122.0" prefWidth="204.0" text=" Profile">
+                  <JFXButton fx:id="profileButton" onMouseClicked="#loadProfile" prefHeight="153.0" prefWidth="204.0" text=" Profile">
                      <graphic>
                         <FontAwesomeIconView glyphName="USER" size="20" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="currentVisitorsButton" layoutX="10.0" layoutY="10.0" onMouseClicked="#loadParkParameters" prefHeight="122.0" prefWidth="204.0" text="Park Parameters">
+                  <JFXButton fx:id="currentVisitorsButton" layoutX="10.0" layoutY="10.0" onMouseClicked="#loadParkParameters" prefHeight="153.0" prefWidth="204.0" text="Park Parameters">
                      <graphic>
                         <FontAwesomeIconView glyphName="SLIDERS" size="20" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="enterVisitorIDButton" layoutX="10.0" layoutY="136.0" onMouseClicked="#loadManageTraveler" prefHeight="122.0" prefWidth="204.0" text="Enter Visitors ID">
-                     <graphic>
-                        <FontAwesomeIconView glyphName="KEYBOARD_ALT" size="20" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton fx:id="registerButton" layoutX="10.0" layoutY="262.0" onMouseClicked="#loadRegister" prefHeight="122.0" prefWidth="204.0" text="Register Subscriber">
+                  <JFXButton fx:id="registerButton" layoutX="10.0" layoutY="262.0" onMouseClicked="#loadRegister" prefHeight="153.0" prefWidth="204.0" text="Register Subscriber">
                      <graphic>
                         <FontAwesomeIconView glyphName="USER_PLUS" size="20" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="logoutBtn" onMouseClicked="#logOut" prefHeight="122.0" prefWidth="204.0" text="Logout">
+                  <JFXButton fx:id="logoutBtn" onMouseClicked="#logOut" prefHeight="153.0" prefWidth="204.0" text="Logout">
                      <graphic>
                         <FontAwesomeIconView glyphName="SIGN_OUT" size="20" />
                      </graphic>

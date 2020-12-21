@@ -100,6 +100,7 @@ public class CreateReportsController implements Initializable {
 
 	@FXML
 	private void turnON_totalVisitorsRB() {
+		totalVisitorsRB.setSelected(true);
 		useageRB.setSelected(false);
 		IncomeRB.setSelected(false);
 		this.fxmlName = "/gui/TotalVisitorsReport.fxml";
@@ -108,14 +109,16 @@ public class CreateReportsController implements Initializable {
 
 	@FXML
 	private void turnON_useageRB() {
+		useageRB.setSelected(true);
 		totalVisitorsRB.setSelected(false);
 		IncomeRB.setSelected(false);
-		this.fxmlName = "/gui/UseageReport.fxml";
-		screenTitle = "Useage Report";
+		this.fxmlName = "/gui/UsageReport.fxml";
+		screenTitle = "Usage Report";
 	}
 
 	@FXML
 	private void turnON_IncomeRB() {
+		IncomeRB.setSelected(true);
 		totalVisitorsRB.setSelected(false);
 		useageRB.setSelected(false);
 		this.fxmlName = "/gui/IncomeReport.fxml";
@@ -142,6 +145,11 @@ public class CreateReportsController implements Initializable {
 				controller.setParkID(MemberLoginController.member.getParkId());
 				loader.setController(controller);
 			} else if (useageRB.isSelected()) {
+				UsageReportController controller = new UsageReportController();
+				controller.setComment(commentTextArea.getText());
+				controller.setMonthNumber(monthCB.getSelectionModel().getSelectedIndex());
+				controller.setParkID(MemberLoginController.member.getParkId());
+				loader.setController(controller);
 
 			} else if (IncomeRB.isSelected()) {
 				IncomeReportController controller = new IncomeReportController();

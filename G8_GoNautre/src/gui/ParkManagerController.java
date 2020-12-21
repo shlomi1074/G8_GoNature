@@ -102,12 +102,6 @@ public class ParkManagerController implements Initializable {
 	}
 
 	@FXML
-	private void loadManageTraveler() {
-		Pane view = loader.loadPaneToBorderPaneWithController("/gui/ManageTraveler.fxml", "manageTraveler");
-		borderPane.setCenter(view);
-	}
-
-	@FXML
 	private void loadParkParameters() {
 		Pane view = loader.loadPaneToBorderPaneWithController("/gui/ParkParameters.fxml", "parkParameters");
 		borderPane.setCenter(view);

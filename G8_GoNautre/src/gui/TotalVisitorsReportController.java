@@ -46,7 +46,6 @@ public class TotalVisitorsReportController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		initLabels();
-		commentTextArea.setText(comment);
 	}
 	
 	/* HERE WE NEED TO HANDLE WHEN THE BUTTON IS CLICKED
@@ -67,7 +66,7 @@ public class TotalVisitorsReportController implements Initializable{
 	/* HERE WE NEED TO GET THE DATA AND SET THE LABELS */
 	private void initLabels() {
 		monthLabel.setText(CreateReportsController.months[monthNumber]); // set the name of the month
-		
+		commentTextArea.setText(comment);
 	}
 
 	public void setMonthNumber(int month){
