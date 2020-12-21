@@ -11,11 +11,11 @@
       <Label fx:id="headerLabel" layoutX="350.0" layoutY="50.0" text="Park Parameters" AnchorPane.leftAnchor="347.0" AnchorPane.rightAnchor="347.0" />
       <Label layoutX="385.0" layoutY="132.0" text="Current Visitors:" />
       <Label fx:id="currentLabel" layoutX="508.0" layoutY="132.0" text="0" />
-      <Label layoutX="386.0" layoutY="182.0" text="Max Visitors:" />
+      <Label layoutX="385.0" layoutY="182.0" text="Max Visitors:" />
       <Label fx:id="maxLabel" layoutX="508.0" layoutY="182.0" text="0" />
-      <Label layoutX="384.0" layoutY="232.0" text="Allowed Gap:" />
+      <Label layoutX="385.0" layoutY="232.0" text="Allowed Gap:" />
       <Label fx:id="allowedLabel" layoutX="508.0" layoutY="232.0" text="0" />
-      <Label layoutX="385.0" layoutY="282.0" text="Actual Gap:" />
+      <Label layoutX="385.0" layoutY="282.0" text="Place In Park:" />
       <Label fx:id="actualLabel" layoutX="508.0" layoutY="282.0" text="0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="375.0" layoutY="355.0" pickOnBounds="true" preserveRatio="true">
          <image>
