@@ -203,9 +203,10 @@ public class OrderControl {
 		return orderTbArrayList;
 	}
 
-	// Ofir Avraham Vaknin
+	
+	// Ofir + Shlomi Edit
 	public static boolean changeOrderStatus(String orderId, OrderStatusName statusName) {
-		String status = statusName.name();
+		String status = statusName.toString();
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.CHANGE_ORDER_STATUS_BY_ID,
 				new ArrayList<String>(Arrays.asList(status, orderId)));
 		ClientUI.chat.accept(request);

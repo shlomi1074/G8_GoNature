@@ -370,6 +370,13 @@ public class HandleClientRequest implements Runnable {
 					response.setResult(mysqlFunction.insertReport(request.getParameters()));
 					client.sendToClient(response);
 				}
+				
+				// Shlomi + Ofir
+				if (request.getRequestType().equals(Request.INSERT_TO_FULL_PARK_DATE)) {
+					response = new ServerToClientResponse(Response.INSERT_TO_FULL_PARK_DATE_RESPONSE);
+					response.setResult(mysqlFunction.insertToFullParkDate(request.getParameters()));
+					client.sendToClient(response);
+				}
 
 				//client.sendToClient("Finished ");
 			} catch (IOException e) {
