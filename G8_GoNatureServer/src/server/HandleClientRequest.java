@@ -273,7 +273,7 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(messages);
 					client.sendToClient(response);
 				}
-				
+
 				// Ofir Avraham Vaknin v3.
 				if (request.getRequestType().equals(Request.ADD_VISIT)) {
 					response = new ServerToClientResponse(Response.ADD_VISIT_RESPONSE);
@@ -316,7 +316,7 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 
-				if(request.getRequestType().equals(Request.MANAGER_REQUEST)) { // ofir n
+				if (request.getRequestType().equals(Request.MANAGER_REQUEST)) { // ofir n
 
 					mysqlFunction.insertAllNewRequestsFromParkManager(request.getParameters());
 
@@ -324,33 +324,30 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 
-
-				if(request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) { // ofir n
+				if (request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) { // ofir n
 
 					response = new ServerToClientResponse(Response.VIEW_MANAGER_REQUEST_RESPONSE);
 					response.setResultSet(mysqlFunction.GetRequestsFromDB());
-					//	System.out.println(response.getResultSet()+" **");
+					// System.out.println(response.getResultSet()+" **");
 					client.sendToClient(response);
 
 				}
 
-				if(request.getRequestType().equals(Request.VIEW_MANAGER_DISCOUNT)) { // ofir n
+				if (request.getRequestType().equals(Request.VIEW_MANAGER_DISCOUNT)) { // ofir n
 
 					response = new ServerToClientResponse(Response.VIEW_MANAGER_DISCOUNT_RESPONSE);
-					
+
 					response.setResultSet(mysqlFunction.GetDiscountsFromDB());
-				
-					//	System.out.println(response.getResultSet()+" **");
+
+					// System.out.println(response.getResultSet()+" **");
 					client.sendToClient(response);
 
 				}
-				
-				
 
-				if(request.getRequestType().equals(Request.CONFIRM_REQUEST)) { // ofir n
+				if (request.getRequestType().equals(Request.CONFIRM_REQUEST)) { // ofir n
 
 					response = new ServerToClientResponse(Response.CONFIRM_REQUEST_RESPONSE);
-					if((int) request.getParameters().get(1)==1)
+					if ((int) request.getParameters().get(1) == 1)
 						mysqlFunction.changeStatusOfRequest(true, (int) request.getParameters().get(0));
 
 					else {
@@ -362,11 +359,10 @@ public class HandleClientRequest implements Runnable {
 
 				}
 
-				
-				if(request.getRequestType().equals(Request.CONFIRM_DISCOUNT)) { // ofir n
+				if (request.getRequestType().equals(Request.CONFIRM_DISCOUNT)) { // ofir n
 
 					response = new ServerToClientResponse(Response.CONFIRM_DISCOUNT_RESPONSE);
-					if((int) request.getParameters().get(1)==1)
+					if ((int) request.getParameters().get(1) == 1)
 						mysqlFunction.changeStatusOfDiscount(true, (int) request.getParameters().get(0));
 
 					else {
@@ -378,36 +374,33 @@ public class HandleClientRequest implements Runnable {
 
 				}
 
-				
-			
-				if(request.getRequestType().equals(Request.MANAGER_REPORT)) { // ofir n
+				if (request.getRequestType().equals(Request.MANAGER_REPORT)) { // ofir n
 					response = new ServerToClientResponse(Response.MANAGER_REPORT_RESPONSE);
 
-					if(request.getParameters().get(1).equals("Total Visitors Report"))
-						response.setResultSet(mysqlFunction.createNumberOfVisitorsReport(Integer.parseInt((String)request.getParameters().get(0))));
-						
-					if(request.getParameters().get(1).equals("Income Report"))
-						response.setResultSet(mysqlFunction.createIncomeReport(Integer.parseInt((String)request.getParameters().get(0))));
+					if (request.getParameters().get(1).equals("Total Visitors"))
+						response.setResultSet(mysqlFunction.createNumberOfVisitorsReport(
+								Integer.parseInt((String) request.getParameters().get(0))));
 
+					if (request.getParameters().get(1).equals("Income"))
+						response.setResultSet(mysqlFunction
+								.createIncomeReport(Integer.parseInt((String) request.getParameters().get(0))));
 
 					client.sendToClient(response);
 
 				}
-				
-				
-				if(request.getRequestType().equals(Request.ADD_REPORT_TO_DB)) {
-					
+
+				if (request.getRequestType().equals(Request.ADD_REPORT_TO_DB)) {
+
 					response = new ServerToClientResponse(Response.ADD_REPORT_TO_DB_RESPONSE);
 					mysqlFunction.createNewReportInDB(request.getParameters());
-					
+
 					client.sendToClient(response);
 
 				}
-				
-				
-				if(request.getRequestType().equals(Request.CHANGE_PARK_PARAMETERS)) { // ofir n
-					
-					client.sendToClient("Finished ");			
+
+				if (request.getRequestType().equals(Request.CHANGE_PARK_PARAMETERS)) { // ofir n
+
+					client.sendToClient("Finished ");
 				}
 
 				// Shlomi
@@ -429,64 +422,64 @@ public class HandleClientRequest implements Runnable {
 					response.setResult(mysqlFunction.insertReport(request.getParameters()));
 					client.sendToClient(response);
 				}
-				
-				/*Alon*/
-				if(request.getRequestType().equals(Request.COUNT_ENTER_SOLO_VISITORS)) { 
+
+				/* Alon */
+				if (request.getRequestType().equals(Request.COUNT_ENTER_SOLO_VISITORS)) {
 
 					response = new ServerToClientResponse(Response.COUNT_ENTER_SOLO_VISITORS_RESPONSE);
 					response.setResultSet(mysqlFunction.CountSolosEnterTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
-				if(request.getRequestType().equals(Request.COUNT_ENTER_SUBS_VISITORS)) { 
+				if (request.getRequestType().equals(Request.COUNT_ENTER_SUBS_VISITORS)) {
 
 					response = new ServerToClientResponse(Response.COUNT_ENTER_SUBS_VISITORS_RESPONSE);
 					response.setResultSet(mysqlFunction.CountSubsEnterTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
-				if(request.getRequestType().equals(Request.COUNT_ENTER_GROUP_VISITORS)) { 
+				if (request.getRequestType().equals(Request.COUNT_ENTER_GROUP_VISITORS)) {
 
 					response = new ServerToClientResponse(Response.COUNT_ENTER_GROUP_VISITORS_RESPONSE);
 					response.setResultSet(mysqlFunction.CountGroupsEnterTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
-				if(request.getRequestType().equals(Request.COUNT_VISIT_SOLO_VISITORS)) { 
+				if (request.getRequestType().equals(Request.COUNT_VISIT_SOLO_VISITORS)) {
 
 					response = new ServerToClientResponse(Response.COUNT_VISIT_SOLO_VISITORS_RESPONSE);
 					response.setResultSet(mysqlFunction.CountSolosVisitTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
-				if(request.getRequestType().equals(Request.COUNT_VISIT_SUBS_VISITORS)) { 
+				if (request.getRequestType().equals(Request.COUNT_VISIT_SUBS_VISITORS)) {
 
 					response = new ServerToClientResponse(Response.COUNT_VISIT_SUBS_VISITORS_RESPONSE);
 					response.setResultSet(mysqlFunction.CountSubsVisitTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
-				if(request.getRequestType().equals(Request.COUNT_VISIT_GROUP_VISITORS)) { 
+				if (request.getRequestType().equals(Request.COUNT_VISIT_GROUP_VISITORS)) {
 
 					response = new ServerToClientResponse(Response.COUNT_VISIT_GROUP_VISITORS_RESPONSE);
 					response.setResultSet(mysqlFunction.CountGroupsVisitTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
-				//ALON END
-				
+				// ALON END
+
 				// Shlomi + Ofir
 				if (request.getRequestType().equals(Request.INSERT_TO_FULL_PARK_DATE)) {
 					response = new ServerToClientResponse(Response.INSERT_TO_FULL_PARK_DATE_RESPONSE);
 					response.setResult(mysqlFunction.insertToFullParkDate(request.getParameters()));
 					client.sendToClient(response);
 				}
-				
+
 				// Shlomi + Ofir
 				if (request.getRequestType().equals(Request.CHECK_WAITING_LIST)) {
 
 					int orderId = (Integer) request.getParameters().get(0);
-					
+
 					Order order = mysqlFunction.getOrderByID(orderId);
 					System.out.println("Order in check waiting list - handle client request = " + order.getOrderId());
 					if (order != null) {
@@ -495,9 +488,9 @@ public class HandleClientRequest implements Runnable {
 					}
 					client.sendToClient("Finished");
 				}
-				
+
 				/* Lior */
-				/*get reports*/
+				/* get reports */
 				if (request.getRequestType().equals(Request.GET_REPORTS)) {
 					ArrayList<report> reports = mysqlFunction.getReports(request.getParameters());
 					response = new ServerToClientResponse<>(Response.GET_REPORTS_RESPONSE);
@@ -505,16 +498,16 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 
-				/*Lior*/
-				/*get cancels for park id*/
-				if(request.getRequestType().equals(Request.GET_CANCELS)) {
+				/* Lior */
+				/* get cancels for park id */
+				if (request.getRequestType().equals(Request.GET_CANCELS)) {
 					ArrayList<Integer> cancels = mysqlFunction.getParkCancels(request.getParameters());
 					response = new ServerToClientResponse<>(Response.GET_CANCELS_RESPONSE);
 					response.setResultSet(cancels);
 					client.sendToClient(response);
 				}
 
-				//client.sendToClient("Finished ");
+				// client.sendToClient("Finished ");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

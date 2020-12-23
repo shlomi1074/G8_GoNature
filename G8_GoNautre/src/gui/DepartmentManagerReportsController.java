@@ -21,22 +21,25 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logic.OrderTb;
 import logic.report;
 import logic.reportTb;
 
 public class DepartmentManagerReportsController implements Initializable {
 
-	ObservableList<reportTb> observable = FXCollections.observableArrayList(); /*Lior*/
+	ObservableList<reportTb> observable = FXCollections.observableArrayList(); /* Lior */
 
 	@FXML
 	private Label headerLabel;
 
-    @FXML
-    private TableView<reportTb> ReportsTableView;//Lior added id to table in fxml
+	@FXML
+	private TableView<reportTb> ReportsTableView;// Lior added id to table in fxml
 
 	@FXML
 	private TableColumn<reportTb, Integer> reportIDCol;
@@ -71,6 +74,77 @@ public class DepartmentManagerReportsController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		loadTabelView();
 		initComboBox();
+		initTabelView();
+	}
+
+	private void initTabelView() {
+		ReportsTableView.setRowFactory(tv -> {
+			TableRow<reportTb> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+					reportTb clickedRow = row.getItem();
+					String name = clickedRow.getReportType();
+					int month = clickedRow.getMonth();
+					int parkID = clickedRow.getParkID();
+					String comment = clickedRow.getComment();
+					loadReport(name, month, parkID, comment);
+				}
+			});
+			return row;
+		});
+
+	}
+
+	private void loadReport(String name, int month, int parkID, String comment) {
+		try {
+			Stage thisStage = getStage();
+			FXMLLoader loader = null;
+
+			if (name.equals("Usage")) {
+				screenTitle = "Usage Report";
+				loader = new FXMLLoader(getClass().getResource("/gui/UsageReport.fxml"));
+				UsageReportController controller = new UsageReportController();
+				controller.setComment(comment);
+				controller.setMonthNumber(month);
+				controller.setParkID(parkID);
+				controller.setIsDepManager(true);
+				loader.setController(controller);
+			} else if (name.equals("Income")) {
+				screenTitle = "Income Report";
+				loader = new FXMLLoader(getClass().getResource("/gui/IncomeReport.fxml"));
+				IncomeReportController controller = new IncomeReportController();
+				controller.setComment(comment);
+				controller.setMonthNumber(month);
+				controller.setParkID(parkID);
+				controller.setIsDepManager(true);
+				loader.setController(controller);
+			} else if (name.equals("Total Visitors")) {
+				screenTitle = "Total Visitors Report";
+				loader = new FXMLLoader(getClass().getResource("/gui/TotalVisitorsReport.fxml"));
+				TotalVisitorsReportController controller = new TotalVisitorsReportController();
+				controller.setComment(comment);
+				controller.setMonthNumber(month);
+				controller.setParkID(parkID);
+				controller.setIsDepManager(true);
+				loader.setController(controller);
+			}
+
+			loader.load();
+			Parent p = loader.getRoot();
+			Stage newStage = new Stage();
+
+			/* Block parent stage until child stage closes */
+			newStage.initModality(Modality.WINDOW_MODAL);
+			newStage.initOwner(thisStage);
+
+			newStage.setTitle(screenTitle);
+			newStage.setScene(new Scene(p));
+			newStage.setResizable(false);
+			newStage.show();
+		} catch (IOException e) {
+			System.out.println("faild to load form");
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -79,8 +153,7 @@ public class DepartmentManagerReportsController implements Initializable {
 		screenTitle = "Visits Report";
 		if (monthCB.getSelectionModel().getSelectedIndex() != 0) {
 			switchScenceWithController();
-		}
-		else {
+		} else {
 			new CustomAlerts(AlertType.ERROR, "Error", "Month Error", "Plesae choose month.").showAndWait();
 		}
 	}
@@ -91,22 +164,22 @@ public class DepartmentManagerReportsController implements Initializable {
 		screenTitle = "Cancels Report";
 		if (monthCB.getSelectionModel().getSelectedIndex() != 0) {
 			switchScenceWithController();
-		}
-		else {
+		} else {
 			new CustomAlerts(AlertType.ERROR, "Error", "Month Error", "Plesae choose month.").showAndWait();
 		}
 	}
-	
-	/*Lior*/
+
+	/* Lior */
 	/* Here we need to fill the table view from database */
 	public void loadTabelView() {
-		ArrayList<report> reports= ReportsControl.getReports();
-		ArrayList<reportTb> tbReports= convertreportsToTeportTb(reports);
+		ArrayList<report> reports = ReportsControl.getReports();
+		ArrayList<reportTb> tbReports = convertreportsToTeportTb(reports);
 		init(tbReports);
 		ReportsTableView.setItems(getReports(tbReports));
 	}
-	/*Lior*/
-	/*Here we convert reports from database To TeportTb*/
+
+	/* Lior */
+	/* Here we convert reports from database To TeportTb */
 	public static ArrayList<reportTb> convertreportsToTeportTb(ArrayList<report> reports) {
 		ArrayList<reportTb> tbReports = new ArrayList<reportTb>();
 		for (report report : reports) {
@@ -115,8 +188,8 @@ public class DepartmentManagerReportsController implements Initializable {
 		}
 		return tbReports;
 	}
-	
-	/*Lior*/
+
+	/* Lior */
 	private void init(ArrayList<reportTb> tbReports) {
 		reportIDCol.setCellValueFactory(new PropertyValueFactory<reportTb, Integer>("reportID"));
 		reportTypeCol.setCellValueFactory(new PropertyValueFactory<reportTb, String>("reportType"));
@@ -125,7 +198,7 @@ public class DepartmentManagerReportsController implements Initializable {
 		commentCol.setCellValueFactory(new PropertyValueFactory<reportTb, String>("comment"));
 	}
 
-	/*Lior*/
+	/* Lior */
 	private ObservableList<reportTb> getReports(ArrayList<reportTb> tbReports) {
 		ReportsTableView.getItems().clear();
 		for (reportTb report : tbReports) {
@@ -151,12 +224,11 @@ public class DepartmentManagerReportsController implements Initializable {
 				CancelsReportController controller = new CancelsReportController();
 				controller.setMonthNumber(monthCB.getSelectionModel().getSelectedIndex());
 				loader.setController(controller);
-			}
-			else {
+			} else {
 				VisitsReportController controller = new VisitsReportController();
 				controller.setMonthNumber(monthCB.getSelectionModel().getSelectedIndex());
 				loader.setController(controller);
-				
+
 			}
 			loader.load();
 			Parent p = loader.getRoot();
