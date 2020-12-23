@@ -2,12 +2,16 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 
+import Controllers.ReportsControl;
 import alerts.CustomAlerts;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,28 +21,37 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logic.report;
+import logic.reportTb;
 
 public class DepartmentManagerReportsController implements Initializable {
+
+	ObservableList<reportTb> observable = FXCollections.observableArrayList(); /*Lior*/
 
 	@FXML
 	private Label headerLabel;
 
-	@FXML
-	private TableColumn<?, ?> reportIDCol;
+    @FXML
+    private TableView<reportTb> ReportsTableView;//Lior added id to table in fxml
 
 	@FXML
-	private TableColumn<?, ?> reportTypeCol;
+	private TableColumn<reportTb, Integer> reportIDCol;
 
 	@FXML
-	private TableColumn<?, ?> parkIDCol;
+	private TableColumn<reportTb, String> reportTypeCol;
 
 	@FXML
-	private TableColumn<?, ?> monthCol;
+	private TableColumn<reportTb, Integer> parkIDCol;
 
 	@FXML
-	private TableColumn<?, ?> commentCol;
+	private TableColumn<reportTb, Integer> monthCol;
+
+	@FXML
+	private TableColumn<reportTb, String> commentCol;
 
 	@FXML
 	private JFXButton visitReportBtn;
@@ -60,14 +73,9 @@ public class DepartmentManagerReportsController implements Initializable {
 		initComboBox();
 	}
 
-	/* Here we need to fill the tabe view from database */
-	public void loadTabelView() {
-
-	}
-
 	@FXML
 	private void visitReportBtn() {
-		fxmlName = ""; // NEED TO CREATE GUI
+		fxmlName = "/gui/VisitsReports.fxml";
 		screenTitle = "Visits Report";
 		if (monthCB.getSelectionModel().getSelectedIndex() != 0) {
 			switchScenceWithController();
@@ -88,6 +96,43 @@ public class DepartmentManagerReportsController implements Initializable {
 			new CustomAlerts(AlertType.ERROR, "Error", "Month Error", "Plesae choose month.").showAndWait();
 		}
 	}
+	
+	/*Lior*/
+	/* Here we need to fill the table view from database */
+	public void loadTabelView() {
+		ArrayList<report> reports= ReportsControl.getReports();
+		ArrayList<reportTb> tbReports= convertreportsToTeportTb(reports);
+		init(tbReports);
+		ReportsTableView.setItems(getReports(tbReports));
+	}
+	/*Lior*/
+	/*Here we convert reports from database To TeportTb*/
+	public static ArrayList<reportTb> convertreportsToTeportTb(ArrayList<report> reports) {
+		ArrayList<reportTb> tbReports = new ArrayList<reportTb>();
+		for (report report : reports) {
+			reportTb tbReport = new reportTb(report);
+			tbReports.add(tbReport);
+		}
+		return tbReports;
+	}
+	
+	/*Lior*/
+	private void init(ArrayList<reportTb> tbReports) {
+		reportIDCol.setCellValueFactory(new PropertyValueFactory<reportTb, Integer>("reportID"));
+		reportTypeCol.setCellValueFactory(new PropertyValueFactory<reportTb, String>("reportType"));
+		parkIDCol.setCellValueFactory(new PropertyValueFactory<reportTb, Integer>("parkID"));
+		monthCol.setCellValueFactory(new PropertyValueFactory<reportTb, Integer>("month"));
+		commentCol.setCellValueFactory(new PropertyValueFactory<reportTb, String>("comment"));
+	}
+
+	/*Lior*/
+	private ObservableList<reportTb> getReports(ArrayList<reportTb> tbReports) {
+		ReportsTableView.getItems().clear();
+		for (reportTb report : tbReports) {
+			observable.add(report);
+		}
+		return observable;
+	}
 
 	private void initComboBox() {
 		monthCB.getItems().addAll(months);
@@ -106,6 +151,12 @@ public class DepartmentManagerReportsController implements Initializable {
 				CancelsReportController controller = new CancelsReportController();
 				controller.setMonthNumber(monthCB.getSelectionModel().getSelectedIndex());
 				loader.setController(controller);
+			}
+			else {
+				VisitsReportController controller = new VisitsReportController();
+				controller.setMonthNumber(monthCB.getSelectionModel().getSelectedIndex());
+				loader.setController(controller);
+				
 			}
 			loader.load();
 			Parent p = loader.getRoot();

@@ -2,10 +2,8 @@ package Controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import client.ChatClient;
 import client.ClientUI;
-import gui.TravelerLoginController;
 import logic.ClientToServerRequest;
 import logic.ClientToServerRequest.Request;
 import logic.Employees;
@@ -17,10 +15,10 @@ public class AutenticationControl {
 	/**
 	 * This function handle the traveler login by id
 	 * 
-	 * @param id - the traveler's id
-	 * @return 0 - on success
-	 * @return 1 - traveler already connected
-	 * @return 2 - traveler id does not exist
+	 * @param id  the traveler's id
+	 * @return 0  on success
+	 * @return 1  traveler already connected
+	 * @return 2  traveler id does not exist
 	 */
 	public static int loginById(String id) {
 		if (isConnected(id))
@@ -40,9 +38,9 @@ public class AutenticationControl {
 	 * This function handle the traveler login by subscriber id
 	 * 
 	 * @param subID - the traveler's subscriber id
-	 * @return 0 - on success
-	 * @return 1 - traveler already connected
-	 * @return 2 - traveler id does not exist
+	 * @return 0  on success
+	 * @return 1  traveler already connected
+	 * @return 2  traveler id does not exist
 	 */
 	public static int loginBySubId(String subID) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.SUBSCRIBER_LOGIN_SUBID,
@@ -69,7 +67,7 @@ public class AutenticationControl {
 	 * This function get a traveler's id and ask the server to
 	 * insert it to "loggedIn" table.
 	 *  
-	 * @param id - the traveler's id.
+	 * @param id  the traveler's id.
 	 */
 	private static void insertTologgedinTable(String id) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.INSERT_TO_LOGGEDIN,
@@ -81,7 +79,7 @@ public class AutenticationControl {
 	/**
 	 * This function gets a user id and check if the user is connected to the system.
 	 *  
-	 * @param id - the user id (traveler of member)
+	 * @param id  the user id (traveler of member)
 	 * @return true if connected, false otherwise.
 	 */
 	public static boolean isConnected(String id) {
@@ -94,7 +92,7 @@ public class AutenticationControl {
 	/**
 	 * This function gets an id and checks if there is such traveler with the same id.
 	 * 
-	 * @param id - the id to check
+	 * @param id  the id to check
 	 * @return true if there is traveler with this id.
 	 */
 	public static boolean isTravelerExist(String id) {

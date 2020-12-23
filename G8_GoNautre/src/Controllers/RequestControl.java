@@ -28,9 +28,19 @@ public class RequestControl {
 		ClientUI.chat.accept(request);
 	
 	}
+	
+	public static void viewcurrentDiscounts() {
+		
+		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.VIEW_MANAGER_DISCOUNT,
+				new ArrayList<>());
+		
+		ClientUI.chat.accept(request);
+	
+		
+	}
 
 	
-	public static void changeRequestStatus(Integer requestID,boolean bool ) { // confirm if true, decline if false.
+	public static void changeRequestStatus(Integer requestID, boolean bool ) { // confirm if true, decline if false.
 
 		ArrayList<Integer> requestidList=new ArrayList<>();
     	requestidList.add(requestID);
@@ -47,6 +57,28 @@ public class RequestControl {
 
 	
 	
+	}
+
+	public static void changeDiscountStatus(int discountId, boolean bool) {
+
+		ArrayList<Integer> requestidList=new ArrayList<>();
+    	requestidList.add(discountId);
+    	if(bool)
+    		requestidList.add(1);
+    	
+    	else requestidList.add(0);
+		
+    	ClientToServerRequest<?> requestConfirm = new ClientToServerRequest<>(Request.CONFIRM_DISCOUNT,
+				requestidList);
+		
+		ClientUI.chat.accept(requestConfirm);
+
+		
+		
+		
+		
+		
+		
 	}
 
 }

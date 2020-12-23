@@ -14,5 +14,7 @@ public final class GoNatureFinals {
 
 	public final static ArrayList<String> AVAILABLE_HOURS = new ArrayList<>(Arrays.asList("08:00", "09:00", "10:00",
 			"11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"));
-
+	
+	
+	public final static String APP_ICON = "/resources/images/tree.png";
 }

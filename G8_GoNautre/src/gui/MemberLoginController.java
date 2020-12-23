@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
@@ -22,6 +23,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.Employees;
+import logic.GoNatureFinals;
 
 public class MemberLoginController implements Initializable {
 
@@ -81,6 +83,7 @@ public class MemberLoginController implements Initializable {
 			newStage.initModality(Modality.WINDOW_MODAL);
 			newStage.initOwner((Stage) loginButton.getScene().getWindow());
 			newStage.setTitle("GoNature8 - Recover Password");
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
 			newStage.show();
@@ -162,6 +165,7 @@ public class MemberLoginController implements Initializable {
 			newStage.setTitle(title);
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.show();
 			thisStage.close();
 			parentStage.hide();

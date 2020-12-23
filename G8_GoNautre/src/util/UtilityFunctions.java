@@ -5,8 +5,13 @@ import javax.mail.internet.InternetAddress;
 
 public class UtilityFunctions {
 
-	/* Check for valid email
-	 * Valid Email -> xxxx@xxxxx */
+	/**
+	 * This function gets an email as String and return true if it is a valid email.
+	 * Valid Email -> xxxx@xxxxx.
+	 * 
+	 * @param email The email to check
+	 * @return true if the email is valid, false otherwise
+	 */
 	public static boolean isValidEmailAddress(String email) {
 		boolean result = true;
 		try {
@@ -18,7 +23,13 @@ public class UtilityFunctions {
 		return result;
 	}
 
-	/* Check whether a string consists of only numbers */
+	/**
+	 * This function check whether a string consists of only numbers.
+	 * 
+	 * @param str the string to check
+	 * @return true if string consists of only numbers
+	 * @return false otherwise
+	 */
 	public static boolean isNumeric(String str) {
 		try {
 			Integer.parseInt(str);

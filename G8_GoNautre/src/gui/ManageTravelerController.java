@@ -26,9 +26,11 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logic.GoNatureFinals;
 import logic.Order;
 import logic.OrderStatusName;
 import logic.OrderTb;
@@ -119,7 +121,7 @@ public class ManageTravelerController implements Initializable {
 			/* Block parent stage until child stage closes */
 			newStage.initModality(Modality.WINDOW_MODAL);
 			newStage.initOwner(thisStage);
-
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setTitle("Casual Visit");
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);

@@ -11,8 +11,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logic.GoNatureFinals;
 
 public class MainScreenMenuController implements Initializable {
 
@@ -83,7 +85,7 @@ public class MainScreenMenuController implements Initializable {
 			newStage.initOwner(thisStage);
 
 			newStage.setTitle(screenTitle);
-			// stage.getIcons().add(new Image("url"));
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
 			newStage.show();
@@ -120,11 +122,10 @@ public class MainScreenMenuController implements Initializable {
 			newStage.initOwner(thisStage);
 
 			newStage.setTitle(screenTitle);
-			// stage.getIcons().add(new Image("url"));
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
 			newStage.show();
-			// thisStage.close();
 		} catch (IOException e) {
 			System.out.println("faild to load form");
 			e.printStackTrace();

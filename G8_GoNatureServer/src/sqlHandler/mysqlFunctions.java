@@ -6,17 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import logic.Discount;
 import logic.Employees;
 import logic.Messages;
 import logic.Order;
 import logic.OrderStatusName;
-import logic.OrderType;
 import logic.Park;
 import logic.Request;
 import logic.Subscriber;
 import logic.Traveler;
+import logic.VisitReport;
 import logic.WorkerType;
 import logic.report;
 
@@ -202,7 +203,7 @@ public class mysqlFunctions {
 			query.setString(4, (String) parameters.get(0));
 			ResultSet res = query.executeQuery();
 			if (res.next())
-				discount = new Discount(res.getString(1), res.getDouble(2), res.getString(3), res.getString(4),
+				discount = new Discount(res.getInt(1), res.getDouble(2), res.getString(3), res.getString(4),
 						res.getInt(5), res.getString(6));
 		} catch (SQLException e) {
 			System.out.println("Could not execute getMaxDisount query");
@@ -211,11 +212,13 @@ public class mysqlFunctions {
 		return discount;
 	}
 
-	// shlomi
+	// shlomi + Ofir edit 
 	public ArrayList<Order> getOrderBetweenTimes(ArrayList<?> parameters) {
 		ArrayList<Order> orders = new ArrayList<Order>();
 
-		String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? and orderDate = ? and orderTime >= ? and orderTime <= ? AND orderStatus != ?";
+		// String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? and orderDate =
+		// ? and orderTime >= ? and orderTime <= ? AND orderStatus != ?";
+		String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? and orderDate = ? and orderTime >= ? and orderTime <= ? AND (orderStatus = ? OR orderStatus = ?)";
 		PreparedStatement query;
 		try {
 			query = conn.prepareStatement(sql);
@@ -223,7 +226,9 @@ public class mysqlFunctions {
 			query.setString(2, (String) parameters.get(1));
 			query.setString(3, (String) parameters.get(2));
 			query.setString(4, (String) parameters.get(3));
-			query.setString(5, OrderStatusName.CANCELED.toString());
+			// query.setString(5, OrderStatusName.CANCELED.toString());
+			query.setString(5, OrderStatusName.PENDING.toString());
+			query.setString(6, OrderStatusName.CONFIRMED.toString());
 			ResultSet res = query.executeQuery();
 
 			while (res.next())
@@ -238,7 +243,7 @@ public class mysqlFunctions {
 	}
 
 	// shlomi
-	public boolean AddNewOrder(Object obj) {
+	public boolean addNewOrder(Object obj) {
 		Order orderToAdd = (Order) obj;
 		int result = 0;
 		String sql = "INSERT INTO g8gonature.order (travelerId, parkId, orderDate, orderTime, orderType, numberOfParticipants, email, price, orderStatus) "
@@ -264,7 +269,7 @@ public class mysqlFunctions {
 	}
 
 	// shlomi
-	public boolean AddTraveler(Object obj) {
+	public boolean addTraveler(Object obj) {
 		Traveler travelerToAdd = (Traveler) obj;
 		int result = 0;
 		String sql = "INSERT INTO g8gonature.traveler (travelerId, firstName, lastName, email, phoneNumber) "
@@ -451,65 +456,73 @@ public class mysqlFunctions {
 		return false;
 	}
 
-	// Ofir Avraham Vaknin
-	public ArrayList<Order> findMatchingOrdersInWaitingList(ArrayList<?> parameters) {
-		// Need to send gap
-		ArrayList<Order> resultArray = new ArrayList<Order>();
+	// Ofir Avraham Vaknin v4.
+		public ArrayList<Order> findMatchingOrdersInWaitingList(ArrayList<?> parameters) {
+			// Need to send gap
+			ArrayList<Order> resultArray = new ArrayList<Order>();
 
-		String parkId = (String) parameters.get(0);
-		String maxVisitors = (String) parameters.get(1);
-		String estimatedStayTime = (String) parameters.get(2);
-		String date = (String) parameters.get(3);
-		String hour = (String) parameters.get(4);
-		String gap = (String) parameters.get(5);
+			String parkId = (String) parameters.get(0);
+			String maxVisitors = (String) parameters.get(1);
+			String estimatedStayTime = (String) parameters.get(2);
+			String date = (String) parameters.get(3);
+			String timeToCheck = (String) parameters.get(4);
+			String gap = (String) parameters.get(5);
 
-		int onlyHours = Integer.parseInt(hour.substring(0, 2));
-		int estimated = Integer.parseInt(estimatedStayTime);
-		int maxVisitor = Integer.parseInt(maxVisitors);
-		int gapInPark = Integer.parseInt(gap);
+			int estimated = Integer.parseInt(estimatedStayTime);
+			int maxVisitor = Integer.parseInt(maxVisitors);
+			int gapInPark = Integer.parseInt(gap);
 
-		int maxAllowedInPark = maxVisitor - gapInPark;
+			int maxAllowedInPark = maxVisitor - gapInPark;
+			
+			int hour = Integer.parseInt(timeToCheck.split(":")[0]);
 
-		String hourAfterEstimated = String.valueOf(onlyHours + estimated) + hour.substring(3);
-		String hourBeforeEstimated = String.valueOf(onlyHours - estimated) + hour.substring(3);
+			String hourAfterEstimated = (hour + estimated) + ":00";
+			String hourBeforeEstimated = (hour - estimated) + ":00";
 
-		int beforeParticipants = numberOfParticipantsBetweenTwoHours(parkId, date, hourBeforeEstimated, hour);
-		beforeParticipants = beforeParticipants % 24;
-		int afterParticipants = numberOfParticipantsBetweenTwoHours(parkId, date, hourAfterEstimated, hour);
-		afterParticipants = beforeParticipants % 24;
+			ArrayList<String> par = new ArrayList<String>(
+					Arrays.asList(parkId, date, hourBeforeEstimated, hourAfterEstimated));
+			ArrayList<Order> resultOrders = getOrderBetweenTimes(par);
+			int count = 0;
+			for (Order o : resultOrders)
+				count += o.getNumberOfParticipants();
 
-		// Max should be changed, Disscuss in group
-		// int maxParticipants = Math.max(beforeParticipants, afterParticipants);
-		int maxParticipants = beforeParticipants + afterParticipants;
 
-		String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? AND "
-				+ "orderDate = ? AND orderTime BETWEEN ? AND ? AND orderStatus = ?";
-		ResultSet rs;
-		PreparedStatement query;
-		try {
-			query = conn.prepareStatement(sql);
-			query.setString(1, parkId);
-			query.setString(2, date);
-			query.setString(3, hourBeforeEstimated);
-			query.setString(4, hourAfterEstimated);
-			query.setString(5, "waiting");
-			rs = query.executeQuery();
-			while (rs.next()) {
-				if (rs.getInt(7) + maxParticipants < maxAllowedInPark) {
-					Order order = new Order(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4),
-							rs.getString(5), rs.getString(6), rs.getInt(7), rs.getString(8), rs.getDouble(9),
-							rs.getString(10));
-					resultArray.add(order);
+			String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? AND "
+					+ "orderDate = ? AND orderTime BETWEEN ? AND ? AND orderStatus = ?";
+			ResultSet rs;
+			PreparedStatement query;
+			System.out.println("parkId = " + parkId);	
+			System.out.println("date = " + date);	
+			System.out.println("hourBeforeEstimated = " + hourBeforeEstimated);	
+			System.out.println("hourAfterEstimated = " + hourAfterEstimated);	
+			
+			try {
+				query = conn.prepareStatement(sql);
+				query.setInt(1, Integer.parseInt(parkId));
+				query.setString(2, date);
+				query.setString(3, hourBeforeEstimated);
+				query.setString(4, hourAfterEstimated);
+				query.setString(5, OrderStatusName.WAITING.toString());
+				rs = query.executeQuery();
+				while (rs.next()) {
+					System.out.println("Number of participants = " + rs.getInt(7));
+					System.err.println("Count = " + count);
+					if (rs.getInt(7) + count <= maxAllowedInPark) {
+						Order order = new Order(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4),
+								rs.getString(5), rs.getString(6), rs.getInt(7), rs.getString(8), rs.getDouble(9),
+								rs.getString(10));
+						resultArray.add(order);
+						System.out.println("OrderID" + rs.getInt(1));
+					}
 				}
+
+			} catch (SQLException e) {
+				System.out.println("Could not execute findMatchingOrdersInWaitingList");
+				e.printStackTrace();
 			}
 
-		} catch (SQLException e) {
-			System.out.println("Could not execute findMatchingOrdersInWaitingList");
-			e.printStackTrace();
+			return resultArray;
 		}
-
-		return resultArray;
-	}
 
 	// Ofir Avraham Vaknin
 	private int numberOfParticipantsBetweenTwoHours(String parkId, String date, String hourBefore, String hour) {
@@ -524,7 +537,7 @@ public class mysqlFunctions {
 			query.setString(2, date);
 			query.setString(3, hourBefore);
 			query.setString(4, hour);
-			query.setString(5, "waiting");
+			query.setString(5, OrderStatusName.WAITING.toString());
 			rs = query.executeQuery();
 			while (rs.next()) {
 				sum += rs.getInt(1);
@@ -677,6 +690,7 @@ public class mysqlFunctions {
 
 	}
 
+	// shlomi
 	public String getEmailByOrderID(int orderId) {
 		String sql = "SELECT order.email FROM g8gonature.order WHERE orderId = ?";
 		PreparedStatement query;
@@ -694,7 +708,8 @@ public class mysqlFunctions {
 		}
 		return null;
 	}
-
+	
+	// shlomi
 	public Employees getEmployeeById(ArrayList<?> parameters) {
 		Employees employee = null;
 		String sql = "SELECT * FROM g8gonature.employees WHERE employeeId = ? ";
@@ -732,7 +747,8 @@ public class mysqlFunctions {
 
 		return employee;
 	}
-
+	
+	// shlomi
 	public String getEmployeePasswordById(int employeeId) {
 		String sql = "SELECT employeesidentification.password FROM g8gonature.employeesidentification WHERE employeeId = ?";
 		PreparedStatement query;
@@ -876,29 +892,6 @@ public class mysqlFunctions {
 		return orders;
 	}
 
-	public void changeStatusOfRequest(boolean bool, int requestsID) { // ofir n
-
-		String sql;
-
-		if (bool)
-			sql = "UPDATE g8gonature.request SET requestStatus='confirmed' WHERE requestId=" + requestsID;
-
-		else {
-			sql = "UPDATE g8gonature.request SET requestStatus='declined' WHERE requestId=" + requestsID;
-		}
-
-		PreparedStatement query;
-
-		try {
-			query = conn.prepareStatement(sql);
-			query.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	public ArrayList<String> isParkIsFullAtDate(ArrayList<?> parameters) {
 		ArrayList<String> comment = new ArrayList<String>();
 
@@ -1024,5 +1017,441 @@ public class mysqlFunctions {
 		
 	}
 	
+	/*Alon*/
+	public ArrayList<VisitReport> CountSolosEnterTime(ArrayList<?> parameters) {
+		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
+		int month = Integer.parseInt((String) parameters.get(0));
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+
+		String sql = "SELECT SUM(test.numberOfParticipants),test.entrenceTime "
+				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime FROM g8gonature.visit , g8gonature.order "
+				+ "WHERE NOT EXISTS ( SELECT subscriber.travelerId FROM g8gonature.subscriber WHERE visit.travelerId = subscriber.travelerId) "
+				+ "AND visit.travelerId = order.travelerId AND order.orderType = 'Solo Visit' "
+				+ "AND order.orderStatus = 'Completed' AND visit.visitDate = order.orderDate "
+				+ "AND MONTH(visit.visitDate) = ? AND YEAR(visit.visitDate) = ?) as test GROUP BY test.entrenceTime;";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, month);
+			query.setInt(2, year);
+			ResultSet res = query.executeQuery();
+			while (res.next()) {
+				VisitReport report = new VisitReport(res.getInt(1), res.getString(2));
+				rep.add(report);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute CountSolos query");
+			e.printStackTrace();
+		}
+		return rep;
+	}
+
+	public ArrayList<VisitReport> CountSubsEnterTime(ArrayList<?> parameters) {
+		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
+		int month = Integer.parseInt((String) parameters.get(0));
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+
+		String sql = "SELECT SUM(test.numberOfParticipants),test.entrenceTime "
+				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime "
+				+ "FROM g8gonature.visit, g8gonature.order, g8gonature.subscriber "
+				+ "WHERE visit.travelerId = order.travelerId "
+				+ "AND (order.orderType = 'Solo Visit' OR order.orderType = 'Family Visit') "
+				+ "AND visit.travelerId = subscriber.travelerId AND order.orderStatus = 'Completed' AND visit.visitDate = order.orderDate "
+				+ "AND MONTH(visit.visitDate) = ? AND YEAR(visit.visitDate) = ? ) as test GROUP BY test.entrenceTime;";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, month);
+			query.setInt(2, year);
+			ResultSet res = query.executeQuery();
+			while (res.next()) {
+				VisitReport report = new VisitReport(res.getInt(1), res.getString(2));
+				rep.add(report);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute CountSubs query");
+			e.printStackTrace();
+		}
+		return rep;
+	}
+	
+	public ArrayList<VisitReport> CountGroupsEnterTime(ArrayList<?> parameters) {
+		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
+		int month = Integer.parseInt((String) parameters.get(0));
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+
+		String sql = "SELECT SUM(test.numberOfParticipants),test.entrenceTime "
+				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime FROM g8gonature.visit,g8gonature.order  "
+				+ "WHERE (NOT exists ( SELECT subscriber.travelerId FROM g8gonature.subscriber WHERE visit.travelerId = subscriber.travelerId) "
+				+ "AND NOT exists ( SELECT traveler.travelerId FROM g8gonature.traveler "
+				+ "WHERE visit.travelerId = traveler.travelerId) "
+				+ "OR (SELECT subscriber.travelerId FROM g8gonature.subscriber WHERE visit.travelerId = subscriber.travelerId)) "
+				+ "AND visit.travelerId = order.travelerId AND order.orderType = 'Group Visit' "
+				+ "AND order.orderStatus = 'Completed' AND visit.visitDate = order.orderDate "
+				+ "AND MONTH(visit.visitDate) = ? AND YEAR(visit.visitDate) = ?) as test GROUP BY test.entrenceTime;";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, month);
+			query.setInt(2, year);
+			ResultSet res = query.executeQuery();
+			while (res.next()) {
+				VisitReport report = new VisitReport(res.getInt(1), res.getString(2));
+				rep.add(report);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute CountGroup query");
+			e.printStackTrace();
+		}
+		return rep;
+	}
+	
+	public ArrayList<VisitReport> CountSolosVisitTime(ArrayList<?> parameters) {
+		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
+		int month = Integer.parseInt((String) parameters.get(0));
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+
+		String sql = "SELECT SUM(test.numberOfParticipants),TIMEDIFF (test.exitTime,test.entrenceTime) "
+				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime,visit.exitTime "
+				+ "FROM g8gonature.visit , g8gonature.order WHERE NOT exists ( SELECT subscriber.travelerId FROM g8gonature.subscriber "
+				+ "WHERE visit.travelerId = subscriber.travelerId) AND visit.travelerId = order.travelerId AND order.orderType = 'Solo Visit' "
+				+ "AND order.orderStatus = 'Completed' AND visit.visitDate = order.orderDate "
+				+ "AND MONTH(visit.visitDate) = ? AND YEAR(visit.visitDate) = ?) as test GROUP BY test.entrenceTime;";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, month);
+			query.setInt(2, year);
+			ResultSet res = query.executeQuery();
+			while (res.next()) {
+				VisitReport report = new VisitReport(res.getInt(1), res.getString(2));
+				rep.add(report);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute CountSolos query");
+			e.printStackTrace();
+		}
+		return rep;
+	}
+
+	public ArrayList<VisitReport> CountSubsVisitTime(ArrayList<?> parameters) {
+		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
+		int month = Integer.parseInt((String) parameters.get(0));
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+
+		String sql = "SELECT SUM(test.numberOfParticipants),TIMEDIFF (test.exitTime,test.entrenceTime) "
+				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime, visit.exitTime "
+				+ "FROM g8gonature.visit, g8gonature.order, g8gonature.subscriber WHERE visit.travelerId = order.travelerId "
+				+ "AND (order.orderType = 'Solo Visit' OR order.orderType = 'Family Visit') AND visit.travelerId = subscriber.travelerId "
+				+ "AND order.orderStatus = 'Completed' AND visit.visitDate = order.orderDate "
+				+ "AND MONTH(visit.visitDate) = ? AND YEAR(visit.visitDate) = ? ) as test GROUP BY test.entrenceTime;";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, month);
+			query.setInt(2, year);
+			ResultSet res = query.executeQuery();
+			while (res.next()) {
+				VisitReport report = new VisitReport(res.getInt(1), res.getString(2));
+				rep.add(report);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute CountSubs query");
+			e.printStackTrace();
+		}
+		return rep;
+	}
+	
+	public ArrayList<VisitReport> CountGroupsVisitTime(ArrayList<?> parameters) {
+		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
+		int month = Integer.parseInt((String) parameters.get(0));
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+
+		String sql = "SELECT SUM(test.numberOfParticipants),TIMEDIFF (test.exitTime,test.entrenceTime) "
+				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime, visit.exitTime "
+				+ "FROM g8gonature.visit,g8gonature.order  WHERE (NOT exists ( SELECT subscriber.travelerId "
+				+ "FROM g8gonature.subscriber WHERE visit.travelerId = subscriber.travelerId) AND NOT exists ( SELECT traveler.travelerId "
+				+ "FROM g8gonature.traveler WHERE visit.travelerId = traveler.travelerId) OR (SELECT subscriber.travelerId FROM g8gonature.subscriber "
+				+ "WHERE visit.travelerId = subscriber.travelerId)) AND visit.travelerId = order.travelerId AND order.orderType = 'Group Visit' "
+				+ "AND order.orderStatus = 'Completed' AND visit.visitDate = order.orderDate "
+				+ "AND MONTH(visit.visitDate) = ? AND YEAR(visit.visitDate) = ?) as test GROUP BY test.entrenceTime;";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, month);
+			query.setInt(2, year);
+			ResultSet res = query.executeQuery();
+			while (res.next()) {
+				VisitReport report = new VisitReport(res.getInt(1), res.getString(2));
+				rep.add(report);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute CountGroup query");
+			e.printStackTrace();
+		}
+		return rep;
+	}
+	
+	/*End Alon*/
+	
+	/* Lior */
+	/* get reports from data base */
+	public ArrayList<report> getReports(ArrayList<?> parameters) {
+		ArrayList<report> reports = new ArrayList<report>();
+		String sql = "SELECT * FROM g8gonature.reports";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			ResultSet res = query.executeQuery();
+			/* getting all reports from query into array list */
+			while (res.next()) {
+				report rep = new report(res.getInt(1), res.getString(2), res.getInt(3), res.getInt(4),
+						res.getString(5));
+				reports.add(rep);
+			}
+		} catch (SQLException e) {
+			System.out.println("Could not execute getMessages");
+			e.printStackTrace();
+		}
+		return reports;
+	}
+
+	/* Lior */
+	/* get cancels for park ID */
+	public ArrayList<Integer> getParkCancels(ArrayList<?> parameters) {
+		System.out.println("TEST if got to sql");
+		ArrayList<Integer> cancels = new ArrayList<Integer>();
+		int parkId =(int) parameters.get(0);
+		int month =(int) parameters.get(1);
+		System.out.println("park ID="+parkId);
+		System.out.println("month="+month);
+		
+		String sql = "SELECT COUNT(*) FROM g8gonature.order WHERE parkId = ? AND MONTH(orderDate) = ? AND orderStatus = ?";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, parkId);
+			query.setInt(2, month);
+			query.setString(3,OrderStatusName.CANCELED.toString());
+			
+			ResultSet res = query.executeQuery();
+			while (res.next())
+				cancels.add(new Integer(res.getInt(1)));
+		} catch (SQLException e) {
+			System.out.println("Could not execute getParkCancels query");
+			e.printStackTrace();
+		}
+		return cancels;
+	}
+	
+	// ofir n
+	public void changeStatusOfRequest(boolean bool,int requestsID) { 
+
+		String sql;
+
+		if(bool)
+			sql = "UPDATE g8gonature.request SET requestStatus='confirmed' WHERE requestId="+requestsID;
+
+		else {sql = "UPDATE g8gonature.request SET requestStatus='declined' WHERE requestId="+requestsID;}
+
+		PreparedStatement query;
+
+		try {
+			query = conn.prepareStatement(sql);
+			query.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}			
+
+	}
+	
+	// ofir n
+
+	public void changeStatusOfDiscount(boolean bool, int discountsID) { 
+
+		String sql;
+
+		if(bool)
+			sql = "UPDATE g8gonature.discount SET status='confirmed' WHERE discountId="+discountsID;
+
+		else {sql = "UPDATE g8gonature.discount SET status='declined' WHERE discountId="+discountsID;}
+
+		PreparedStatement query;
+
+		try {
+			query = conn.prepareStatement(sql);
+			query.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+
+
+
+	}
+
+/// ofir n
+	public ArrayList<?> createNumberOfVisitorsReport(int month){ // individual visitors (solo,familty) , orginized (Group) , subscribers.
+        int solo = 0;
+		ArrayList<Integer> numberOfVisitorsPerType=new ArrayList<>();
+		
+		String sql1="SELECT COUNT(OrderId) FROM g8gonature.order WHERE month(orderDate)="+month+" AND orderType='Solo Visit'";
+
+		String sql2="SELECT COUNT(OrderId) FROM g8gonature.order WHERE month(orderDate)="+month+" AND orderType='Family Visit'";
+		String sql3="SELECT COUNT(OrderId) FROM g8gonature.order WHERE month(orderDate)="+month+" AND orderType='Group Visit'";
+		
+		String sql4="SELECT COUNT(OrderId) "
+				+ "FROM g8gonature.order,g8gonature.subscriber "
+				+ "WHERE month(orderDate)="+month+" AND g8gonature.order.travelerId=g8gonature.subscriber.travelerId";
+
+
+		PreparedStatement query;
+		
+		try {
+			query = conn.prepareStatement(sql1);
+			ResultSet res=query.executeQuery();
+
+			while(res.next())solo=res.getInt(1);
+
+			query = conn.prepareStatement(sql2);
+			res=query.executeQuery();
+
+			while(res.next())numberOfVisitorsPerType.add(0,res.getInt(1)+solo); // individuals - family+solo
+
+			query = conn.prepareStatement(sql3);
+			res=query.executeQuery();
+
+			while(res.next())numberOfVisitorsPerType.add(res.getInt(1));   // groups
+
+			
+			query = conn.prepareStatement(sql4);
+			res=query.executeQuery();
+
+			while(res.next())numberOfVisitorsPerType.add(res.getInt(1)); // subscribers
+
+			
+			numberOfVisitorsPerType.add(numberOfVisitorsPerType.get(0)+numberOfVisitorsPerType.get(1));// total
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}		
+
+
+		return numberOfVisitorsPerType;
+	}
+
+	/// ofir n
+	
+	public ArrayList<?> createIncomeReport(int month){ // individual visitors (solo,familty) , orginized (Group) , subscribers.
+		    int solo = 0,family = 0,group = 0,subscriber = 0;
+		    
+			ArrayList<Integer> totalIncomePerType=new ArrayList<>();
+		
+			String sql1="SELECT g8gonature.order.price FROM g8gonature.order WHERE month(orderDate)="+month+" AND orderType='Solo Visit'";
+
+			String sql2="SELECT g8gonature.order.price FROM g8gonature.order WHERE month(orderDate)="+month+" AND orderType='Family Visit'";
+			String sql3="SELECT g8gonature.order.price FROM g8gonature.order WHERE month(orderDate)="+month+" AND orderType='Group Visit'";
+			
+			String sql4="SELECT g8gonature.order.price "
+					+ "FROM g8gonature.order,g8gonature.subscriber "
+					+ "WHERE month(orderDate)="+month+" AND g8gonature.order.travelerId=g8gonature.subscriber.travelerId";
+
+	
+			
+			PreparedStatement query;
+			
+			try {
+				query = conn.prepareStatement(sql1);
+				ResultSet res=query.executeQuery();
+
+				while(res.next())solo=solo+res.getInt(1);
+
+				query = conn.prepareStatement(sql2);
+				res=query.executeQuery();
+
+				while(res.next())family=family+res.getInt(1);
+
+				query = conn.prepareStatement(sql3);
+				res=query.executeQuery();
+
+				while(res.next())group=group+res.getInt(1);
+
+				
+				query = conn.prepareStatement(sql4);
+				res=query.executeQuery();
+
+				while(res.next())subscriber=subscriber+res.getInt(1);
+
+				
+				totalIncomePerType.add(solo+family);// total
+				totalIncomePerType.add(group);// total
+				totalIncomePerType.add(subscriber);// total
+				totalIncomePerType.add(solo+family+group);// total
+
+
+				
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}		
+			
+	
+	return totalIncomePerType;
+	}
+
+	
+	// ofir n
+	
+	
+	public void createNewReportInDB(ArrayList<?> parameters) {
+      
+		String sql = "INSERT INTO g8gonature.reports (reportType,parkId,month,comment) values (?,?,?,?)";
+		
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			
+			query.setString(1,(String)parameters.get(1));
+			query.setString(2,(String)parameters.get(2));
+			query.setString(3,(String)parameters.get(0));
+			query.setString(4,(String)parameters.get(3));
+
+			query.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
+	}
+	
+	public ArrayList<?> GetDiscountsFromDB() {
+
+		ArrayList<Discount> discount = new ArrayList<>();
+		int i=0;
+		String sql = "SELECT * FROM g8gonature.discount";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			ResultSet res = query.executeQuery();
+
+			while (res.next()) {
+				discount.add(i, new Discount(res.getInt(1),res.getDouble(2),res.getString(3),res.getString(4),res.getInt(5),res.getString(6)));	// id was changed to int from String
+				i++;
+			}
+		} catch (SQLException e) {
+			System.out.println("Could not execute checkIfConnected query");
+			e.printStackTrace();
+		}
+
+		return discount;
+	}
 	
 }

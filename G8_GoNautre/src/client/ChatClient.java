@@ -8,7 +8,6 @@ import common.*;
 import logic.ClientToServerRequest;
 import logic.Request;
 import logic.ServerToClientResponse;
-import logic.ServerToClientResponse.Response;
 import ocsf.client.*;
 import java.io.*;
 import java.util.ArrayList;
