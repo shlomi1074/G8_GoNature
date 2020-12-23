@@ -70,14 +70,15 @@ public class CreateReportsController implements Initializable {
 	private Accordion accordion;
 
 	private static ArrayList<?> reportList;
-	
+
 	protected static String[] months = { "Month", "January", "February", "March", "April", "May", "June", "July",
 			"August", "September", "October", "November", "December" };
-	
+
 	private String fxmlName;
 	private String screenTitle;
-    protected static int month;
-    protected ArrayList<String> newReportList;
+	protected static int month;
+	protected ArrayList<String> newReportList;
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		init();
@@ -91,27 +92,25 @@ public class CreateReportsController implements Initializable {
 		this.fxmlName = "/gui/TotalVisitorsReport.fxml";
 		screenTitle = "Total Visitors Report";
 	}
-	
+
 	public static int getMonth() {
 		return month;
 	}
 
 	@FXML
 	private void createReportButton() {
-		
+
 		if (monthCB.getSelectionModel().getSelectedIndex() == 0) {
 			new CustomAlerts(AlertType.ERROR, "Error", "Month Error", "Plesae choose month.").showAndWait();
 		} else {
 			switchScenceWithController();
-		}	
-		
+		}
+
 	}
-	
-	
-	public static ArrayList<?> returnReportList(){
+
+	public static ArrayList<?> returnReportList() {
 		return reportList;
 	}
-	
 
 	@FXML
 	private void turnON_totalVisitorsRB() {

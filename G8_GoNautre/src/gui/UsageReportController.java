@@ -68,12 +68,25 @@ public class UsageReportController implements Initializable {
 	private int monthNumber;
 	private int year = Calendar.getInstance().get(Calendar.YEAR);;
 	private String comment;
+	private boolean isDepManager = false;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		init();
+	}
+
+	private void init() {
 		Locale.setDefault(Locale.ENGLISH);
 		initLabels();
 		showDatePicker();
+
+		if (isDepManager) {
+			commentTextArea.setEditable(false);
+			commentTextArea.setPromptText("Park manager comment:");
+			sendToManagerBtn.setDisable(true);
+			sendToManagerBtn.setVisible(false);
+		}
+
 	}
 
 	private void showDatePicker() {
@@ -156,10 +169,10 @@ public class UsageReportController implements Initializable {
 					"Usage report has been sent to department manager.").showAndWait();
 			getStage().close();
 		} else {
-			new CustomAlerts(AlertType.ERROR, "Faild", "Faild",
-					"Something went wrong. Please try again late.").showAndWait();
+			new CustomAlerts(AlertType.ERROR, "Faild", "Faild", "Something went wrong. Please try again late.")
+					.showAndWait();
 		}
-	
+
 	}
 
 	private void initLabels() {
@@ -209,6 +222,11 @@ public class UsageReportController implements Initializable {
 
 	public void setParkID(int parkID) {
 		this.parkID = parkID;
+	}
+
+	public void setIsDepManager(boolean b) {
+		this.isDepManager = b;
+
 	}
 
 }
