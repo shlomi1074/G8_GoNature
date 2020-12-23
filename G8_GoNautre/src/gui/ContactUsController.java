@@ -1,7 +1,6 @@
 package gui;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
@@ -10,7 +9,6 @@ import Controllers.NotificationControl;
 import alerts.CustomAlerts;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;

@@ -18,10 +18,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import logic.GoNatureFinals;
 import logic.Subscriber;
 import logic.Traveler;
 
@@ -120,6 +122,7 @@ public class TravelerLoginController implements Initializable {
 			Parent p = loader.getRoot();
 			newStage.setTitle("user screen");
 			newStage.setScene(new Scene(p));
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setResizable(false);
 			newStage.show();
 			thisStage.close();

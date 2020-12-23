@@ -54,7 +54,7 @@ public class OrderControl {
 				/* Create message content */
 				String emailContent = String.format(MsgTemplates.orderConfirmation[1].toString(),
 						String.valueOf(recentOrder.getOrderId()),
-						ParkControl.getParkById(String.valueOf(recentOrder.getParkId())), recentOrder.getOrderDate(),
+						ParkControl.getParkName(String.valueOf(recentOrder.getParkId())), recentOrder.getOrderDate(),
 						recentOrder.getOrderTime(), recentOrder.getOrderType(),
 						String.valueOf(recentOrder.getNumberOfParticipants()), String.valueOf(recentOrder.getPrice()));
 
@@ -173,7 +173,7 @@ public class OrderControl {
 	 * Ofir Avraham Vaknin
 	 */
 	/**
-	 * This function return all of the orders that a certion ID has.
+	 * This function return all of the orders that a certain ID has.
 	 * 
 	 * @param id
 	 */
@@ -283,5 +283,18 @@ public class OrderControl {
 		ArrayList<Order> orders = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
 	}
+	
+	/**
+	 * This function ask the server to check if there is someone at the waiting list.
+	 * Id there is someone in the waiting list he will get a notification
+	 * 
+	 * @param orderId the order id of the canceled order.
+	 */
+	public static void checkWaitingList(int orderId) {
+		ClientToServerRequest<Integer> request = new ClientToServerRequest<>(Request.CHECK_WAITING_LIST,
+				new ArrayList<Integer>(Arrays.asList(orderId)));
+		ClientUI.chat.accept(request);
+	}
+
 
 }

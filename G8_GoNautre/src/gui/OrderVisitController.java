@@ -31,6 +31,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TitledPane;
@@ -193,16 +194,16 @@ public class OrderVisitController implements Initializable {
 				@Override
 				protected Boolean call() throws Exception {
 
-					order = new Order(0, summaryID.getText(), getSelectedParkId(), summaryDate.getText(), summaryTime.getText(),
-							summaryType.getText(), Integer.parseInt(summaryVisitors.getText()), summaryEmail.getText(),
-							CalculatePrice(), OrderStatusName.PENDING.toString());
+					order = new Order(0, summaryID.getText(), getSelectedParkId(), summaryDate.getText(),
+							summaryTime.getText(), summaryType.getText(), Integer.parseInt(summaryVisitors.getText()),
+							summaryEmail.getText(), CalculatePrice(), OrderStatusName.PENDING.toString());
 
 					String[] travelerName = summaryFullName.getText().split(" ");
 					String travelerFirstName = travelerName[0];
 					String travelerLastName = travelerName.length == 1 ? "" : travelerName[1];
 
-					traveler = new Traveler(summaryID.getText(), travelerFirstName, travelerLastName, summaryEmail.getText(),
-							summaryPhone.getText());
+					traveler = new Traveler(summaryID.getText(), travelerFirstName, travelerLastName,
+							summaryEmail.getText(), summaryPhone.getText());
 					recentOrder = OrderControl.addOrderAndNotify(order, traveler);
 					if (recentOrder != null)
 						return true;
@@ -263,6 +264,10 @@ public class OrderVisitController implements Initializable {
 				&& summaryType.getText().equals(OrderType.GROUP.toString())) {
 			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Group order can be up to 15 travelers").showAndWait();
+		} else if (Integer.parseInt(summaryVisitors.getText()) < 2
+				&& summaryType.getText().equals(OrderType.GROUP.toString())) {
+			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
+					"Group order must have atleast 2 visitors").showAndWait();
 		} else if (subscriber != null && subscriber.getSubscriberType().equals("Family")
 				&& Integer.parseInt(summaryVisitors.getText()) > subscriber.getNumberOfParticipants()
 				&& summaryType.getText().equals(OrderType.FAMILY.toString())) {
@@ -355,6 +360,10 @@ public class OrderVisitController implements Initializable {
 				GuidePayAtParkCheckOut checkOut = new GuidePayAtParkCheckOut(basic);
 				return checkOut.getPrice();
 
+			}
+			else {
+				RegularPreOrderCheckOut checkOut = new RegularPreOrderCheckOut(basic);
+				return checkOut.getPrice();
 			}
 
 		}
@@ -624,7 +633,7 @@ public class OrderVisitController implements Initializable {
 			/* Block parent stage until child stage closes */
 			newStage.initModality(Modality.WINDOW_MODAL);
 			newStage.initOwner(thisStage);
-
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setTitle("Reschedule");
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
@@ -649,6 +658,7 @@ public class OrderVisitController implements Initializable {
 			Parent p = loader.getRoot();
 
 			newStage.setTitle("Order Confirmation");
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
 			if (isOrderFromMain)

@@ -82,6 +82,8 @@ public class ViewRequestsForChangesController implements Initializable {
 
 	@FXML
 	private Label selectedRequestLabel;
+	
+	private String tableChosen=null;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -90,27 +92,71 @@ public class ViewRequestsForChangesController implements Initializable {
 		loadChanges();
 	}
 
+	
+	
+	  @FXML
+	    void discountTableClicked() {
+
+		  
+		  tableChosen="discount";
+		  TableViewSelectionModel<Discount> discount=discountTable.getSelectionModel();
+		  selectedRequestLabel.setText("Discount "+discount.getSelectedItem().getAmount());
+	  
+	  
+	  
+	  }
+
+	    @FXML
+	    void requestTableClicked() {
+	    	
+			  tableChosen="request";
+			
+			  TableViewSelectionModel<Request> request=parametersTable.getSelectionModel();
+			  selectedRequestLabel.setText(" Change Request "+request.getSelectedItem().getChangeName()+" to "+request.getSelectedItem().getNewValue());
+		  
+
+	    }
+	
+	
+	
+	
+	
+	
+	
+	
 	@FXML
 	void confirmRequestBtn() {
 
-		TableViewSelectionModel<Request> request=parametersTable.getSelectionModel();
+		TableViewSelectionModel<Request> request = null;
+		TableViewSelectionModel<Discount> discount;
 
-		Request r=request.getSelectedItem();
+		if(tableChosen.equals("request")) {
+		    request=parametersTable.getSelectionModel();
+			Request r=request.getSelectedItem();
+			RequestControl.changeRequestStatus(r.getRequestId(), true);
+			new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent", "Request"+r.getChangeName()+" was confirmed with value"+r.getNewValue()).showAndWait();
+
+		}
+		
+		if(tableChosen.equals("discount")) {
+			discount=discountTable.getSelectionModel();
+            Discount d=discount.getSelectedItem();
+            RequestControl.changeDiscountStatus(d.getDiscountId(),true);
+			new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent", "Discount was confirmed with value"+d.getAmount()).showAndWait();
+            
+            
+		}
+
 
 		ArrayList<Integer> parameters=new ArrayList<>();
 		
-		
-		
-		
 		ParkControl.changeParkParameters(parameters);
 		
-		RequestControl.changeRequestStatus(r.getRequestId(),true);
 	
 		
 		loadChanges();
 	
 	
-		new CustomAlerts(AlertType.CONFIRMATION, "Sent", "Sent", "Request"+r.getChangeName()+" was confirmed with value"+r.getNewValue()).showAndWait();
 
 	}
 
@@ -118,6 +164,7 @@ public class ViewRequestsForChangesController implements Initializable {
 		
 
 		RequestControl.viewcurrentRequests();
+		
 		parametersIdCol.setCellValueFactory(new PropertyValueFactory<>("requestId"));
 		typeCol.setCellValueFactory(new PropertyValueFactory<>("changeName"));
 		parametersStatusCol.setCellValueFactory(new PropertyValueFactory<>("requestStatus"));
@@ -132,39 +179,46 @@ public class ViewRequestsForChangesController implements Initializable {
 		
 		parametersTable.setItems(requests);
 
-	
+		RequestControl.viewcurrentDiscounts();
 		
 		discountIdCol.setCellValueFactory(new PropertyValueFactory<>("discountId"));
 		discountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
 		startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
 		endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-		
-		
+		discountStatusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 		ObservableList<Discount> discounts=FXCollections.observableArrayList();
 		
-//		this.discountId = discountId;
-//		this.amount = amount;
-//		this.startDate = startDate;
-//		this.endDate = endDate;
-//		this.parkId = parkId;
-//		this.status = status;
+		discounts.addAll(ChatClient.responseFromServer.getResultSet());
+		discountTable.setItems(discounts);
 		
 		
-				
+
 	}
 	
 
 	@FXML
 	void cancelRequestBtn() {
 
-		TableViewSelectionModel<Request> request=parametersTable.getSelectionModel();
+		TableViewSelectionModel<Request> request = null;
+		TableViewSelectionModel<Discount> discount;
 
-		Request r=request.getSelectedItem();
+		if(tableChosen.equals("request")) {
+		    request=parametersTable.getSelectionModel();
+			Request r=request.getSelectedItem();
+			RequestControl.changeRequestStatus(r.getRequestId(),false);
+			new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent", "Request"+r.getChangeName()+" was declined with value"+r.getNewValue()).showAndWait();
 
-		RequestControl.changeRequestStatus(r.getRequestId(),false);
-
+		}
+		
+		if(tableChosen.equals("discount")) {
+			discount=discountTable.getSelectionModel();
+            Discount d=discount.getSelectedItem();
+            RequestControl.changeDiscountStatus(d.getDiscountId(),false);
+			new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent", "Discount was declined with value"+d.getAmount()).showAndWait();
+            
+            
+		}	
 		loadChanges();
-		new CustomAlerts(AlertType.CONFIRMATION, "Sent", "Sent", "Request"+r.getChangeName()+" was declined").showAndWait();
 
 	}
 

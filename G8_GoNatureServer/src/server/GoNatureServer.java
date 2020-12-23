@@ -26,6 +26,7 @@ public class GoNatureServer extends AbstractServer {
 
 	private ServerGUIController serverGUIController;
 	public static Connection mysqlconnection;	
+	
 	/**
 	 * Constructs an instance of the GoNature Server.
 	 *
@@ -121,6 +122,7 @@ public class GoNatureServer extends AbstractServer {
 		} catch (SQLException e) {
 			System.out.println("Faild to close JDBC connection");
 		}
+		System.exit(0);
 	}
 
 }

@@ -14,7 +14,7 @@
    <children>
       <Label fx:id="headerLabel" layoutX="350.0" layoutY="23.0" text="Register Account" />
       <JFXTextField fx:id="emailInputRegister" layoutX="360.0" layoutY="209.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer Email" />
-      <Label layoutX="250.0" layoutY="214.0" text="Your Email:" />
+      <Label layoutX="250.0" layoutY="214.0" text="Email:" />
       <JFXTextField fx:id="fullNameInputRegister" layoutX="360.0" layoutY="89.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer Full Name" />
       <Label layoutX="250.0" layoutY="94.0" text="Full Name:" />
       <JFXTextField fx:id="phoneNumberInputRegister" layoutX="360.0" layoutY="129.0" prefHeight="25.0" prefWidth="200.0" promptText="Enter Customer Phone Number" />

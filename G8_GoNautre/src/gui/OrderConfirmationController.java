@@ -57,7 +57,6 @@ public class OrderConfirmationController implements Initializable {
 	private Order order;
 	private Traveler traveler;
 	private String paymentMethod;
-	private Stage stage;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

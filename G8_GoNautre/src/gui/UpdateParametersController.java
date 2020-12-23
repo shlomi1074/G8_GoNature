@@ -86,11 +86,20 @@ public class UpdateParametersController implements Initializable {
     	arrayOfTextRequests.add(newMaxVisitorsTextField.getText());
     	arrayOfTextRequests.add(newEsitimatedTIme.getText());
     	arrayOfTextRequests.add(gapTextField.getText());
+    	
+    	if(discountStartDate.getValue()!=null)
     	arrayOfTextRequests.add(discountStartDate.getValue().toString()); //
+    	
+    	else arrayOfTextRequests.add("NULL"); //
+
+   	
+    	if(discountEndDate.getValue()!=null)
     	arrayOfTextRequests.add(discountEndDate.getValue().toString()); // 
+    	else arrayOfTextRequests.add("NULL"); //
+
+    	
     	arrayOfTextRequests.add(discountPercentage.getText());
     		
-    	System.out.println("cant add "+discountStartDate.getValue());
     	
     	Integer prakID=MemberLoginController.member.getParkId();
     	arrayOfTextRequests.add(prakID.toString());
@@ -100,7 +109,7 @@ public class UpdateParametersController implements Initializable {
     	
     	RequestControl.addNewRequest(arrayOfTextRequests);
     	
-		new CustomAlerts(AlertType.CONFIRMATION, "Sent", "Sent", "New requests were sent to Department Manager").showAndWait();
+		new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent", "New requests were sent to Department Manager").showAndWait();
 
     	
     	

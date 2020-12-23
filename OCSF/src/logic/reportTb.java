@@ -21,6 +21,15 @@ public class reportTb {
 		
 	}
 	
+	/*Lior*/
+	public reportTb(report report) {
+		this.reportID = new SimpleIntegerProperty(report.getReportID());
+		this.reportType = new SimpleStringProperty(report.getReportType());
+		this.parkID = new SimpleIntegerProperty(report.getParkID());
+		this.month = new SimpleIntegerProperty(report.getMonth());
+		this.comment = new SimpleStringProperty(report.getComment());
+	}
+	
 	public int getReportID() {
 		return reportID.get();
 	}

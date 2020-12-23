@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Line;
 import logic.Subscriber;
+import logic.WorkerType;
 
 public class ProfileController implements Initializable {
 
@@ -63,13 +64,19 @@ public class ProfileController implements Initializable {
 	public void loadInfo() {
 		//Employee.
 		if(isWorker) { 
+			WorkerType role = MemberLoginController.member.getRole();
 			profileNameLabel.setText(MemberLoginController.member.getFirstName());
 			profileLastNameLabel.setText(MemberLoginController.member.getLastName());
 			profileIDLabel.setText(String.valueOf(MemberLoginController.member.getEmployeeId()));
 			ProfileEmailLabel.setText(MemberLoginController.member.getEmail());
 			String parkId = String.valueOf(MemberLoginController.member.getParkId());
 			profileParkLabel.setText(ParkControl.getParkName(parkId));
-			profileAccountTypeLabel.setText(MemberLoginController.member.getRole().getStr());
+			profileAccountTypeLabel.setText(role.getStr());
+			if(role.equals(WorkerType.DEPARTMENT_MANAGER)||role.equals(WorkerType.SERVICE)) { //<-- ALON NEW
+				profileParkLabel.setVisible(false);
+				parkLabel.setVisible(false);
+				line.setVisible(false);
+			}
 		}
 		//Subscriber
 		else if(TravelerLoginController.traveler==null) {

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 import controllers.EmailControl;
 import logic.Messages;
 import logic.Order;
@@ -21,9 +20,10 @@ import sqlHandler.mysqlFunctions;
 /**
  * NotifyTravelers class implements Runnable.
  * 
- * This class handle all the automated functionality: > Send reminder 24 hours
- * before visit. > Cancel the visit if the traveler did not confirmed within two
- * hours. > Notify the next in the waiting list
+ * This class handle all the automated functionality: 
+ * > Send reminder 24 hours before visit.
+ * > Cancel the visit if the traveler did not confirmed within two hours. 
+ * > Notify the next in the waiting list
  *
  */
 public class NotifyTravelers implements Runnable {
@@ -40,7 +40,7 @@ public class NotifyTravelers implements Runnable {
 	public void run() {
 
 		while (true) {
-
+			System.out.println("Looking for relevant orders");
 			ArrayList<Order> orders = getRelevantOrders();
 
 			for (Order order : orders) {
@@ -100,9 +100,10 @@ public class NotifyTravelers implements Runnable {
 					status = OrderStatusName.CANCELED.toString();
 					orderId = String.valueOf(updatedOrder.getOrderId());
 					mysqlFunction.setOrderStatusWithIDandStatus(new ArrayList<String>(Arrays.asList(status, orderId)));
-					//NEED TO CREATE A NEW THREAD
+					
+					NotifyWaitingList notifyWaitingList = new NotifyWaitingList(order);
+					new Thread(notifyWaitingList).start();
 				}
-
 			}
 
 		});

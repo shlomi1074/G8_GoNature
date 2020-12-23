@@ -170,7 +170,20 @@ public class TravelerViewOrders implements Initializable {
 					.showAndWait();
 			return;
 		}
-		if (!orderStatusTxt.getText().equals("pending")) {
+		if (orderStatusTxt.getText().equals(OrderStatusName.WAITING_HAS_SPOT.toString())) {
+			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(),
+					OrderStatusName.CONFIRMED);
+			if (!orderControlResult) {
+				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
+						"Could not confirm this order,please try again later.").showAndWait();
+
+			} else {
+				loadTableView();
+				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order confirmed")
+						.showAndWait();
+			}
+		}
+		if (!orderStatusTxt.getText().equals(OrderStatusName.PENDING.toString())) {
 			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Order status is not pending")
 					.showAndWait();
 			return;
@@ -213,13 +226,11 @@ public class TravelerViewOrders implements Initializable {
 		}
 		// order is already canceled, confirmed or completed.
 		// ENUM
-		if (orderStatusTxt.getText().equals("cancel") || orderStatusTxt.getText().equals("confirmed")
-				|| orderStatusTxt.getText().equals("completed")) {
+		if (orderStatusTxt.getText().equals(OrderStatusName.CANCELED.toString())
+				|| orderStatusTxt.getText().equals(OrderStatusName.CONFIRMED.toString())
+				|| orderStatusTxt.getText().equals(OrderStatusName.COMPLETED.toString())) {
 			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Order cannot be canceled").showAndWait();
-			return;
-		}
-		// Order is in waiting list or pending
-		if (orderStatusTxt.getText().equals("waiting") || orderStatusTxt.getText().equals("pending")) {
+		} else {
 			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(), OrderStatusName.CANCELED);
 			if (!orderControlResult) {
 				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
@@ -229,11 +240,14 @@ public class TravelerViewOrders implements Initializable {
 				loadTableView();
 				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order canceled")
 						.showAndWait();
-				notifyNextPersonInWaitingListAfterCancel(Integer.parseInt(orderIdTxt.getText()), visitDateTxt.getText(),
-						visitTimeTxt.getText());
+				OrderControl.checkWaitingList(Integer.parseInt(orderIdTxt.getText()));
 			}
-			return;
 		}
+		// Order is in waiting list,pending, has waiting list spot.
+//		if (orderStatusTxt.getText().equals("waiting") || orderStatusTxt.getText().equals("pending")) {
+//			
+//			return;
+//		}
 		// Might be needed to later - ask team
 //		int res = isDateBetween2422(visitDateTxt.getText(), visitTimeTxt.getText());
 //		switch (res) {
@@ -263,17 +277,6 @@ public class TravelerViewOrders implements Initializable {
 //			}
 //			break;
 //		}
-	}
-
-	// Ofir Avraham Vaknin
-	private void notifyNextPersonInWaitingListAfterCancel(int orderId, String date, String hour) {
-		ArrayList<OrderTb> orders = new ArrayList<OrderTb>();
-		for (OrderTb o : ov)
-			orders.add(o);
-		int parkId = ParkControl.getParkIdByOrderId(orders, orderId);
-		Park park = ParkControl.getParkById(String.valueOf(parkId));
-		OrderControl.notifyPersonFromWaitingList(date, hour, park);
-
 	}
 
 	/*

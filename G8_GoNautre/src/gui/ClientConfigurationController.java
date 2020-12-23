@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-
 import alerts.CustomAlerts;
 import client.ClientController;
 import client.ClientUI;
@@ -15,14 +14,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import logic.GoNatureFinals;
 
+/**
+ * 
+ *
+ */
 public class ClientConfigurationController implements Initializable {
 
 	@FXML
@@ -99,6 +103,7 @@ public class ClientConfigurationController implements Initializable {
 				Parent p = loader.getRoot();
 				newStage.setTitle("GoNature System");
 				newStage.setScene(new Scene(p));
+				newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 				newStage.setResizable(false);
 				newStage.show();
 				thisStage.close();

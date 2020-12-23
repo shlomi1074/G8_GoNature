@@ -3,14 +3,14 @@ package logic;
 import java.io.Serializable;
 
 public class Discount implements Serializable {
-	private String discountId;
+	private int discountId;
 	private Double amount;
 	private String startDate;
 	private String endDate;
 	private int parkId;
 	private String status;
 
-	public Discount(String discountId, Double amount, String startDate, String endDate, int parkId, String status) {
+	public Discount(int discountId, Double amount, String startDate, String endDate, int parkId, String status) { // discountId : String->int ofir n
 		this.discountId = discountId;
 		this.amount = amount;
 		this.startDate = startDate;
@@ -19,11 +19,11 @@ public class Discount implements Serializable {
 		this.status = status;
 	}
 
-	public String getDiscountId() {
+	public int getDiscountId() {
 		return discountId;
 	}
 
-	public void setDiscountId(String discountId) {
+	public void setDiscountId(int discountId) {
 		this.discountId = discountId;
 	}
 
