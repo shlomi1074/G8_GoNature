@@ -22,7 +22,11 @@ public class ReportsQueries {
 		this.conn = conn;
 	}
 
-	// shlomi
+	/**
+	 * This function DELETE a report from reports table in the database
+	 * 
+	 * @param parameters report type, park id, report month
+	 */
 	public void deleteReport(ArrayList<?> parameters) {
 		String sql = "DELETE FROM g8gonature.reports where reportType = ? and parkID = ? and month = ?";
 		PreparedStatement query;
@@ -40,7 +44,12 @@ public class ReportsQueries {
 		}
 	}
 
-	// shlomi
+	/**
+	 * This function INSERT a report to reports table in the database
+	 * 
+	 * @param parameters report type, park id, month, comment
+	 * @return true on success, false otherwise
+	 */
 	public boolean insertReport(ArrayList<?> parameters) {
 
 		String sql = "INSERT INTO g8gonature.reports  (reportType, parkID, month, comment)  values (?, ?,?,?)";

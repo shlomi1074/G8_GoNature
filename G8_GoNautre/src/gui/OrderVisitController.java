@@ -660,6 +660,7 @@ public class OrderVisitController implements Initializable {
 			controller.setOrder(recentOrder);
 			controller.setTraveler(traveler);
 			controller.setSummaryPayment(summaryPayment.getText());
+			controller.setOrderFromWeb(true);
 			loader.setController(controller);
 			loader.load();
 			Parent p = loader.getRoot();

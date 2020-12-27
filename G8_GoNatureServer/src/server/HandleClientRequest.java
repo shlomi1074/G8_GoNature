@@ -28,6 +28,18 @@ import logic.Traveler;
 import logic.report;
 import ocsf.server.ConnectionToClient;
 
+/**
+ * HandleClientRequest handles all the requests from the clients.
+ * This class is a thread that create on every request from the server.
+ * 
+ * @author Shlomi Amar
+ * @author Alon Ivshin
+ * @author Ofir Vaknin
+ * @author Lior Keren
+ * @author Ofir Newman
+ * 
+ * @version December 2020
+ */
 public class HandleClientRequest implements Runnable {
 
 	private ConnectionToClient client = null;
@@ -59,7 +71,9 @@ public class HandleClientRequest implements Runnable {
 		requestsQueries = new RequestsQueries(mysqlconnection);
 	}
 
-	/* HERE WE NEED TO HANDLE THE CLIENT MSG */
+	/**
+	 * This function check which command the server need to do.
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void run() {
@@ -110,7 +124,7 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.GET_ALL_PARKS)) {
-					ArrayList<Park> parks = parkQueries.getAllParks(request.getParameters());
+					ArrayList<Park> parks = parkQueries.getAllParks();
 					response = new ServerToClientResponse(Response.GET_ALL_PARKS_RESPONSE);
 					response.setResultSet(parks);
 					client.sendToClient(response);

@@ -21,7 +21,12 @@ public class ParkQueries {
 		this.conn = conn;
 	}
 
-	// Shlomi
+	/**
+	 * This function gets a park id and retrieve the relevant park from the database
+	 * 
+	 * @param parameters the park id
+	 * @return Park object
+	 */
 	public Park getParkById(ArrayList<?> parameters) {
 		Park park = null;
 		String sql = "SELECT * FROM g8gonature.park WHERE parkId = ? ";
@@ -42,7 +47,12 @@ public class ParkQueries {
 		return park;
 	}
 
-	// Shlomi
+	/**
+	 * This function gets a park name and retrieve the relevant park from the database
+	 * 
+	 * @param parameters the park name
+	 * @return Park object
+	 */
 	public Park getParkByName(ArrayList<?> parameters) {
 		Park park = null;
 		String sql = "SELECT * FROM g8gonature.park WHERE parkName = ? ";
@@ -63,8 +73,12 @@ public class ParkQueries {
 		return park;
 	}
 
-	// shlomi
-	public ArrayList<Park> getAllParks(ArrayList<?> parameters) {
+	/**
+	 * This function retrieve all the parks from the database
+	 * 
+	 * @return ArrayList of Park objects
+	 */
+	public ArrayList<Park> getAllParks() {
 		ArrayList<Park> parks = new ArrayList<Park>();
 		String sql = "SELECT * FROM g8gonature.park";
 		PreparedStatement query;
@@ -83,7 +97,12 @@ public class ParkQueries {
 		return parks;
 	}
 
-	// shlomi
+	/**
+	 * This function retrieve all the comments column from 'fullparkdate' table for a given date and park
+	 * 
+	 * @param parameters date to check, park to check
+	 * @return ArrayList with all the comments
+	 */
 	public ArrayList<String> isParkIsFullAtDate(ArrayList<?> parameters) {
 		ArrayList<String> comment = new ArrayList<String>();
 
@@ -107,8 +126,13 @@ public class ParkQueries {
 		}
 		return comment;
 	}
-
-	// Shlomi + Ofir
+	
+	/**
+	 * This function insert row to 'fullparkdate' table
+	 * 
+	 * @param parameters park id, date, max visitors, comment
+	 * @return true on success, false otherwise
+	 */
 	public boolean insertToFullParkDate(ArrayList<?> parameters) {
 		String sql = "INSERT INTO g8gonature.fullparkdate  (parkId, date, maxVisitors,comment)  values (?, ?,?,?)";
 		int res = 0;
@@ -178,7 +202,11 @@ public class ParkQueries {
 		return res == 1;
 	}
 
-	// shlomi
+	/**
+	 * This function retrieve all the 'card_reader_simulator' table
+	 * 
+	 * @return ArrayList of Strings with all the data from card_reader_simulator
+	 */
 	public ArrayList<String> getSimulatorTravelersId() {
 
 		ArrayList<String> travelersID = new ArrayList<>();
@@ -200,7 +228,12 @@ public class ParkQueries {
 		return travelersID;
 	}
 
-	// shlomi
+	/**
+	 * This function updates the exit time of a visit in the database
+	 * This function is only for the card reader simulation.
+	 * 
+	 * @param order the order to update
+	 */
 	public void updateVisitExitTimeSimulator(Order order) {
 		String sql = "UPDATE g8gonature.visit SET exitTime = ? WHERE travelerId = ? AND parkId = ? AND entrenceTime = ? AND visitDate = ?";
 		PreparedStatement query;
@@ -221,39 +254,37 @@ public class ParkQueries {
 
 	}
 
-	//ofir n
-	
+	// ofir n
+
 	public void changeParkParametersInDB(ArrayList<?> parameters) {
-		
+
 		System.out.println("1");
 		PreparedStatement query;
-        String typeOfRequest = null;
+		String typeOfRequest = null;
 		String sql;
 
-		System.out.println((String)parameters.get(0));
-		
-	if(((String)parameters.get(0)).equals("UPDATE MAX VISITORS")) typeOfRequest="maxVisitors";
-	if(((String)parameters.get(0)).equals("UPDATE ESTIMATED STAY TIME")) typeOfRequest="estimatedStayTime";
-	if(((String)parameters.get(0)).equals("UPDATE GAP")) typeOfRequest="gapBetweenMaxAndCapacity";
+		System.out.println((String) parameters.get(0));
 
-		
-		
+		if (((String) parameters.get(0)).equals("UPDATE MAX VISITORS"))
+			typeOfRequest = "maxVisitors";
+		if (((String) parameters.get(0)).equals("UPDATE ESTIMATED STAY TIME"))
+			typeOfRequest = "estimatedStayTime";
+		if (((String) parameters.get(0)).equals("UPDATE GAP"))
+			typeOfRequest = "gapBetweenMaxAndCapacity";
+
 		try {
-			
-			sql = "UPDATE g8gonature.park SET " +typeOfRequest+"=? WHERE parkId="+parameters.get(2)+ "";
+
+			sql = "UPDATE g8gonature.park SET " + typeOfRequest + "=? WHERE parkId=" + parameters.get(2) + "";
 			System.out.println(sql);
-			query = conn.prepareStatement(sql);		   
-			query.setInt(1,Integer.parseInt((String)parameters.get(1)));
+			query = conn.prepareStatement(sql);
+			query.setInt(1, Integer.parseInt((String) parameters.get(1)));
 			query.executeUpdate();
-	
-		} 
-		
-		
-		
+
+		}
+
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-	
-		
+
 	}
 }

@@ -22,6 +22,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import logic.GoNatureFinals;
 
+/**
+ * This Class is the GUI controller of ServerGUI.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * This is the server configuration screen
+ *
+ */
 public class ServerGUIController {
 
 	@FXML
@@ -47,14 +54,11 @@ public class ServerGUIController {
 
 	private static server.GoNatureServer srv;
 
-	/*
-	 * This function start the server Default port is 5555
+	/**
+	 * This function loads the GUI
+	 * @param primaryStage The server's stage
+	 * @throws Exception If failed to load the GUI
 	 */
-
-	/*
-	 * Start the Server form
-	 */
-
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/ServerGui.fxml"));
 		Parent root = loader.load();
@@ -82,7 +86,7 @@ public class ServerGUIController {
 	}
 
 	@FXML
-	void startServer(ActionEvent event) {
+	private void startServer(ActionEvent event) {
 		int port = 5555;
 		if (!txtFldPort.getText().isEmpty())
 			port = Integer.parseInt(txtFldPort.getText());
@@ -95,11 +99,20 @@ public class ServerGUIController {
 
 	}
 
+	/**
+	 * This function updates the text area
+	 * 
+	 * @param msg The string to add to the text area
+	 */
 	public void updateTextAreaLog(String msg) {
 		if (txtareaLog != null)
 			txtareaLog.appendText(msg + "\n");
 	}
 
+	/**
+	 * This function change the color of the circle
+	 * @param c The new circle's color
+	 */
 	public void setCircleColor(Color c) {
 		circleStatus.setFill(c);
 	}

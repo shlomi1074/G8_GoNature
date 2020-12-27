@@ -21,7 +21,13 @@ public class EmployeeQueries {
 		this.conn = conn;
 	}
 
-		// shlomi
+		/**
+		 * This function gets an id as parameter 
+		 * and retrieve the relevant employee from the database
+		 * 
+		 * @param parameters The employee id
+		 * @return Employees object
+		 */
 		public Employees getEmployeeById(ArrayList<?> parameters) {
 			Employees employee = null;
 			String sql = "SELECT * FROM g8gonature.employees WHERE employeeId = ? ";
@@ -60,7 +66,13 @@ public class EmployeeQueries {
 			return employee;
 		}
 
-		// shlomi
+		/**
+		 * This function gets an id as parameter 
+		 * and retrieve employee's password from the database
+		 * 
+		 * @param parameters The employee id
+		 * @return The employee's password as string
+		 */
 		public String getEmployeePasswordById(int employeeId) {
 			String sql = "SELECT employeesidentification.password FROM g8gonature.employeesidentification WHERE employeeId = ?";
 			PreparedStatement query;

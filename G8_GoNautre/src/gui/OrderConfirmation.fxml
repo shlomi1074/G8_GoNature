@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" stylesheets="@../resources/projectTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="headerLabel" alignment="CENTER" layoutX="-1.0" layoutY="24.0" prefHeight="39.0" prefWidth="400.0" text="Thank you for your order" />
+      <Label fx:id="headerLabel" alignment="CENTER" layoutX="-1.0" layoutY="17.0" prefHeight="39.0" prefWidth="400.0" text="Thank you for your order" />
       <Label layoutX="51.0" layoutY="88.0" style="-fx-text-fill: #7FED9D;" text="Personal Info:" />
       <Label layoutX="110.0" layoutY="132.0" text="ID:" />
       <Label layoutX="110.0" layoutY="221.0" text="Email:" />
@@ -42,5 +42,6 @@
       <Label fx:id="msgLine2" alignment="CENTER" layoutX="5.0" layoutY="609.0" prefHeight="20.0" prefWidth="391.0" text="You need to confirm your order when you receive the reminder" />
       <Label layoutX="110.0" layoutY="492.0" text="Order Status:" />
       <Label fx:id="orderStatusLabel" layoutX="213.0" layoutY="492.0" text="Pending" />
+      <Label fx:id="smsSimLabel" alignment="CENTER" layoutX="33.0" layoutY="56.0" prefHeight="20.0" prefWidth="336.0" text="This message was sent to your Email and to your phone" />
    </children>
 </AnchorPane>

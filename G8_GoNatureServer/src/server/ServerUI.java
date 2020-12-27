@@ -4,6 +4,9 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import gui.ServerGUIController;
 
+/**
+ * This class loads the server GUI
+ */
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;
 	public static ServerGUIController aFrame;
@@ -12,6 +15,9 @@ public class ServerUI extends Application {
 		launch(args);
 	} // end main
 
+	/**
+	 * load The GUI
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		aFrame = new ServerGUIController();
@@ -19,6 +25,10 @@ public class ServerUI extends Application {
 
 	}
 
+	/**
+	 * Start the server
+	 * @param sv GoNatureServer object
+	 */
 	public static void runServer(GoNatureServer sv) {
 		try {
 			sv.listen(); // Start listening for connections

@@ -356,7 +356,6 @@ public class ManageTravelerController implements Initializable {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/OrderConfirmation.fxml"));
 			OrderConfirmationController controller = new OrderConfirmationController();
 			controller.setOrder(new Order(clickedRow));
-
 			String id = clickedRow.getTravelerId();
 			Subscriber subscriber = TravelerControl.getSubscriber(id);
 			Traveler traveler;
