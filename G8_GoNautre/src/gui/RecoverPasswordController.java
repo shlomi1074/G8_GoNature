@@ -17,6 +17,13 @@ import logic.Messages;
 import resources.MsgTemplates;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * This Class is the GUI controller of RecoverPassword.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * In this screen the user can ask to recover his password
+ *
+ */
 public class RecoverPasswordController implements Initializable {
 
 	@FXML
@@ -27,8 +34,6 @@ public class RecoverPasswordController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@FXML
@@ -62,7 +67,7 @@ public class RecoverPasswordController implements Initializable {
 
 	}
 
-	public Stage getStage() {
+	private Stage getStage() {
 		return (Stage) recoverBtn.getScene().getWindow();
 	}
 

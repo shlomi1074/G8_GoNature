@@ -9,27 +9,42 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
+import controllers.sqlHandlers.TravelersQueries;
 import logic.GoNatureFinals;
 import logic.Messages;
 import server.GoNatureServer;
-import sqlHandler.mysqlFunctions;
 
+/**
+ * EmailControl class handle all the Email sends requests
+ * 
+ */
 public class EmailControl {
 	
-	private static mysqlFunctions mysqlFunction = new mysqlFunctions(GoNatureServer.mysqlconnection);
+	private static TravelersQueries travelersQueries = new TravelersQueries(GoNatureServer.mysqlconnection);
     private static String senderEmail = GoNatureFinals.GO_NATURE_EMAIL;
     private static String senderPassword = GoNatureFinals.GO_NATURE_EMAIL_PASSWORD;
     
     
+    /**
+     * This function gets a Message object and send the message to the traveler.
+     * 
+     * @param msg the message to send
+     * @return true on success, false otherwise
+     */
     public static boolean sendEmail(Messages msg) {
-    	String sendTo = mysqlFunction.getEmailByOrderID(msg.getOrderId());
+    	String sendTo = travelersQueries.getEmailByOrderID(msg.getOrderId());
     	String subject = msg.getSubject();
 		String messageToSend = msg.getContent();
 		return sendEmail(sendTo, subject, messageToSend);
     	
     }
     
+    /**
+     * This function gets a Message object and send the message to GoNature email.
+     * 
+     * @param msg the message to send
+     * @return true on success, false otherwise
+     */
     public static boolean sendEmailToGoNature(Messages msg) {
     	String sendTo = GoNatureFinals.GO_NATURE_EMAIL;
     	String subject = msg.getSubject();
@@ -38,6 +53,13 @@ public class EmailControl {
     	
     }
     
+    /**
+     * This function gets a Message object and send the message to the given email.
+     * 
+     * @param msg the message to send
+     * @param email the email to send to
+     * @return true on success, false otherwise
+     */
     public static boolean sendEmailToWithEmailInput(Messages msg, String email) {
     	String sendTo = email;
     	String subject = msg.getSubject();

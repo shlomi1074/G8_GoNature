@@ -51,6 +51,13 @@ import javafx.scene.control.DateCell;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * This Class is the GUI controller of OrderVisit.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * In this screen the traveler makes a new order
+ *
+ */
 public class OrderVisitController implements Initializable {
 
 	@FXML
@@ -284,12 +291,6 @@ public class OrderVisitController implements Initializable {
 		} else if (!UtilityFunctions.isNumeric(summaryVisitors.getText())) {
 			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Visitor's number must be a positive number and atleast 1. ").showAndWait();
-		} else if (!UtilityFunctions.isNumeric(summaryID.getText())) {
-			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid ID Number", "ID number must be only numbers. ")
-					.showAndWait();
-		} else if (!UtilityFunctions.isNumeric(summaryPhone.getText())) {
-			new CustomAlerts(AlertType.ERROR, "Bad Input", "Invalid Phone Number", "Phone number must be only numbers ")
-					.showAndWait();
 		} else {
 			return true;
 		}
@@ -367,7 +368,7 @@ public class OrderVisitController implements Initializable {
 			}
 
 		}
-		return 0.0;
+		return (double) GoNatureFinals.FULL_PRICE;
 	}
 
 	private boolean checkIfOrderTimeIs24HouesFromNow() {
@@ -400,7 +401,7 @@ public class OrderVisitController implements Initializable {
 		return true;
 	}
 
-	private void initLabels() {// shlomi
+	private void initLabels() {
 
 		if (!isOrderFromMain) {
 			String id = "";
@@ -475,11 +476,18 @@ public class OrderVisitController implements Initializable {
 				}
 			}
 		});
+		
+		phoneInput.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				phoneInput.setText(arg2.replaceAll("[^\\d]", ""));
+			}
+		});
 
-		// shlomi
 		idInputOrderVisit.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				idInputOrderVisit.setText(arg2.replaceAll("[^\\d]", ""));
 				if (arg2.length() == 9) {
 					subscriber = TravelerControl.getSubscriber(arg2);
 					if (subscriber == null)
@@ -499,7 +507,6 @@ public class OrderVisitController implements Initializable {
 
 		});
 
-		// shlomi
 		summaryVisitors.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
@@ -525,8 +532,8 @@ public class OrderVisitController implements Initializable {
 		summaryType.textProperty().bind(Bindings.convert(typeComboBox.valueProperty()));
 		summaryVisitors.textProperty().bind(Bindings.convert(numOfVisitorsOrderVisit.textProperty()));
 		summaryEmail.textProperty().bind(Bindings.convert(emailInputOrderVisit.textProperty()));
-		summaryFullName.textProperty().bind(Bindings.convert(fullNameInput.textProperty())); // shlomi
-		summaryPhone.textProperty().bind(Bindings.convert(phoneInput.textProperty())); // shlomi
+		summaryFullName.textProperty().bind(Bindings.convert(fullNameInput.textProperty()));
+		summaryPhone.textProperty().bind(Bindings.convert(phoneInput.textProperty()));
 	}
 
 	/* Setup the date picker */
@@ -581,7 +588,7 @@ public class OrderVisitController implements Initializable {
 		typeComboBox.getItems().clear();
 		timeComboBox.getItems().clear();
 
-		/* Set parks combobox to load dynamically from database */ // Shlomi
+		/* Set parks combobox to load dynamically from database */
 		ArrayList<String> parksNames = ParkControl.getParksNames();
 		if (parksNames != null) {
 			parksComboBox.getItems().addAll(parksNames);
@@ -670,6 +677,11 @@ public class OrderVisitController implements Initializable {
 
 	}
 
+	/**
+	 * Setter for class variable isOrderFromMain
+	 * 
+	 * @param isOrderFromMain
+	 */
 	public void setOrderFromMain(boolean isOrderFromMain) {
 		this.isOrderFromMain = isOrderFromMain;
 	}

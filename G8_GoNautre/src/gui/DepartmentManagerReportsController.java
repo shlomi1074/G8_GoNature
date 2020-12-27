@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-
 import Controllers.ReportsControl;
 import alerts.CustomAlerts;
 import javafx.collections.FXCollections;
@@ -17,7 +15,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -27,10 +24,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import logic.OrderTb;
+import logic.GoNatureFinals;
 import logic.report;
 import logic.reportTb;
 
+/**
+ * Gets all reports from reports table 
+ * Load all received reports to table for department manager to view 
+ * Department manager can get report on cancelled orders when clicking on Cancels Report button 
+ * Department manager can get visit report when clicking on visit Report button
+ */
 public class DepartmentManagerReportsController implements Initializable {
 
 	ObservableList<reportTb> observable = FXCollections.observableArrayList(); /* Lior */
@@ -65,8 +68,6 @@ public class DepartmentManagerReportsController implements Initializable {
 	@FXML
 	private JFXComboBox<String> monthCB;
 
-	protected static String[] months = { "Month", "January", "February", "March", "April", "May", "June", "July",
-			"August", "September", "October", "November", "December" };
 	private String fxmlName;
 	private String screenTitle;
 
@@ -169,18 +170,16 @@ public class DepartmentManagerReportsController implements Initializable {
 		}
 	}
 
-	/* Lior */
 	/* Here we need to fill the table view from database */
-	public void loadTabelView() {
+	private void loadTabelView() {
 		ArrayList<report> reports = ReportsControl.getReports();
 		ArrayList<reportTb> tbReports = convertreportsToTeportTb(reports);
 		init(tbReports);
 		ReportsTableView.setItems(getReports(tbReports));
 	}
 
-	/* Lior */
 	/* Here we convert reports from database To TeportTb */
-	public static ArrayList<reportTb> convertreportsToTeportTb(ArrayList<report> reports) {
+	private static ArrayList<reportTb> convertreportsToTeportTb(ArrayList<report> reports) {
 		ArrayList<reportTb> tbReports = new ArrayList<reportTb>();
 		for (report report : reports) {
 			reportTb tbReport = new reportTb(report);
@@ -189,7 +188,6 @@ public class DepartmentManagerReportsController implements Initializable {
 		return tbReports;
 	}
 
-	/* Lior */
 	private void init(ArrayList<reportTb> tbReports) {
 		reportIDCol.setCellValueFactory(new PropertyValueFactory<reportTb, Integer>("reportID"));
 		reportTypeCol.setCellValueFactory(new PropertyValueFactory<reportTb, String>("reportType"));
@@ -198,7 +196,6 @@ public class DepartmentManagerReportsController implements Initializable {
 		commentCol.setCellValueFactory(new PropertyValueFactory<reportTb, String>("comment"));
 	}
 
-	/* Lior */
 	private ObservableList<reportTb> getReports(ArrayList<reportTb> tbReports) {
 		ReportsTableView.getItems().clear();
 		for (reportTb report : tbReports) {
@@ -208,7 +205,7 @@ public class DepartmentManagerReportsController implements Initializable {
 	}
 
 	private void initComboBox() {
-		monthCB.getItems().addAll(months);
+		monthCB.getItems().addAll(GoNatureFinals.MONTHS);
 		monthCB.getSelectionModel().select(0);
 	}
 

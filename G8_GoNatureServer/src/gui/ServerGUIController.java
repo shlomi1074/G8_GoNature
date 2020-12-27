@@ -14,11 +14,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import logic.GoNatureFinals;
 
 public class ServerGUIController {
 
@@ -59,6 +61,8 @@ public class ServerGUIController {
 
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("G8_Server");
+		primaryStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
+		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 

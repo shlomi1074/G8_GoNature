@@ -2,14 +2,11 @@ package gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-
 import Controllers.AutenticationControl;
 import alerts.CustomAlerts;
 import client.ChatClient;
-import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,6 +24,13 @@ import logic.GoNatureFinals;
 import logic.Subscriber;
 import logic.Traveler;
 
+/**
+ * This Class is the GUI controller of TravelerLogin.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * This is the login screen for the travelers
+ *
+ */
 public class TravelerLoginController implements Initializable {
 
 	@FXML

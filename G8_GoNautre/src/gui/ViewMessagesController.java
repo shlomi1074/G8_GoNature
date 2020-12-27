@@ -20,8 +20,13 @@ import logic.MessagesTb;
 import logic.Subscriber;
 import logic.Traveler;
 
+/**
+ * gets traveler's / subscriber's messages from DB
+ * Loads them into table for view 
+ * when user double clicks on a message, its content shows under the table
+ */
 public class ViewMessagesController implements Initializable {
-	/*Lior*/
+	
 	ObservableList<MessagesTb> observable = FXCollections.observableArrayList(); 
 	
     @FXML
@@ -65,8 +70,8 @@ public class ViewMessagesController implements Initializable {
 		init(tbMessages);
 		messagesTableView.setItems(getMessages(tbMessages));
 	}
-	/*Lior*/
-	public static ArrayList<MessagesTb> convertMessagesToMessagesTb(ArrayList<Messages> messages) {
+	
+	private ArrayList<MessagesTb> convertMessagesToMessagesTb(ArrayList<Messages> messages) {
 		ArrayList<MessagesTb> messagesTb = new ArrayList<MessagesTb>();
 		for (Messages message : messages) {
 			MessagesTb messageTb = new MessagesTb(message);

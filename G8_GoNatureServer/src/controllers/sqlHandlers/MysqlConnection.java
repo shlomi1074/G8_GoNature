@@ -1,19 +1,29 @@
-package sqlHandler;
+package controllers.sqlHandlers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * 
+ * MysqlConnection class holds a connection to the DB.
+ * MysqlConnection implements the Singleton design pattern
  * 
  */
-public class mysqlConnection {
+public class MysqlConnection {
 
 	private Connection connection = null;
-	private static mysqlConnection instance = null;
+	private static MysqlConnection instance = null;
 
-	private mysqlConnection() throws SQLException,ClassNotFoundException, InstantiationException, IllegalAccessException {
+	/**
+	 * private constructor
+	 * 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	private MysqlConnection()
+			throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			System.out.println("Driver definition succeed");
@@ -25,10 +35,10 @@ public class mysqlConnection {
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/g8gonature?serverTimezone=UTC",
 					"root", "root");
-			
+
 			/* How to handle multiple requests to the database */
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			
+
 			System.out.println("SQL connection succeed");
 		} catch (SQLException ex) {
 			System.out.println("SQLException: " + ex.getMessage());
@@ -38,17 +48,30 @@ public class mysqlConnection {
 		}
 	}
 
-	public static mysqlConnection getInstance() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+	/**
+	 * This function returns an MysqlConnection instance
+	 * 
+	 * @return MysqlConnection object
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws SQLException
+	 */
+	public static MysqlConnection getInstance()
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
 		if (instance == null)
-			instance = new mysqlConnection();
+			instance = new MysqlConnection();
 		return instance;
 	}
 
+	/**
+	 * This function returns a connection to the DB
+	 * 
+	 * @return Connection object
+	 */
 	public Connection getConnection() {
 		return this.connection;
 	}
-	
-	
-	
 
 }

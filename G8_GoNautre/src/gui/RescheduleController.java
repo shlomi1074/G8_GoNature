@@ -2,24 +2,18 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
-
 import Controllers.NotificationControl;
 import Controllers.OrderControl;
 import Controllers.ParkControl;
 import alerts.CustomAlerts;
-import javafx.collections.ListChangeListener;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -28,10 +22,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.AnchorPane;
@@ -42,6 +34,14 @@ import logic.OrderStatusName;
 import logic.Traveler;
 import resources.MsgTemplates;
 
+/**
+ * This Class is the GUI controller of Reschedule.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * In this screen the traveler can choose to enter the waiting list
+ * of to choose a different date to visit.
+ *
+ */
 public class RescheduleController implements Initializable {
 
 	@FXML
@@ -74,11 +74,31 @@ public class RescheduleController implements Initializable {
 	private Stage rescheduleStage;
 	private Stage orderStage;
 	boolean isOrderFromMain = false;
+	boolean isWaitingList = false;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		init();
-		getAlternativeDates();
+		Task<Boolean> task = new Task<Boolean>() {
+			@Override
+			protected Boolean call() throws Exception {
+				getAlternativeDates();
+				return true;
+			}
+		};
+		
+		pi.setVisible(true);
+		mainPane.setDisable(true);
+		new Thread(task).start();
+
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent t) {
+				pi.setVisible(false);
+				mainPane.setDisable(false);
+			}
+		});
+		
 	}
 
 	@FXML
@@ -162,7 +182,6 @@ public class RescheduleController implements Initializable {
 				try {
 					c.setTime(sdf.parse(currentDate));
 				} catch (Exception e) {
-					// TODO: handle exception
 				}
 				// Number of Days to add
 				c.add(Calendar.DAY_OF_MONTH, 1);
@@ -194,7 +213,7 @@ public class RescheduleController implements Initializable {
 			String dateAndTime = dtf.format(now);
 			String date = dateAndTime.split(" ")[0];
 			String time = dateAndTime.split(" ")[1];
-			Order recentOrder = OrderControl.getTravelerRecentOrder(traveler.getTravelerId());
+			recentOrder = OrderControl.getTravelerRecentOrder(traveler.getTravelerId());
 
 			/* Insert massage to data base */ /* NEED TO BE CHANGED WHEN ADDED MESSAGES */
 			if (recentOrder != null) {
@@ -205,14 +224,8 @@ public class RescheduleController implements Initializable {
 				NotificationControl.sendMessageToTraveler(traveler.getTravelerId(), date, time,
 						MsgTemplates.enterToWaitingList[0], msgContent, String.valueOf(recentOrder.getOrderId()));
 
-				CustomAlerts alert = new CustomAlerts(AlertType.INFORMATION, MsgTemplates.enterToWaitingList[0],
-						MsgTemplates.enterToWaitingList[0], msgContent);
-
-				Optional<ButtonType> result = alert.showAndWait();
-
-				if (!result.isPresent() || result.get() == ButtonType.OK) {
-					rescheduleStage.close();
-				}
+				isWaitingList = true;
+				loadOrderConfirmation();
 			}
 
 		} else {
@@ -234,6 +247,7 @@ public class RescheduleController implements Initializable {
 			OrderConfirmationController controller = new OrderConfirmationController();
 			controller.setOrder(recentOrder);
 			controller.setTraveler(traveler);
+			controller.setWaitingList(isWaitingList);
 			controller.setSummaryPayment(String.valueOf(recentOrder.getPrice()));
 			loader.setController(controller);
 			loader.load();
@@ -242,9 +256,9 @@ public class RescheduleController implements Initializable {
 			newStage.setTitle("Order Confirmation");
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
-			newStage.show();
 			if (isOrderFromMain)
 				thisStage.close();
+			newStage.show();
 		} catch (IOException e) {
 			System.out.println("faild to load form");
 			e.printStackTrace();
@@ -252,26 +266,56 @@ public class RescheduleController implements Initializable {
 
 	}
 
+	/**
+	 * Setter for class variable selectedTimeLabel
+	 * 
+	 * @param DateAndTime
+	 */
 	public void setSelectedTimeLabel(String DateAndTime) {
 		this.selectedTimeLabel.setText(DateAndTime);
 	}
 
+	/**
+	 * Setter for class variable order
+	 * 
+	 * @param order
+	 */
 	public void setOrder(Order order) {
 		this.order = order;
 	}
 
+	/**
+	 * Setter for class variable traveler
+	 * 
+	 * @param traveler
+	 */
 	public void setTraveler(Traveler traveler) {
 		this.traveler = traveler;
 	}
 
+	/**
+	 * Setter for class variable rescheduleStage
+	 * 
+	 * @param stage
+	 */
 	public void setRescheduleStage(Stage stage) {
 		this.rescheduleStage = stage;
 	}
 
+	/**
+	 * Setter for class variable orderStage
+	 * 
+	 * @param stage
+	 */
 	public void setOrderStage(Stage stage) {
 		this.orderStage = stage;
 	}
 
+	/**
+	 * Setter for class variable isOrderFromMain
+	 * 
+	 * @param isOrderFromMain
+	 */
 	public void setOrderFromMain(boolean isOrderFromMain) {
 		this.isOrderFromMain = isOrderFromMain;
 	}

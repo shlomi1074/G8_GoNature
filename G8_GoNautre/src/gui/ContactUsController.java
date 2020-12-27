@@ -10,11 +10,19 @@ import alerts.CustomAlerts;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import logic.GoNatureFinals;
 import logic.Messages;
 
+/**
+ * This Class is the GUI controller of ContactUs.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * In this screen the user can send us an email.
+ *
+ */
 public class ContactUsController implements Initializable {
 	@FXML
 	private AnchorPane ourConcactsPane;
@@ -24,6 +32,9 @@ public class ContactUsController implements Initializable {
 
 	@FXML
 	private JFXTextArea textArea;
+	
+    @FXML
+    private Label emailLabel;
 
 	@FXML
 	private JFXButton sendButton;
@@ -39,10 +50,11 @@ public class ContactUsController implements Initializable {
 
 	@FXML
 	private JFXTextField subjectLabel;
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		emailLabel.setText(GoNatureFinals.GO_NATURE_EMAIL);
 	}
 
 	@FXML
@@ -71,7 +83,7 @@ public class ContactUsController implements Initializable {
 		return true;
 	}
 
-	public Stage getStage() {
+	private Stage getStage() {
 		return (Stage) subjectLabel.getScene().getWindow();
 	}
 

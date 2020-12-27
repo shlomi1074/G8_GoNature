@@ -1,23 +1,18 @@
 package Controllers;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import client.ChatClient;
 import client.ClientUI;
 import logic.ClientToServerRequest;
-import logic.Order;
 import logic.OrderTb;
 import logic.ClientToServerRequest.Request;
 import logic.Park;
 
 public class ParkControl {
 
-	// Shlomi
 	/**
 	 * This function gets park's id and returns Park object.
 	 * 
@@ -33,7 +28,6 @@ public class ParkControl {
 
 	}
 
-	// Shlomi
 	/**
 	 * This function gets park's name and returns Park object.
 	 * 
@@ -48,7 +42,6 @@ public class ParkControl {
 		return park;
 	}
 
-	// Shlomi
 	/**
 	 * This function returns an array list with all the park's names.
 	 * 
@@ -64,7 +57,6 @@ public class ParkControl {
 
 	}
 
-	// Shlomi
 	/**
 	 * This function gets park's id and returns the park name.
 	 * 
@@ -79,7 +71,6 @@ public class ParkControl {
 
 	}
 
-	// Shlomi
 	/**
 	 * This function returns an array list with all the parks in the DB.
 	 * 
@@ -113,15 +104,22 @@ public class ParkControl {
 
 	// ofir n
 
-	public static void changeParkParameters(ArrayList<Integer> changedParameters) {
+	public static void changeParkParameters(ArrayList<String> changeParkParameterList) {
 
 		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.CHANGE_PARK_PARAMETERS,
-				changedParameters);
+				changeParkParameterList);
 
 		ClientUI.chat.accept(request);
 
 	}
 
+	/**
+	 * This function get a date and a park id and check if the park was full at that date.
+	 * 
+	 * @param date The date to check
+	 * @param parkID The park to check
+	 * @return ArrayList of Strings with all the comments on that dates.
+	 */
 	public static ArrayList<String> isParkIsFullAtDate(String date, String parkID) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.CHECK_IF_PARK_FULL_AT_DATE,
 				new ArrayList<String>(Arrays.asList(date, parkID)));
@@ -129,8 +127,11 @@ public class ParkControl {
 		return (ArrayList<String>) ChatClient.responseFromServer.getResultSet();
 	}
 
-	// Successed?
-	// Shlomi + Ofir edit 
+	/**
+	 * This function insert into "fullparkdate" table when the park is full.
+	 * 
+	 * @param park The park that is full
+	 */
 	public static void updateIfParkFull(Park park) {
 
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -150,6 +151,5 @@ public class ParkControl {
 					new ArrayList<String>(Arrays.asList(parkId,date,maxVisitors,comment)));
 			ClientUI.chat.accept(request);
 		}
-
 	}
 }

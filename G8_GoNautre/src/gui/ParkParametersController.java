@@ -11,7 +11,10 @@ import javafx.scene.control.Label;
 import logic.Park;
 
 /**
+ * This Class is the GUI controller of ParkParameters.fxml
+ * It handles all the JavaFx nodes events.
  * 
+ * This screen shows the parameters of a certain park
  *
  */
 public class ParkParametersController implements Initializable {

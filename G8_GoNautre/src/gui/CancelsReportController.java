@@ -1,16 +1,17 @@
 package gui;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import Controllers.ReportsControl;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import logic.report;
-import logic.reportTb;
+import logic.GoNatureFinals;
 
+/**
+ * counts pending orders with passed date and cancelled orders for each park
+ * presents it in report and shows in total how many orders were cancelled
+ */
 public class CancelsReportController implements Initializable{
 	
     @FXML
@@ -18,7 +19,7 @@ public class CancelsReportController implements Initializable{
 
     @FXML
     private Label monthLabel;
-    /*was arder, changed to ardent*/
+
     @FXML
     private Label ardentParkCancelsLabel;
 
@@ -37,21 +38,34 @@ public class CancelsReportController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		initLabels();
 	}
-	
+	/*does the counting and setting of each label*/
 	private void initLabels() {
-		monthLabel.setText(DepartmentManagerReportsController.months[monthNumber]); // set the name of the month
-		/*Lior*/
-		int cancels=ReportsControl.getParkCancels(1,monthNumber).get(0);				//get cancels for ardent
-		ardentParkCancelsLabel.setText(String.valueOf(cancels));			//set cancels for ardent
-		int temp=ReportsControl.getParkCancels(2,monthNumber).get(0);					//get cancels for pine
-		cancels+=temp;														//add to total number of cancels
-		pineParkCancelsLabel.setText(String.valueOf(String.valueOf(temp)));	//set cancels for pine
-		temp=ReportsControl.getParkCancels(3,monthNumber).get(0);						//get cancels for linda
-		cancels+=temp;														//add to total number of cancels
-		lindaParkCancelsLabel.setText(String.valueOf(String.valueOf(temp)));//set cancels for linda
-		totalLabel.setText(String.valueOf(String.valueOf(cancels)));		//set total number of cancels
+		/*sets label of month from user's choice from last screen */
+		monthLabel.setText(GoNatureFinals.MONTHS[monthNumber]); // set the name of the month
+
+		int cancels=0,cancelsPark1=0,cancelsPark2=0,cancelsPark3=0;
+		/*Ardent*/
+		cancelsPark1=ReportsControl.getParkCancels(1,monthNumber).get(0);			//get cancels for Ardent
+		cancelsPark1+=ReportsControl.getParkPendingDatePassed(1,monthNumber).get(0);//get pending after date has passed for Ardent
+		ardentParkCancelsLabel.setText(String.valueOf(cancelsPark1));				//set number for Ardent
+		/*Pine*/
+		cancelsPark2=ReportsControl.getParkCancels(2,monthNumber).get(0);			//get cancels for Pine
+		cancelsPark2+=ReportsControl.getParkPendingDatePassed(2,monthNumber).get(0);//get pending after date has passed for Pine
+		pineParkCancelsLabel.setText(String.valueOf(String.valueOf(cancelsPark2)));	//set cancels for Pine
+		/*Linda*/
+		cancelsPark3=ReportsControl.getParkCancels(3,monthNumber).get(0);			//get cancels for Linda
+		cancelsPark3+=ReportsControl.getParkPendingDatePassed(3,monthNumber).get(0);//get pending after date has passed for Linda
+		lindaParkCancelsLabel.setText(String.valueOf(String.valueOf(cancelsPark3)));//set cancels for Linda
+		
+		cancels=cancelsPark1+cancelsPark2+cancelsPark3;								//calculate total
+		totalLabel.setText(String.valueOf(String.valueOf(cancels)));				//set total number of cancels
 	}
 	
+	/**
+	 * Setter for class variable monthNumber
+	 * 
+	 * @param month
+	 */
 	public void setMonthNumber(int month){
 		this.monthNumber = month;	
 	}

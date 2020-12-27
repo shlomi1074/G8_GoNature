@@ -24,7 +24,10 @@ import javafx.stage.WindowEvent;
 import logic.GoNatureFinals;
 
 /**
+ * This Class is the GUI controller of ClientConfiguration.fxml
+ * It handles all the JavaFx nodes events.
  * 
+ * In this screen we setup the client configuration to the server
  *
  */
 public class ClientConfigurationController implements Initializable {
@@ -121,6 +124,11 @@ public class ClientConfigurationController implements Initializable {
 		return stage;
 	}
 
+	/**
+	 * Setter for the class variable stage
+	 * 
+	 * @param stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}

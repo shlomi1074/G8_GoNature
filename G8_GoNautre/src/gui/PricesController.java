@@ -20,7 +20,7 @@ public class PricesController implements Initializable {
 		init();
 	}
 	
-	public void init() {
+	private void init() {
 		lblPrice.setText(String.valueOf(GoNatureFinals.FULL_PRICE));
 	}
 }
