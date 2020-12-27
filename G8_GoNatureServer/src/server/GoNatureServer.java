@@ -20,7 +20,6 @@ import ocsf.server.*;
  * 
  * @version December 2020
  */
-
 public class GoNatureServer extends AbstractServer {
 
 
@@ -32,6 +31,8 @@ public class GoNatureServer extends AbstractServer {
 	 *
 	 * @param port The port number to connect on.
 	 * @param serverGUIController The Gui Controller of the server
+	 * 
+	 * @throws Exception If failed to load the server
 	 */
 	public GoNatureServer(int port, ServerGUIController serverGUIController) throws Exception {
 		super(port);

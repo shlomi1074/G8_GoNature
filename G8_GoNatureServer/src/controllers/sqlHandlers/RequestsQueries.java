@@ -22,7 +22,12 @@ public class RequestsQueries {
 		this.conn = conn;
 	}
 
-	// shlomi
+	/**
+	 * This function retrieve the discount with the highest discount amount for a given date
+	 * 
+	 * @param parameters discount status, park id, date
+	 * @return Discount object
+	 */
 	public Discount getMaxDisount(ArrayList<?> parameters) {
 
 		Discount discount = null;
@@ -45,6 +50,7 @@ public class RequestsQueries {
 		return discount;
 	}
 
+	// ofir n
 	public void insertAllNewRequestsFromParkManager(ArrayList<?> managerRequests) { /// edited OldValue
 
 		String sql = "INSERT INTO g8gonature.request (changeName,newValue,oldValue,requestDate,parkId,requestStatus) values (?,?,?,?,?,?)";

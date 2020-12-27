@@ -19,8 +19,13 @@ public class OrderQueries {
 	public OrderQueries(Connection conn) {
 		this.conn = conn;
 	}
-	
-	// shlomi + Ofir edit
+
+	/**
+	 * This function retrieve from the database all the orders that are between given times.
+	 * 
+	 * @param parameters park id, date, start time, end time
+	 * @return ArrayList of relevant orders
+	 */
 	public ArrayList<Order> getOrderBetweenTimes(ArrayList<?> parameters) {
 		ArrayList<Order> orders = new ArrayList<Order>();
 
@@ -50,7 +55,12 @@ public class OrderQueries {
 		return orders;
 	}
 
-	// shlomi
+	/**
+	 * This function get an Order object and adds it to the database
+	 * 
+	 * @param obj The order to add
+	 * @return true on success, false otherwise
+	 */
 	public boolean addNewOrder(Object obj) {
 		Order orderToAdd = (Order) obj;
 		int result = 0;
@@ -75,8 +85,13 @@ public class OrderQueries {
 		}
 		return result > 0;
 	}
-	
-	// shlomi
+
+	/**
+	 * This function get a traveler's id and retrieve his most recent order
+	 * 
+	 * @param parameters the traveler's id.
+	 * @return Order object - the most recent order
+	 */
 	public Order getRecentOrder(ArrayList<?> parameters) {
 		Order order = null;
 
@@ -95,7 +110,7 @@ public class OrderQueries {
 		}
 		return order;
 	}
-	
+
 	// Ofir Avraham Vaknin v4.
 	public ArrayList<Order> findMatchingOrdersInWaitingList(ArrayList<?> parameters) {
 		// Need to send gap
@@ -162,7 +177,7 @@ public class OrderQueries {
 
 		return resultArray;
 	}
-	
+
 	// Ofir Avraham Vaknin v2.
 	public ArrayList<Order> getOrdersForPark(ArrayList<?> parameters) {
 		int parkId = Integer.parseInt((String) parameters.get(0));
@@ -215,7 +230,6 @@ public class OrderQueries {
 		}
 		return orders;
 	}
-	
 
 	public ArrayList<Order> getPendingOrders() {
 		ArrayList<Order> orders = new ArrayList<Order>();
@@ -239,6 +253,12 @@ public class OrderQueries {
 		return orders;
 	}
 
+	/**
+	 * This function gets an order id and retrieve the relevant order from the database
+	 * 
+	 * @param orderId the order id to retrieve
+	 * @return Order object
+	 */
 	public Order getOrderByID(int orderId) {
 		Order order = null;
 		String sql = "SELECT * FROM g8gonature.order WHERE orderId = ?";
@@ -259,9 +279,14 @@ public class OrderQueries {
 		return order;
 
 	}
-	
-	// shlomi
-	public ArrayList<Order> getRelevantOrderForParkEntrance(ArrayList<?> parameters) {		
+
+	/**
+	 * This function retrieve all the relevant order of a traveler for a given date
+	 * 
+	 * @param parameters traveler id, order date, start time, end time
+	 * @return ArrayList with all the relevant orders
+	 */
+	public ArrayList<Order> getRelevantOrderForParkEntrance(ArrayList<?> parameters) {
 		ArrayList<Order> orders = new ArrayList<>();
 		String sql = "SELECT * FROM g8gonature.order where travelerId = ? AND orderDate = ? AND orderTime >= ? AND orderTime <= ? AND orderStatus = ?";
 		PreparedStatement query;
@@ -277,8 +302,7 @@ public class OrderQueries {
 			if (res.next()) {
 				orders.add(new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4), res.getString(5),
 						res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9), res.getString(10)));
-			}
-			else {
+			} else {
 				orders.add(null);
 			}
 		} catch (SQLException e) {
@@ -289,7 +313,12 @@ public class OrderQueries {
 		return orders;
 	}
 
-	// shlomi
+	/**
+	 * This function retrieve all the relevant order of a traveler for a given date
+	 * 
+	 * @param parameters traveler id, order date, start time, end time
+	 * @return ArrayList with all the relevant orders
+	 */
 	public ArrayList<Order> getRelevantOrderForParkExit(ArrayList<?> parameters) {
 		ArrayList<Order> orders = new ArrayList<>();
 		String sql = "SELECT * FROM g8gonature.order where travelerId = ? AND orderStatus = ? order by orderId DESC";
@@ -303,8 +332,7 @@ public class OrderQueries {
 			if (res.next()) {
 				orders.add(new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4), res.getString(5),
 						res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9), res.getString(10)));
-			}
-			else {
+			} else {
 				orders.add(null);
 			}
 		} catch (SQLException e) {
@@ -314,7 +342,7 @@ public class OrderQueries {
 
 		return orders;
 	}
-	
+
 	// Ofir Avraham Vaknin
 	public ArrayList<Order> getAllOrdersForID(ArrayList<?> parameters) {
 		ArrayList<Order> orders = new ArrayList<Order>();
@@ -338,7 +366,7 @@ public class OrderQueries {
 		}
 		return orders;
 	}
-	
+
 	// Ofir Avraham Vaknin
 	public ArrayList<Order> getAllOrders() {
 		ArrayList<Order> orders = new ArrayList<Order>();
@@ -361,7 +389,6 @@ public class OrderQueries {
 		}
 		return orders;
 	}
-	
 
 	// Ofir Avraham Vaknin
 	public boolean setOrderStatusWithIDandStatus(ArrayList<?> parameters) {
@@ -379,33 +406,7 @@ public class OrderQueries {
 		}
 		return false;
 	}
-	
 
-	// Ofir Avraham Vaknin
-	private int numberOfParticipantsBetweenTwoHours(String parkId, String date, String hourBefore, String hour) {
-		String sql = "SELECT numberOfParticipants FROM g8gonature.order WHERE parkId = ? AND "
-				+ "orderDate = ? AND orderTime BETWEEN ? AND ? AND orderStatus = ?";
-		PreparedStatement query;
-		ResultSet rs;
-		int sum = 0;
-		try {
-			query = conn.prepareStatement(sql);
-			query.setString(1, parkId);
-			query.setString(2, date);
-			query.setString(3, hourBefore);
-			query.setString(4, hour);
-			query.setString(5, OrderStatusName.WAITING.toString());
-			rs = query.executeQuery();
-			while (rs.next()) {
-				sum += rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			System.out.println("Could not execute numberOfParticipantsBetweenTwoHours");
-			e.printStackTrace();
-		}
-		return sum;
-	}
-	
 	/*
 	 * Ofir Avraham Vaknin
 	 * Orginzed Code
@@ -427,14 +428,14 @@ public class OrderQueries {
 		}
 		return false;
 	}
-	
+
 	/*
 	 * Ofir Avraham Vaknin
 	 * Orginzed Code
 	 * Update the price for order.
 	 */
 	public boolean UpdatePriceForOrder(ArrayList<?> parameters) {
-		
+
 		String sql = "UPDATE g8gonature.order SET price = ? WHERE orderId = ?";
 		PreparedStatement query;
 		try {

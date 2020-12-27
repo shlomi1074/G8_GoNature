@@ -248,6 +248,7 @@ public class RescheduleController implements Initializable {
 			controller.setOrder(recentOrder);
 			controller.setTraveler(traveler);
 			controller.setWaitingList(isWaitingList);
+			controller.setOrderFromWeb(true);
 			controller.setSummaryPayment(String.valueOf(recentOrder.getPrice()));
 			loader.setController(controller);
 			loader.load();

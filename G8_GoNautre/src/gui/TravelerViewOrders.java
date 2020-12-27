@@ -236,13 +236,14 @@ public class TravelerViewOrders implements Initializable {
 			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(), OrderStatusName.CANCELED);
 			// Status changed
 			if (orderControlResult) {
-				messageTravelerIfCancel();
+				Order order = new Order(ordersTableView.getSelectionModel().getSelectedItem());
 				loadTableView();
 				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order canceled")
 						.showAndWait();
 				
 				// Check the waiting list.
 				OrderControl.checkWaitingList(Integer.parseInt(orderIdTxt.getText()));
+				messageTravelerIfCancel(order);
 				return;
 			} else {
 				// Status did not changed, system error.
@@ -262,8 +263,7 @@ public class TravelerViewOrders implements Initializable {
 	 * Orginzed Code
 	 * This function clears the labels
 	 */
-	private void messageTravelerIfCancel() {
-		Order order = new Order(ordersTableView.getSelectionModel().getSelectedItem());
+	private void messageTravelerIfCancel(Order order) {
 		Park park = ParkControl.getParkById(String.valueOf(order.getParkId()));
 		String subject = MsgTemplates.orderCancel[0];
 		String content = String.format(MsgTemplates.orderCancel[1].toString(), park.getParkName(), order.getOrderDate(),
@@ -272,11 +272,11 @@ public class TravelerViewOrders implements Initializable {
 		String travelerId = order.getTravelerId();
 		String date = LocalDate.now().toString();
 		String time = LocalTime.now().toString();
-		int orderId = order.getOrderId();
+		int orderId = Integer.parseInt(orderIdTxt.getText());
 
 		NotificationControl.sendMessageToTraveler(travelerId, date, time, subject, content, String.valueOf(orderId));
 		Messages msg = new Messages(0,travelerId, date, time, subject, content, orderId);
-		//NotificationControl.sendMailInBackgeound(msg,null);
+		NotificationControl.sendMailInBackgeound(msg, order.getEmail());
 	}
 
 	/*

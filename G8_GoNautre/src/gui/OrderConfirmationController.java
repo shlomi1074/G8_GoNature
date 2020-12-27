@@ -42,6 +42,9 @@ public class OrderConfirmationController implements Initializable {
 
     @FXML
     private Label summaryDate;
+    
+    @FXML
+    private Label smsSimLabel;
 
     @FXML
     private Label summaryTime;
@@ -74,6 +77,7 @@ public class OrderConfirmationController implements Initializable {
 	private Traveler traveler;
 	private String paymentMethod;
 	private boolean isWaitingList = false;
+	private boolean isOrderFromWeb = false;
 
 
 	@Override
@@ -82,6 +86,10 @@ public class OrderConfirmationController implements Initializable {
 	}
 
 	public void setOrderInfo() {
+		smsSimLabel.setText("");
+		if (isOrderFromWeb) {
+			smsSimLabel.setText("This message was sent to your Email and to your phone");
+		}
 		if (isWaitingList) {
 			headerLabel.setText("You Are In The Waiting List");
 			msgLine1.setText("If someone will cancel their visit we will let you know");
@@ -148,6 +156,15 @@ public class OrderConfirmationController implements Initializable {
 	 */
 	public void setWaitingList(boolean isWaitingList) {
 		this.isWaitingList = isWaitingList;
+	}
+	
+	/**
+	 * Setter for class variable isOrderFromWeb
+ 
+	 * @param isOrderFromWeb
+	 */
+	public void setOrderFromWeb(boolean isOrderFromWeb) {
+		this.isOrderFromWeb = isOrderFromWeb;
 	}
 
 }
