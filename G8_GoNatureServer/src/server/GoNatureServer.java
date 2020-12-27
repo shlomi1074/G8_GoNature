@@ -2,11 +2,11 @@ package server;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import controllers.sqlHandlers.MysqlConnection;
 import gui.ServerGUIController;
 import javafx.scene.paint.Color;
 import ocsf.server.*;
-import sqlHandler.mysqlConnection;
-import sqlHandler.mysqlFunctions;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -37,7 +37,7 @@ public class GoNatureServer extends AbstractServer {
 		super(port);
 		this.serverGUIController = serverGUIController;
 		try {
-			mysqlconnection = mysqlConnection.getInstance().getConnection();
+			mysqlconnection = MysqlConnection.getInstance().getConnection();
 			serverGUIController.updateTextAreaLog("Server Connected");
 			serverGUIController.updateTextAreaLog("DB Connected");
 			serverGUIController.setCircleColor(Color.GREEN);

@@ -21,7 +21,14 @@ import logic.Traveler;
 
 public class OrderControl {
 
-	// Shlomi
+	
+	/**
+	 * This function return the max discount for a given date in a given park.
+	 * 
+	 * @param visitDate The visit date
+	 * @param parkId The park to search discounts at.
+	 * @return Discount object.
+	 */
 	public static Discount getMaxDiscount(String visitDate, String parkId) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_MAX_DISCOUNT,
 				new ArrayList<String>(Arrays.asList(visitDate, parkId)));
@@ -72,7 +79,6 @@ public class OrderControl {
 		return recentOrder;
 	}
 
-	// Shlomi
 	/**
 	 * This function gets a traveler and his order. The function adds the order to
 	 * DB if the date is available.
@@ -110,7 +116,6 @@ public class OrderControl {
 
 	}
 
-	// Shlomi
 	/**
 	 * This function gets an id of a traveler and return his most recent order.
 	 * 
@@ -126,7 +131,6 @@ public class OrderControl {
 
 	}
 
-	// Shlomi
 	/**
 	 * This function gets an order and check if the order's date and time is
 	 * available
@@ -165,7 +169,7 @@ public class OrderControl {
 
 			return false;
 		}
-
+		
 		return true;
 	}
 
@@ -257,6 +261,23 @@ public class OrderControl {
 
 		return ChatClient.responseFromServer.isResult();
 	}
+	
+	//shlomi
+	public static boolean addVisit(Order order) {
+		String travelerId = order.getTravelerId();
+		String parkId = String.valueOf(order.getParkId());
+		String date = order.getOrderDate();
+		String enterTime = order.getOrderTime();
+
+		Park park = ParkControl.getParkById(parkId);
+		String estimated = String.valueOf(park.getEstimatedStayTime());
+
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.ADD_VISIT,
+				new ArrayList<String>(Arrays.asList(travelerId, parkId, enterTime, estimated, date)));
+		ClientUI.chat.accept(request);
+
+		return ChatClient.responseFromServer.isResult();
+	}
 
 	// Ofir Avrahm Vaknin v3.
 	public static boolean addCasualOrder(Order order) {
@@ -294,6 +315,74 @@ public class OrderControl {
 		ClientToServerRequest<Integer> request = new ClientToServerRequest<>(Request.CHECK_WAITING_LIST,
 				new ArrayList<Integer>(Arrays.asList(orderId)));
 		ClientUI.chat.accept(request);
+	}
+	
+	/**
+	 * This function gets a traveler id and return the most recent order for this traveler
+	 * which it's status is 'Completed'
+	 * 
+	 * @param id
+	 * @return Order most the recent order which it's status is 'Completed'
+	 */
+	public static Order getRelevantOrder_ParkExit(String id) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_RELEVANT_ORDER_EXIT,
+				new ArrayList<String>(Arrays.asList(id)));
+		ClientUI.chat.accept(request);
+		Order order = (Order) ChatClient.responseFromServer.getResultSet().get(0);
+		return order;
+	}
+
+	/**
+	 * This function gets a traveler id and return the most recent order for this traveler
+	 * which it's status is 'Confirmed'
+	 * 
+	 * @param id
+	 * @return Order most the recent order which it's status is 'Confirmed'
+	 */
+	public static Order getRelevantOrderByTravelerID_ParkEntrance(String id) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime now = LocalDateTime.now();
+		String dateAndTime = dtf.format(now);
+
+		String date = dateAndTime.split(" ")[0];
+		String time = dateAndTime.split(" ")[1];
+		int hour = Integer.parseInt(time.split(":")[0]);
+		String startTime = String.valueOf(hour - 2) + ":" + time.split(":")[1];
+		String endTime = String.valueOf(hour + 2) + ":" + time.split(":")[1];
+
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_RELEVANT_ORDER_ENTRANCE,
+				new ArrayList<String>(Arrays.asList(id, date, startTime, endTime)));
+		ClientUI.chat.accept(request);
+		Order order = (Order) ChatClient.responseFromServer.getResultSet().get(0);
+		return order;
+
+	}
+	
+	/*
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * This function change The number of visitors.
+	 */
+	public static boolean changeNumberOfVisitorsInExisitingOrder(String orderId,
+			int numberOfParticipantsInCurrentOrder) {
+		String number = String.valueOf(numberOfParticipantsInCurrentOrder);
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(
+				Request.CHANGE_ORDER_NUMBER_OF_VISITORS_BY_ID, new ArrayList<String>(Arrays.asList(number, orderId)));
+		ClientUI.chat.accept(request);
+		return ChatClient.responseFromServer.isResult();
+	}
+
+	/*
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * This function update the price in a spesific order.
+	 */
+	public static boolean updateOrderPrice(String id, double price) {
+		String p = String.valueOf(price);
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.CHANGE_ORDER_PRICE_BY_ID, new ArrayList<String>(Arrays.asList(p, id)));
+		ClientUI.chat.accept(request);
+		return ChatClient.responseFromServer.isResult();
+
 	}
 
 

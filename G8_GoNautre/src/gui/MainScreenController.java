@@ -6,25 +6,34 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
-
 import client.ClientUI;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
+import logic.GoNatureFinals;
 
+/**
+ * This Class is the GUI controller of MainScreen.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * This is the main screen of GoNature system
+ *
+ */
 public class MainScreenController implements Initializable {
 
 	@FXML
@@ -50,6 +59,9 @@ public class MainScreenController implements Initializable {
 
 	@FXML
 	private JFXHamburger hamburger;
+	
+    @FXML
+    private ImageView goNatureLogo;
 
 	@FXML
 	private Label menuLabel;
@@ -76,6 +88,11 @@ public class MainScreenController implements Initializable {
 		return stage;
 	}
 
+	/**
+	 * Setter for the class variable mainScreenStage
+	 * 
+	 * @param stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
@@ -129,6 +146,30 @@ public class MainScreenController implements Initializable {
 			task.setRate(task.getRate() * -1);
 			task.play();
 		});
+	}
+	
+	@FXML
+	private void loadCardReaderSimulator() {
+		try {
+			Stage thisStage = getStage();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/CardReaderSimulator.fxml"));
+			loader.load();
+			Parent p = loader.getRoot();
+			Stage newStage = new Stage();
+
+			/* Block parent stage until child stage closes */
+			newStage.initModality(Modality.WINDOW_MODAL);
+			newStage.initOwner(thisStage);
+
+			newStage.setTitle("Card Reader Simulator");
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
+			newStage.setScene(new Scene(p));
+			newStage.setResizable(false);
+			newStage.show();
+		} catch (IOException e) {
+			System.out.println("faild to load form");
+			e.printStackTrace();
+		}
 	}
 
 }

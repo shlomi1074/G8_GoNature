@@ -10,6 +10,10 @@ import logic.Employees;
 import logic.Subscriber;
 import logic.Traveler;
 
+/**
+ * 
+ *
+ */
 public class AutenticationControl {
 
 	/**
@@ -106,8 +110,14 @@ public class AutenticationControl {
 
 	}
 	
-/*Alon 12.12.20*/
-	
+	/**
+	 * This function gets an id and checks if there is such member(employee) with the same id
+	 * 
+	 * @param id  the traveler's id
+	 * @param pass  the member's password
+	 * @return true  traveler exists.
+	 * @return false  traveler not exists.
+	 */
 	public static boolean isMemberExist(String id,String pass) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.MEMBER_LOGIN,
 				new ArrayList<String>(Arrays.asList(id,pass)));
@@ -126,7 +136,6 @@ public class AutenticationControl {
 	 * @return 1 - member already connected
 	 * @return 2 - member id does not exist
 	 */
-	
 	public static int memberLoginHandler(String id,String password) {
 		boolean connected =isConnected(id);
 		boolean mem_exsit = isMemberExist(id,password);
@@ -139,7 +148,13 @@ public class AutenticationControl {
 		return 2;
 			
 	}
-
+	
+	/**
+	 * This function get a user's id and ask the server to
+	 * delete it from "loggedIn" table.
+	 *  
+	 * @param id  the user's id.
+	 */
 	public static void userLogout(String id) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.LOGOUT,
 				new ArrayList<String>(Arrays.asList(id)));

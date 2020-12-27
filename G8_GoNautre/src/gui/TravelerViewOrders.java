@@ -1,14 +1,11 @@
 package gui;
 
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
+import Controllers.NotificationControl;
 import Controllers.OrderControl;
 import Controllers.ParkControl;
 import alerts.CustomAlerts;
@@ -26,27 +23,26 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import logic.Messages;
 import logic.Order;
 import logic.OrderTb;
 import logic.Park;
 import logic.Subscriber;
 import logic.Traveler;
+import resources.MsgTemplates;
 import logic.OrderStatusName;
 
 public class TravelerViewOrders implements Initializable {
 
-	// Order,String?
-	// Everything was ?
-
 	/*
-	 * Ofir Avraham Vaknin Deleted 2 labels of visit date Deleted Col of VisitDate
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
 	 */
-	ObservableList<OrderTb> ov = FXCollections.observableArrayList(); // Ofir Avraham Vaknin
+
+	ObservableList<OrderTb> ov = FXCollections.observableArrayList();
 
 	@FXML
 	private TableView<OrderTb> ordersTableView;
-
-	// int?
 
 	@FXML
 	private TableColumn<OrderTb, Integer> orderIdCol;
@@ -81,10 +77,14 @@ public class TravelerViewOrders implements Initializable {
 	@FXML
 	private Label orderStatusTxt;
 
-	// Ofir Avraham Vaknin
+	/*
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * Search "Question" for questions to dev team.
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		loadTableView(); // Added
+		loadTableView();
 		confirmOrderBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -99,35 +99,34 @@ public class TravelerViewOrders implements Initializable {
 				clearLabals();
 			}
 		});
-
-		// Pull order from parks that the staff member is not part of
 	}
 
-	// Ofir Avraham Vaknin
+	/*
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * This function load the table view.
+	 */
 	@FXML
 	public void loadTableView() {
-		//
-		/*
-		 * Create SQL query to server and ask for all orders.
-		 */
-		//
-
-		// ArrayList<Order> orders
 		String id;
 		Traveler trv = TravelerLoginController.traveler;
-		if (trv == null) {
-			Subscriber sbc = TravelerLoginController.subscriber;
+		Subscriber sbc = TravelerLoginController.subscriber;
+		if (trv == null)
 			id = String.valueOf(sbc.getTravelerId());
-		} else {
+		else
 			id = String.valueOf(trv.getTravelerId());
-		}
+
 		ArrayList<Order> ordersArrayList = OrderControl.getOrders(id);
 		ArrayList<OrderTb> tbOrdersArrayList = OrderControl.convertOrderToOrderTb(ordersArrayList);
 		init(tbOrdersArrayList);
 		ordersTableView.setItems(getOrders(tbOrdersArrayList));
 	}
 
-	// Ofir Avraham Vaknin
+	/*
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * This function init the orders ObservableList
+	 */
 	private ObservableList<OrderTb> getOrders(ArrayList<OrderTb> orderArray) {
 		ordersTableView.getItems().clear();
 		for (OrderTb order : orderArray) {
@@ -136,17 +135,16 @@ public class TravelerViewOrders implements Initializable {
 		return ov;
 	}
 
-	// Ofir Avraham Vaknin
+	/*
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * This function init the table view.
+	 */
 	private void init(ArrayList<OrderTb> orders) {
 		orderIdCol.setCellValueFactory(new PropertyValueFactory<OrderTb, Integer>("orderId"));
 		visitDateCol.setCellValueFactory(new PropertyValueFactory<OrderTb, String>("orderDate"));
 		visitTimeCol.setCellValueFactory(new PropertyValueFactory<OrderTb, String>("orderTime"));
 		orderStatusCol.setCellValueFactory(new PropertyValueFactory<OrderTb, String>("orderStatus"));
-
-		/*
-		 * Set doubleClick on row event On double click on a row, it's load the id into
-		 * labels textView
-		 */
 
 		ordersTableView.setRowFactory(tv -> {
 			TableRow<OrderTb> row = new TableRow<>();
@@ -163,156 +161,129 @@ public class TravelerViewOrders implements Initializable {
 		});
 	}
 
-	// Ofir Avraham Vaknin
-	private void confirmButton() {
+	/*
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * This function check if the user choose an order
+	 */
+	private boolean orderChose() {
 		if (orderIdTxt.getText().isEmpty()) {
 			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Please select one of the orders")
 					.showAndWait();
-			return;
+			return false;
 		}
-		if (orderStatusTxt.getText().equals(OrderStatusName.WAITING_HAS_SPOT.toString())) {
-			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(),
-					OrderStatusName.CONFIRMED);
-			if (!orderControlResult) {
-				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
-						"Could not confirm this order,please try again later.").showAndWait();
-
-			} else {
-				loadTableView();
-				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order confirmed")
-						.showAndWait();
-			}
-		}
-		if (!orderStatusTxt.getText().equals(OrderStatusName.PENDING.toString())) {
-			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Order status is not pending")
-					.showAndWait();
-			return;
-		}
-		int res = isDateBetween2422(visitDateTxt.getText(), visitTimeTxt.getText());
-		switch (res) {
-		case -1:
-			new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
-					"Couldn't choose order to confirm, please try again later").showAndWait();
-			break;
-		case 1:
-			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Confrim date has passed").showAndWait();
-			break;
-		case 2:
-			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Too early to confirm").showAndWait();
-			break;
-		case 0:
-			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(),
-					OrderStatusName.CONFIRMED);
-			if (!orderControlResult) {
-				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
-						"Could not confirm this order,please try again later.").showAndWait();
-
-			} else {
-				loadTableView();
-				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order confirmed")
-						.showAndWait();
-			}
-			break;
-		}
-	}
-
-	// Ofir Avraham Vaknin v2.
-	private void cancelButton() {
-		// Didnt choose order
-		if (orderIdTxt.getText().isEmpty()) {
-			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Please select one of the orders")
-					.showAndWait();
-			return;
-		}
-		// order is already canceled, confirmed or completed.
-		// ENUM
-		if (orderStatusTxt.getText().equals(OrderStatusName.CANCELED.toString())
-				|| orderStatusTxt.getText().equals(OrderStatusName.CONFIRMED.toString())
-				|| orderStatusTxt.getText().equals(OrderStatusName.COMPLETED.toString())) {
-			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Order cannot be canceled").showAndWait();
-		} else {
-			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(), OrderStatusName.CANCELED);
-			if (!orderControlResult) {
-				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
-						"Could not cancel this order,please try again later.").showAndWait();
-
-			} else {
-				loadTableView();
-				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order canceled")
-						.showAndWait();
-				OrderControl.checkWaitingList(Integer.parseInt(orderIdTxt.getText()));
-			}
-		}
-		// Order is in waiting list,pending, has waiting list spot.
-//		if (orderStatusTxt.getText().equals("waiting") || orderStatusTxt.getText().equals("pending")) {
-//			
-//			return;
-//		}
-		// Might be needed to later - ask team
-//		int res = isDateBetween2422(visitDateTxt.getText(), visitTimeTxt.getText());
-//		switch (res) {
-//		case -1:
-//			new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
-//					"Couldn't choose order to cancel, please try again later").showAndWait();
-//			break;
-//		case 1:
-//			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "cancel date has passed").showAndWait();
-//			break;
-//		case 2:
-//			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Too early to cancel").showAndWait();
-//			break;
-//		case 0:
-//			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(), OrderStatusName.cancel);
-//			if (!orderControlResult) {
-//				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
-//						"Could not cancel this order,please try again later.").showAndWait();
-//			} else {
-//				loadTableView();
-//
-//				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order canceled")
-//						.showAndWait();
-//
-//				notifyNextPersonInWaitingListAfterCancel(Integer.parseInt(orderIdTxt.getText()), visitDateTxt.getText(),
-//						visitTimeTxt.getText());
-//			}
-//			break;
-//		}
+		return true;
 	}
 
 	/*
-	 * Ofir Avraham Vaknin Each number represent a result 0 - confirm 1 - to late to
-	 * confirm 2 - to early to confirm -1 - an error has occured
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * This function handle the confirm button when pressed.
 	 */
-	private int isDateBetween2422(String date, String time) {
+	private void confirmButton() {
+		// Did the user choose order
+		if (!orderChose())
+			return;
 
-		String combinedVisit = date + " " + time;
-		String combinedToday = LocalDate.now().toString() + " " + LocalTime.now().toString();
+		/*
+		 * User can Confirm order if order is PENDING_EMAIL_SENT WAITING_HAS_SPOT
+		 * Otherwise, cant confirm order.
+		 */
 
-		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-		Date visitDate = new Date();
-		Date todayDate = new Date();
-
-		try {
-			todayDate = sdfDate.parse(combinedToday);
-			visitDate = sdfDate.parse(combinedVisit);
-		} catch (ParseException e) {
-			System.out.println("Failed to prase dates");
-			e.printStackTrace();
-			return -1;
+		if (orderStatusTxt.getText().equals(OrderStatusName.WAITING_HAS_SPOT.toString())
+				|| orderStatusTxt.getText().equals(OrderStatusName.PENDING_EMAIL_SENT.toString())) {
+			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(),
+					OrderStatusName.CONFIRMED);
+			// Status Changed
+			if (orderControlResult) {
+				loadTableView();
+				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order confirmed")
+						.showAndWait();
+				return;
+			} else {
+				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
+						"Could not confirm this order,please try again later.").showAndWait();
+				return;
+			}
+		} else {
+			new CustomAlerts(AlertType.ERROR, "Input Error", "Order Error",
+					"Make sure the order is in status Waiting has spot or Pending email sent").showAndWait();
+			return;
 		}
-
-		long diffInMills = visitDate.getTime() - todayDate.getTime();
-		long diffInHour = TimeUnit.MILLISECONDS.toHours(diffInMills);
-
-		if (diffInHour < 22)
-			return 1;
-		if (diffInHour > 24)
-			return 2;
-		return 0;
 	}
 
-	// Ofir Avraham Vaknin
+	/*
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * This function handle the cancel button when pressed.
+	 */
+	private void cancelButton() {
+
+		// Did the user choose order
+		if (!orderChose())
+			return;
+
+		/*
+		 * User can Cancel order if order is PENDING, PENDING_EMAIL_SENT, WAITING, WAITING_HAS_SPOT, CONFIRMED
+		 * Otherwise, cant confirm order.
+		 * Question - Confirmed can be canceled after the date?
+		 */
+		if (orderStatusTxt.getText().equals(OrderStatusName.PENDING.toString())
+				|| orderStatusTxt.getText().equals(OrderStatusName.PENDING_EMAIL_SENT.toString())
+				|| orderStatusTxt.getText().equals(OrderStatusName.WAITING.toString())
+				|| orderStatusTxt.getText().equals(OrderStatusName.WAITING_HAS_SPOT.toString())
+				|| orderStatusTxt.getText().equals(OrderStatusName.CONFIRMED.toString())) {
+			boolean orderControlResult = OrderControl.changeOrderStatus(orderIdTxt.getText(), OrderStatusName.CANCELED);
+			// Status changed
+			if (orderControlResult) {
+				messageTravelerIfCancel();
+				loadTableView();
+				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order canceled")
+						.showAndWait();
+				
+				// Check the waiting list.
+				OrderControl.checkWaitingList(Integer.parseInt(orderIdTxt.getText()));
+				return;
+			} else {
+				// Status did not changed, system error.
+				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
+						"Could not cancel this order,please try again later.").showAndWait();
+				return;
+			}
+		} else {
+			// Order is not in right status.
+			new CustomAlerts(AlertType.ERROR, "Input Error", "Input Error", "Order cannot be canceled").showAndWait();
+			return;
+		}
+	}
+
+	/*
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * This function clears the labels
+	 */
+	private void messageTravelerIfCancel() {
+		Order order = new Order(ordersTableView.getSelectionModel().getSelectedItem());
+		Park park = ParkControl.getParkById(String.valueOf(order.getParkId()));
+		String subject = MsgTemplates.orderCancel[0];
+		String content = String.format(MsgTemplates.orderCancel[1].toString(), park.getParkName(), order.getOrderDate(),
+				order.getOrderTime());
+
+		String travelerId = order.getTravelerId();
+		String date = LocalDate.now().toString();
+		String time = LocalTime.now().toString();
+		int orderId = order.getOrderId();
+
+		NotificationControl.sendMessageToTraveler(travelerId, date, time, subject, content, String.valueOf(orderId));
+		Messages msg = new Messages(0,travelerId, date, time, subject, content, orderId);
+		//NotificationControl.sendMailInBackgeound(msg,null);
+	}
+
+	/*
+	 * Ofir Avraham Vaknin
+	 * Orginzed Code
+	 * This function clears the labels
+	 */
 	private void clearLabals() {
 		orderIdTxt.setText("");
 		visitDateTxt.setText("");

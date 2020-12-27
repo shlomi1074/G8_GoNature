@@ -16,6 +16,10 @@ import gui.ViewRequestsForChangesController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 
+/**
+ * FxmlUtil is a utility class to load scenes
+ *
+ */
 public class FxmlUtil {
 	private Pane view;
 	private boolean isWorker; // true if it is member (park worker)
@@ -77,6 +81,11 @@ public class FxmlUtil {
 
 	}
 
+	/**
+	 * Setter for the class variable isWorker
+	 * 
+	 * @param isWorker
+	 */
 	public void setWorker(boolean isWorker) {
 		this.isWorker = isWorker;
 	}

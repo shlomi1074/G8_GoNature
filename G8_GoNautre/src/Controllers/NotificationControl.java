@@ -14,8 +14,6 @@ public class NotificationControl {
 
 	public static boolean sendMessageToTraveler(String toId, String sendDate, String sendTime, String subject,
 			String content, String orderId) {
-		// return false;
-
 		// Ofir Vaknin
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.SEND_MSG_TO_TRAVELER,
 				new ArrayList<String>(Arrays.asList(toId, sendDate, sendTime, subject, content, orderId)));
@@ -62,25 +60,13 @@ public class NotificationControl {
 		new Thread(mailTask).start();
 
 	}
-
-	/* For future use - when we want to send html */
-	public String getEmailHtmlAsString() {
-		StringBuilder emailText = new StringBuilder();
-		try {
-			Scanner scanner = new Scanner(getClass().getResourceAsStream("/resources/INVOICE.html"));
-			while (scanner.hasNext()) {
-				emailText.append(scanner.nextLine()).append("\n");
-			}
-			scanner.close();
-			System.out.println(emailText);
-		} catch (Exception ex) {
-			System.out.println("Error while trying to convert html file as string");
-			ex.printStackTrace();
-		}
-		return emailText.toString();
-	}
 	
-	/*Lior*/
+	/**
+	 * This function gets traveler messages by his ID
+	 * 
+	 * @param id - the traveler's id
+	 * @return ArrayList of messages
+	 */
 	public static ArrayList<Messages> getMessages(String id){
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_MESSAGES_BY_ID,
 				new ArrayList<String>(Arrays.asList(id)));

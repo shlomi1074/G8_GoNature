@@ -3,11 +3,15 @@ package util;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+/**
+ * UtilityFunctions is a utility class that provide function that are used frequently
+ *
+ */
 public class UtilityFunctions {
 
 	/**
 	 * This function gets an email as String and return true if it is a valid email.
-	 * Valid Email -> xxxx@xxxxx.
+	 * Valid Email - xxxx@xxxxx.
 	 * 
 	 * @param email The email to check
 	 * @return true if the email is valid, false otherwise

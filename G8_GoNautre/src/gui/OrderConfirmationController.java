@@ -13,50 +13,68 @@ import javafx.stage.Stage;
 import logic.Order;
 import logic.Traveler;
 
+/**
+ * This Class is the GUI controller of OrderConfirmation.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * This is the order confirmation after the order process ends
+ *
+ */
 public class OrderConfirmationController implements Initializable {
 
-	@FXML
-	private Label headerLabel;
+    @FXML
+    private Label headerLabel;
 
-	@FXML
-	private Label summaryID;
+    @FXML
+    private Label summaryID;
 
-	@FXML
-	private Label summaryEmail;
+    @FXML
+    private Label summaryEmail;
 
-	@FXML
-	private Label summaryFullName;
+    @FXML
+    private Label summaryFullName;
 
-	@FXML
-	private Label summaryPhone;
+    @FXML
+    private Label summaryPhone;
 
-	@FXML
-	private Label summaryPark;
+    @FXML
+    private Label summaryPark;
 
-	@FXML
-	private Label summaryDate;
+    @FXML
+    private Label summaryDate;
 
-	@FXML
-	private Label summaryTime;
+    @FXML
+    private Label summaryTime;
 
-	@FXML
-	private Label summaryType;
+    @FXML
+    private Label summaryType;
 
-	@FXML
-	private Label summaryVisitors;
+    @FXML
+    private Label summaryVisitors;
 
-	@FXML
-	private Label summaryPayment;
+    @FXML
+    private Label summaryPayment;
 
-	@FXML
-	private Label totalPriceLabel;
+    @FXML
+    private Label totalPriceLabel;
 
-	@FXML
-	private JFXButton finishBtn;
+    @FXML
+    private JFXButton finishBtn;
+
+    @FXML
+    private Label msgLine1;
+
+    @FXML
+    private Label msgLine2;
+
+    @FXML
+    private Label orderStatusLabel;
 
 	private Order order;
 	private Traveler traveler;
 	private String paymentMethod;
+	private boolean isWaitingList = false;
+
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -64,6 +82,11 @@ public class OrderConfirmationController implements Initializable {
 	}
 
 	public void setOrderInfo() {
+		if (isWaitingList) {
+			headerLabel.setText("You Are In The Waiting List");
+			msgLine1.setText("If someone will cancel their visit we will let you know");
+			msgLine2.setText("You will have 1 hour to confirm your order");
+		}
 		if (order != null && traveler != null) {
 			summaryID.setText(order.getTravelerId());
 			summaryFullName.setText(traveler.getFirstName() + " " + traveler.getLastName());
@@ -75,7 +98,7 @@ public class OrderConfirmationController implements Initializable {
 			summaryType.setText(order.getOrderType());
 			summaryVisitors.setText(order.getNumberOfParticipants() + "");
 			summaryPayment.setText(paymentMethod);
-
+			orderStatusLabel.setText(order.getOrderStatus());
 			totalPriceLabel.setText(order.getPrice() + "₪");
 		}
 
@@ -87,20 +110,44 @@ public class OrderConfirmationController implements Initializable {
 		getStage().close();
 	}
 
-	public Stage getStage() {
+	private Stage getStage() {
 		return (Stage) totalPriceLabel.getScene().getWindow();
 	}
 
+	/**
+	 * Setter for class variable order
+	 * 
+	 * @param recentOrder
+	 */
 	public void setOrder(Order recentOrder) {
 		this.order = recentOrder;
 	}
 
+	/**
+	 * Setter for class variable traveler
+	 * 
+	 * @param traveler
+	 */
 	public void setTraveler(Traveler traveler) {
 		this.traveler = traveler;
 	}
 
+	/**
+	 * Setter for class variable paymentMethod
+	 * 
+	 * @param paymentMethod
+	 */
 	public void setSummaryPayment(String paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+	
+	/**
+	 * Setter for class variable isWaitingList
+	 * 
+	 * @param isWaitingList
+	 */
+	public void setWaitingList(boolean isWaitingList) {
+		this.isWaitingList = isWaitingList;
 	}
 
 }

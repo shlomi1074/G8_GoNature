@@ -1,5 +1,9 @@
 package Controllers.calculatePrice;
 
+/**
+ * CheckOutDecorator implements CheckOut interface
+ * This class implements the Decorator design pattern
+ */
 public class CheckOutDecorator implements CheckOut {
 
 	protected CheckOut regularCheckOut;

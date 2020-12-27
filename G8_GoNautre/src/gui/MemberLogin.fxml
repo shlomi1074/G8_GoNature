@@ -20,7 +20,7 @@
             <Image url="@../resources/images/forest.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="53.0" fitWidth="45.0" layoutX="293.0" layoutY="105.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="53.0" fitWidth="45.0" layoutX="293.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/images/plant.png" />
          </image>

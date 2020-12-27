@@ -64,8 +64,7 @@ public class ChatClient extends AbstractClient {
 			if (responseFromServer.getResponseType()
 					.equals(ServerToClientResponse.Response.VIEW_MANAGER_REQUEST_RESPONSE)) { // ofir n
 
-				requestsWaitingForApproval = (ArrayList<Request>) responseFromServer.getResultSet(); //// might cause an
-																										//// error
+				requestsWaitingForApproval = (ArrayList<Request>) responseFromServer.getResultSet();
 
 			}
 		}
@@ -73,7 +72,7 @@ public class ChatClient extends AbstractClient {
 		else if (msg instanceof String) {
 			String serverMsg = (String) msg;
 			if (serverMsg.equals("Finished")) {
-				System.out.println("Finished handle client request");
+				//System.out.println("Finished handle client request");
 			}
 			if (serverMsg.equals("Server closing")) {
 			}

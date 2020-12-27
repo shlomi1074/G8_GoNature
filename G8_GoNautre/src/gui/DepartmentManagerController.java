@@ -19,6 +19,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import util.FxmlUtil;
 
+/**
+ * This Class is the GUI controller of DepartmentManager.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * This is the main screen of the department manager
+ *
+ */
 public class DepartmentManagerController implements Initializable {
 
 	@FXML
@@ -73,10 +80,20 @@ public class DepartmentManagerController implements Initializable {
 		return stage;
 	}
 
+	/**
+	 * Setter for the class variable stage
+	 * 
+	 * @param stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Setter for the class variable mainScreenStage
+	 * 
+	 * @param stage
+	 */
 	public void setMainScreenStage(Stage stage) {
 		this.mainScreenStage = stage;
 	}

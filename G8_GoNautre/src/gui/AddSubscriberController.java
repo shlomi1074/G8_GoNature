@@ -3,22 +3,16 @@ package gui;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;//Lior added for btn
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-
 import Controllers.AutenticationControl;
-import Controllers.ParkControl;
 import Controllers.TravelerControl;
 import alerts.CustomAlerts;
-import client.ClientUI;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
@@ -26,14 +20,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DateCell;
 import javafx.scene.layout.AnchorPane;
-import logic.ClientToServerRequest;
-import logic.OrderType;
-import logic.ClientToServerRequest.Request;
 
+/**
+ * window for adding new subscriber to subscriber table
+ * gets information for new subscriber
+ * handles with pop up windows of errors in case form is not filled right
+ * in case new subscriber's ID is in traveler table, we delete him from there
+ */
 public class AddSubscriberController implements Initializable {
 
-	
-	/*Lior*/
     @FXML
     private AnchorPane registerRootPane;
 
@@ -90,6 +85,37 @@ public class AddSubscriberController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		initComboBoxes();
 		dateSetter();
+		initTextFields();
+	}
+
+	private void initTextFields() {
+		idInputRegister.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				idInputRegister.setText(arg2.replaceAll("[^\\d]", ""));
+			}
+		});
+		
+		phoneNumberInputRegister.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				phoneNumberInputRegister.setText(arg2.replaceAll("[^\\d]", ""));
+			}
+		});
+		
+		CardNumber.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				CardNumber.setText(arg2.replaceAll("[^\\d]", ""));
+			}
+		});
+		
+		CCV.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				CCV.setText(arg2.replaceAll("[^\\d]", ""));
+			}
+		});
 	}
 
 	private void initComboBoxes() {

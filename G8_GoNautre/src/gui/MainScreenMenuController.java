@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextArea;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +14,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logic.GoNatureFinals;
 
+/**
+ * This Class is the GUI controller of MainScreenMenu.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * This is the menu in the the main screen
+ *
+ */
 public class MainScreenMenuController implements Initializable {
 
 	@FXML
@@ -91,6 +96,7 @@ public class MainScreenMenuController implements Initializable {
 			newStage.show();
 		} catch (IOException e) {
 			System.out.println("faild to load form");
+			e.printStackTrace();
 		}
 
 	}

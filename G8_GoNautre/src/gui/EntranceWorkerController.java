@@ -19,6 +19,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import util.FxmlUtil;
 
+/**
+ * This Class is the GUI controller of EntranceWorker.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * This is the main screen of the entrance worker
+ *
+ */
 public class EntranceWorkerController implements Initializable {
 
 	@FXML
@@ -67,10 +74,20 @@ public class EntranceWorkerController implements Initializable {
 		return stage;
 	}
 
+	/**
+	 * Setter for the class variable stage
+	 * 
+	 * @param stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Setter for the class variable mainScreenStage
+	 * 
+	 * @param stage
+	 */
 	public void setMainScreenStage(Stage stage) {
 		this.mainScreenStage = stage;
 	}

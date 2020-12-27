@@ -4,6 +4,11 @@ import Controllers.OrderControl;
 import logic.Discount;
 import logic.GoNatureFinals;
 
+/**
+ * RegularCheckOut implements CheckOut interface
+ * RegularCheckOut calculates the regular order's price
+ *
+ */
 public class RegularCheckOut implements CheckOut {
 
 	private int numberOfVisitors;
@@ -18,6 +23,11 @@ public class RegularCheckOut implements CheckOut {
 		this.visitDate = visitDate;
 	}
 
+	/**
+	 * implements getPrice from CheckOut interface
+	 * 
+	 * @return return the regular order's price
+	 */
 	@Override
 	public double getPrice() {
 		double discountPercentage;
@@ -31,6 +41,11 @@ public class RegularCheckOut implements CheckOut {
 		return priceAfterParkDiscount;
 	}
 
+	/**
+	 * This function returns the maximum discount amount for a specific date
+	 * 
+	 * @return The maximum discount amount
+	 */
 	private Discount getMaxDiscount() {
 		Discount maxDiscount = OrderControl.getMaxDiscount(visitDate, String.valueOf(parkId));
 		return maxDiscount;

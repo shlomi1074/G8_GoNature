@@ -61,7 +61,7 @@ public class ProfileController implements Initializable {
 	/*
 	 * This function loads profile of current entity (Traveler/Subscriber/Employee)
 	 */
-	public void loadInfo() {
+	private void loadInfo() {
 		//Employee.
 		if(isWorker) { 
 			WorkerType role = MemberLoginController.member.getRole();

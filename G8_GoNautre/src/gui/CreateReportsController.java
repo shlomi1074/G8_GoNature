@@ -21,7 +21,16 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logic.GoNatureFinals;
 
+/**
+ * This Class is the GUI controller of CreateReport.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * In this screen the park manager create the reports and can send them to
+ * the department manager
+ * 
+ */
 public class CreateReportsController implements Initializable {
 
 	@FXML
@@ -69,11 +78,6 @@ public class CreateReportsController implements Initializable {
 	@FXML
 	private Accordion accordion;
 
-	private static ArrayList<?> reportList;
-
-	protected static String[] months = { "Month", "January", "February", "March", "April", "May", "June", "July",
-			"August", "September", "October", "November", "December" };
-
 	private String fxmlName;
 	private String screenTitle;
 	protected static int month;
@@ -93,23 +97,13 @@ public class CreateReportsController implements Initializable {
 		screenTitle = "Total Visitors Report";
 	}
 
-	public static int getMonth() {
-		return month;
-	}
-
 	@FXML
 	private void createReportButton() {
-
 		if (monthCB.getSelectionModel().getSelectedIndex() == 0) {
 			new CustomAlerts(AlertType.ERROR, "Error", "Month Error", "Plesae choose month.").showAndWait();
 		} else {
 			switchScenceWithController();
 		}
-
-	}
-
-	public static ArrayList<?> returnReportList() {
-		return reportList;
 	}
 
 	@FXML
@@ -140,7 +134,7 @@ public class CreateReportsController implements Initializable {
 	}
 
 	private void initComboBox() {
-		monthCB.getItems().addAll(months);
+		monthCB.getItems().addAll(GoNatureFinals.MONTHS);
 		monthCB.getSelectionModel().select(0);
 	}
 

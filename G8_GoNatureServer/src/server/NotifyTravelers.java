@@ -12,28 +12,36 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import controllers.EmailControl;
+import controllers.sqlHandlers.OrderQueries;
+import controllers.sqlHandlers.ParkQueries;
+import controllers.sqlHandlers.TravelersQueries;
 import logic.Messages;
 import logic.Order;
 import logic.OrderStatusName;
-import sqlHandler.mysqlFunctions;
+import logic.Park;
+import resources.MsgTemplates;
 
 /**
  * NotifyTravelers class implements Runnable.
  * 
- * This class handle all the automated functionality: 
- * > Send reminder 24 hours before visit.
- * > Cancel the visit if the traveler did not confirmed within two hours. 
- * > Notify the next in the waiting list
+ * This class handle all the automated functionality:
+ *  Send reminder 24 hours before visit.
+ *  Cancel the visit if the traveler did not confirmed within two hours.
+ *  Notify the next in the waiting list
  *
  */
 public class NotifyTravelers implements Runnable {
 
 	private final int second = 1000;
 	private final int minute = second * 60;
-	private mysqlFunctions mysqlFunction;
-
+	private OrderQueries orderQueries;
+	private ParkQueries parkQueries;
+	private TravelersQueries travelerQueries;
+	
 	public NotifyTravelers(Connection mysqlconnection) {
-		this.mysqlFunction = new mysqlFunctions(mysqlconnection);
+		orderQueries = new OrderQueries(mysqlconnection);
+		parkQueries = new ParkQueries(mysqlconnection);
+		travelerQueries = new TravelersQueries(mysqlconnection);
 	}
 
 	@Override
@@ -52,7 +60,7 @@ public class NotifyTravelers implements Runnable {
 			}
 
 			try {
-				Thread.sleep(5 * minute);
+				Thread.sleep(1 * minute);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -74,23 +82,23 @@ public class NotifyTravelers implements Runnable {
 			public void run() {
 				String status = OrderStatusName.PENDING_EMAIL_SENT.toString();
 				String orderId = String.valueOf(order.getOrderId());
-				mysqlFunction.setOrderStatusWithIDandStatus(new ArrayList<String>(Arrays.asList(status, orderId)));
+				orderQueries.setOrderStatusWithIDandStatus(new ArrayList<String>(Arrays.asList(status, orderId)));
 
-				sendMessages(order);
+				sendConfirmationMessage(order);
 
 				int totalSleep = 0;
 				Order updatedOrder = null;
-				
+
 				while (totalSleep != 120) {
-					updatedOrder = mysqlFunction.getOrderByID(order.getOrderId());
+					updatedOrder = orderQueries.getOrderByID(order.getOrderId());
 					/* NEED TO CHECK STATUS */
 					if (updatedOrder.getOrderStatus().equals(OrderStatusName.CANCELED.toString())
 							|| updatedOrder.getOrderStatus().equals(OrderStatusName.CONFIRMED.toString()))
 						break;
 
 					try {
-						Thread.sleep(2 * minute);
-						totalSleep += 2;
+						Thread.sleep(1 * minute);
+						totalSleep += 1;
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -99,8 +107,11 @@ public class NotifyTravelers implements Runnable {
 				if (!updatedOrder.getOrderStatus().equals(OrderStatusName.CONFIRMED.toString())) {
 					status = OrderStatusName.CANCELED.toString();
 					orderId = String.valueOf(updatedOrder.getOrderId());
-					mysqlFunction.setOrderStatusWithIDandStatus(new ArrayList<String>(Arrays.asList(status, orderId)));
-					
+					orderQueries.setOrderStatusWithIDandStatus(new ArrayList<String>(Arrays.asList(status, orderId)));
+
+					/* Need to Send cancel order msg */
+					sendCancelMessage(updatedOrder);
+
 					NotifyWaitingList notifyWaitingList = new NotifyWaitingList(order);
 					new Thread(notifyWaitingList).start();
 				}
@@ -110,7 +121,7 @@ public class NotifyTravelers implements Runnable {
 		notifySent.start();
 	}
 
-	private void sendMessages(Order order) {
+	private void sendConfirmationMessage(Order order) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		LocalDateTime now = LocalDateTime.now();
 		String dateAndTime = dtf.format(now);
@@ -119,8 +130,11 @@ public class NotifyTravelers implements Runnable {
 		String time = dateAndTime.split(" ")[1];
 		String travelerId = order.getTravelerId();
 		int orderId = order.getOrderId();
-		String subject = "Review your order: " + orderId;
-		String content = "Plesae confirm your order.\n" + "You have 2 hours!";
+
+		Park park = parkQueries.getParkById(new ArrayList<String>(Arrays.asList(String.valueOf(order.getParkId()))));
+		String subject = MsgTemplates.ConfirmOrder24hoursBeforeVisit[0];
+		String content = String.format(MsgTemplates.ConfirmOrder24hoursBeforeVisit[1].toString(), park.getParkName(),
+				order.getOrderDate(), order.getOrderTime());
 
 		Messages msg = new Messages(0, travelerId, date, time, subject, content, orderId);
 
@@ -130,12 +144,39 @@ public class NotifyTravelers implements Runnable {
 		/* Add message to DB */
 		ArrayList<String> parameters = new ArrayList<>(
 				Arrays.asList(travelerId, date, time, subject, content, String.valueOf(orderId)));
-		mysqlFunction.sendMessageToTraveler(parameters);
+		travelerQueries.sendMessageToTraveler(parameters);
 
+	}
+	
+	
+	private void sendCancelMessage(Order order){
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime now = LocalDateTime.now();
+		String dateAndTime = dtf.format(now);
+
+		String date = dateAndTime.split(" ")[0];
+		String time = dateAndTime.split(" ")[1];
+		String travelerId = order.getTravelerId();
+		int orderId = order.getOrderId();
+
+		Park park = parkQueries.getParkById(new ArrayList<String>(Arrays.asList(String.valueOf(order.getParkId()))));
+		String subject = MsgTemplates.orderCancel[0];
+		String content = String.format(MsgTemplates.orderCancel[1].toString(), park.getParkName(),
+				order.getOrderDate(), order.getOrderTime());
+
+		Messages msg = new Messages(0, travelerId, date, time, subject, content, orderId);
+
+		/* Send email */
+		EmailControl.sendEmail(msg);
+
+		/* Add message to DB */
+		ArrayList<String> parameters = new ArrayList<>(
+				Arrays.asList(travelerId, date, time, subject, content, String.valueOf(orderId)));
+		travelerQueries.sendMessageToTraveler(parameters);
 	}
 
 	private ArrayList<Order> getRelevantOrders() {
-		return mysqlFunction.getPendingOrders();
+		return orderQueries.getPendingOrders();
 	}
 
 	private boolean isDateLessThan24Hours(String date, String time) {
@@ -163,11 +204,6 @@ public class NotifyTravelers implements Runnable {
 		if (diffInHour < 24 && diffInHour > 0)
 			return true;
 		return false;
-	}
-
-	/* Maybe in the future */
-	private void sleep(int minutes) {
-
 	}
 
 }

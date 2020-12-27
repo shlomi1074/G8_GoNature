@@ -6,19 +6,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import controllers.EmailControl;
+import controllers.sqlHandlers.OrderQueries;
+import controllers.sqlHandlers.ParkQueries;
+import controllers.sqlHandlers.TravelersQueries;
+import controllers.sqlHandlers.MysqlConnection;
 import logic.Messages;
 import logic.Order;
 import logic.OrderStatusName;
 import logic.Park;
-import sqlHandler.mysqlConnection;
-import sqlHandler.mysqlFunctions;
+import resources.MsgTemplates;
 
 public class NotifyWaitingList implements Runnable {
 
 	private String date, hour;
 	private Park park;
 	private Connection mysqlconnection;
-	private mysqlFunctions mysqlFunction;
+	private OrderQueries orderQueries;
+	private ParkQueries parkQueries;
+	private TravelersQueries travelerQueries;
 	private Order order;
 
 	// Can go to constants
@@ -27,12 +32,14 @@ public class NotifyWaitingList implements Runnable {
 
 	public NotifyWaitingList(Order order) {
 		try {
-			mysqlconnection = mysqlConnection.getInstance().getConnection();
-			mysqlFunction = new mysqlFunctions(mysqlconnection);
+			mysqlconnection = MysqlConnection.getInstance().getConnection();
+			orderQueries = new OrderQueries(mysqlconnection);
+			parkQueries = new ParkQueries(mysqlconnection);
+			travelerQueries = new TravelersQueries(mysqlconnection);
 			this.date = order.getOrderDate();
 			this.hour = order.getOrderTime();
 			ArrayList<String> parameters = new ArrayList<>(Arrays.asList(String.valueOf(order.getParkId())));
-			this.park = mysqlFunction.getParkById(parameters);
+			this.park = parkQueries.getParkById(parameters);
 			this.order = order;
 		} catch (Exception e) {
 			System.out.println("Exception was thrown - notify waiting list");
@@ -52,7 +59,7 @@ public class NotifyWaitingList implements Runnable {
 
 		String orderId = String.valueOf(order.getOrderId());
 		String status = OrderStatusName.WAITING_HAS_SPOT.toString();
-		mysqlFunction.setOrderStatusWithIDandStatus(new ArrayList<String>(Arrays.asList(status, orderId)));
+		orderQueries.setOrderStatusWithIDandStatus(new ArrayList<String>(Arrays.asList(status, orderId)));
 		sendMessages(order);
 
 		int totalSleep = 0;
@@ -60,13 +67,13 @@ public class NotifyWaitingList implements Runnable {
 
 		while (totalSleep != 60) {
 			System.out.println("Entred while");
-			updatedOrder = mysqlFunction.getOrderByID(order.getOrderId());
+			updatedOrder = orderQueries.getOrderByID(order.getOrderId());
 			if (updatedOrder.getOrderStatus().equals(OrderStatusName.CANCELED.toString())
 					|| updatedOrder.getOrderStatus().equals(OrderStatusName.CONFIRMED.toString()))
 				break;
 			try {
-				Thread.sleep(2 * minute);
-				totalSleep += 2;
+				Thread.sleep(1 * minute);
+				totalSleep += 1;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -75,7 +82,7 @@ public class NotifyWaitingList implements Runnable {
 		if (!updatedOrder.getOrderStatus().equals(OrderStatusName.CONFIRMED.toString())) {
 			status = OrderStatusName.CANCELED.toString();
 			orderId = String.valueOf(updatedOrder.getOrderId());
-			mysqlFunction.setOrderStatusWithIDandStatus(new ArrayList<String>(Arrays.asList(status, orderId)));
+			orderQueries.setOrderStatusWithIDandStatus(new ArrayList<String>(Arrays.asList(status, orderId)));
 
 			// Passing the orignal order that was canceled.
 			NotifyWaitingList notifyWaitingList = new NotifyWaitingList(this.order);
@@ -94,8 +101,11 @@ public class NotifyWaitingList implements Runnable {
 		String time = dateAndTime.split(" ")[1];
 		String travelerId = order.getTravelerId();
 		int orderId = order.getOrderId();
-		String subject = "A spot availabe for order: " + orderId;
-		String content = "A spot is available for you.\n" + "You have 1 hour!";
+
+		Park park = parkQueries.getParkById(new ArrayList<String>(Arrays.asList(String.valueOf(order.getParkId()))));
+		String subject = MsgTemplates.waitingListPlaceInPark[0].toString();
+		String content = String.format(MsgTemplates.waitingListPlaceInPark[1].toString(), park.getParkName(),
+				order.getOrderDate(), order.getOrderTime());
 
 		Messages msg = new Messages(0, travelerId, date, time, subject, content, orderId);
 
@@ -105,18 +115,18 @@ public class NotifyWaitingList implements Runnable {
 		/* Add message to DB */
 		ArrayList<String> parameters = new ArrayList<>(
 				Arrays.asList(travelerId, date, time, subject, content, String.valueOf(orderId)));
-		mysqlFunction.sendMessageToTraveler(parameters);
+		travelerQueries.sendMessageToTraveler(parameters);
 
 	}
 
-	public Order notifyPersonFromWaitingList(String date, String hour, Park park) {
+	private Order notifyPersonFromWaitingList(String date, String hour, Park park) {
 		String parkId = String.valueOf(park.getParkId());
 		String maxVisitors = String.valueOf(park.getMaxVisitors());
 		String estimatedStayTime = String.valueOf(park.getEstimatedStayTime());
 		String gap = String.valueOf(park.getGapBetweenMaxAndCapacity());
 		ArrayList<String> parameters = new ArrayList<String>(
 				Arrays.asList(parkId, maxVisitors, estimatedStayTime, date, hour, gap));
-		ArrayList<Order> ordersThatMatchWaitingList = mysqlFunction.findMatchingOrdersInWaitingList(parameters);
+		ArrayList<Order> ordersThatMatchWaitingList = orderQueries.findMatchingOrdersInWaitingList(parameters);
 		return ordersThatMatchWaitingList.size() == 0 ? null : ordersThatMatchWaitingList.get(0);
 	}
 

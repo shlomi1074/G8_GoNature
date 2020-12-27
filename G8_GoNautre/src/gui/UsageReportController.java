@@ -7,21 +7,16 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
-import javax.swing.event.DocumentEvent.EventType;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.sun.javafx.scene.control.skin.DatePickerContent;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
-
 import Controllers.ParkControl;
 import Controllers.ReportsControl;
 import alerts.CustomAlerts;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,18 +24,24 @@ import javafx.scene.Node;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
+import logic.GoNatureFinals;
 import logic.report;
 
+@SuppressWarnings("restriction")
+/**
+ * This class is the GUI controller of UsageReport.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * In the screen we can see the dates that the park was full or not.
+ *
+ */
 public class UsageReportController implements Initializable {
 
 	@FXML
@@ -156,9 +157,10 @@ public class UsageReportController implements Initializable {
 		return ParkControl.isParkIsFullAtDate(date, String.valueOf(parkID));
 	}
 
-	/*
-	 * HERE WE NEED TO HANDLE WHEN THE BUTTON IS CLICKED NEED TO ADD THE REPORT TO
-	 * THE DATABASE
+	/**
+	 * Handle 'sendToManagerBtn' button
+	 * On click it sends a request to the server to add the report to the database
+	 * 
 	 */
 	@FXML
 	private void sendToManagerBtn() {
@@ -176,7 +178,7 @@ public class UsageReportController implements Initializable {
 	}
 
 	private void initLabels() {
-		monthLabel.setText(CreateReportsController.months[monthNumber]); // set the name of the month
+		monthLabel.setText(GoNatureFinals.MONTHS[monthNumber]); // Set the name of the month
 		commentTextArea.setText(comment);
 	}
 
@@ -208,10 +210,20 @@ public class UsageReportController implements Initializable {
 		return result;
 	}
 
+	/**
+	 * Setter for class variable monthNumber
+	 * 
+	 * @param month
+	 */
 	public void setMonthNumber(int month) {
 		this.monthNumber = month;
 	}
 
+	/**
+	 * Setter for class variable comment
+	 * 
+	 * @param comment
+	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
@@ -220,13 +232,22 @@ public class UsageReportController implements Initializable {
 		return (Stage) monthLabel.getScene().getWindow();
 	}
 
+	/**
+	 * Setter for class variable parkID
+	 * 
+	 * @param parkID
+	 */
 	public void setParkID(int parkID) {
 		this.parkID = parkID;
 	}
 
+	/**
+	 * Setter for class variable isDepManager
+	 * 
+	 * @param b
+	 */
 	public void setIsDepManager(boolean b) {
 		this.isDepManager = b;
-
 	}
 
 }

@@ -1,5 +1,10 @@
 package Controllers.calculatePrice;
 
+/**
+ * SubscriberPreOrderCheckOut extends CheckOutDecorator
+ * SubscriberPreOrderCheckOut calculates a subscriber pre order's price
+ *
+ */
 public class SubscriberPreOrderCheckOut extends CheckOutDecorator {
 
 	private final double baseDiscount = 0.85;
@@ -9,6 +14,11 @@ public class SubscriberPreOrderCheckOut extends CheckOutDecorator {
 		super(tempCheckOut);
 	}
 
+	/**
+	 * Overrite getPrice from CheckOutDecorator
+	 * 
+	 * @return return the subscriber pre order's price
+	 */
 	public double getPrice() {
 		return regularCheckOut.getPrice() * baseDiscount * discountForSubscribers;
 	}

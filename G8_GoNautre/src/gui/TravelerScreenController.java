@@ -2,14 +2,11 @@ package gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
-
 import Controllers.AutenticationControl;
 import client.ClientUI;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -17,11 +14,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
-import logic.Traveler;
 import util.FxmlUtil;
 
+/**
+ * This Class is the GUI controller of TravelerScreen.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * This is the main screen of the traveler
+ *
+ */
 public class TravelerScreenController implements Initializable {
 
 	@FXML
@@ -56,7 +58,6 @@ public class TravelerScreenController implements Initializable {
 
 	FxmlUtil loader = new FxmlUtil();
 
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		init();
@@ -66,8 +67,9 @@ public class TravelerScreenController implements Initializable {
 	private void init() {
 		getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
-				AutenticationControl.userLogout(TravelerLoginController.traveler!=null ? 
-						TravelerLoginController.traveler.getTravelerId():TravelerLoginController.subscriber.getTravelerId());
+				AutenticationControl.userLogout(
+						TravelerLoginController.traveler != null ? TravelerLoginController.traveler.getTravelerId()
+								: TravelerLoginController.subscriber.getTravelerId());
 				mainScreenStage.close();
 				ClientUI.chat.getClient().quit();
 			}
@@ -79,10 +81,20 @@ public class TravelerScreenController implements Initializable {
 		return stage;
 	}
 
+	/**
+	 * Setter for the class variable stage
+	 * 
+	 * @param stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Setter for the class variable mainScreenStage
+	 * 
+	 * @param stage
+	 */
 	public void setMainScreenStage(Stage stage) {
 		this.mainScreenStage = stage;
 	}
@@ -95,7 +107,7 @@ public class TravelerScreenController implements Initializable {
 
 	@FXML
 	private void loadProfile() {
-		loader.setWorker(false); //Alon 12.13.20
+		loader.setWorker(false); // Alon 12.13.20
 		Pane view = loader.loadPaneToBorderPaneWithController("/gui/Profile.fxml", "profile");
 		borderPane.setCenter(view);
 	}
@@ -114,8 +126,9 @@ public class TravelerScreenController implements Initializable {
 
 	@FXML
 	private void logOut() {
-		AutenticationControl.userLogout(TravelerLoginController.traveler!=null ? 
-				TravelerLoginController.traveler.getTravelerId():TravelerLoginController.subscriber.getTravelerId());
+		AutenticationControl
+				.userLogout(TravelerLoginController.traveler != null ? TravelerLoginController.traveler.getTravelerId()
+						: TravelerLoginController.subscriber.getTravelerId());
 		getStage().close();
 		mainScreenStage.show();
 	}

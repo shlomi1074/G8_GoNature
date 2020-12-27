@@ -2,18 +2,12 @@ package gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
-
 import Controllers.AutenticationControl;
 import client.ClientUI;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -23,6 +17,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import util.FxmlUtil;
 
+/**
+ * This Class is the GUI controller of ServiceWorker.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * This is the main screen of the service worker
+ *
+ */
 public class ServiceWorkerController implements Initializable {
 
 	@FXML
@@ -75,10 +76,20 @@ public class ServiceWorkerController implements Initializable {
 		return stage;
 	}
 
+	/**
+	 * Setter for the class variable stage
+	 * 
+	 * @param stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Setter for the class variable mainScreenStage
+	 * 
+	 * @param stage
+	 */
 	public void setMainScreenStage(Stage stage) {
 		this.mainScreenStage = stage;
 	}

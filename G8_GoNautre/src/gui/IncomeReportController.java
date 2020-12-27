@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import logic.GoNatureFinals;
 import logic.report;
 
 public class IncomeReportController implements Initializable {
@@ -75,7 +76,7 @@ public class IncomeReportController implements Initializable {
 	 */
 	@FXML
 	private void sendToManagerBtn() {
-		report r = new report(0, "Total Visitors", parkID, monthNumber, commentTextArea.getText());
+		report r = new report(0, "Income", parkID, monthNumber, commentTextArea.getText());
 		if (ReportsControl.addReport(r)) {
 			new CustomAlerts(AlertType.INFORMATION, "Success", "Success",
 					"Total Visitors report has been sent to department manager.").showAndWait();
@@ -88,9 +89,8 @@ public class IncomeReportController implements Initializable {
 		getStage().close();
 	}
 
-	/* HERE WE NEED TO GET THE DATA AND SET THE LABELS */
 	private void initLabels() {
-		monthLabel.setText(CreateReportsController.months[monthNumber]); // set the name of the month
+		monthLabel.setText(GoNatureFinals.MONTHS[monthNumber]); // set the name of the month
 		newReportList = new ArrayList<>();
 
 		newReportList.add(String.valueOf(monthNumber));
@@ -106,10 +106,20 @@ public class IncomeReportController implements Initializable {
 
 	}
 
+	/**
+	 * Setter for class variable monthNumber
+	 * 
+	 * @param month
+	 */
 	public void setMonthNumber(int month) {
 		this.monthNumber = month;
 	}
 
+	/**
+	 * Setter for class variable comment
+	 * 
+	 * @param comment
+	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
@@ -118,10 +128,20 @@ public class IncomeReportController implements Initializable {
 		return (Stage) monthLabel.getScene().getWindow();
 	}
 
+	/**
+	 * Setter for class variable parkID
+	 * 
+	 * @param parkID
+	 */
 	public void setParkID(int parkID) {
 		this.parkID = parkID;
 	}
 
+	/**
+	 * Setter for class variable isDepManager
+	 * 
+	 * @param b
+	 */
 	public void setIsDepManager(boolean b) {
 		this.isDepManager = b;
 
