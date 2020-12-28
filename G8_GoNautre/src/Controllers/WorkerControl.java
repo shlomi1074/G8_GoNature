@@ -8,6 +8,7 @@ import logic.ClientToServerRequest;
 import logic.Employees;
 import logic.ClientToServerRequest.Request;
 
+@SuppressWarnings("unchecked")
 public class WorkerControl {
 	
 	/**

@@ -2,6 +2,7 @@ package logic;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Discount implements Serializable {
 	private int discountId;
 	private Double amount;

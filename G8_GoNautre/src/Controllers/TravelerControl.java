@@ -10,6 +10,7 @@ import logic.Traveler;
 import logic.ClientToServerRequest.Request;
 import logic.Subscriber;
 
+@SuppressWarnings("rawtypes")
 public class TravelerControl {
 
 	/**
@@ -96,10 +97,11 @@ public class TravelerControl {
 		ClientUI.chat.accept(request);
 	}
 	
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 * This function return the traveler
+	/**
+	 * This function get an id and returns Traveler object that match the given id.
+	 *  
+	 * @param id - the id of the traveler
+	 * @return Traveler object
 	 */
 	public static Traveler getTraveler(String id) {
 		ClientToServerRequest request = new ClientToServerRequest<>(Request.TRAVELER_LOGIN_ID,

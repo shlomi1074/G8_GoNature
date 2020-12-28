@@ -2,6 +2,7 @@ package logic;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Messages implements Serializable {
 	private int messageId;
 	private String toId;

@@ -8,6 +8,7 @@ import logic.ClientToServerRequest;
 import logic.report;
 import logic.ClientToServerRequest.Request;
 
+@SuppressWarnings("unchecked")
 public class ReportsControl {
 
 	/**
@@ -124,7 +125,6 @@ public class ReportsControl {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_REPORTS,
 				new ArrayList<String>(Arrays.asList()));
 		ClientUI.chat.accept(request);
-		ArrayList<report> report = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
 
 	}
@@ -140,7 +140,6 @@ public class ReportsControl {
 		ClientToServerRequest<Integer> request = new ClientToServerRequest<>(Request.GET_CANCELS,
 				new ArrayList<Integer>(Arrays.asList(parkID, month)));
 		ClientUI.chat.accept(request);
-		ArrayList<Integer> cancels = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
 	}
 
@@ -173,7 +172,6 @@ public class ReportsControl {
 		ClientToServerRequest<Integer> request = new ClientToServerRequest<>(Request.GET_PENDING_AFTER_DATE_PASSED,
 				new ArrayList<Integer>(Arrays.asList(parkID, month)));
 		ClientUI.chat.accept(request);
-		ArrayList<Integer> pending = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
 	}
 

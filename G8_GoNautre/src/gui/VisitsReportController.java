@@ -3,7 +3,6 @@ package gui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import Controllers.ReportsControl;
 import client.ChatClient;
 import javafx.animation.KeyFrame;
@@ -18,7 +17,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import logic.GoNatureFinals;
 import logic.VisitReport;
@@ -31,9 +29,6 @@ public class VisitsReportController implements Initializable {
 	@FXML
 	private LineChart<Number, Number> stayTime_chart;
 
-//	@FXML
-//	private CategoryAxis stayX;
-
 	@FXML
 	private NumberAxis stayX2;
 
@@ -42,9 +37,6 @@ public class VisitsReportController implements Initializable {
 
 	@FXML
 	private LineChart<Number, Number> entranceTime_chart;
-
-//	@FXML
-//	private CategoryAxis enterX;
 
 	@FXML
 	private NumberAxis enterX2;

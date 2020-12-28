@@ -286,7 +286,12 @@ public class TravelersQueries {
 		return messeges;
 	}
 
-	// ofir
+	/**
+	 * This function add a new message for a specific traveler in the DB.
+	 * 
+	 * @param parameters - ArrayList containing: toId, sendDate, sendTime, subject, content, orderId
+	 * @return true on success, false otherwise
+	 */
 	public boolean sendMessageToTraveler(ArrayList<?> parameters) {
 		String sql = "INSERT INTO g8gonature.messages (toId,sendDate,sendTime,subject,content,orderId) "
 				+ "VALUES (?,?,?,?,?,?)";

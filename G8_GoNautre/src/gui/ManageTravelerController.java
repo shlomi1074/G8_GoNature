@@ -44,12 +44,15 @@ import logic.Park;
 import logic.Subscriber;
 import logic.Traveler;
 
+/**
+ * This Class is the GUI controller of ManageTraveler.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * In this screen the entrance worker makes can confirm a visit
+ * or open a window to create a new casual visit.
+ *
+ */
 public class ManageTravelerController implements Initializable {
-
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 */
 
 	ObservableList<OrderTb> ov = FXCollections.observableArrayList();
 
@@ -94,11 +97,6 @@ public class ManageTravelerController implements Initializable {
 
 	private OrderTb clickedRow;
 
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 * Search "Question" for questions to dev team.
-	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadTableView();
@@ -122,8 +120,6 @@ public class ManageTravelerController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function handle the load casual button when pressed.
 	 */
 	@FXML
@@ -158,18 +154,14 @@ public class ManageTravelerController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function return the stage of casual visit.
 	 */
 	private Stage getStage() {
 		return (Stage) occVisitBtn.getScene().getWindow();
 	}
 
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 * This function load the table view.
+	/**
+	 * This function load the data from the DB to the Table view.
 	 */
 	@FXML
 	public void loadTableView() {
@@ -180,8 +172,6 @@ public class ManageTravelerController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function init the table view.
 	 */
 	private void init(ArrayList<OrderTb> orders) {
@@ -207,8 +197,6 @@ public class ManageTravelerController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function init the orders ObservableList
 	 */
 	private ObservableList<OrderTb> getOrders(ArrayList<OrderTb> orderArray) {
@@ -220,8 +208,6 @@ public class ManageTravelerController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function clears the labels
 	 */
 	private void clearLabels() {
@@ -230,8 +216,6 @@ public class ManageTravelerController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function handle the confirm button when pressed.
 	 */
 	private void confirmButton() {
@@ -298,7 +282,6 @@ public class ManageTravelerController implements Initializable {
 		int updateNumber = p.getCurrentVisitors() + numberOfParticipantsInCurrentOrder;
 		ParkControl.updateCurrentVisitors(clickedRow.getParkId(), updateNumber);
 
-		// Shlomi + Ofir
 		ParkControl.updateIfParkFull(p);
 
 		// Printing recepit
@@ -310,8 +293,6 @@ public class ManageTravelerController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function calculate the order price.
 	 */
 	private double calculatePriceForVisit(String id, int visitorsNumber, String type) {
@@ -346,8 +327,6 @@ public class ManageTravelerController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function handle the confirm button when pressed.
 	 */
 	private void loadOrderConfirmation() {
@@ -382,8 +361,6 @@ public class ManageTravelerController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function return if the traveler can enter the park when approching the entrance
 	 */
 	private boolean canTravelerEnter() {
@@ -410,8 +387,6 @@ public class ManageTravelerController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function return all of the orders for traveler in a specific park
 	 */
 	private void searchTraveler() {

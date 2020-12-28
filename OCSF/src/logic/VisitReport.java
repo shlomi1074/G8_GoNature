@@ -2,6 +2,7 @@ package logic;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class VisitReport implements Serializable{
 	private int sum;
 	private String data;
@@ -11,7 +12,6 @@ public class VisitReport implements Serializable{
 		this.data = data;
 	}
 	
-
 	public int getSum() {
 		return sum;
 	}

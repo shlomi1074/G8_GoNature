@@ -56,7 +56,7 @@ public class ParkParametersController implements Initializable {
 	}
 
 	private void initComboBoxs() {
-		/* Set parks combo box to load dynamically from database */ // Shlomi
+		/* Set parks combo box to load dynamically from database */
 		ArrayList<String> parksNames = ParkControl.getParksNames();
 		if (parksNames != null) {
 			parkComboBox.getItems().addAll(parksNames);
@@ -71,13 +71,11 @@ public class ParkParametersController implements Initializable {
 
 	}
 
-	// Shlomi
 	private void loadParameters(Park park) {
 		if (park != null)
 			setLabels(park);
 	}
 
-	// Shlomi
 	private void setLabels(Park park) {
 		currentLabel.setText(park.getCurrentVisitors() + "");
 		maxLabel.setText(park.getMaxVisitors() + "");

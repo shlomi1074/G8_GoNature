@@ -2,6 +2,7 @@ package logic;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Traveler implements Serializable{
 	private String travelerId;
 	private String firstName;

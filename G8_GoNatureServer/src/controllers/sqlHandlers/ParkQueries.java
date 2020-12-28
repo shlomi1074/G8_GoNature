@@ -6,13 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
-
 import logic.Order;
 import logic.Park;
 
 /**
  * This class handles all the queries which are related to parks
- * 
  */
 public class ParkQueries {
 	private Connection conn;
@@ -126,7 +124,7 @@ public class ParkQueries {
 		}
 		return comment;
 	}
-	
+
 	/**
 	 * This function insert row to 'fullparkdate' table
 	 * 
@@ -152,19 +150,20 @@ public class ParkQueries {
 		}
 	}
 
-	// Ofir Avraham Vaknin v2.
+	/**
+	 * This function update number of visitors in a certion park.
+	 * 
+	 * @param parameters - ArrayList parkId, new number of current visitors.
+	 * @return true on success, false otherwise
+	 */
 	public boolean updateNumberOfVisitors(ArrayList<?> parameters) {
-		String parkId = (String) parameters.get(0);
-		int number = Integer.parseInt((String) parameters.get(1));
-
 		int res = 0;
-
 		String sql = "UPDATE g8gonature.park SET currentVisitors = ? WHERE parkId = ?";
 		PreparedStatement query;
 		try {
 			query = conn.prepareStatement(sql);
 			query.setString(1, (String) parameters.get(0));
-			query.setInt(2, number);
+			query.setInt(2, Integer.parseInt((String) parameters.get(1)));
 			res = query.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Could not execute updateNumberOfVisitors query");
@@ -173,10 +172,13 @@ public class ParkQueries {
 		return res == 1;
 	}
 
-	// Ofir Avraham Vaknin v2.
+	/**
+	 * This function add a new visit to the database
+	 * 
+	 * @param parameters - ArrayList containing: travelerId,parkId,entrence Time,estimated stay time,visitDate
+	 * @return true on success, false otherwise
+	 */
 	public boolean addVisit(ArrayList<?> parameters) {
-		// new
-		// ArrayList<String>(Arrays.asList(travelerId,parkId,enterTime,estimated,date)));
 
 		String enterTime = (String) parameters.get(2);
 		String estimated = (String) parameters.get(3);
@@ -208,9 +210,7 @@ public class ParkQueries {
 	 * @return ArrayList of Strings with all the data from card_reader_simulator
 	 */
 	public ArrayList<String> getSimulatorTravelersId() {
-
 		ArrayList<String> travelersID = new ArrayList<>();
-		int i = 0;
 		String sql = "SELECT * FROM g8gonature.card_reader_simulator";
 		PreparedStatement query;
 		try {
@@ -221,7 +221,7 @@ public class ParkQueries {
 				travelersID.add(rs.getString(1) + " " + rs.getString(2));
 			}
 		} catch (SQLException e) {
-			System.out.println("Could not execute checkIfConnected query");
+			System.out.println("Could not execute getSimulatorTravelersId query");
 			e.printStackTrace();
 		}
 
@@ -255,7 +255,6 @@ public class ParkQueries {
 	}
 
 	// ofir n
-
 	public void changeParkParametersInDB(ArrayList<?> parameters) {
 
 		System.out.println("1");
