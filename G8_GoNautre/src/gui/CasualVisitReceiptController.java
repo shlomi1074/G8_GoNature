@@ -17,36 +17,36 @@ import logic.Order;
  * This is the visit receipt for casual visits
  *
  */
-public class CasualVisitReceiptController implements Initializable{
+public class CasualVisitReceiptController implements Initializable {
 
-    @FXML
-    private Label summaryPark;
+	@FXML
+	private Label summaryPark;
 
-    @FXML
-    private Label summaryDate;
+	@FXML
+	private Label summaryDate;
 
-    @FXML
-    private Label summaryTime;
+	@FXML
+	private Label summaryTime;
 
-    @FXML
-    private Label summaryType;
+	@FXML
+	private Label summaryType;
 
-    @FXML
-    private Label summaryVisitors;
+	@FXML
+	private Label summaryVisitors;
 
-    @FXML
-    private Label totalPriceLabel;
+	@FXML
+	private Label totalPriceLabel;
 
-    @FXML
-    private JFXButton finishBtn;
-    
+	@FXML
+	private JFXButton finishBtn;
+
 	private Order order;
-    
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		setOrderInfo();		
+		setOrderInfo();
 	}
-	
+
 	private void setOrderInfo() {
 		if (order != null) {
 			summaryPark.setText(ParkControl.getParkName(order.getParkId() + ""));
@@ -64,10 +64,20 @@ public class CasualVisitReceiptController implements Initializable{
 		getStage().close();
 	}
 
-	public Stage getStage() {
+	/**
+	 * Getter for the current Stage
+	 * 
+	 * @return Current stage
+	 */
+	private Stage getStage() {
 		return (Stage) totalPriceLabel.getScene().getWindow();
 	}
-	
+
+	/**
+	 * Setter for the class variable order
+	 * 
+	 * @param recentOrder
+	 */
 	public void setOrder(Order recentOrder) {
 		this.order = recentOrder;
 	}

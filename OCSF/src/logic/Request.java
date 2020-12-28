@@ -2,6 +2,7 @@ package logic;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Request implements Serializable { 
 	private int requestId;
 	private String changeName;

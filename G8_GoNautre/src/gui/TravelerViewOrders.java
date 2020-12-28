@@ -32,12 +32,14 @@ import logic.Traveler;
 import resources.MsgTemplates;
 import logic.OrderStatusName;
 
+/**
+ * This Class is the GUI controller of TravelerViewOrders.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * In this screen the traveler can confirm or cancel an order.
+ *
+ */
 public class TravelerViewOrders implements Initializable {
-
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 */
 
 	ObservableList<OrderTb> ov = FXCollections.observableArrayList();
 
@@ -78,8 +80,6 @@ public class TravelerViewOrders implements Initializable {
 	private Label orderStatusTxt;
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * Search "Question" for questions to dev team.
 	 */
 	@Override
@@ -101,10 +101,8 @@ public class TravelerViewOrders implements Initializable {
 		});
 	}
 
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 * This function load the table view.
+	/**
+	 * This function load the data from the DB to the Table view.
 	 */
 	@FXML
 	public void loadTableView() {
@@ -123,8 +121,6 @@ public class TravelerViewOrders implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function init the orders ObservableList
 	 */
 	private ObservableList<OrderTb> getOrders(ArrayList<OrderTb> orderArray) {
@@ -136,8 +132,6 @@ public class TravelerViewOrders implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function init the table view.
 	 */
 	private void init(ArrayList<OrderTb> orders) {
@@ -162,8 +156,6 @@ public class TravelerViewOrders implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function check if the user choose an order
 	 */
 	private boolean orderChose() {
@@ -176,8 +168,6 @@ public class TravelerViewOrders implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function handle the confirm button when pressed.
 	 */
 	private void confirmButton() {
@@ -187,7 +177,7 @@ public class TravelerViewOrders implements Initializable {
 
 		/*
 		 * User can Confirm order if order is PENDING_EMAIL_SENT WAITING_HAS_SPOT
-		 * Otherwise, cant confirm order.
+		 * Otherwise, can not confirm order.
 		 */
 
 		if (orderStatusTxt.getText().equals(OrderStatusName.WAITING_HAS_SPOT.toString())
@@ -213,8 +203,6 @@ public class TravelerViewOrders implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function handle the cancel button when pressed.
 	 */
 	private void cancelButton() {
@@ -225,7 +213,7 @@ public class TravelerViewOrders implements Initializable {
 
 		/*
 		 * User can Cancel order if order is PENDING, PENDING_EMAIL_SENT, WAITING, WAITING_HAS_SPOT, CONFIRMED
-		 * Otherwise, cant confirm order.
+		 * Otherwise, can not confirm order.
 		 * Question - Confirmed can be canceled after the date?
 		 */
 		if (orderStatusTxt.getText().equals(OrderStatusName.PENDING.toString())
@@ -240,7 +228,7 @@ public class TravelerViewOrders implements Initializable {
 				loadTableView();
 				new CustomAlerts(AlertType.INFORMATION, "Changes were made", "Changes were made", "Order canceled")
 						.showAndWait();
-				
+
 				// Check the waiting list.
 				OrderControl.checkWaitingList(Integer.parseInt(orderIdTxt.getText()));
 				messageTravelerIfCancel(order);
@@ -259,8 +247,6 @@ public class TravelerViewOrders implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function clears the labels
 	 */
 	private void messageTravelerIfCancel(Order order) {
@@ -275,13 +261,11 @@ public class TravelerViewOrders implements Initializable {
 		int orderId = Integer.parseInt(orderIdTxt.getText());
 
 		NotificationControl.sendMessageToTraveler(travelerId, date, time, subject, content, String.valueOf(orderId));
-		Messages msg = new Messages(0,travelerId, date, time, subject, content, orderId);
+		Messages msg = new Messages(0, travelerId, date, time, subject, content, orderId);
 		NotificationControl.sendMailInBackgeound(msg, order.getEmail());
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function clears the labels
 	 */
 	private void clearLabals() {

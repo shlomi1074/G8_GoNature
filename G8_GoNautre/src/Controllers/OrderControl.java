@@ -1,8 +1,6 @@
 package Controllers;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,14 +17,14 @@ import logic.OrderTb;
 import logic.Park;
 import logic.Traveler;
 
+@SuppressWarnings("unchecked")
 public class OrderControl {
 
-	
 	/**
 	 * This function return the max discount for a given date in a given park.
 	 * 
 	 * @param visitDate The visit date
-	 * @param parkId The park to search discounts at.
+	 * @param parkId    The park to search discounts at.
 	 * @return Discount object.
 	 */
 	public static Discount getMaxDiscount(String visitDate, String parkId) {
@@ -50,7 +48,7 @@ public class OrderControl {
 		Order recentOrder = null;
 		if (OrderControl.addOrder(order, traveler)) {
 			recentOrder = OrderControl.getTravelerRecentOrder(traveler.getTravelerId());
-			
+
 			/* Insert massage to data base */
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			LocalDateTime now = LocalDateTime.now();
@@ -169,35 +167,40 @@ public class OrderControl {
 
 			return false;
 		}
-		
+
 		return true;
 	}
 
-	/*
-	 * Ofir Avraham Vaknin
-	 */
 	/**
 	 * This function return all of the orders that a certain ID has.
 	 * 
-	 * @param id
+	 * @param id - the Traveler Id
+	 * @return ArrayList of object Order, containing all of the orders for the given Id.
 	 */
 	public static ArrayList<Order> getOrders(String id) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ALL_ORDER_FOR_ID,
 				new ArrayList<String>(Arrays.asList(id)));
 		ClientUI.chat.accept(request);
-		ArrayList<Order> orders = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
 	}
 
-	// Ofir Avraham Vaknin v2.
+	/**
+	 * This function return all of the orders that are in the system.
+	 * 
+	 * @return ArrayList of object Order, containing all the orders that are in the system.
+	 */
 	public static ArrayList<Order> getAllOrders() {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ALL_ORDERS);
 		ClientUI.chat.accept(request);
-		ArrayList<Order> orders = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
 	}
 
-	// Ofir Avraham Vaknin
+	/**
+	 * This function convert an ArrayList of object Order to ArrayList of object OrderTb
+	 * 
+	 * @param ordersArrayList - ArrayList of object Order
+	 * @return ArrayList of object OrderTb, containing all the orders in the given ArrayList of orders.
+	 */
 	public static ArrayList<OrderTb> convertOrderToOrderTb(ArrayList<Order> ordersArrayList) {
 		ArrayList<OrderTb> orderTbArrayList = new ArrayList<OrderTb>();
 		for (Order order : ordersArrayList) {
@@ -207,8 +210,13 @@ public class OrderControl {
 		return orderTbArrayList;
 	}
 
-	
-	// Ofir + Shlomi Edit
+	/**
+	 * This function change order status of orderId to statusName.
+	 * 
+	 * @param orderId    - String object
+	 * @param statusName - OrderStatusName object
+	 * @return true on success, false otherwise
+	 */
 	public static boolean changeOrderStatus(String orderId, OrderStatusName statusName) {
 		String status = statusName.toString();
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.CHANGE_ORDER_STATUS_BY_ID,
@@ -217,35 +225,12 @@ public class OrderControl {
 		return ChatClient.responseFromServer.isResult();
 	}
 
-	// Ofir Avraham Vaknin v3.
-	// Create message for him
-	public static void notifyPersonFromWaitingList(String date, String hour, Park park) {
-		String parkId = String.valueOf(park.getParkId());
-		String maxVisitors = String.valueOf(park.getMaxVisitors());
-		String estimatedStayTime = String.valueOf(park.getEstimatedStayTime());
-		String gap = String.valueOf(park.getGapBetweenMaxAndCapacity());
-		ClientToServerRequest<String> request = new ClientToServerRequest<>(
-				Request.GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL,
-				new ArrayList<String>(Arrays.asList(parkId, maxVisitors, estimatedStayTime, date, hour, gap)));
-		ClientUI.chat.accept(request);
-		ArrayList<Order> ordersThatMatchWaitingList = ChatClient.responseFromServer.getResultSet();
-
-		// No one is waiting in the waiting list
-		if (ordersThatMatchWaitingList.size() == 0)
-			return;
-
-		// Send message to client - Function return boolean
-		Order o = ordersThatMatchWaitingList.get(0);
-		if (o.equals(null))
-			return;
-		String content = "A place for order number " + o.getOrderId()
-				+ " has cleared for you, you have one hour untill " + "it moves to the next person";
-		NotificationControl.sendMessageToTraveler(o.getTravelerId(), LocalDate.now().toString(),
-				LocalTime.now().toString(), "Grab Your waiting list spot", content, String.valueOf(o.getOrderId()));
-
-	}
-
-	// Ofir Avraham Vaknin v3.
+	/**
+	 * This function adds the visit to the DB.
+	 * 
+	 * @param order - OrderTb object
+	 * @return true on success, false otherwise
+	 */
 	public static boolean addVisit(OrderTb order) {
 		String travelerId = order.getTravelerId();
 		String parkId = String.valueOf(order.getParkId());
@@ -261,8 +246,13 @@ public class OrderControl {
 
 		return ChatClient.responseFromServer.isResult();
 	}
-	
-	//shlomi
+
+	/**
+	 * This function adds the visit to the DB.
+	 * 
+	 * @param order - Order object
+	 * @return true on success, false otherwise
+	 */
 	public static boolean addVisit(Order order) {
 		String travelerId = order.getTravelerId();
 		String parkId = String.valueOf(order.getParkId());
@@ -279,7 +269,12 @@ public class OrderControl {
 		return ChatClient.responseFromServer.isResult();
 	}
 
-	// Ofir Avrahm Vaknin v3.
+	/**
+	 * This function adds the order to the DB, while not adding the traveler to the DB.
+	 * 
+	 * @param order - Order object
+	 * @return true on success, false otherwise
+	 */
 	public static boolean addCasualOrder(Order order) {
 		ClientToServerRequest<Order> request = new ClientToServerRequest<>(Request.ADD_CASUAL_ORDER);
 		request.setObj(order);
@@ -287,24 +282,33 @@ public class OrderControl {
 		return ChatClient.responseFromServer.isResult();
 	}
 
-	// Ofir Avraham Vaknin v3.
+	/**
+	 * This function return all of the orders for a specific park.
+	 * 
+	 * @param parkId - int variable
+	 * @return ArrayList of object Order, containing all the orders for a spesific park.
+	 */
 	public static ArrayList<Order> getAllOrdersForParkId(int parkId) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ALL_ORDERS_FOR_PARK,
 				new ArrayList<String>(Arrays.asList(String.valueOf(parkId))));
 		ClientUI.chat.accept(request);
-		ArrayList<Order> orders = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
 	}
 
-	// Ofir Avraham Vaknin v3.
+	/**
+	 * This function return all of the orders for traveler in a specific park.
+	 * 
+	 * @param parkId - String object
+	 * @param id     - String object
+	 * @return ArrayList of object Order, containing all the orders for traveler in a specific park.
+	 */
 	public static ArrayList<Order> getOrdersForTravelerInPark(String parkId, String id) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(
 				Request.GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER, new ArrayList<String>(Arrays.asList(parkId, id)));
 		ClientUI.chat.accept(request);
-		ArrayList<Order> orders = ChatClient.responseFromServer.getResultSet();
 		return ChatClient.responseFromServer.getResultSet();
 	}
-	
+
 	/**
 	 * This function ask the server to check if there is someone at the waiting list.
 	 * Id there is someone in the waiting list he will get a notification
@@ -316,7 +320,7 @@ public class OrderControl {
 				new ArrayList<Integer>(Arrays.asList(orderId)));
 		ClientUI.chat.accept(request);
 	}
-	
+
 	/**
 	 * This function gets a traveler id and return the most recent order for this traveler
 	 * which it's status is 'Completed'
@@ -357,11 +361,13 @@ public class OrderControl {
 		return order;
 
 	}
-	
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 * This function change The number of visitors.
+
+	/**
+	 * This function change number of visitors in existing order.
+	 * 
+	 * @param orderId - String object
+	 * @param numberOfParticipantsInCurrentOrder - int variable
+	 * @return true on success, false otherwise
 	 */
 	public static boolean changeNumberOfVisitorsInExisitingOrder(String orderId,
 			int numberOfParticipantsInCurrentOrder) {
@@ -372,18 +378,20 @@ public class OrderControl {
 		return ChatClient.responseFromServer.isResult();
 	}
 
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 * This function update the price in a spesific order.
+	/**
+	 * This function update the price in an exisiting order.
+	 * 
+	 * @param id - String object
+	 * @param price - double variable
+	 * @return true on success, false otherwise
 	 */
 	public static boolean updateOrderPrice(String id, double price) {
 		String p = String.valueOf(price);
-		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.CHANGE_ORDER_PRICE_BY_ID, new ArrayList<String>(Arrays.asList(p, id)));
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.CHANGE_ORDER_PRICE_BY_ID,
+				new ArrayList<String>(Arrays.asList(p, id)));
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.isResult();
 
 	}
-
 
 }

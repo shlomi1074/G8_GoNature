@@ -1,7 +1,7 @@
 package logic;
 
-import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Subscriber extends Traveler{
 	private int subscriberNumber;
 	private String creditCard;

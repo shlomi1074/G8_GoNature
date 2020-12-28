@@ -2,6 +2,7 @@ package logic;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Order implements Serializable{
 	private int orderId;
 	private String travelerId;

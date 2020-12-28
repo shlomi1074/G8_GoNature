@@ -3,9 +3,9 @@ package logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+@SuppressWarnings("serial")
 public class ClientToServerRequest<T> implements Serializable {
 
-	// Shlomi
 	public enum Request {
 		IS_CONNECTED, TRAVELER_LOGIN_ID, INSERT_TO_LOGGEDIN, SUBSCRIBER_LOGIN_SUBID, GET_PARK_BY_ID, GET_SUBSCRIBER,
 		GET_ALL_PARKS, GET_MAX_DISCOUNT, GET_PARK_BY_NAME, GET_ORDERS_BETWEEN_DATES, ADD_ORDER, IS_TRAVELER_SUBSCRIBER,

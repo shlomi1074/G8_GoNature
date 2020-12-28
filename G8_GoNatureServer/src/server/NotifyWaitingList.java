@@ -16,6 +16,15 @@ import logic.OrderStatusName;
 import logic.Park;
 import resources.MsgTemplates;
 
+/**
+ * NotifyWaitingList class implements Runnable.
+ * 
+ * This class handle all the automated functionality:
+ * Notify a person from waiting list that he has a spot in the park for his order.
+ * Monitoring the order status for 1 hour.
+ * Notify the next in the waiting list if the traveler did not confirm his order.
+ *
+ */
 public class NotifyWaitingList implements Runnable {
 
 	private String date, hour;
@@ -26,10 +35,10 @@ public class NotifyWaitingList implements Runnable {
 	private TravelersQueries travelerQueries;
 	private Order order;
 
-	// Can go to constants
 	private final int second = 1000;
 	private final int minute = second * 60;
 
+	
 	public NotifyWaitingList(Order order) {
 		try {
 			mysqlconnection = MysqlConnection.getInstance().getConnection();
@@ -47,6 +56,13 @@ public class NotifyWaitingList implements Runnable {
 		}
 	}
 
+	/**
+	 * This function check if the traveler confirmed or canceled his order.
+	 * if he did not confirmed his order within one hour - the order canceled
+	 * automatically and we notify the next in the waiting list (if there is
+	 * someone)
+	 * 
+	 */
 	@Override
 	public void run() {
 		Order order = notifyPersonFromWaitingList(date, hour, park);

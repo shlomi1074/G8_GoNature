@@ -2,6 +2,7 @@ package logic;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Employees implements Serializable{
 	private int employeeId;
 	private WorkerType role;

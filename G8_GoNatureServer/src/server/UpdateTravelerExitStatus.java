@@ -9,9 +9,16 @@ import logic.Order;
 import logic.OrderStatusName;
 import logic.Park;
 
+/**
+ * UpdateTravelerExitStatus class implements Runnable.
+ * 
+ * This class handle all the automated functionality:
+ * Monitor the exiting visitors from the park.
+ * Change the order status when the traveler exit.
+ * Update the park current visitors parameter.
+ *
+ */
 public class UpdateTravelerExitStatus implements Runnable {
-
-	
 
 	private final int second = 1000;
 	private final int minute = second * 60;
@@ -28,6 +35,11 @@ public class UpdateTravelerExitStatus implements Runnable {
 		return orderQueries.getEnteredOrdersWithTimePassed();
 	}
 
+	/**
+	 * This function check if the traveler exited the park, based on estimated exit time.
+	 * If the thread did find a traveler that exited, it will change his order status
+	 * and update the park current visitors.
+	 */
 	@Override
 	public void run() {
 

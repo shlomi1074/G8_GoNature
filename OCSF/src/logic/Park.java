@@ -2,6 +2,7 @@ package logic;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Park implements Serializable {
 	private int parkId;
 	private String parkName;

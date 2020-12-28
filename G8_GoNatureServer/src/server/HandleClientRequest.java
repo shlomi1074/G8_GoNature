@@ -22,7 +22,6 @@ import logic.Messages;
 import logic.Order;
 import logic.Park;
 import logic.ServerToClientResponse;
-import logic.ServerToClientResponse.Response;
 import logic.Subscriber;
 import logic.Traveler;
 import logic.report;
@@ -83,14 +82,14 @@ public class HandleClientRequest implements Runnable {
 				ClientToServerRequest<?> request = (ClientToServerRequest<?>) msg;
 				if (request.getRequestType().equals(Request.IS_CONNECTED)) {
 					boolean res = travelerQueriesl.checkIfConnected(request.getParameters());
-					response = new ServerToClientResponse(Response.IS_CONNECTED_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResult(res);
 					client.sendToClient(response);
 
 				}
 				if (request.getRequestType().equals(Request.TRAVELER_LOGIN_ID)) {
 					Traveler traveler = travelerQueriesl.isTravelerExist(request.getParameters());
-					response = new ServerToClientResponse(Response.TRAVELER_LOGIN_ID_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(new ArrayList<Traveler>(Arrays.asList(traveler)));
 					client.sendToClient(response);
 				}
@@ -100,72 +99,71 @@ public class HandleClientRequest implements Runnable {
 				}
 				if (request.getRequestType().equals(Request.SUBSCRIBER_LOGIN_SUBID)) {
 					Subscriber sub = travelerQueriesl.getSubscriberBySubId(request.getParameters());
-					response = new ServerToClientResponse(Response.SUBSCRIBER_LOGIN_ID_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(new ArrayList<Traveler>(Arrays.asList(sub)));
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.GET_PARK_BY_ID)) {
 					Park park = parkQueries.getParkById(request.getParameters());
-					response = new ServerToClientResponse(Response.GET_PARK_BY_ID_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(new ArrayList<Park>(Arrays.asList(park)));
 					client.sendToClient(response);
 				}
 
 				if (request.getRequestType().equals(Request.GET_PARK_BY_NAME)) {
 					Park park = parkQueries.getParkByName(request.getParameters());
-					response = new ServerToClientResponse(Response.GET_PARK_BY_NAME_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(new ArrayList<Park>(Arrays.asList(park)));
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.GET_SUBSCRIBER)) {
 					Subscriber sub = travelerQueriesl.getSubscriberById(request.getParameters());
-					response = new ServerToClientResponse(Response.GET_SUBSCRIBER_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(new ArrayList<Subscriber>(Arrays.asList(sub)));
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.GET_ALL_PARKS)) {
 					ArrayList<Park> parks = parkQueries.getAllParks();
-					response = new ServerToClientResponse(Response.GET_ALL_PARKS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(parks);
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.GET_MAX_DISCOUNT)) {
 					Discount discount = requestsQueries.getMaxDisount(request.getParameters());
-					response = new ServerToClientResponse(Response.GET_MAX_DISCOUNT_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(new ArrayList<Discount>(Arrays.asList(discount)));
 					client.sendToClient(response);
 				}
 
 				if (request.getRequestType().equals(Request.GET_ORDERS_BETWEEN_DATES)) {
 					ArrayList<Order> orders = orderQueries.getOrderBetweenTimes(request.getParameters());
-					response = new ServerToClientResponse(Response.GET_ORDERS_BETWEEN_DATES_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(orders);
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.ADD_ORDER)) {
 					boolean result = orderQueries.addNewOrder(request.getObj());
-					response = new ServerToClientResponse(Response.ADD_ORDER_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResult(result);
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.ADD_TRAVELER)) {
 					boolean result = travelerQueriesl.addTraveler(request.getObj());
-					response = new ServerToClientResponse(Response.ADD_TRAVELER_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResult(result);
 					client.sendToClient(response);
 				}
 
 				if (request.getRequestType().equals(Request.GET_RECENT_ORDER)) {
 					Order order = orderQueries.getRecentOrder(request.getParameters());
-					response = new ServerToClientResponse(Response.GET_RECENT_ORDER_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(new ArrayList<Order>(Arrays.asList(order)));
 					client.sendToClient(response);
 				}
 
-				/* Alon 12.12.2020 */
 				if (request.getRequestType().equals(Request.MEMBER_LOGIN)) {
-					Employees member = travelerQueriesl.isMemberExist(request.getParameters());// <-bug
-					response = new ServerToClientResponse(Response.MEMBER_LOGIN_RESPONSE);
+					Employees member = travelerQueriesl.isMemberExist(request.getParameters());
+					response = new ServerToClientResponse();
 					response.setResultSet(new ArrayList<Employees>(Arrays.asList(member)));
 					client.sendToClient(response);
 				}
@@ -173,51 +171,42 @@ public class HandleClientRequest implements Runnable {
 					travelerQueriesl.removeFromLoggedInTable(request.getParameters());
 					client.sendToClient("User logedout.");
 				}
-				/* End of Alon's 12.12.20 edit */
 
-				/* Ofir */
-				// Ofir Avraham
-				// Imported Order
 				if (request.getRequestType().equals(Request.GET_ALL_ORDER_FOR_ID)) {
 					ArrayList<Order> orders = orderQueries.getAllOrdersForID(request.getParameters());
-					response = new ServerToClientResponse<>(Response.GET_ALL_ORDER_FOR_ID_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(orders);
 					client.sendToClient(response);
 				}
-				// Ofir Avraham Vaknin
+
 				if (request.getRequestType().equals(Request.CHANGE_ORDER_STATUS_BY_ID)) {
 					boolean res = orderQueries.setOrderStatusWithIDandStatus(request.getParameters());
-					response = new ServerToClientResponse<>(Response.CHANGE_ORDER_STATUS_BY_ID_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResult(res);
 					client.sendToClient(response);
 				}
 
-				// Ofir Avraham Vaknin
 				if (request.getRequestType().equals(Request.GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL)) {
 					ArrayList<Order> orders = orderQueries.findMatchingOrdersInWaitingList(request.getParameters());
-					response = new ServerToClientResponse<>(Response.GET_ORDERS_THAT_MATCH_AFTER_ORDER_CANCEL_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(orders);
 					client.sendToClient(response);
 				}
 
-				// Ofir Avraham Vaknin
 				if (request.getRequestType().equals(Request.SEND_MSG_TO_TRAVELER)) {
 					boolean result = travelerQueriesl.sendMessageToTraveler(request.getParameters());
-					response = new ServerToClientResponse<>(Response.SEND_MSG_TO_TRAVELER_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResult(result);
 					client.sendToClient(response);
 				}
 
-				// Ofir Avraham Vaknin
 				if (request.getRequestType().equals(Request.GET_ALL_ORDERS)) {
 					ArrayList<Order> orders = orderQueries.getAllOrders();
-					response = new ServerToClientResponse<>(Response.GET_ALL_ORDERS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(orders);
 					client.sendToClient(response);
 				}
 
-				/* End Ofir */
-				/* Lior */
 				if (request.getRequestType().equals(Request.DELETE_TRAVELER)) {
 					travelerQueriesl.deleteFromTravelerTable(request.getParameters());
 					client.sendToClient("Finished Insert");
@@ -235,21 +224,21 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient("");
 				}
 
-				if (request.getRequestType().equals(Request.MANAGER_REQUEST)) { // ofir n
+				if (request.getRequestType().equals(Request.MANAGER_REQUEST)) {
 					requestsQueries.insertAllNewRequestsFromParkManager(request.getParameters());
-					response = new ServerToClientResponse(Response.MANAGER_REQUEST_RESPONSE);
+					response = new ServerToClientResponse();
 					client.sendToClient(response);
 				}
 
-				if (request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) { // ofir n
-					response = new ServerToClientResponse(Response.VIEW_MANAGER_REQUEST_RESPONSE);
+				if (request.getRequestType().equals(Request.VIEW_MANAGER_REQUEST)) {
+					response = new ServerToClientResponse();
 					response.setResultSet(requestsQueries.GetRequestsFromDB());
 					client.sendToClient(response);
 				}
 
 				if (request.getRequestType().equals(Request.SEND_EMAIL)) {
 					boolean result = EmailControl.sendEmail((Messages) request.getObj());
-					response = new ServerToClientResponse(Response.SEND_EMAIL_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResult(result);
 					client.sendToClient(response);
 				}
@@ -257,13 +246,13 @@ public class HandleClientRequest implements Runnable {
 				if (request.getRequestType().equals(Request.SEND_EMAIL_WITH_EMAIL)) {
 					boolean result = EmailControl.sendEmailToWithEmailInput((Messages) request.getObj(),
 							request.getInput());
-					response = new ServerToClientResponse(Response.SEND_EMAIL_WITH_EMAIL_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResult(result);
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.GET_EMPLOYEE)) {
 					Employees employee = employeeQueries.getEmployeeById(request.getParameters());
-					response = new ServerToClientResponse(Response.GET_EMPLOYEE_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(new ArrayList<Employees>(Arrays.asList(employee)));
 					client.sendToClient(response);
 				}
@@ -278,90 +267,74 @@ public class HandleClientRequest implements Runnable {
 						password = employeeQueries.getEmployeePasswordById(employee.getEmployeeId());
 						email = employee.getEmail();
 					}
-					response = new ServerToClientResponse(Response.GET_EMPLOYEE_PASSWORD_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(new ArrayList<String>(Arrays.asList(email, password)));
 					client.sendToClient(response);
 				}
-				/* Lior */
+
 				if (request.getRequestType().equals(Request.GET_MESSAGES_BY_ID)) {
 					ArrayList<Messages> messages = travelerQueriesl.getMessages(request.getParameters());
-					response = new ServerToClientResponse<>(Response.GET_MESSAGES_BY_ID_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(messages);
 					client.sendToClient(response);
 				}
 
-				// Ofir Avraham Vaknin v3.
 				if (request.getRequestType().equals(Request.ADD_VISIT)) {
-					response = new ServerToClientResponse(Response.ADD_VISIT_RESPONSE);
+					response = new ServerToClientResponse();
 					boolean result = parkQueries.addVisit(request.getParameters());
 					response.setResult(result);
 					client.sendToClient(response);
 
 				}
 
-				// Ofir Avraham Vaknin v3.
 				if (request.getRequestType().equals(Request.UPDATE_CURRENT_VISITORS_ID)) {
-					response = new ServerToClientResponse(Response.UPDATE_CURRENT_VISITORS_ID_RESPONSE);
+					response = new ServerToClientResponse();
 					boolean result = parkQueries.updateNumberOfVisitors(request.getParameters());
 					response.setResult(result);
 					client.sendToClient(response);
 				}
 
-				// Ofir Avraham Vaknin v3.
-				// Using shlomi function - AddNewOrder
 				if (request.getRequestType().equals(Request.ADD_CASUAL_ORDER)) {
-					response = new ServerToClientResponse(Response.ADD_CASUAL_ORDER_RESPONSE);
+					response = new ServerToClientResponse();
 					boolean result = orderQueries.addNewOrder(request.getObj());
 					response.setResult(result);
 					client.sendToClient(response);
 				}
 
-				// Ofir Avraham Vaknin v3.
 				if (request.getRequestType().equals(Request.GET_ALL_ORDERS_FOR_PARK)) {
-					response = new ServerToClientResponse(Response.GET_ALL_ORDERS_FOR_PARK_RESPONSE);
+					response = new ServerToClientResponse();
 					ArrayList<Order> result = orderQueries.getOrdersForPark(request.getParameters());
 					response.setResultSet(result);
 					client.sendToClient(response);
 				}
 
-				// Ofir Avraham Vaknin v3.
 				if (request.getRequestType().equals(Request.GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER)) {
-					response = new ServerToClientResponse(Response.GET_ALL_ORDERS_FOR_PARK_WITH_TRAVLER_RESPONSE);
+					response = new ServerToClientResponse();
 					ArrayList<Order> result = orderQueries.getOrderForTravelerInPark(request.getParameters());
 					response.setResultSet(result);
 					client.sendToClient(response);
 				}
-			
-				if (request.getRequestType().equals(Request.VIEW_MANAGER_DISCOUNT)) { // ofir n
 
-					response = new ServerToClientResponse(Response.VIEW_MANAGER_DISCOUNT_RESPONSE);
-
+				if (request.getRequestType().equals(Request.VIEW_MANAGER_DISCOUNT)) {
+					response = new ServerToClientResponse();
 					response.setResultSet(requestsQueries.GetDiscountsFromDB());
-
-					// System.out.println(response.getResultSet()+" **");
 					client.sendToClient(response);
 
 				}
-				
-				if (request.getRequestType().equals(Request.CONFIRM_REQUEST)) { // ofir n
 
-					response = new ServerToClientResponse(Response.CONFIRM_REQUEST_RESPONSE);
+				if (request.getRequestType().equals(Request.CONFIRM_REQUEST)) {
+					response = new ServerToClientResponse();
 					if ((int) request.getParameters().get(1) == 1)
 						requestsQueries.changeStatusOfRequest(true, (int) request.getParameters().get(0));
-
-					else {
+					else
 						requestsQueries.changeStatusOfRequest(false, (int) request.getParameters().get(0));
 
-					}
-
 					client.sendToClient(response);
-
 				}
 
-				
-				if (request.getRequestType().equals(Request.CONFIRM_DISCOUNT)) { // ofir n
+				if (request.getRequestType().equals(Request.CONFIRM_DISCOUNT)) {
 
-					response = new ServerToClientResponse(Response.CONFIRM_DISCOUNT_RESPONSE);
+					response = new ServerToClientResponse();
 					if ((int) request.getParameters().get(1) == 1)
 						requestsQueries.changeStatusOfDiscount(true, (int) request.getParameters().get(0));
 
@@ -374,8 +347,8 @@ public class HandleClientRequest implements Runnable {
 
 				}
 
-				if (request.getRequestType().equals(Request.MANAGER_REPORT)) { // ofir n
-					response = new ServerToClientResponse(Response.MANAGER_REPORT_RESPONSE);
+				if (request.getRequestType().equals(Request.MANAGER_REPORT)) {
+					response = new ServerToClientResponse();
 
 					if (request.getParameters().get(1).equals("Total Visitors"))
 						response.setResultSet(reportsQueries.createNumberOfVisitorsReport(
@@ -391,92 +364,88 @@ public class HandleClientRequest implements Runnable {
 
 				if (request.getRequestType().equals(Request.ADD_REPORT_TO_DB)) {
 
-					response = new ServerToClientResponse(Response.ADD_REPORT_TO_DB_RESPONSE);
+					response = new ServerToClientResponse();
 					reportsQueries.createNewReportInDB(request.getParameters());
 
 					client.sendToClient(response);
 
 				}
 
-				if (request.getRequestType().equals(Request.CHANGE_PARK_PARAMETERS)) { // ofir n
-					response = new ServerToClientResponse(Response.CHANGE_PARK_PARAMETERS_RESPONSE);
+				if (request.getRequestType().equals(Request.CHANGE_PARK_PARAMETERS)) {
+					response = new ServerToClientResponse();
 
 					parkQueries.changeParkParametersInDB(request.getParameters());
 					client.sendToClient(response);
 				}
 
 				if (request.getRequestType().equals(Request.CHECK_IF_PARK_FULL_AT_DATE)) {
-					response = new ServerToClientResponse(Response.CHECK_IF_PARK_FULL_AT_DATE_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(parkQueries.isParkIsFullAtDate(request.getParameters()));
 					client.sendToClient(response);
 				}
 
 				if (request.getRequestType().equals(Request.DELETE_REPORT)) {
-					response = new ServerToClientResponse(Response.DELETE_REPORT_RESPONSE);
+					response = new ServerToClientResponse();
 					reportsQueries.deleteReport(request.getParameters());
 					client.sendToClient("Finished");
 				}
 				if (request.getRequestType().equals(Request.INSERT_REPORT)) {
-					response = new ServerToClientResponse(Response.INSERT_REPORT_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResult(reportsQueries.insertReport(request.getParameters()));
 					client.sendToClient(response);
 				}
 
-				/* Alon */
 				if (request.getRequestType().equals(Request.COUNT_ENTER_SOLO_VISITORS)) {
 
-					response = new ServerToClientResponse(Response.COUNT_ENTER_SOLO_VISITORS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(reportsQueries.CountSolosEnterTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
 				if (request.getRequestType().equals(Request.COUNT_ENTER_SUBS_VISITORS)) {
 
-					response = new ServerToClientResponse(Response.COUNT_ENTER_SUBS_VISITORS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(reportsQueries.CountSubsEnterTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
 				if (request.getRequestType().equals(Request.COUNT_ENTER_GROUP_VISITORS)) {
 
-					response = new ServerToClientResponse(Response.COUNT_ENTER_GROUP_VISITORS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(reportsQueries.CountGroupsEnterTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
 				if (request.getRequestType().equals(Request.COUNT_VISIT_SOLO_VISITORS)) {
 
-					response = new ServerToClientResponse(Response.COUNT_VISIT_SOLO_VISITORS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(reportsQueries.CountSolosVisitTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
 				if (request.getRequestType().equals(Request.COUNT_VISIT_SUBS_VISITORS)) {
 
-					response = new ServerToClientResponse(Response.COUNT_VISIT_SUBS_VISITORS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(reportsQueries.CountSubsVisitTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
 				if (request.getRequestType().equals(Request.COUNT_VISIT_GROUP_VISITORS)) {
 
-					response = new ServerToClientResponse(Response.COUNT_VISIT_GROUP_VISITORS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(reportsQueries.CountGroupsVisitTime(request.getParameters()));
 					client.sendToClient(response);
 
 				}
-				// ALON END
 
 				if (request.getRequestType().equals(Request.INSERT_TO_FULL_PARK_DATE)) {
-					response = new ServerToClientResponse(Response.INSERT_TO_FULL_PARK_DATE_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResult(parkQueries.insertToFullParkDate(request.getParameters()));
 					client.sendToClient(response);
 				}
 
 				if (request.getRequestType().equals(Request.CHECK_WAITING_LIST)) {
-
 					int orderId = (Integer) request.getParameters().get(0);
-
 					Order order = orderQueries.getOrderByID(orderId);
 					System.out.println("Order in check waiting list - handle client request = " + order.getOrderId());
 					if (order != null) {
@@ -486,39 +455,35 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient("Finished");
 				}
 
-				/* Lior */
-				/* get reports */
 				if (request.getRequestType().equals(Request.GET_REPORTS)) {
 					ArrayList<report> reports = reportsQueries.getReports(request.getParameters());
-					response = new ServerToClientResponse<>(Response.GET_REPORTS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(reports);
 					client.sendToClient(response);
 				}
 
-				/* Lior */
-				/* get cancels for park id */
 				if (request.getRequestType().equals(Request.GET_CANCELS)) {
 					ArrayList<Integer> cancels = reportsQueries.getParkCancels(request.getParameters());
-					response = new ServerToClientResponse<>(Response.GET_CANCELS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(cancels);
 					client.sendToClient(response);
 				}
 
 				if (request.getRequestType().equals(Request.GET_SIMULATOR_TRAVELERS_IDS)) {
 					ArrayList<String> travelersID = parkQueries.getSimulatorTravelersId();
-					response = new ServerToClientResponse<>(Response.GET_SIMULATOR_TRAVELERS_IDS_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(travelersID);
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.GET_RELEVANT_ORDER_ENTRANCE)) {
 					ArrayList<Order> result = orderQueries.getRelevantOrderForParkEntrance(request.getParameters());
-					response = new ServerToClientResponse<>(Response.GET_RELEVANT_ORDER_ENTRANCE_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(result);
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.GET_RELEVANT_ORDER_EXIT)) {
 					ArrayList<Order> result = orderQueries.getRelevantOrderForParkExit(request.getParameters());
-					response = new ServerToClientResponse<>(Response.GET_RELEVANT_ORDER_EXIT_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(result);
 					client.sendToClient(response);
 				}
@@ -526,40 +491,28 @@ public class HandleClientRequest implements Runnable {
 					parkQueries.updateVisitExitTimeSimulator((Order) request.getObj());
 					client.sendToClient("Finished");
 				}
-				/* Lior */
-				/* get pending after date passed for park id */
+
 				if (request.getRequestType().equals(Request.GET_PENDING_AFTER_DATE_PASSED)) {
 					ArrayList<Integer> pending = reportsQueries.getParkPendingDatePassed(request.getParameters());
-					response = new ServerToClientResponse<>(Response.GET_PENDING_AFTER_DATE_PASSED_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResultSet(pending);
 					client.sendToClient(response);
 				}
-				
-				/*
-				 * Ofir Avraham Vaknin
-				 * Orginzed Code
-				 * Change number of participants in order
-				 */
-				if(request.getRequestType().equals(Request.CHANGE_ORDER_NUMBER_OF_VISITORS_BY_ID)) {
+
+				if (request.getRequestType().equals(Request.CHANGE_ORDER_NUMBER_OF_VISITORS_BY_ID)) {
 					boolean result = orderQueries.UpdateNumberOfVisitorsForOrder(request.getParameters());
-					response = new ServerToClientResponse<>(Response.CHANGE_ORDER_NUMBER_OF_VISITORS_BY_ID_RESPONSE);
-					response.setResult(result);
-					client.sendToClient(response);
-				}
-				
-				/*
-				 * Ofir Avraham Vaknin
-				 * Orginzed Code
-				 * Update the price in a spesific order.
-				 */
-				if(request.getRequestType().equals(Request.CHANGE_ORDER_PRICE_BY_ID)) {
-					boolean result = orderQueries.UpdatePriceForOrder(request.getParameters());
-					response = new ServerToClientResponse<>(Response.CHANGE_ORDER_PRICE_BY_ID_RESPONSE);
+					response = new ServerToClientResponse();
 					response.setResult(result);
 					client.sendToClient(response);
 				}
 
-				// client.sendToClient("Finished ");
+				if (request.getRequestType().equals(Request.CHANGE_ORDER_PRICE_BY_ID)) {
+					boolean result = orderQueries.UpdatePriceForOrder(request.getParameters());
+					response = new ServerToClientResponse();
+					response.setResult(result);
+					client.sendToClient(response);
+				}
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

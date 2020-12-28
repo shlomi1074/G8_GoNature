@@ -30,9 +30,6 @@ public class OrderQueries {
 	 */
 	public ArrayList<Order> getOrderBetweenTimes(ArrayList<?> parameters) {
 		ArrayList<Order> orders = new ArrayList<Order>();
-
-		// String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? and orderDate =
-		// ? and orderTime >= ? and orderTime <= ? AND orderStatus != ?";
 		String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? and orderDate = ? and orderTime >= ? and orderTime <= ? AND (orderStatus = ? OR orderStatus = ?)";
 		PreparedStatement query;
 		try {
@@ -41,7 +38,6 @@ public class OrderQueries {
 			query.setString(2, (String) parameters.get(1));
 			query.setString(3, (String) parameters.get(2));
 			query.setString(4, (String) parameters.get(3));
-			// query.setString(5, OrderStatusName.CANCELED.toString());
 			query.setString(5, OrderStatusName.PENDING.toString());
 			query.setString(6, OrderStatusName.CONFIRMED.toString());
 			ResultSet res = query.executeQuery();
@@ -113,9 +109,15 @@ public class OrderQueries {
 		return order;
 	}
 
-	// Ofir Avraham Vaknin v4.
+	/**
+	 * This function return orders in waiting list that can replace the can canceled order.
+	 * 
+	 * @param parameters ArrayList containing: parkId,maxVisitors in the park,
+	 *                   estimatedStayTime in the park, date of the canceled order, timeToCheck of the canceled order,
+	 *                   gap between max and current in the park
+	 * @return ArrayList of object Order containing matching orders.
+	 */
 	public ArrayList<Order> findMatchingOrdersInWaitingList(ArrayList<?> parameters) {
-		// Need to send gap
 		ArrayList<Order> resultArray = new ArrayList<Order>();
 
 		String parkId = (String) parameters.get(0);
@@ -180,7 +182,12 @@ public class OrderQueries {
 		return resultArray;
 	}
 
-	// Ofir Avraham Vaknin v2.
+	/**
+	 * This function return orders in a specific park.
+	 * 
+	 * @param parameters - ArrayList containing: parkId
+	 * @return ArrayList of object Order containing matching orders.
+	 */
 	public ArrayList<Order> getOrdersForPark(ArrayList<?> parameters) {
 		int parkId = Integer.parseInt((String) parameters.get(0));
 		ArrayList<Order> orders = new ArrayList<Order>();
@@ -206,7 +213,12 @@ public class OrderQueries {
 
 	}
 
-	// Ofir Avraham Vaknin v2.
+	/**
+	 * This function return orders in a specific park for a certion traveler.
+	 * 
+	 * @param parameters - ArrayList containing: parkId, travelerId.
+	 * @return ArrayList of object Order containing matching orders.
+	 */
 	public ArrayList<Order> getOrderForTravelerInPark(ArrayList<?> parameters) {
 		int parkId = Integer.parseInt((String) parameters.get(0));
 		String travId = (String) parameters.get(1);
@@ -233,6 +245,11 @@ public class OrderQueries {
 		return orders;
 	}
 
+	/**
+	 * This function return orders that their status is "Pending".
+	 * 
+	 * @return ArrayList of object Order containing matching orders.
+	 */
 	public ArrayList<Order> getPendingOrders() {
 		ArrayList<Order> orders = new ArrayList<Order>();
 		String sql = "SELECT * FROM g8gonature.order WHERE orderStatus = ?";
@@ -345,7 +362,12 @@ public class OrderQueries {
 		return orders;
 	}
 
-	// Ofir Avraham Vaknin
+	/**
+	 * This function return all of the orders for a spesific traveler.
+	 * 
+	 * @param parameters - ArrayList containing:travelerId.
+	 * @return ArrayList with all the relevant orders
+	 */
 	public ArrayList<Order> getAllOrdersForID(ArrayList<?> parameters) {
 		ArrayList<Order> orders = new ArrayList<Order>();
 
@@ -369,7 +391,11 @@ public class OrderQueries {
 		return orders;
 	}
 
-	// Ofir Avraham Vaknin
+	/**
+	 * This function return all of the orders that are in the system.
+	 * 
+	 * @return ArrayList of object Order.
+	 */
 	public ArrayList<Order> getAllOrders() {
 		ArrayList<Order> orders = new ArrayList<Order>();
 
@@ -392,7 +418,12 @@ public class OrderQueries {
 		return orders;
 	}
 
-	// Ofir Avraham Vaknin
+	/**
+	 * This function set order status for a specific order and status.
+	 * 
+	 * @param parameters - ArrayList containing:order status, orderId.
+	 * @return true on success, false otherwise.
+	 */
 	public boolean setOrderStatusWithIDandStatus(ArrayList<?> parameters) {
 		String sql = "UPDATE g8gonature.order SET orderStatus = ? WHERE orderId = ?";
 		PreparedStatement query;
@@ -409,10 +440,11 @@ public class OrderQueries {
 		return false;
 	}
 
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 * Update the number of visitors for order.
+	/**
+	 * This function set number of visitors for a specific order.
+	 * 
+	 * @param parameters - ArrayList containing:number of participants, orderId.
+	 * @return true on success, false otherwise.
 	 */
 	public boolean UpdateNumberOfVisitorsForOrder(ArrayList<?> parameters) {
 
@@ -431,10 +463,11 @@ public class OrderQueries {
 		return false;
 	}
 
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 * Update the price for order.
+	/**
+	 * This function set price for a specific order.
+	 * 
+	 * @param parameters - ArrayList containing:price, orderId.
+	 * @return true on success, false otherwise.
 	 */
 	public boolean UpdatePriceForOrder(ArrayList<?> parameters) {
 
@@ -453,10 +486,10 @@ public class OrderQueries {
 		return false;
 	}
 
-	/*
-	 * Ofir Avraham Vaknin, Shlomi Amar
-	 * Orginzed Code
-	 * Return all orders with status - Entered the park, With time that has passed
+	/**
+	 * This function return all orders with status - Entered the park, With time that has passed
+	 * 
+	 * @return ArrayList of object Order with relevant orders.
 	 */
 	public ArrayList<Order> getEnteredOrdersWithTimePassed() {
 		ArrayList<Order> orders = new ArrayList<Order>();

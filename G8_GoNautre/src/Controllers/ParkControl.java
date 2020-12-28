@@ -11,6 +11,7 @@ import logic.OrderTb;
 import logic.ClientToServerRequest.Request;
 import logic.Park;
 
+@SuppressWarnings("unchecked")
 public class ParkControl {
 
 	/**
@@ -83,8 +84,14 @@ public class ParkControl {
 
 	}
 
-	// Ofir Avraham Vaknin
-	// -1 indicate an error
+	/**
+	 * This function return the park Id of given order Id
+	 * 
+	 * @param orders - ArrayList of object OrderTb, containing orders
+	 * @param orderId - int variable, the order we would like the park for.
+	 * 
+	 * @return park id on success, -1 if the park was not found.
+	 */
 	public static int getParkIdByOrderId(ArrayList<OrderTb> orders, int orderId) {
 		for (OrderTb o : orders)
 			if (o.getOrderId() == orderId)
@@ -92,8 +99,13 @@ public class ParkControl {
 		return -1;
 	}
 
-	// Ofir Avraham Vaknin v2.
-	// respone hold if query succeeded
+	/**
+	 * This function return the park Id of given order Id
+	 * 
+	 * @param pId - int variable, the park Id to update
+	 * @param num - int variable, the total number of visitors in the park
+	 * 
+	 */
 	public static void updateCurrentVisitors(int pId, int num) {
 		String cVisitors = String.valueOf(num);
 		String parkId = String.valueOf(pId);

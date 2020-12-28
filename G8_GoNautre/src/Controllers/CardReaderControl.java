@@ -26,6 +26,7 @@ public class CardReaderControl {
 	 * 
 	 * @param cardReaderController The GUI controller to update.
 	 */
+	@SuppressWarnings("unchecked")
 	public static void startSimulator(CardReaderController cardReaderController) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_SIMULATOR_TRAVELERS_IDS);
 		ClientUI.chat.accept(request);
@@ -55,6 +56,7 @@ public class CardReaderControl {
 		order = OrderControl.getRelevantOrder_ParkExit(id);
 		if (order != null) {
 			updateVisitExitTimeSimulator(order);
+			OrderControl.changeOrderStatus(String.valueOf(order.getOrderId()), OrderStatusName.COMPLETED);
 			Park park = ParkControl.getParkById(String.valueOf(order.getParkId()));
 			ParkControl.updateCurrentVisitors(order.getParkId(),
 					park.getCurrentVisitors() - order.getNumberOfParticipants());

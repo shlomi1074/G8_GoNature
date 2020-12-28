@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * @author Fran&ccedil;ois B&eacute;langer
  * @version July 2000
  */
+@SuppressWarnings("rawtypes")
 public class ChatClient extends AbstractClient {
 	// Instance variables **********************************************
 
@@ -59,14 +60,7 @@ public class ChatClient extends AbstractClient {
 		awaitResponse = false;
 		if (msg instanceof ServerToClientResponse) {
 			ServerToClientResponse response = (ServerToClientResponse) msg;
-			responseFromServer = response;
-			
-			if (responseFromServer.getResponseType()
-					.equals(ServerToClientResponse.Response.VIEW_MANAGER_REQUEST_RESPONSE)) { // ofir n
-
-				requestsWaitingForApproval = (ArrayList<Request>) responseFromServer.getResultSet();
-
-			}
+			responseFromServer = response;	
 		}
 		
 		else if (msg instanceof String) {

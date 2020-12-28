@@ -105,13 +105,13 @@ public class OrderVisitController implements Initializable {
 	private AnchorPane paymentPane;
 
 	@FXML
-	private JFXComboBox<String> timeComboBox;// shlomi
+	private JFXComboBox<String> timeComboBox;
 
 	@FXML
-	private JFXTextField fullNameInput; // shlomi
+	private JFXTextField fullNameInput;
 
 	@FXML
-	private JFXTextField phoneInput; // shlomi
+	private JFXTextField phoneInput;
 
 	@FXML
 	private JFXTextField cardHolderName;
@@ -168,10 +168,9 @@ public class OrderVisitController implements Initializable {
 	private ProgressIndicator pb;
 
 	@FXML
-	private Label summaryPhone; // shlomi
-
+	private Label summaryPhone;
 	@FXML
-	private Label summaryTime; // shlomi
+	private Label summaryTime;
 
 	DecimalFormat df = new DecimalFormat("####0.00");
 	private Subscriber subscriber;
@@ -187,14 +186,12 @@ public class OrderVisitController implements Initializable {
 		initComboBoxes();
 		initRadioBoxes();
 		initDatePicker();
-		initLabels(); // shlomi
+		initLabels();
 	}
 
-	// shlomi
 	@FXML
 	private void placeOrderButton() {
 
-		// Shlomi
 		if (isValidInput()) {
 
 			Task<Boolean> task = new Task<Boolean>() {
@@ -229,7 +226,7 @@ public class OrderVisitController implements Initializable {
 					pb.setVisible(false);
 					orderVisitRootPane.setDisable(false);
 					if (res) {
-						loadOrderConfirmation(); // load recipe
+						loadOrderConfirmation();
 					} else {
 						loadRescheduleScreen(order);
 					}
@@ -257,7 +254,6 @@ public class OrderVisitController implements Initializable {
 			return -1;
 	}
 
-	// Shlomi
 	/* This function check if All the input is valid */
 	private boolean isValidInput() {
 		if (!checkIfFilledAllFields())
@@ -298,7 +294,6 @@ public class OrderVisitController implements Initializable {
 
 	}
 
-	// Shlomi
 	private boolean checkIfFilledAllFields() {
 		if (summaryID.getText().isEmpty() || summaryPark.getText().isEmpty() || summaryDate.getText().isEmpty()
 				|| summaryType.getText().isEmpty() || summaryVisitors.getText().isEmpty()
@@ -318,7 +313,6 @@ public class OrderVisitController implements Initializable {
 		}
 	}
 
-	// shlomi
 	private Double CalculatePrice() {
 		if (!summaryVisitors.getText().isEmpty() && !idInputOrderVisit.getText().isEmpty()
 				&& !summaryVisitors.getText().isEmpty() && !summaryDate.getText().isEmpty()
@@ -593,7 +587,7 @@ public class OrderVisitController implements Initializable {
 		if (parksNames != null) {
 			parksComboBox.getItems().addAll(parksNames);
 		}
-		/* Set up order type from OrderType Enum */ // Shlomi
+		/* Set up order type from OrderType Enum */
 		typeComboBox.getItems().addAll(Arrays.asList(OrderType.values()));
 		if (!permissionLabel.getText().equals("Family")) {
 			typeComboBox.getItems().remove(1);

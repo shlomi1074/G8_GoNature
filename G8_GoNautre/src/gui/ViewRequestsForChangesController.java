@@ -2,38 +2,28 @@ package gui;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Observable;
 import java.util.ResourceBundle;
-
 import Controllers.ParkControl;
 import Controllers.RequestControl;
 import alerts.CustomAlerts;
 import client.ChatClient;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
 import logic.Discount;
 import logic.OrderStatusName;
-import logic.OrderTb;
 import logic.Request;
-import logic.RequestTb;
 
+@SuppressWarnings("unchecked")
 public class ViewRequestsForChangesController implements Initializable {
 	@FXML
 	private TableView<Request> parametersTable;
@@ -90,8 +80,6 @@ public class ViewRequestsForChangesController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-
-		// int parkId = MemberLoginController.member.getParkId();
 		loadChanges();
 	}
 

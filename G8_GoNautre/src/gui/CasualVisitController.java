@@ -37,12 +37,14 @@ import logic.Park;
 import logic.Subscriber;
 import util.UtilityFunctions;
 
+/**
+ * This Class is the GUI controller of CasualTravelerVisit.fxml
+ * It handles all the JavaFx nodes events.
+ * 
+ * In this screen the entrance worker makes a casual visit.
+ *
+ */
 public class CasualVisitController implements Initializable {
-
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 */
 
 	@FXML
 	private JFXTextField idInputCasualVisit;
@@ -73,11 +75,7 @@ public class CasualVisitController implements Initializable {
 
 	private Subscriber subscriber;
 
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 * Search "Question" for questions to dev team.
-	 */
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initComboBoxOrderType();
@@ -102,12 +100,8 @@ public class CasualVisitController implements Initializable {
 		});
 	}
 
-	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
-	 * This function init the ComboBox of orderType.
-	 */
-	public void initComboBoxOrderType() {
+
+	private void initComboBoxOrderType() {
 
 		typeComboBox.getItems().clear();
 		typeComboBox.getItems().addAll(Arrays.asList(OrderType.values()));
@@ -133,11 +127,9 @@ public class CasualVisitController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function init the listeners for permission label.
 	 */
-	public void initListeners() {
+	private void initListeners() {
 		idInputCasualVisit.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
@@ -156,8 +148,6 @@ public class CasualVisitController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function return the current OrderType in a string format
 	 * if the user did not choose, it returns null.
 	 */
@@ -168,8 +158,6 @@ public class CasualVisitController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function return if order details are valid, otherwise it shows a pop up screen with relevent message.
 	 */
 	private boolean validInfo() {
@@ -229,8 +217,6 @@ public class CasualVisitController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function calculate the order price.
 	 */
 	private double calculatePriceForVisit() {
@@ -265,8 +251,6 @@ public class CasualVisitController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function set the label for price label.
 	 */
 	private void checkPricebtnAction() {
@@ -275,8 +259,6 @@ public class CasualVisitController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function check if the price that appears in the form is valid
 	 */
 	private boolean validPrice() {
@@ -294,8 +276,6 @@ public class CasualVisitController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function is a wrapper for alerts.
 	 */
 	private void popNotification(AlertType type, String header, String content) {
@@ -303,8 +283,6 @@ public class CasualVisitController implements Initializable {
 	}
 
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function handle the place order button when pressed.
 	 */
 	private void placeOrderAction() {
@@ -341,7 +319,6 @@ public class CasualVisitController implements Initializable {
 			ParkControl.updateCurrentVisitors(parkId, updateNumber);
 			Park park = ParkControl.getParkById(String.valueOf(MemberLoginController.member.getParkId()));
 
-			// Shlomi + Ofir
 			ParkControl.updateIfParkFull(park);
 
 			// Notifying the visit is approved.
@@ -363,8 +340,6 @@ public class CasualVisitController implements Initializable {
 	}
 	
 	/*
-	 * Ofir Avraham Vaknin
-	 * Orginzed Code
 	 * This function handle the receipt.
 	 */
 	private void loadOrderConfirmation(Order order) {
