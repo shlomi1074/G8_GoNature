@@ -2,7 +2,7 @@ package logic;
 
 public enum OrderStatusName {
 	// Ofir Avraham Vaknin v2.
-	CONFIRMED, CANCELED, PENDING, PENDING_EMAIL_SENT, WAITING, WAITING_HAS_SPOT, COMPLETED;
+	CONFIRMED, CANCELED, PENDING, PENDING_EMAIL_SENT, WAITING, WAITING_HAS_SPOT, ENTERED_THE_PARK,COMPLETED;
 
 	@Override
 	public String toString() {
@@ -15,12 +15,14 @@ public enum OrderStatusName {
 			return "Pending";
 		case WAITING:
 			return "Waiting";
-		case COMPLETED:
-			return "Completed";
+		case ENTERED_THE_PARK:
+			return "Entered the park";
 		case PENDING_EMAIL_SENT:
 			return "Pending email sent";
 		case WAITING_HAS_SPOT:
 			return "Waiting has spot";
+		case COMPLETED:
+			return "Visit completed";
 		default:
 			throw new IllegalArgumentException();
 		}

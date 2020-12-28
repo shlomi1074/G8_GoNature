@@ -51,6 +51,10 @@ public class GoNatureServer extends AbstractServer {
 		/* Create notify thread */
 		NotifyTravelers notifyTravelers = new NotifyTravelers(mysqlconnection);
 		new Thread(notifyTravelers).start();
+		
+		/* Create exit status and park update thread */
+		UpdateTravelerExitStatus updateTravelerExitStatus = new UpdateTravelerExitStatus(mysqlconnection);
+		new Thread(updateTravelerExitStatus).start();
 	}
 
 	// Instance methods ************************************************

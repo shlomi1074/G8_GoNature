@@ -268,7 +268,7 @@ public class ManageTravelerController implements Initializable {
 		// Order is good to confirm
 
 		// Change order status
-		OrderControl.changeOrderStatus(String.valueOf(clickedRow.getOrderId()), OrderStatusName.COMPLETED);
+		OrderControl.changeOrderStatus(String.valueOf(clickedRow.getOrderId()), OrderStatusName.ENTERED_THE_PARK);
 
 		// Change number of participants in the order
 		if (numberOfParticipantsInCurrentOrder != numberOfParticipantsInOriginalOrder) {
