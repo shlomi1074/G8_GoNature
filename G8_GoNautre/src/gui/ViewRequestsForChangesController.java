@@ -23,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -163,7 +164,9 @@ public class ViewRequestsForChangesController implements Initializable {
 	}
 
 	void loadChanges() {
-
+		parametersTable.setTooltip(new Tooltip("click on a row to select it"));
+		discountTable.setTooltip(new Tooltip("click on a row to select it"));
+		
 		RequestControl.viewcurrentRequests();
 
 		parametersIdCol.setCellValueFactory(new PropertyValueFactory<>("requestId"));

@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
@@ -79,6 +80,7 @@ public class DepartmentManagerReportsController implements Initializable {
 	}
 
 	private void initTabelView() {
+		ReportsTableView.setTooltip(new Tooltip("Double click on a row to open the report"));
 		ReportsTableView.setRowFactory(tv -> {
 			TableRow<reportTb> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {

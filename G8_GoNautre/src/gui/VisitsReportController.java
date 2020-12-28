@@ -6,6 +6,10 @@ import java.util.ResourceBundle;
 
 import Controllers.ReportsControl;
 import client.ChatClient;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
@@ -14,6 +18,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import logic.GoNatureFinals;
 import logic.VisitReport;
 
@@ -58,8 +64,15 @@ public class VisitsReportController implements Initializable {
 
 	private void init() {
 		lblMonth.setText(GoNatureFinals.MONTHS[monthNumber]); // set the name of the month
-		fillEntranceTimeChart();
-		fillVisitTimeChart();
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				fillEntranceTimeChart();
+				fillVisitTimeChart();
+			}
+		}));
+		timeline.setCycleCount(1);
+		timeline.play();
 	}
 
 	/**
