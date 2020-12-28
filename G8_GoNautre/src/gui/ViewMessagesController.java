@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import logic.Messages;
@@ -85,6 +86,7 @@ public class ViewMessagesController implements Initializable {
 		SubjectCol.setCellValueFactory(new PropertyValueFactory<MessagesTb, String>("subject"));
 		DateCol.setCellValueFactory(new PropertyValueFactory<MessagesTb, String>("sendDate"));
 		/*if user doubleclickes on a message, it's content will appear in messageTextArea*/
+		messagesTableView.setTooltip(new Tooltip("Double click on a row to open it"));
 		messagesTableView.setRowFactory(tv -> {
 			TableRow<MessagesTb> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {

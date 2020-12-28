@@ -33,7 +33,7 @@
       <Label layoutX="367.0" layoutY="435.0" prefWidth="90.0" text="Visit Date:" underline="true" />
       <Label layoutX="467.0" layoutY="435.0" prefWidth="90.0" text="Visit Time:" underline="true" />
       <Label layoutX="561.0" layoutY="435.0" prefWidth="90.0" text="Order Status:" underline="true" />
-      <Label layoutX="129.0" layoutY="364.0" text="*Double click on a row to select" />
+      <Label layoutX="129.0" layoutY="364.0" text="* click on a row to select it" />
       <FontAwesomeIconView glyphName="CLOSE" layoutX="249.0" layoutY="540.0" size="15" />
       <FontAwesomeIconView glyphName="CHECK" layoutX="540.0" layoutY="540.0" size="15" />
    </children>
