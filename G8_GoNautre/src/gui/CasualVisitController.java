@@ -324,7 +324,7 @@ public class CasualVisitController implements Initializable {
 		// Creating new order with relevent details.
 		Order order = new Order(idOfTraveler, parkId, LocalDate.now().toString(), LocalTime.now().toString(), orderType,
 				numberOfVisitors, email, Double.parseDouble(totalPriceLabel.getText()),
-				OrderStatusName.COMPLETED.toString());
+				OrderStatusName.ENTERED_THE_PARK.toString());
 
 		// Since addVisit Uses orderTb from previous controllers,we need to convert it with builder.
 		// Adding casual Order is the same as adding order

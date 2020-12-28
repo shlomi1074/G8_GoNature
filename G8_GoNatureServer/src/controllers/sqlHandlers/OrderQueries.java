@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import logic.Order;
@@ -326,7 +328,7 @@ public class OrderQueries {
 		try {
 			query = conn.prepareStatement(sql);
 			query.setInt(1, Integer.parseInt((String) parameters.get(0)));
-			query.setString(2, OrderStatusName.COMPLETED.toString());
+			query.setString(2, OrderStatusName.ENTERED_THE_PARK.toString());
 			ResultSet res = query.executeQuery();
 
 			if (res.next()) {
@@ -449,5 +451,34 @@ public class OrderQueries {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	/*
+	 * Ofir Avraham Vaknin, Shlomi Amar
+	 * Orginzed Code
+	 * Return all orders with status - Entered the park, With time that has passed
+	 */
+	public ArrayList<Order> getEnteredOrdersWithTimePassed() {
+		ArrayList<Order> orders = new ArrayList<Order>();
+		String sql = "SELECT g8gonature.order.* FROM g8gonature.visit,g8gonature.order WHERE visitDate = ? AND exitTime < ? AND orderStatus = ? "
+				+ "AND g8gonature.order.travelerId = g8gonature.visit.travelerId GROUP BY orderId";
+
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setString(1, LocalDate.now().toString());
+			query.setString(2, LocalTime.now().toString());
+			query.setString(3, OrderStatusName.ENTERED_THE_PARK.toString());
+
+			ResultSet res = query.executeQuery();
+			while (res.next())
+				orders.add(new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4), res.getString(5),
+						res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9), res.getString(10)));
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute getEnteredOrdersWithTimePassed");
+			e.printStackTrace();
+		}
+		return orders;
 	}
 }

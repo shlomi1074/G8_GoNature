@@ -75,7 +75,7 @@ public class CardReaderControl {
 		order = OrderControl.getRelevantOrderByTravelerID_ParkEntrance(id);
 		if (order != null) {
 			OrderControl.addVisit(order);
-			OrderControl.changeOrderStatus(String.valueOf(order.getOrderId()), OrderStatusName.COMPLETED);
+			OrderControl.changeOrderStatus(String.valueOf(order.getOrderId()), OrderStatusName.ENTERED_THE_PARK);
 			Park park = ParkControl.getParkById(String.valueOf(order.getParkId()));
 			ParkControl.updateCurrentVisitors(order.getParkId(),
 					park.getCurrentVisitors() + order.getNumberOfParticipants());
