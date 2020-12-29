@@ -15,7 +15,6 @@ public class ClientUI extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			//Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/gui/clientConfiguration.fxml"));
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/clientConfiguration.fxml"));
 			ClientConfigurationController controller = new ClientConfigurationController();
 			loader.setController(controller);

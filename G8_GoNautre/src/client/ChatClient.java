@@ -127,8 +127,8 @@ public class ChatClient extends AbstractClient {
 	}
 
 	/* When The client closed this function called */
-	protected void connectionClosed() {
-	}
+//	protected void connectionClosed() {
+//	}
 
 	/**
 	 * This method terminates the client.

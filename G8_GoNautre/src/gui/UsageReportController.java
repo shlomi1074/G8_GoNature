@@ -32,7 +32,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import logic.GoNatureFinals;
-import logic.report;
+import logic.Report;
 
 @SuppressWarnings("restriction")
 /**
@@ -165,7 +165,7 @@ public class UsageReportController implements Initializable {
 	@FXML
 	private void sendToManagerBtn() {
 
-		report r = new report(0, "Usage", parkID, monthNumber, commentTextArea.getText());
+		Report r = new Report(0, "Usage", parkID, monthNumber, commentTextArea.getText());
 		if (ReportsControl.addReport(r)) {
 			new CustomAlerts(AlertType.INFORMATION, "Success", "Success",
 					"Usage report has been sent to department manager.").showAndWait();

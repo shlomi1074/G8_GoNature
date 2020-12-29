@@ -87,8 +87,8 @@ public class ParkControl {
 	/**
 	 * This function return the park Id of given order Id
 	 * 
-	 * @param orders - ArrayList of object OrderTb, containing orders
-	 * @param orderId - int variable, the order we would like the park for.
+	 * @param orders   ArrayList of object OrderTb, containing orders
+	 * @param orderId  int variable, the order we would like the park for.
 	 * 
 	 * @return park id on success, -1 if the park was not found.
 	 */
@@ -102,8 +102,8 @@ public class ParkControl {
 	/**
 	 * This function return the park Id of given order Id
 	 * 
-	 * @param pId - int variable, the park Id to update
-	 * @param num - int variable, the total number of visitors in the park
+	 * @param pId  int variable, the park Id to update
+	 * @param num  int variable, the total number of visitors in the park
 	 * 
 	 */
 	public static void updateCurrentVisitors(int pId, int num) {
@@ -114,21 +114,23 @@ public class ParkControl {
 		ClientUI.chat.accept(request);
 	}
 
-	// ofir n
-
+	/**
+	 * this function changes park's parameters if Department Manager confirmed Park Manager's request.
+	 * 
+	 * @param array containing the type of parameter to be changed, the new value, and park ID.
+	 */
 	public static void changeParkParameters(ArrayList<String> changeParkParameterList) {
 
 		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.CHANGE_PARK_PARAMETERS,
 				changeParkParameterList);
 
 		ClientUI.chat.accept(request);
-
 	}
 
 	/**
 	 * This function get a date and a park id and check if the park was full at that date.
 	 * 
-	 * @param date The date to check
+	 * @param date   The date to check
 	 * @param parkID The park to check
 	 * @return ArrayList of Strings with all the comments on that dates.
 	 */
@@ -147,20 +149,19 @@ public class ParkControl {
 	public static void updateIfParkFull(Park park) {
 
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime now = LocalDateTime.now();
-        String dateAndTime = dtf.format(now);
-        String date = dateAndTime.split(" ")[0];
-        String time = dateAndTime.split(" ")[1];
-		
-	
-		String comment = "Full at: "+time;
-		
+		LocalDateTime now = LocalDateTime.now();
+		String dateAndTime = dtf.format(now);
+		String date = dateAndTime.split(" ")[0];
+		String time = dateAndTime.split(" ")[1];
+
+		String comment = "Full at: " + time;
+
 		String parkId = String.valueOf(park.getParkId());
 		String maxVisitors = String.valueOf(park.getMaxVisitors());
-		
+
 		if (park.getCurrentVisitors() >= park.getMaxVisitors()) {
 			ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.INSERT_TO_FULL_PARK_DATE,
-					new ArrayList<String>(Arrays.asList(parkId,date,maxVisitors,comment)));
+					new ArrayList<String>(Arrays.asList(parkId, date, maxVisitors, comment)));
 			ClientUI.chat.accept(request);
 		}
 	}

@@ -1,5 +1,8 @@
 package logic;
 
+/**
+ * OrderType enum represent the order types that are available in the park.
+ */
 public enum OrderType {
 	SOLO, FAMILY, GROUP;
 

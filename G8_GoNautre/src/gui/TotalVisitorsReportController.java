@@ -16,7 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import logic.GoNatureFinals;
-import logic.report;
+import logic.Report;
 
 public class TotalVisitorsReportController implements Initializable {
 
@@ -45,7 +45,7 @@ public class TotalVisitorsReportController implements Initializable {
 	private JFXTextArea commentTextArea;
 
 	private ArrayList<String> newReportList;
-	private static ArrayList<?> reportList;
+	private static ArrayList<Integer> reportList;
 	private int parkID;
 	private int monthNumber;
 	private String comment;
@@ -73,7 +73,7 @@ public class TotalVisitorsReportController implements Initializable {
 	@FXML
 	private void sendToManagerBtn() {
 
-		report r = new report(0, "Total Visitors", parkID, monthNumber, commentTextArea.getText());
+		Report r = new Report(0, "Total Visitors", parkID, monthNumber, commentTextArea.getText());
 		if (ReportsControl.addReport(r)) {
 			new CustomAlerts(AlertType.INFORMATION, "Success", "Success",
 					"Total Visitors report has been sent to department manager.").showAndWait();
@@ -99,9 +99,9 @@ public class TotalVisitorsReportController implements Initializable {
 		reportList = ChatClient.responseFromServer.getResultSet();
 
 		individualLabel.setText(String.valueOf(reportList.get(0)));
-		groupsLabel.setText(String.valueOf(reportList.get(1)));
-		subscribersLabel.setText(String.valueOf(reportList.get(2)));
-		totalLabel.setText(String.valueOf(reportList.get(3)));
+		groupsLabel.setText(String.valueOf(reportList.get(2)));
+		subscribersLabel.setText(String.valueOf(reportList.get(1)));
+		totalLabel.setText(String.valueOf(reportList.get(0) + reportList.get(1) + reportList.get(2)));
 
 	}
 

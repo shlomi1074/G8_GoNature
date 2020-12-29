@@ -50,8 +50,13 @@ public class RequestsQueries {
 		return discount;
 	}
 
-	// ofir n
-	public void insertAllNewRequestsFromParkManager(ArrayList<?> managerRequests) { /// edited OldValue
+	/**
+	 * this method is called after the Park Manager sent his request
+	 * 
+	 * @param managerRequests -type of request, value, old value, date,parkID,status
+	 * 
+	 */
+	public void insertAllNewRequestsFromParkManager(ArrayList<?> managerRequests) {
 
 		String sql = "INSERT INTO g8gonature.request (changeName,newValue,oldValue,requestDate,parkId,requestStatus) values (?,?,?,?,?,?)";
 		String sql2 = "INSERT INTO g8gonature.discount (amount,startDate,endDate,parkId,status) values (?,?,?,?,?)";
@@ -65,21 +70,21 @@ public class RequestsQueries {
 		try {
 			query = conn.prepareStatement(sql); // handles updates
 
-			if (managerRequests.get(0) != null && !((String)managerRequests.get(0)).equals("")) {
+			if (managerRequests.get(0) != null && !((String) managerRequests.get(0)).equals("")) {
 
 				query.setString(1, "UPDATE MAX VISITORS");
 				query.setString(2, (String) managerRequests.get(0));
-			    query.setInt(3,getOldValFromParkParameters("maxVisitors",Integer.parseInt(parkID))); // edited
+				query.setInt(3, getOldValFromParkParameters("maxVisitors", Integer.parseInt(parkID))); // edited
 				query.setDate(4, date);
 				query.setInt(5, Integer.parseInt(parkID));
 				query.setString(6, OrderStatusName.PENDING.toString());
 				query.executeUpdate();
 			}
-			if (managerRequests.get(1) != null && !((String)managerRequests.get(1)).equals("")) {
+			if (managerRequests.get(1) != null && !((String) managerRequests.get(1)).equals("")) {
 
 				query.setString(1, "UPDATE ESTIMATED STAY TIME");
 				query.setString(2, (String) managerRequests.get(1));
-			    query.setInt(3,getOldValFromParkParameters("estimatedStayTime",Integer.parseInt(parkID)));// edited
+				query.setInt(3, getOldValFromParkParameters("estimatedStayTime", Integer.parseInt(parkID)));// edited
 				query.setDate(4, date);
 				query.setInt(5, Integer.parseInt(parkID));
 				query.setString(6, OrderStatusName.PENDING.toString());
@@ -87,11 +92,11 @@ public class RequestsQueries {
 
 			}
 
-			if (managerRequests.get(2) != null && !((String)managerRequests.get(2)).equals("")) {
+			if (managerRequests.get(2) != null && !((String) managerRequests.get(2)).equals("")) {
 
 				query.setString(1, "UPDATE GAP");
 				query.setString(2, (String) managerRequests.get(2));
-			    query.setInt(3,getOldValFromParkParameters("gapBetweenMaxAndCapacity",Integer.parseInt(parkID)));// edited
+				query.setInt(3, getOldValFromParkParameters("gapBetweenMaxAndCapacity", Integer.parseInt(parkID)));
 				query.setDate(4, date);
 				query.setInt(5, Integer.parseInt(parkID));
 				query.setString(6, OrderStatusName.PENDING.toString());
@@ -101,19 +106,18 @@ public class RequestsQueries {
 
 			query2 = conn.prepareStatement(sql2); /// handles discount
 
-			 if(managerRequests.get(3)!=null && managerRequests.get(4)!=null &&
-			 managerRequests.get(5)!=null && !((String)managerRequests.get(3)).equals("") && !((String)managerRequests.get(4)).equals("")&& !((String)managerRequests.get(5)).equals("")) {
+			if (managerRequests.get(3) != null && managerRequests.get(4) != null && managerRequests.get(5) != null
+					&& !((String) managerRequests.get(3)).equals("") && !((String) managerRequests.get(4)).equals("")
+					&& !((String) managerRequests.get(5)).equals("")) {
 
-			// System.out.println(managerRequests.get(3)); //
-			
-			query2.setString(1, (String) managerRequests.get(5));
-			query2.setString(2, (String) managerRequests.get(3)); //
-			query2.setString(3, (String) managerRequests.get(4)); //
-			query2.setInt(4, Integer.parseInt(parkID));
-			query2.setString(5, OrderStatusName.PENDING.toString());
+				query2.setString(1, (String) managerRequests.get(5));
+				query2.setString(2, (String) managerRequests.get(3)); //
+				query2.setString(3, (String) managerRequests.get(4)); //
+				query2.setInt(4, Integer.parseInt(parkID));
+				query2.setString(5, OrderStatusName.PENDING.toString());
 
-			query2.executeUpdate();
-			 }
+				query2.executeUpdate();
+			}
 
 		} catch (SQLException e) {
 			System.out.println("Could not execute checkIfConnected query");
@@ -122,7 +126,12 @@ public class RequestsQueries {
 
 	}
 
-	public ArrayList<?> GetRequestsFromDB() { /// ofir n
+	/**
+	 * this method gets data from request table and put it in a Request object.
+	 * 
+	 * @return ArrayList<Request>
+	 */
+	public ArrayList<?> GetRequestsFromDB() {
 		ArrayList<Request> requests = new ArrayList<>();
 		int i = 0;
 		String sql = "SELECT * FROM g8gonature.request ORDER BY requestId DESC";
@@ -132,8 +141,10 @@ public class RequestsQueries {
 			ResultSet res = query.executeQuery();
 
 			while (res.next()) {
-				requests.add(i, new Request(res.getInt(1), res.getString(2), res.getString(3), null, null, 0,
-						res.getString(7))); // id was changed to int from String
+				requests.add(i,
+						new Request(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), null,
+								res.getInt(6), // added parkId
+								res.getString(7)));
 				i++;
 			}
 		} catch (SQLException e) {
@@ -145,9 +156,13 @@ public class RequestsQueries {
 
 	}
 
-	// ofir n
+	/**
+	 * this method changes the status of a request according to Department Manager decision
+	 * 
+	 * @param bool       - 'true' to confirm, 'false' to cancel
+	 * @param requestsID
+	 */
 	public void changeStatusOfRequest(boolean bool, int requestsID) {
-
 		String sql;
 
 		if (bool)
@@ -169,8 +184,12 @@ public class RequestsQueries {
 
 	}
 
-	// ofir n
-
+	/**
+	 * this method changes the status of a discount according to Department Manager decision
+	 * 
+	 * @param bool        - 'true' to confirm, 'false' to cancel
+	 * @param discountsID
+	 */
 	public void changeStatusOfDiscount(boolean bool, int discountsID) {
 
 		String sql;
@@ -194,11 +213,15 @@ public class RequestsQueries {
 
 	}
 
-	// ofir n
+	/**
+	 * this method gets data from discount table and put it in a Discount object.
+	 * 
+	 * @return ArrayList<Discount>
+	 */
 	public ArrayList<?> GetDiscountsFromDB() {
 
 		ArrayList<Discount> discount = new ArrayList<>();
-		int i=0;
+		int i = 0;
 		String sql = "SELECT * FROM g8gonature.discount ORDER BY discountId DESC";
 		PreparedStatement query;
 		try {
@@ -206,7 +229,8 @@ public class RequestsQueries {
 			ResultSet res = query.executeQuery();
 
 			while (res.next()) {
-				discount.add(i, new Discount(res.getInt(1),res.getDouble(2),res.getString(3),res.getString(4),res.getInt(5),res.getString(6)));	// id was changed to int from String
+				discount.add(i, new Discount(res.getInt(1), res.getDouble(2), res.getString(3), res.getString(4),
+						res.getInt(5), res.getString(6))); // id was changed to int from String
 				i++;
 			}
 		} catch (SQLException e) {
@@ -216,8 +240,13 @@ public class RequestsQueries {
 
 		return discount;
 	}
-	
-	// ofir n
+
+	/**
+	 * 
+	 * @param nameOfColumn
+	 * @param parkID
+	 * @return value from park table
+	 */
 	public int getOldValFromParkParameters(String nameOfColumn, int parkID) {
 
 		String sql = "SELECT g8gonature.park." + nameOfColumn + " FROM g8gonature.park WHERE g8gonature.park.parkId="

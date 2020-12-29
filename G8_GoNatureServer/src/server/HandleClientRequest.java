@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import Util.sendToClient;
+
 import controllers.EmailControl;
 import controllers.sqlHandlers.EmployeeQueries;
 import controllers.sqlHandlers.OrderQueries;
@@ -24,8 +24,10 @@ import logic.Park;
 import logic.ServerToClientResponse;
 import logic.Subscriber;
 import logic.Traveler;
-import logic.report;
+import logic.Report;
 import ocsf.server.ConnectionToClient;
+import server.threads.NotifyWaitingList;
+import util.sendToClient;
 
 /**
  * HandleClientRequest handles all the requests from the clients.
@@ -456,7 +458,7 @@ public class HandleClientRequest implements Runnable {
 				}
 
 				if (request.getRequestType().equals(Request.GET_REPORTS)) {
-					ArrayList<report> reports = reportsQueries.getReports(request.getParameters());
+					ArrayList<Report> reports = reportsQueries.getReports(request.getParameters());
 					response = new ServerToClientResponse();
 					response.setResultSet(reports);
 					client.sendToClient(response);

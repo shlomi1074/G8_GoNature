@@ -2,14 +2,17 @@ package logic;
 
 import java.io.Serializable;
 
+/**
+ * This class represents a traveler
+ */
 @SuppressWarnings("serial")
-public class Traveler implements Serializable{
+public class Traveler implements Serializable {
 	private String travelerId;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String phoneNumber;
-	
+
 	public Traveler(String travelerId, String firstName, String lastName, String email, String phoneNumber) {
 		this.travelerId = travelerId;
 		this.firstName = firstName;
@@ -57,5 +60,5 @@ public class Traveler implements Serializable{
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+
 }

@@ -20,9 +20,9 @@
             <FontAwesomeIconView glyphName="PHONE" layoutX="23.0" layoutY="455.0" size="14.0" />
             <FontAwesomeIconView glyphName="PHONE" layoutX="22.0" layoutY="488.0" size="14.0" />
             <FontAwesomeIconView glyphName="ENVELOPE" layoutX="22.0" layoutY="522.0" size="14.0" text="" />
-            <ImageView fitHeight="160.0" fitWidth="184.0" layoutX="81.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="211.0" fitWidth="210.0" layoutX="57.0" layoutY="155.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resources/images/shortLogo.png" />
+                  <Image url="@../resources/images/LOGO%20(2).png" />
                </image>
             </ImageView>
          </children>

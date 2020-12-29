@@ -1,5 +1,9 @@
 package logic;
 
+/**
+ * this class represent a visit in the park
+ */
+
 public class Visit {
 	private String visitId;
 	private String travelerId;

@@ -3,6 +3,9 @@ package logic;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * This class is responsible for the system's finals
+ */
 public final class GoNatureFinals {
 
 	private GoNatureFinals() {

@@ -4,6 +4,10 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * OrderTb class represent an Order in the park.
+ * This class suited for table view.
+ */
 public class OrderTb {
 	private SimpleIntegerProperty orderId;
 	private SimpleStringProperty travelerId;

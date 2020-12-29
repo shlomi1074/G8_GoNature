@@ -5,6 +5,10 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+/**
+ * CustomAlerts is a customize Alerts
+ *
+ */
 public class CustomAlerts extends Alert {
 
 	final String errorIcon = "/resources/images/errorIcon.png";

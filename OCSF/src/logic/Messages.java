@@ -2,6 +2,9 @@ package logic;
 
 import java.io.Serializable;
 
+/**
+ * This class is responsible for the system's messages.
+ */
 @SuppressWarnings("serial")
 public class Messages implements Serializable {
 	private int messageId;

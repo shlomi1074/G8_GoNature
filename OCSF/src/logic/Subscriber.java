@@ -1,15 +1,17 @@
 package logic;
 
-
+/**
+ * This class represents a subscriber
+ */
 @SuppressWarnings("serial")
-public class Subscriber extends Traveler{
+public class Subscriber extends Traveler {
 	private int subscriberNumber;
 	private String creditCard;
 	private String subscriberType;
 	private int numberOfParticipants;
 
-	public Subscriber(int subscriberNumber, String travelerId, String firstName, String lastName, String email, String phoneNumber,
-			 String creditCard, String subscriberType, int numberOfParticipants) {
+	public Subscriber(int subscriberNumber, String travelerId, String firstName, String lastName, String email,
+			String phoneNumber, String creditCard, String subscriberType, int numberOfParticipants) {
 		super(travelerId, firstName, lastName, email, phoneNumber);
 		this.subscriberNumber = subscriberNumber;
 		this.creditCard = creditCard;

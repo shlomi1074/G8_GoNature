@@ -18,6 +18,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -173,7 +174,7 @@ public class CreateReportsController implements Initializable {
 			/* Block parent stage until child stage closes */
 			newStage.initModality(Modality.WINDOW_MODAL);
 			newStage.initOwner(thisStage);
-
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setTitle(screenTitle);
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);

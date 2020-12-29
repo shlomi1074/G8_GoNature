@@ -1,5 +1,8 @@
 package logic;
 
+/**
+ * Creditcard class represents a credit card of a traveler
+ */
 public class Creditcard {
 	private String subscriberId;
 	private String cardNumber;

@@ -29,6 +29,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import logic.GoNatureFinals;
 import logic.Order;
 import logic.OrderStatusName;
 import logic.OrderTb;
@@ -354,6 +356,7 @@ public class CasualVisitController implements Initializable {
 			Parent p = loader.getRoot();
 
 			newStage.setTitle("Order receipt");
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
 			newStage.show();

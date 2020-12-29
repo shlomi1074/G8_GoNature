@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
@@ -8,14 +9,21 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import Controllers.RequestControl;
 import alerts.CustomAlerts;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * This class control the request sending, that is used by Park Manager.
+ */
 public class UpdateParametersController implements Initializable {
 
 	@FXML
@@ -73,7 +81,7 @@ public class UpdateParametersController implements Initializable {
 	private JFXButton sendForApprovealButton;
 
 	@FXML
-	private void sendForApprovealButton() { // ofir n
+	private void sendForApprovealButton() {
 
 		ArrayList<String> arrayOfTextRequests = new ArrayList<>();
 
@@ -82,13 +90,13 @@ public class UpdateParametersController implements Initializable {
 		arrayOfTextRequests.add(gapTextField.getText());
 
 		if (discountStartDate.getValue() != null)
-			arrayOfTextRequests.add(discountStartDate.getValue().toString()); //
+			arrayOfTextRequests.add(discountStartDate.getValue().toString());
 
 		else
 			arrayOfTextRequests.add("NULL"); //
 
 		if (discountEndDate.getValue() != null)
-			arrayOfTextRequests.add(discountEndDate.getValue().toString()); //
+			arrayOfTextRequests.add(discountEndDate.getValue().toString());
 		else
 			arrayOfTextRequests.add("NULL"); //
 
@@ -107,6 +115,56 @@ public class UpdateParametersController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		accordion.setExpandedPane(maxVisitorsTP);
+		initDatePicker();
+		initTextFields();
+	}
+
+	private void initTextFields() {
+		discountPercentage.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				discountPercentage.setText(arg2.replaceAll("[^\\d]", ""));
+			}
+		});
+		gapTextField.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				gapTextField.setText(arg2.replaceAll("[^\\d]", ""));
+			}
+		});
+		newEsitimatedTIme.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				newEsitimatedTIme.setText(arg2.replaceAll("[^\\d]", ""));
+			}
+		});
+		newMaxVisitorsTextField.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				newMaxVisitorsTextField.setText(arg2.replaceAll("[^\\d]", ""));
+			}
+		});
+	}
+
+	private void initDatePicker() {
+		discountStartDate.setDayCellFactory(picker -> new DateCell() {
+			@Override
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				setDisable(empty || date.compareTo(today) < 0);
+			}
+		});
+
+		discountEndDate.setDayCellFactory(picker -> new DateCell() {
+			@Override
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+				LocalDate today = LocalDate.now();
+				setDisable(empty || date.compareTo(today) < 0);
+			}
+		});
+
 	}
 
 }

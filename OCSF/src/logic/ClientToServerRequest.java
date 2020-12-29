@@ -3,6 +3,9 @@ package logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * ClientToServerRequest class is a request from the client to the server
+ */
 @SuppressWarnings("serial")
 public class ClientToServerRequest<T> implements Serializable {
 

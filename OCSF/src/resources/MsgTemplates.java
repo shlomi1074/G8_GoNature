@@ -1,5 +1,9 @@
 package resources;
 
+/**
+ * This class holds messages templates 
+ *
+ */
 public class MsgTemplates {
 	
 	public static String [] orderConfirmation = {"Thank you for your order!", "Thanks you for your order!\n"

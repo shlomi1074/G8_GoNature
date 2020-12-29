@@ -9,7 +9,9 @@ import javafx.scene.control.Label;
 
 import logic.GoNatureFinals;
 
-
+/**
+ * Show's table of park prices and discounts.
+ */
 public class PricesController implements Initializable {
 	  @FXML
 	    private Label lblPrice;

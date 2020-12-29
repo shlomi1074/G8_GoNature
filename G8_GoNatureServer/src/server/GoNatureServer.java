@@ -7,6 +7,9 @@ import controllers.sqlHandlers.MysqlConnection;
 import gui.ServerGUIController;
 import javafx.scene.paint.Color;
 import ocsf.server.*;
+import server.threads.CancelOrders;
+import server.threads.NotifyTravelers;
+import server.threads.UpdateTravelerExitStatus;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -55,6 +58,9 @@ public class GoNatureServer extends AbstractServer {
 		/* Create exit status and park update thread */
 		UpdateTravelerExitStatus updateTravelerExitStatus = new UpdateTravelerExitStatus(mysqlconnection);
 		new Thread(updateTravelerExitStatus).start();
+		
+		CancelOrders cancelUnconfirmedOrders = new CancelOrders(mysqlconnection);
+		new Thread(cancelUnconfirmedOrders).start();
 	}
 
 	// Instance methods ************************************************

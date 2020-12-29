@@ -24,9 +24,9 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="225.0" prefWidth="225.0">
                            <children>
-                              <ImageView fx:id="goNatureLogo" fitHeight="178.0" fitWidth="184.0" onMouseClicked="#loadCardReaderSimulator" pickOnBounds="true">
+                              <ImageView fx:id="goNatureLogo" fitHeight="190.0" fitWidth="195.0" onMouseClicked="#loadCardReaderSimulator" pickOnBounds="true">
                                  <image>
-                                    <Image url="@../resources/images/newLogoV399.jpeg" />
+                                    <Image url="@../resources/images/LOGO%20(2).png" />
                                  </image>
                               </ImageView>
                            </children>

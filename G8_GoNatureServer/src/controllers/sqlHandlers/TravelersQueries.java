@@ -170,7 +170,12 @@ public class TravelersQueries {
 		return result > 0;
 	}
 
-	/* Alon 12.12.20 */
+	/**
+	 * This function checks if traveler is registered in the system with provided id and password.
+	 * 
+	 * @param Parameters The traveler's id and password
+	 * @return Traveler object
+	 */
 	public Employees isMemberExist(ArrayList<?> parameters) {
 		WorkerType wt;
 		Employees member = null;
@@ -215,6 +220,12 @@ public class TravelersQueries {
 		return member;
 	}
 
+	/**
+	 * This function removes the user from logedin table.
+	 * 
+	 * @param Parameters The user's id 
+	 *
+	 */
 	public void removeFromLoggedInTable(ArrayList<?> parameters) {
 		String sql = "DELETE FROM g8gonature.loggedin WHERE id = ? ";
 		PreparedStatement query;
@@ -227,9 +238,12 @@ public class TravelersQueries {
 			e.printStackTrace();
 		}
 	}
-	/* End of Alon's 12.12.20 edit */
 
-	/* Lior */
+	/**
+	 * This query deletes traveler from traveler table with given traveler ID
+	 * 
+	 * @param travelerId
+	 */
 	public void deleteFromTravelerTable(ArrayList<?> parameters) {
 		String sql = "DELETE FROM g8gonature.traveler WHERE travelerId = ?";
 		PreparedStatement query;
@@ -243,7 +257,11 @@ public class TravelersQueries {
 		}
 	}
 
-	/* Lior */
+	/**
+	 * This function inserts a new subscriber into subscriber table with given subscriber details
+	 * 
+	 * @param ArrayList with travelerId firstName lastName email phoneNumber creditCard subscriberType numberOfParticipants
+	 */
 	public void insertSubscriberToSubscriberTable(ArrayList<?> parameters) {
 		String sql = "INSERT INTO g8gonature.subscriber (travelerId, firstName, lastName, email, phoneNumber, creditCard, subscriberType, numberOfParticipants) values (?,?,?,?,?,?,?,?)";
 		PreparedStatement query;
@@ -264,7 +282,12 @@ public class TravelersQueries {
 		}
 	}
 
-	/* Lior */
+	/**
+	 * This function gets traveler/subscriber messages from messages table by traveler/subscriber's ID
+	 * 
+	 * @param toId traveler/subscriber's ID
+	 * @return ArrayList of messages
+	 */
 	public ArrayList<Messages> getMessages(ArrayList<?> parameters) {
 		ArrayList<Messages> messeges = new ArrayList<Messages>();
 		String sql = "SELECT * FROM g8gonature.messages WHERE toId = ? ORDER BY messageId DESC";
@@ -314,7 +337,11 @@ public class TravelersQueries {
 		return res == 1;
 	}
 
-	/* Lior */
+	/**
+	 * This function inserts new credit card into card table with given card details
+	 * 
+	 * @param ArrayList with subscriberId cardNumber cardExpiryDate CVC
+	 */
 	public void insertCardToCreditCardTable(ArrayList<?> parameters) {
 		String sql = "INSERT INTO g8gonature.creditcard (subscriberId, cardNumber, cardExpiryDate, CVC) values (?,?,?,?)";
 		PreparedStatement query;

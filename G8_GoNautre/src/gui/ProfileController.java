@@ -11,6 +11,9 @@ import javafx.scene.shape.Line;
 import logic.Subscriber;
 import logic.WorkerType;
 
+/**
+ * Gets user's data and displays it on the screen
+ */
 public class ProfileController implements Initializable {
 
 	@FXML
@@ -40,7 +43,7 @@ public class ProfileController implements Initializable {
 	@FXML
 	private Line line;
 	
-	private boolean isWorker;//Alon 12.13.20
+	private boolean isWorker;
 	
 
 	@Override
@@ -52,7 +55,10 @@ public class ProfileController implements Initializable {
 		loadInfo();
 	}
 	
-	//Alon 13.12.2020
+	/**
+	 * Setter for class variable isWorker
+	 * @param isWorker
+	 */
 	public void setWorker(boolean isWorker) {
 		this.isWorker = isWorker;
 	}
@@ -105,6 +111,5 @@ public class ProfileController implements Initializable {
 				profileAccountTypeLabel.setText(subscriber.getSubscriberType());
 		}
 	}
-	//Alon 13.12.2020 END
 
 }
