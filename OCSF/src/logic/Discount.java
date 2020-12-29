@@ -2,6 +2,9 @@ package logic;
 
 import java.io.Serializable;
 
+/**
+ * Discount class represent a discount in the park
+ */
 @SuppressWarnings("serial")
 public class Discount implements Serializable {
 	private int discountId;

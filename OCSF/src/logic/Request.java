@@ -2,6 +2,9 @@ package logic;
 
 import java.io.Serializable;
 
+/**
+ * This class represents a request for change in park parameter
+ */
 @SuppressWarnings("serial")
 public class Request implements Serializable { 
 	private int requestId;

@@ -3,8 +3,12 @@ package logic;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * This class represents a request for change in park parameter
+ * This class is suited for table view
+ */
 public class RequestTb {
-	private SimpleIntegerProperty requestId; //   private SimpleStringProperty requestId;  ofir n
+	private SimpleIntegerProperty requestId; // private SimpleStringProperty requestId; ofir n
 
 	private SimpleStringProperty changeName;
 	private SimpleStringProperty newValue;
@@ -13,11 +17,10 @@ public class RequestTb {
 	private SimpleIntegerProperty parkId;
 	private SimpleStringProperty requestStatus;
 
-	public RequestTb(int requestId, String changeName, String newValue,
-			String oldValue, String requestDate, int parkId,//ofir n
+	public RequestTb(int requestId, String changeName, String newValue, String oldValue, String requestDate, int parkId, // ofir n
 			String requestStatus) {
 		super();
-		this.requestId = new SimpleIntegerProperty(requestId); //ofir n
+		this.requestId = new SimpleIntegerProperty(requestId); // ofir n
 		this.changeName = new SimpleStringProperty(changeName);
 		this.newValue = new SimpleStringProperty(newValue);
 		this.oldValue = new SimpleStringProperty(oldValue);
@@ -26,7 +29,7 @@ public class RequestTb {
 		this.requestStatus = new SimpleStringProperty(requestStatus);
 	}
 
-	public int getRequestId() {//ofir n
+	public int getRequestId() {// ofir n
 		return requestId.get();
 	}
 

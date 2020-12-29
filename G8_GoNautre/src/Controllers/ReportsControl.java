@@ -5,7 +5,7 @@ import java.util.Arrays;
 import client.ChatClient;
 import client.ClientUI;
 import logic.ClientToServerRequest;
-import logic.report;
+import logic.Report;
 import logic.ClientToServerRequest.Request;
 
 @SuppressWarnings("unchecked")
@@ -17,11 +17,11 @@ public class ReportsControl {
 	 * @param r - the report to add to database
 	 * @return true on success, false otherwise
 	 */
-	public static boolean addReport(report r) {
+	public static boolean addReport(Report r) {
 
 		removeReport(r);
-		ClientToServerRequest<report> request = new ClientToServerRequest<>(Request.INSERT_REPORT,
-				new ArrayList<report>(Arrays.asList(r)));
+		ClientToServerRequest<Report> request = new ClientToServerRequest<>(Request.INSERT_REPORT,
+				new ArrayList<Report>(Arrays.asList(r)));
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.isResult();
 
@@ -32,9 +32,9 @@ public class ReportsControl {
 	 * 
 	 * @param r - the report to delete from the database
 	 */
-	private static void removeReport(report r) {
-		ClientToServerRequest<report> request = new ClientToServerRequest<>(Request.DELETE_REPORT,
-				new ArrayList<report>(Arrays.asList(r)));
+	private static void removeReport(Report r) {
+		ClientToServerRequest<Report> request = new ClientToServerRequest<>(Request.DELETE_REPORT,
+				new ArrayList<Report>(Arrays.asList(r)));
 		ClientUI.chat.accept(request);
 	}
 
@@ -121,7 +121,7 @@ public class ReportsControl {
 	 * 
 	 * @return ArrayList of reports
 	 */
-	public static ArrayList<report> getReports() {
+	public static ArrayList<Report> getReports() {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_REPORTS,
 				new ArrayList<String>(Arrays.asList()));
 		ClientUI.chat.accept(request);
@@ -143,7 +143,11 @@ public class ReportsControl {
 		return ChatClient.responseFromServer.getResultSet();
 	}
 
-	// ofir n
+	/**
+	 * this function shows the report for the specified type and month
+	 * 
+	 * @param arrayOfRequests
+	 */
 	public static void showReport(ArrayList<String> arrayOfRequests) {
 
 		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.MANAGER_REPORT, arrayOfRequests);
@@ -152,7 +156,11 @@ public class ReportsControl {
 
 	}
 
-	// ofir n
+	/**
+	 * adds new report with the specified type and month.
+	 * 
+	 * @param monthAndType
+	 */
 	public static void addNewReportToDB(ArrayList<String> monthAndType) {
 
 		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.ADD_REPORT_TO_DB, monthAndType);

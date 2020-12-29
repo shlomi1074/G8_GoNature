@@ -2,6 +2,9 @@ package logic;
 
 import java.io.Serializable;
 
+/**
+ * This class is responsible for the system's order
+ */
 @SuppressWarnings("serial")
 public class Order implements Serializable{
 	private int orderId;

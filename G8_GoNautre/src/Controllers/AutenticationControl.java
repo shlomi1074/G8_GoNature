@@ -160,7 +160,5 @@ public class AutenticationControl {
 				new ArrayList<String>(Arrays.asList(id)));
 		ClientUI.chat.accept(request);
 	}
-	
-	/*End of Alon's 12.12.20 edit*/
 
 }

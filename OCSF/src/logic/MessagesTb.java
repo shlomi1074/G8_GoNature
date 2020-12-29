@@ -3,6 +3,9 @@ package logic;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * This class is responsible for the system's messages tables.
+ */
 public class MessagesTb {
 	private SimpleIntegerProperty messageId;
 	private SimpleStringProperty toId;

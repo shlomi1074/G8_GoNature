@@ -149,10 +149,6 @@ public class OrderQueries {
 				+ "orderDate = ? AND orderTime BETWEEN ? AND ? AND orderStatus = ?";
 		ResultSet rs;
 		PreparedStatement query;
-		System.out.println("parkId = " + parkId);
-		System.out.println("date = " + date);
-		System.out.println("hourBeforeEstimated = " + hourBeforeEstimated);
-		System.out.println("hourAfterEstimated = " + hourAfterEstimated);
 
 		try {
 			query = conn.prepareStatement(sql);
@@ -214,7 +210,7 @@ public class OrderQueries {
 	}
 
 	/**
-	 * This function return orders in a specific park for a certion traveler.
+	 * This function return orders in a specific park for a certain traveler.
 	 * 
 	 * @param parameters - ArrayList containing: parkId, travelerId.
 	 * @return ArrayList of object Order containing matching orders.

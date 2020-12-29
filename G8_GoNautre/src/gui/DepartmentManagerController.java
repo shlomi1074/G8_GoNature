@@ -100,7 +100,7 @@ public class DepartmentManagerController implements Initializable {
 
 	@FXML
 	private void loadProfile() {
-		loader.setWorker(true); //Alon 12.13.20
+		loader.setWorker(true);
 		Pane view = loader.loadPaneToBorderPaneWithController("/gui/Profile.fxml", "profile");
 		borderPane.setCenter(view);
 	}

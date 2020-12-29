@@ -2,6 +2,9 @@ package logic;
 
 import java.io.Serializable;
 
+/**
+ * Park class represent a park in the system.
+ */
 @SuppressWarnings("serial")
 public class Park implements Serializable {
 	private int parkId;

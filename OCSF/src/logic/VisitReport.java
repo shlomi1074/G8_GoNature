@@ -2,16 +2,20 @@ package logic;
 
 import java.io.Serializable;
 
+/**
+ * this class contains the visit report for each visit
+ */
+
 @SuppressWarnings("serial")
-public class VisitReport implements Serializable{
+public class VisitReport implements Serializable {
 	private int sum;
 	private String data;
-	
+
 	public VisitReport(int sum, String data) {
 		this.sum = sum;
 		this.data = data;
 	}
-	
+
 	public int getSum() {
 		return sum;
 	}
@@ -27,6 +31,5 @@ public class VisitReport implements Serializable{
 	public void setData(String data) {
 		this.data = data;
 	}
-	
-	
+
 }

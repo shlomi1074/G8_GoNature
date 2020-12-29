@@ -22,12 +22,13 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logic.GoNatureFinals;
-import logic.report;
-import logic.reportTb;
+import logic.Report;
+import logic.ReportTb;
 
 /**
  * Gets all reports from reports table 
@@ -37,28 +38,28 @@ import logic.reportTb;
  */
 public class DepartmentManagerReportsController implements Initializable {
 
-	ObservableList<reportTb> observable = FXCollections.observableArrayList(); /* Lior */
+	ObservableList<ReportTb> observable = FXCollections.observableArrayList(); /* Lior */
 
 	@FXML
 	private Label headerLabel;
 
 	@FXML
-	private TableView<reportTb> ReportsTableView;// Lior added id to table in fxml
+	private TableView<ReportTb> ReportsTableView;// Lior added id to table in fxml
 
 	@FXML
-	private TableColumn<reportTb, Integer> reportIDCol;
+	private TableColumn<ReportTb, Integer> reportIDCol;
 
 	@FXML
-	private TableColumn<reportTb, String> reportTypeCol;
+	private TableColumn<ReportTb, String> reportTypeCol;
 
 	@FXML
-	private TableColumn<reportTb, Integer> parkIDCol;
+	private TableColumn<ReportTb, Integer> parkIDCol;
 
 	@FXML
-	private TableColumn<reportTb, Integer> monthCol;
+	private TableColumn<ReportTb, Integer> monthCol;
 
 	@FXML
-	private TableColumn<reportTb, String> commentCol;
+	private TableColumn<ReportTb, String> commentCol;
 
 	@FXML
 	private JFXButton visitReportBtn;
@@ -82,10 +83,10 @@ public class DepartmentManagerReportsController implements Initializable {
 	private void initTabelView() {
 		ReportsTableView.setTooltip(new Tooltip("Double click on a row to open the report"));
 		ReportsTableView.setRowFactory(tv -> {
-			TableRow<reportTb> row = new TableRow<>();
+			TableRow<ReportTb> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
 				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-					reportTb clickedRow = row.getItem();
+					ReportTb clickedRow = row.getItem();
 					String name = clickedRow.getReportType();
 					int month = clickedRow.getMonth();
 					int parkID = clickedRow.getParkID();
@@ -139,7 +140,7 @@ public class DepartmentManagerReportsController implements Initializable {
 			/* Block parent stage until child stage closes */
 			newStage.initModality(Modality.WINDOW_MODAL);
 			newStage.initOwner(thisStage);
-
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setTitle(screenTitle);
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);
@@ -174,33 +175,33 @@ public class DepartmentManagerReportsController implements Initializable {
 
 	/* Here we need to fill the table view from database */
 	private void loadTabelView() {
-		ArrayList<report> reports = ReportsControl.getReports();
-		ArrayList<reportTb> tbReports = convertreportsToTeportTb(reports);
+		ArrayList<Report> reports = ReportsControl.getReports();
+		ArrayList<ReportTb> tbReports = convertreportsToTeportTb(reports);
 		init(tbReports);
 		ReportsTableView.setItems(getReports(tbReports));
 	}
 
 	/* Here we convert reports from database To TeportTb */
-	private static ArrayList<reportTb> convertreportsToTeportTb(ArrayList<report> reports) {
-		ArrayList<reportTb> tbReports = new ArrayList<reportTb>();
-		for (report report : reports) {
-			reportTb tbReport = new reportTb(report);
+	private static ArrayList<ReportTb> convertreportsToTeportTb(ArrayList<Report> reports) {
+		ArrayList<ReportTb> tbReports = new ArrayList<ReportTb>();
+		for (Report report : reports) {
+			ReportTb tbReport = new ReportTb(report);
 			tbReports.add(tbReport);
 		}
 		return tbReports;
 	}
 
-	private void init(ArrayList<reportTb> tbReports) {
-		reportIDCol.setCellValueFactory(new PropertyValueFactory<reportTb, Integer>("reportID"));
-		reportTypeCol.setCellValueFactory(new PropertyValueFactory<reportTb, String>("reportType"));
-		parkIDCol.setCellValueFactory(new PropertyValueFactory<reportTb, Integer>("parkID"));
-		monthCol.setCellValueFactory(new PropertyValueFactory<reportTb, Integer>("month"));
-		commentCol.setCellValueFactory(new PropertyValueFactory<reportTb, String>("comment"));
+	private void init(ArrayList<ReportTb> tbReports) {
+		reportIDCol.setCellValueFactory(new PropertyValueFactory<ReportTb, Integer>("reportID"));
+		reportTypeCol.setCellValueFactory(new PropertyValueFactory<ReportTb, String>("reportType"));
+		parkIDCol.setCellValueFactory(new PropertyValueFactory<ReportTb, Integer>("parkID"));
+		monthCol.setCellValueFactory(new PropertyValueFactory<ReportTb, Integer>("month"));
+		commentCol.setCellValueFactory(new PropertyValueFactory<ReportTb, String>("comment"));
 	}
 
-	private ObservableList<reportTb> getReports(ArrayList<reportTb> tbReports) {
+	private ObservableList<ReportTb> getReports(ArrayList<ReportTb> tbReports) {
 		ReportsTableView.getItems().clear();
-		for (reportTb report : tbReports) {
+		for (ReportTb report : tbReports) {
 			observable.add(report);
 		}
 		return observable;
@@ -236,7 +237,7 @@ public class DepartmentManagerReportsController implements Initializable {
 			/* Block parent stage until child stage closes */
 			newStage.initModality(Modality.WINDOW_MODAL);
 			newStage.initOwner(thisStage);
-
+			newStage.getIcons().add(new Image(GoNatureFinals.APP_ICON));
 			newStage.setTitle(screenTitle);
 			newStage.setScene(new Scene(p));
 			newStage.setResizable(false);

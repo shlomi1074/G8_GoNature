@@ -378,6 +378,7 @@ public class OrderVisitController implements Initializable {
 		}
 		// Number of Days to add
 		c.add(Calendar.DAY_OF_MONTH, 1);
+		c.add(Calendar.HOUR_OF_DAY, -1); //new
 		currentDateAndTime = sdf.format(c.getTime());
 		Date orderDate = null;
 		Date dateOfTommorow = null;

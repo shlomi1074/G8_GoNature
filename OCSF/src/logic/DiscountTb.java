@@ -4,6 +4,10 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * DiscountTb represent a discount in the park.
+ * This class suited for table view
+ */
 public class DiscountTb {
 	private SimpleStringProperty discountId;
 	private SimpleDoubleProperty amount;

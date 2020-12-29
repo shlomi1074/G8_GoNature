@@ -2,6 +2,9 @@ package logic;
 
 import java.io.Serializable;
 
+/**
+ * This class represents employee in the park
+ */
 @SuppressWarnings("serial")
 public class Employees implements Serializable{
 	private int employeeId;

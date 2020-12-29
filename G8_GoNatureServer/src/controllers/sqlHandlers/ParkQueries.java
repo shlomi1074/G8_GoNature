@@ -254,10 +254,13 @@ public class ParkQueries {
 
 	}
 
-	// ofir n
+	/**
+	 * This function UPDATE the park parameters in the database
+	 * 
+	 * @param parameters the new park parameters
+	 */
 	public void changeParkParametersInDB(ArrayList<?> parameters) {
 
-		System.out.println("1");
 		PreparedStatement query;
 		String typeOfRequest = null;
 		String sql;
@@ -278,6 +281,8 @@ public class ParkQueries {
 			query = conn.prepareStatement(sql);
 			query.setInt(1, Integer.parseInt((String) parameters.get(1)));
 			query.executeUpdate();
+
+			System.out.println("changeParkParametersInDB Success");
 
 		}
 

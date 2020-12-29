@@ -107,7 +107,7 @@ public class TravelerScreenController implements Initializable {
 
 	@FXML
 	private void loadProfile() {
-		loader.setWorker(false); // Alon 12.13.20
+		loader.setWorker(false);
 		Pane view = loader.loadPaneToBorderPaneWithController("/gui/Profile.fxml", "profile");
 		borderPane.setCenter(view);
 	}

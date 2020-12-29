@@ -15,14 +15,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableView.TableViewSelectionModel;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import logic.Discount;
 import logic.OrderStatusName;
 import logic.Request;
 
+/**
+ * this class handles the control of the request from the Department Manager side,
+ * displays necessary details, and enables confirming or canceling requests.
+ */
 @SuppressWarnings("unchecked")
 public class ViewRequestsForChangesController implements Initializable {
 	@FXML
@@ -33,9 +37,9 @@ public class ViewRequestsForChangesController implements Initializable {
 
 	@FXML
 	private TableColumn<Request, Integer> parametersIdCol;
-	
-    @FXML
-    private TableColumn<Request, String> parkIDCol;
+
+	@FXML
+	private TableColumn<Request, String> parkIDCol;
 
 	@FXML
 	private TableColumn<Request, String> typeCol;
@@ -87,8 +91,10 @@ public class ViewRequestsForChangesController implements Initializable {
 	void discountTableClicked() {
 
 		tableChosen = "discount";
-		TableViewSelectionModel<Discount> discount = discountTable.getSelectionModel();
-		selectedRequestLabel.setText("Discount " + discount.getSelectedItem().getAmount());
+		if (discountTable.getSelectionModel().getSelectedItem() != null) {
+			TableViewSelectionModel<Discount> discount = discountTable.getSelectionModel();
+			selectedRequestLabel.setText("Discount " + discount.getSelectedItem().getAmount());
+		}
 
 	}
 
@@ -96,10 +102,11 @@ public class ViewRequestsForChangesController implements Initializable {
 	void requestTableClicked() {
 
 		tableChosen = "request";
-
-		TableViewSelectionModel<Request> request = parametersTable.getSelectionModel();
-		selectedRequestLabel.setText(" Change Request " + request.getSelectedItem().getChangeName() + " to "
-				+ request.getSelectedItem().getNewValue());
+		if (parametersTable.getSelectionModel().getSelectedItem() != null) {
+			TableViewSelectionModel<Request> request = parametersTable.getSelectionModel();
+			selectedRequestLabel.setText(" Change Request " + request.getSelectedItem().getChangeName() + " to "
+					+ request.getSelectedItem().getNewValue());
+		}
 
 	}
 
@@ -122,13 +129,16 @@ public class ViewRequestsForChangesController implements Initializable {
 				changeParkParameterList.add(String.valueOf(r.getParkId()));
 				new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent",
 						"Request" + r.getChangeName() + " was confirmed with value" + r.getNewValue()).showAndWait();
-			} else {
+
+				ParkControl.changeParkParameters(changeParkParameterList);
+
+			}
+
+			else {
 				new CustomAlerts(AlertType.ERROR, "Sent", "Sent", "cannot change status that is not 'pending'")
 						.showAndWait();
 
 			}
-
-			ParkControl.changeParkParameters(changeParkParameterList);
 
 		}
 
@@ -154,10 +164,11 @@ public class ViewRequestsForChangesController implements Initializable {
 	void loadChanges() {
 		parametersTable.setTooltip(new Tooltip("click on a row to select it"));
 		discountTable.setTooltip(new Tooltip("click on a row to select it"));
-		
+
 		RequestControl.viewcurrentRequests();
 
 		parametersIdCol.setCellValueFactory(new PropertyValueFactory<>("requestId"));
+		parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkId"));
 		typeCol.setCellValueFactory(new PropertyValueFactory<>("changeName"));
 		parametersStatusCol.setCellValueFactory(new PropertyValueFactory<>("requestStatus"));
 		newValueCol.setCellValueFactory(new PropertyValueFactory<>("newValue"));
@@ -165,7 +176,7 @@ public class ViewRequestsForChangesController implements Initializable {
 		oldValueCol.setCellValueFactory(new PropertyValueFactory<>("oldValue"));
 
 		ObservableList<Request> requests = FXCollections.observableArrayList();
-		requests.addAll(ChatClient.requestsWaitingForApproval);
+		requests.addAll(ChatClient.responseFromServer.getResultSet());
 
 		parametersTable.setItems(requests);
 

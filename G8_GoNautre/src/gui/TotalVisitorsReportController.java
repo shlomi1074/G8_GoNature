@@ -16,7 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import logic.GoNatureFinals;
-import logic.report;
+import logic.Report;
 
 public class TotalVisitorsReportController implements Initializable {
 
@@ -73,7 +73,7 @@ public class TotalVisitorsReportController implements Initializable {
 	@FXML
 	private void sendToManagerBtn() {
 
-		report r = new report(0, "Total Visitors", parkID, monthNumber, commentTextArea.getText());
+		Report r = new Report(0, "Total Visitors", parkID, monthNumber, commentTextArea.getText());
 		if (ReportsControl.addReport(r)) {
 			new CustomAlerts(AlertType.INFORMATION, "Success", "Success",
 					"Total Visitors report has been sent to department manager.").showAndWait();

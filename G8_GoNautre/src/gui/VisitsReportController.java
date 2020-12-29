@@ -21,6 +21,10 @@ import javafx.util.Duration;
 import logic.GoNatureFinals;
 import logic.VisitReport;
 
+/**
+ * Gets month that picked from previous page.
+ * Loads all visitors stay time and entrance time into a line chart.
+ */
 public class VisitsReportController implements Initializable {
 
 	@FXML
