@@ -162,6 +162,14 @@ public class RescheduleController implements Initializable {
 		Calendar c = Calendar.getInstance();
 		Order tempOrder = order;
 		String originalDate = order.getOrderDate();
+		try {
+			c.setTime(sdf.parse(originalDate));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// Number of Days to add
+		c.add(Calendar.DAY_OF_MONTH, 1);
+		originalDate = sdf.format(c.getTime());
 		String currentTime = "8:00";
 		String currentDate = originalDate;
 		int counter = 0;

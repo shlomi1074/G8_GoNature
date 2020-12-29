@@ -30,7 +30,7 @@ public class OrderQueries {
 	 */
 	public ArrayList<Order> getOrderBetweenTimes(ArrayList<?> parameters) {
 		ArrayList<Order> orders = new ArrayList<Order>();
-		String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? and orderDate = ? and orderTime >= ? and orderTime <= ? AND (orderStatus = ? OR orderStatus = ?)";
+		String sql = "SELECT * FROM g8gonature.order WHERE parkId = ? and orderDate = ? and orderTime >= ? and orderTime <= ? AND (orderStatus = ? OR orderStatus = ? OR orderStatus = ? OR orderStatus = ?)";
 		PreparedStatement query;
 		try {
 			query = conn.prepareStatement(sql);
@@ -40,6 +40,8 @@ public class OrderQueries {
 			query.setString(4, (String) parameters.get(3));
 			query.setString(5, OrderStatusName.PENDING.toString());
 			query.setString(6, OrderStatusName.CONFIRMED.toString());
+			query.setString(7, OrderStatusName.PENDING_EMAIL_SENT.toString());
+			query.setString(8, OrderStatusName.WAITING_HAS_SPOT.toString());
 			ResultSet res = query.executeQuery();
 
 			while (res.next())
