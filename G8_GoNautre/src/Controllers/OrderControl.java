@@ -17,6 +17,9 @@ import logic.OrderTb;
 import logic.Park;
 import logic.Traveler;
 
+/**
+ * OrderControl class handles all the order related functionalities
+ */
 @SuppressWarnings("unchecked")
 public class OrderControl {
 

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import logic.Order;
 import logic.OrderStatusName;
 import logic.VisitReport;
 import logic.Report;
@@ -344,24 +345,107 @@ public class ReportsQueries {
 	}
 
 	/**
-	 * this method calculates the number of visitors for each type and return it in a list.
+	 * This function returns all the orders in a given month which are Solo visit and the traveler is not subscriber
 	 * 
-	 * @param month
-	 * @return The number of visitors for each type
+	 * @param month  the month of the orders
+	 * @param parkID
+	 * @return ArrayList of order object
 	 */
-	public ArrayList<?> createNumberOfVisitorsReport(int month) { // individual visitors (solo,familty) , orginized (Group) , subscribers.
-		ArrayList<Integer> numberOfVisitorsPerType = new ArrayList<>();
+	public ArrayList<Order> getSolosOrdersVisitorsReport(int month, int parkID) {
+		ArrayList<Order> orders = new ArrayList<Order>();
 
-		String sql1 = "SELECT SUM(numberOfParticipants) FROM g8gonature.order WHERE month(orderDate)=" + month
+		String sql = "SELECT * FROM g8gonature.order WHERE month(orderDate)=" + month + " AND parkId =" + parkID
 				+ " AND orderType='Solo Visit' AND g8gonature.order.travelerId NOT IN"
 				+ "(  SELECT g8gonature.subscriber.travelerId   FROM  g8gonature.subscriber) AND orderStatus='Visit completed'";
 
-		String sql2 = "SELECT SUM(numberOfParticipants) FROM g8gonature.order WHERE month(orderDate)=" + month
+		try {
+			PreparedStatement query = conn.prepareStatement(sql);
+			ResultSet res = query.executeQuery();
+
+			while (res.next()) {
+				orders.add(new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4), res.getString(5),
+						res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9), res.getString(10)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return orders;
+	}
+
+	/**
+	 * This function returns all the orders in a given month which made by Subscribers and the traveler is not subscriber
+	 * 
+	 * @param month the month of the orders
+	 * @return ArrayList of order object
+	 */
+	public ArrayList<Order> getSubscribersOrdersVisitorsReport(int month, int parkID) {
+		ArrayList<Order> orders = new ArrayList<Order>();
+
+		String sql = "SELECT * FROM g8gonature.order WHERE month(orderDate)=" + month + " AND parkId =" + parkID
 				+ " AND (orderType='Family Visit' OR orderType='Solo Visit') AND g8gonature.order.travelerId IN "
-				+ "(  SELECT g8gonature.subscriber.travelerId   FROM  g8gonature.subscriber) AND orderStatus = 'Visit completed';";
+				+ "(  SELECT g8gonature.subscriber.travelerId   FROM  g8gonature.subscriber) AND orderStatus = 'Visit completed'";
+
+		try {
+			PreparedStatement query = conn.prepareStatement(sql);
+			ResultSet res = query.executeQuery();
+
+			while (res.next()) {
+				orders.add(new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4), res.getString(5),
+						res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9), res.getString(10)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return orders;
+	}
+
+	/**
+	 * This function returns all the orders in a given month which are Group visit and the traveler is not subscriber
+	 * 
+	 * @param month the month of the orders
+	 * @return ArrayList of order object
+	 */
+	public ArrayList<Order> getGroupsOrdersVisitorsReport(int month, int parkID) {
+		ArrayList<Order> orders = new ArrayList<Order>();
+
+		String sql = "SELECT * FROM g8gonature.order WHERE month(orderDate)=" + month + " AND parkId =" + parkID
+				+ " AND orderType='Group Visit' AND orderStatus = 'Visit completed'";
+
+		try {
+			PreparedStatement query = conn.prepareStatement(sql);
+			ResultSet res = query.executeQuery();
+
+			while (res.next()) {
+				orders.add(new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4), res.getString(5),
+						res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9), res.getString(10)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return orders;
+	}
+
+	/**
+	 * this method calculates the number of visitors for each type and return it in a list.
+	 * 
+	 * @param month
+	 * @param parkID
+	 * @return The number of visitors for each type
+	 */
+	public ArrayList<?> createNumberOfVisitorsReport(int month, int parkID) { // individual visitors (solo,familty) , orginized (Group) , subscribers.
+		ArrayList<Integer> numberOfVisitorsPerType = new ArrayList<>();
+
+		String sql1 = "SELECT SUM(numberOfParticipants) FROM g8gonature.order WHERE month(orderDate)=" + month
+				+ " AND parkId =" + parkID + " AND orderType='Solo Visit' AND g8gonature.order.travelerId NOT IN"
+				+ "(  SELECT g8gonature.subscriber.travelerId   FROM  g8gonature.subscriber) AND orderStatus='Visit completed'";
+
+		String sql2 = "SELECT SUM(numberOfParticipants) FROM g8gonature.order WHERE month(orderDate)=" + month
+				+ " AND parkId =" + parkID
+				+ " AND (orderType='Family Visit' OR orderType='Solo Visit') AND g8gonature.order.travelerId IN "
+				+ "(  SELECT g8gonature.subscriber.travelerId   FROM  g8gonature.subscriber) AND orderStatus = 'Visit completed'";
 
 		String sql3 = "SELECT SUM(numberOfParticipants) FROM g8gonature.order WHERE month(orderDate)=" + month
-				+ " AND orderType='Group Visit' AND orderStatus = 'Visit completed'";
+				+ " AND parkId =" + parkID + " AND orderType='Group Visit' AND orderStatus = 'Visit completed'";
 
 		PreparedStatement query;
 
@@ -370,30 +454,24 @@ public class ReportsQueries {
 			ResultSet res = query.executeQuery();
 
 			if (res.next()) {
-				System.out.println(res.getInt(1));
 				numberOfVisitorsPerType.add(res.getInt(1));
-			}
-			else
+			} else
 				numberOfVisitorsPerType.add(0);
 
 			query = conn.prepareStatement(sql2);
 			res = query.executeQuery();
 
 			if (res.next()) {
-				System.out.println(res.getInt(1));
 				numberOfVisitorsPerType.add(res.getInt(1));
-			}
-			else
+			} else
 				numberOfVisitorsPerType.add(0);
 
 			query = conn.prepareStatement(sql3);
 			res = query.executeQuery();
 
 			if (res.next()) {
-				System.out.println(res.getInt(1));
 				numberOfVisitorsPerType.add(res.getInt(1));
-			}
-			else
+			} else
 				numberOfVisitorsPerType.add(0);
 
 		} catch (SQLException e) {
@@ -407,24 +485,24 @@ public class ReportsQueries {
 	 * this method calculates the income from visitors for each type of visitor, and return it in a list.
 	 * 
 	 * @param month
+	 * @param parkID
 	 * @return The income from visitors for each type of visitor
 	 */
-	public ArrayList<?> createIncomeReport(int month) { // individual visitors (solo,familty) , orginized (Group) , subscribers.
-		int solo = 0, family = 0, group = 0, subscriber = 0;
+	public ArrayList<?> createIncomeReport(int month, int parkID) { // individual visitors (solo,familty) , orginized (Group) , subscribers.
 
 		ArrayList<Integer> totalIncomePerType = new ArrayList<>();
 
-		String sql1 = "SELECT g8gonature.order.price FROM g8gonature.order WHERE month(orderDate)=" + month
-				+ " AND orderType='Solo Visit' AND g8gonature.order.travelerId NOT IN (  SELECT g8gonature.subscriber.travelerId   FROM  g8gonature.subscriber)";
+		String sql1 = "SELECT SUM(price) FROM g8gonature.order WHERE month(orderDate)=" + month + " AND parkId ="
+				+ parkID + " AND orderType='Solo Visit' AND g8gonature.order.travelerId NOT IN"
+				+ "(  SELECT g8gonature.subscriber.travelerId   FROM  g8gonature.subscriber) AND orderStatus='Visit completed'";
 
-		String sql2 = "SELECT g8gonature.order.price FROM g8gonature.order WHERE month(orderDate)=" + month
-				+ " AND orderType='Family Visit' AND g8gonature.order.travelerId NOT IN (  SELECT g8gonature.subscriber.travelerId   FROM  g8gonature.subscriber)";
-		String sql3 = "SELECT g8gonature.order.price FROM g8gonature.order WHERE month(orderDate)=" + month
-				+ " AND orderType='Group Visit' AND g8gonature.order.travelerId NOT IN (  SELECT g8gonature.subscriber.travelerId   FROM  g8gonature.subscriber)";
+		String sql2 = "SELECT SUM(price) FROM g8gonature.order WHERE month(orderDate)=" + month + " AND parkId ="
+				+ parkID
+				+ " AND (orderType='Family Visit' OR orderType='Solo Visit') AND g8gonature.order.travelerId IN "
+				+ "(  SELECT g8gonature.subscriber.travelerId   FROM  g8gonature.subscriber) AND orderStatus = 'Visit completed'";
 
-		String sql4 = "SELECT g8gonature.order.price " + "FROM g8gonature.order,g8gonature.subscriber "
-				+ "WHERE month(orderDate)=" + month
-				+ " AND g8gonature.order.travelerId=g8gonature.subscriber.travelerId";
+		String sql3 = "SELECT SUM(price) FROM g8gonature.order WHERE month(orderDate)=" + month + " AND parkId ="
+				+ parkID + " AND orderType='Group Visit' AND orderStatus = 'Visit completed'";
 
 		PreparedStatement query;
 
@@ -432,31 +510,26 @@ public class ReportsQueries {
 			query = conn.prepareStatement(sql1);
 			ResultSet res = query.executeQuery();
 
-			while (res.next())
-				solo = solo + res.getInt(1);
+			if (res.next()) {
+				totalIncomePerType.add(res.getInt(1));
+			} else
+				totalIncomePerType.add(0);
 
 			query = conn.prepareStatement(sql2);
 			res = query.executeQuery();
 
-			while (res.next())
-				family = family + res.getInt(1);
+			if (res.next()) {
+				totalIncomePerType.add(res.getInt(1));
+			} else
+				totalIncomePerType.add(0);
 
 			query = conn.prepareStatement(sql3);
 			res = query.executeQuery();
 
-			while (res.next())
-				group = group + res.getInt(1);
-
-			query = conn.prepareStatement(sql4);
-			res = query.executeQuery();
-
-			while (res.next())
-				subscriber = subscriber + res.getInt(1);
-
-			totalIncomePerType.add(solo + family);// total
-			totalIncomePerType.add(group);// total
-			totalIncomePerType.add(subscriber);// total
-			totalIncomePerType.add(solo + family + group + subscriber);// total
+			if (res.next()) {
+				totalIncomePerType.add(res.getInt(1));
+			} else
+				totalIncomePerType.add(0);
 
 		} catch (SQLException e) {
 			e.printStackTrace();

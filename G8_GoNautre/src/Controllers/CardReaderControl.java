@@ -11,7 +11,7 @@ import logic.OrderStatusName;
 import logic.Park;
 
 /**
- * CardReaderControl class is the controller of every think that is related to card reader simulator.
+ * CardReaderControl class is the controller of every thing that is related to card reader simulator.
  * It's provides the functionalities that the card reader needs to have.
  * The Gui interacts with this controller to active those functionalities.
  *

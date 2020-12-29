@@ -7,7 +7,11 @@ import client.ClientUI;
 import logic.ClientToServerRequest;
 import logic.Report;
 import logic.ClientToServerRequest.Request;
+import logic.Order;
 
+/**
+ * ReportsControl class handles all the report related functionalities
+ */
 @SuppressWarnings("unchecked")
 public class ReportsControl {
 
@@ -179,6 +183,47 @@ public class ReportsControl {
 	public static ArrayList<Integer> getParkPendingDatePassed(int parkID, int month) {
 		ClientToServerRequest<Integer> request = new ClientToServerRequest<>(Request.GET_PENDING_AFTER_DATE_PASSED,
 				new ArrayList<Integer>(Arrays.asList(parkID, month)));
+		ClientUI.chat.accept(request);
+		return ChatClient.responseFromServer.getResultSet();
+	}
+
+	/**
+	 * This function returns all the orders in a given month which are Solo visit and the traveler is not subscriber
+	 * 
+	 * @param parkID
+	 * 
+	 * @param month  the month of the orders
+	 * @return ArrayList of order object
+	 */
+	public static ArrayList<Order> getSolosOrdersVisitorsReport(int monthNumber, int parkID) {
+		ClientToServerRequest<Integer> request = new ClientToServerRequest<>(Request.GET_SOLOS_ORDERS,
+				new ArrayList<Integer>(Arrays.asList(monthNumber, parkID)));
+		ClientUI.chat.accept(request);
+		return ChatClient.responseFromServer.getResultSet();
+	}
+
+	/**
+	 * This function returns all the orders in a given month which made by Subscribers and the traveler is not subscriber
+	 * 
+	 * @param month the month of the orders
+	 * @return ArrayList of order object
+	 */
+	public static ArrayList<Order> getSubscribersOrdersVisitorsReport(int monthNumber, int parkID) {
+		ClientToServerRequest<Integer> request = new ClientToServerRequest<>(Request.GET_SUBSCRIBERS_ORDERS,
+				new ArrayList<Integer>(Arrays.asList(monthNumber, parkID)));
+		ClientUI.chat.accept(request);
+		return ChatClient.responseFromServer.getResultSet();
+	}
+
+	/**
+	 * This function returns all the orders in a given month which are Group visit and the traveler is not subscriber
+	 * 
+	 * @param month the month of the orders
+	 * @return ArrayList of order object
+	 */
+	public static ArrayList<Order> getGroupOrdersVisitorsReport(int monthNumber, int parkID) {
+		ClientToServerRequest<Integer> request = new ClientToServerRequest<>(Request.GET_GROUPS_ORDERS,
+				new ArrayList<Integer>(Arrays.asList(monthNumber, parkID)));
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.getResultSet();
 	}

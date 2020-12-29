@@ -60,7 +60,7 @@ public class VisitsReportController implements Initializable {
 
 	private void init() {
 		lblMonth.setText(GoNatureFinals.MONTHS[monthNumber]); // set the name of the month
-		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>() {
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				fillEntranceTimeChart();
