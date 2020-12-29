@@ -351,14 +351,13 @@ public class HandleClientRequest implements Runnable {
 
 				if (request.getRequestType().equals(Request.MANAGER_REPORT)) {
 					response = new ServerToClientResponse();
-
+					int month = Integer.parseInt((String) request.getParameters().get(0));
+					int parkID = Integer.parseInt((String) request.getParameters().get(2));
 					if (request.getParameters().get(1).equals("Total Visitors"))
-						response.setResultSet(reportsQueries.createNumberOfVisitorsReport(
-								Integer.parseInt((String) request.getParameters().get(0))));
+						response.setResultSet(reportsQueries.createNumberOfVisitorsReport(month, parkID));
 
 					if (request.getParameters().get(1).equals("Income"))
-						response.setResultSet(reportsQueries
-								.createIncomeReport(Integer.parseInt((String) request.getParameters().get(0))));
+						response.setResultSet(reportsQueries.createIncomeReport(month, parkID));
 
 					client.sendToClient(response);
 
@@ -512,6 +511,28 @@ public class HandleClientRequest implements Runnable {
 					boolean result = orderQueries.UpdatePriceForOrder(request.getParameters());
 					response = new ServerToClientResponse();
 					response.setResult(result);
+					client.sendToClient(response);
+				}
+
+				if (request.getRequestType().equals(Request.GET_SOLOS_ORDERS)) {
+					int month = (int) request.getParameters().get(0);
+					int parkID = (int) request.getParameters().get(1);
+					response = new ServerToClientResponse();
+					response.setResultSet(reportsQueries.getSolosOrdersVisitorsReport(month, parkID));
+					client.sendToClient(response);
+				}
+				if (request.getRequestType().equals(Request.GET_SUBSCRIBERS_ORDERS)) {
+					int month = (int) request.getParameters().get(0);
+					int parkID = (int) request.getParameters().get(1);
+					response = new ServerToClientResponse();
+					response.setResultSet(reportsQueries.getSubscribersOrdersVisitorsReport(month, parkID));
+					client.sendToClient(response);
+				}
+				if (request.getRequestType().equals(Request.GET_GROUPS_ORDERS)) {
+					int month = (int) request.getParameters().get(0);
+					int parkID = (int) request.getParameters().get(1);
+					response = new ServerToClientResponse();
+					response.setResultSet(reportsQueries.getGroupsOrdersVisitorsReport(month, parkID));
 					client.sendToClient(response);
 				}
 

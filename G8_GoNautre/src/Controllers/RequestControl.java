@@ -5,6 +5,9 @@ import client.ClientUI;
 import logic.ClientToServerRequest;
 import logic.ClientToServerRequest.Request;
 
+/**
+ * RequestControl class handles all the request related functionalities
+ */
 public class RequestControl {
 	/**
 	 * this function sends array containing Request parameters
@@ -36,7 +39,7 @@ public class RequestControl {
 	/**
 	 * 
 	 * @param requestID
-	 * @param bool 'true' to confirm, 'false' to cancel.
+	 * @param bool      'true' to confirm, 'false' to cancel.
 	 */
 	public static void changeRequestStatus(Integer requestID, boolean bool) { // confirm if true, decline if false.
 		ArrayList<Integer> requestidList = new ArrayList<>();
@@ -52,7 +55,7 @@ public class RequestControl {
 	/**
 	 * 
 	 * @param discountId
-	 * @param bool 'true' to confirm, 'false' to cancel.
+	 * @param bool       'true' to confirm, 'false' to cancel.
 	 */
 	public static void changeDiscountStatus(int discountId, boolean bool) {
 		ArrayList<Integer> requestidList = new ArrayList<>();

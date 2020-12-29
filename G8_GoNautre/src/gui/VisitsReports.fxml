@@ -17,7 +17,7 @@
           <NumberAxis fx:id="stayY" label="Number of visitors" side="LEFT" />
         </yAxis>
       </LineChart>
-      <Line endX="-282.0" endY="193.0" layoutX="282.0" layoutY="278.0" opacity="0.19" startX="445.0" startY="193.0" stroke="WHITE" strokeWidth="1.5" />
+      <Line endX="-282.0" endY="193.0" layoutX="282.0" layoutY="278.0" opacity="0.19" startX="464.25" startY="193.0" stroke="WHITE" strokeWidth="1.5" />
       <LineChart fx:id="entranceTime_chart" layoutY="116.0" prefHeight="340.0" prefWidth="710.0" title="Entrance Graph">
          <xAxis>
             <NumberAxis fx:id="enterX2" label="Entrance hour" side="BOTTOM" />

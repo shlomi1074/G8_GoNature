@@ -11,6 +11,9 @@ import logic.OrderTb;
 import logic.ClientToServerRequest.Request;
 import logic.Park;
 
+/**
+ * ParkControl class handles all the park related functionalities
+ */
 @SuppressWarnings("unchecked")
 public class ParkControl {
 

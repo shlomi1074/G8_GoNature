@@ -9,6 +9,9 @@ import logic.ClientToServerRequest;
 import logic.Messages;
 import logic.ClientToServerRequest.Request;
 
+/**
+ * NotificationControl class handles all the notification related functionalities
+ */
 public class NotificationControl {
 
 	/**

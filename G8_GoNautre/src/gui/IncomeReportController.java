@@ -45,7 +45,7 @@ public class IncomeReportController implements Initializable {
 	private JFXTextArea commentTextArea;
 
 	private ArrayList<String> newReportList;
-	private static ArrayList<?> reportList;
+	private static ArrayList<Integer> reportList;
 
 	private int parkID;
 	private int monthNumber;
@@ -100,9 +100,9 @@ public class IncomeReportController implements Initializable {
 		reportList = ChatClient.responseFromServer.getResultSet();
 
 		individualLabel.setText(String.valueOf(reportList.get(0)));
-		groupsLabel.setText(String.valueOf(reportList.get(1)));
-		subscribersLabel.setText(String.valueOf(reportList.get(2)));
-		totalLabel.setText(String.valueOf(reportList.get(3)));
+		groupsLabel.setText(String.valueOf(reportList.get(2)));
+		subscribersLabel.setText(String.valueOf(reportList.get(1)));
+		totalLabel.setText(String.valueOf(reportList.get(0) + reportList.get(1) + reportList.get(2)));
 
 	}
 
