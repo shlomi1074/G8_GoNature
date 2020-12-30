@@ -124,6 +124,7 @@ public class TotalVisitorsReportController implements Initializable {
 		yAxis.setAutoRanging(false);
 		yAxis.setLowerBound(0);
 		yAxis.setUpperBound(Arrays.stream(totalClean).max().getAsInt() + 2);
+		yAxis.setTickUnit(1);
 		xAxis.setCategories(FXCollections.<String>observableArrayList(
 				Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")));
 

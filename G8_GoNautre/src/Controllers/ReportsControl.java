@@ -22,13 +22,11 @@ public class ReportsControl {
 	 * @return true on success, false otherwise
 	 */
 	public static boolean addReport(Report r) {
-
 		removeReport(r);
 		ClientToServerRequest<Report> request = new ClientToServerRequest<>(Request.INSERT_REPORT,
 				new ArrayList<Report>(Arrays.asList(r)));
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.isResult();
-
 	}
 
 	/**
@@ -52,7 +50,6 @@ public class ReportsControl {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_ENTER_SOLO_VISITORS,
 				new ArrayList<String>(Arrays.asList(String.valueOf(month))));
 		ClientUI.chat.accept(request);
-
 	}
 
 	/**
@@ -65,7 +62,6 @@ public class ReportsControl {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_ENTER_SUBS_VISITORS,
 				new ArrayList<String>(Arrays.asList(String.valueOf(month))));
 		ClientUI.chat.accept(request);
-
 	}
 
 	/**
@@ -78,7 +74,6 @@ public class ReportsControl {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_ENTER_GROUP_VISITORS,
 				new ArrayList<String>(Arrays.asList(String.valueOf(month))));
 		ClientUI.chat.accept(request);
-
 	}
 
 	/**
@@ -91,7 +86,6 @@ public class ReportsControl {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_SOLO_VISITORS,
 				new ArrayList<String>(Arrays.asList(String.valueOf(month))));
 		ClientUI.chat.accept(request);
-
 	}
 
 	/**
@@ -104,7 +98,6 @@ public class ReportsControl {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_SUBS_VISITORS,
 				new ArrayList<String>(Arrays.asList(String.valueOf(month))));
 		ClientUI.chat.accept(request);
-
 	}
 
 	/**
@@ -117,7 +110,6 @@ public class ReportsControl {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_GROUP_VISITORS,
 				new ArrayList<String>(Arrays.asList(String.valueOf(month))));
 		ClientUI.chat.accept(request);
-
 	}
 
 	/**
@@ -130,7 +122,6 @@ public class ReportsControl {
 				new ArrayList<String>(Arrays.asList()));
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.getResultSet();
-
 	}
 
 	/**
@@ -153,11 +144,8 @@ public class ReportsControl {
 	 * @param arrayOfRequests
 	 */
 	public static void showReport(ArrayList<String> arrayOfRequests) {
-
 		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.MANAGER_REPORT, arrayOfRequests);
-
 		ClientUI.chat.accept(request);
-
 	}
 
 	/**
@@ -166,11 +154,8 @@ public class ReportsControl {
 	 * @param monthAndType
 	 */
 	public static void addNewReportToDB(ArrayList<String> monthAndType) {
-
 		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.ADD_REPORT_TO_DB, monthAndType);
-
 		ClientUI.chat.accept(request);
-
 	}
 
 	/**
