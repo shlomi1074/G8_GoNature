@@ -124,6 +124,7 @@ public class TotalVisitorsReportController implements Initializable {
 		yAxis.setAutoRanging(false);
 		yAxis.setLowerBound(0);
 		yAxis.setUpperBound(Arrays.stream(totalClean).max().getAsInt() + 2);
+		yAxis.setTickUnit(1);
 		xAxis.setCategories(FXCollections.<String>observableArrayList(
 				Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")));
 
@@ -244,7 +245,7 @@ public class TotalVisitorsReportController implements Initializable {
 	/**
 	 * Setter for class variable monthNumber
 	 * 
-	 * @param month
+	 * @param month The month number
 	 */
 	public void setMonthNumber(int month) {
 		this.monthNumber = month;
@@ -253,7 +254,7 @@ public class TotalVisitorsReportController implements Initializable {
 	/**
 	 * Setter for class variable comment
 	 * 
-	 * @param comment
+	 * @param comment The park manager comment
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;
@@ -266,7 +267,7 @@ public class TotalVisitorsReportController implements Initializable {
 	/**
 	 * Setter for class variable parkID
 	 * 
-	 * @param parkID
+	 * @param parkID The park id
 	 */
 	public void setParkID(int parkID) {
 		this.parkID = parkID;
@@ -275,7 +276,7 @@ public class TotalVisitorsReportController implements Initializable {
 	/**
 	 * Setter for class variable isDepManager
 	 * 
-	 * @param b
+	 * @param b true if opened from department manager screen
 	 */
 	public void setIsDepManager(boolean b) {
 		this.isDepManager = b;

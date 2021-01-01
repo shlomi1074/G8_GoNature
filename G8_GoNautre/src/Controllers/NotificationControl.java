@@ -17,12 +17,12 @@ public class NotificationControl {
 	/**
 	 * This function gets and message and ask ask the server to add it to travelers messages.
 	 * 
-	 * @param toId      String object, travelerId
-	 * @param sendDate  String object, sending date
-	 * @param sendTime  String object, sending time
-	 * @param subject   String object, subject of the message
-	 * @param content   String object, subject of the message
-	 * @param orderId   String object, regarding which order the message is.
+	 * @param toId     String object, travelerId
+	 * @param sendDate String object, sending date
+	 * @param sendTime String object, sending time
+	 * @param subject  String object, subject of the message
+	 * @param content  String object, subject of the message
+	 * @param orderId  String object, regarding which order the message is.
 	 * @return true on success, false otherwise.
 	 */
 	public static boolean sendMessageToTraveler(String toId, String sendDate, String sendTime, String subject,
@@ -38,7 +38,7 @@ public class NotificationControl {
 	/**
 	 * This function gets and message and ask the server to send it by email.
 	 * 
-	 * @param msg  the message to send
+	 * @param msg the message to send
 	 * @return true on success, false otherwise.
 	 */
 	private static boolean sendEmail(Messages msg, String email) {
@@ -58,7 +58,8 @@ public class NotificationControl {
 	 * This function gets a message and send it by mail. The function creates a new
 	 * thread and runs at the background.
 	 * 
-	 * @param msg - the message to send
+	 * @param msg  the message to send
+	 * @param email The email to send to
 	 */
 	public static void sendMailInBackgeound(Messages msg, String email) {
 		Task<Boolean> mailTask = new Task<Boolean>() {
@@ -85,6 +86,12 @@ public class NotificationControl {
 				new ArrayList<String>(Arrays.asList(id)));
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.getResultSet();
+	}
+
+	public static void sendSms(String phoneNumber, Messages msg) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.SEND_SMS,
+				new ArrayList<String>(Arrays.asList(phoneNumber, msg.getContent())));
+		ClientUI.chat.accept(request);
 	}
 
 }

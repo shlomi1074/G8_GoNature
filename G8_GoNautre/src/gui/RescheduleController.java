@@ -278,7 +278,7 @@ public class RescheduleController implements Initializable {
 	/**
 	 * Setter for class variable selectedTimeLabel
 	 * 
-	 * @param DateAndTime
+	 * @param DateAndTime The data and time of the original order
 	 */
 	public void setSelectedTimeLabel(String DateAndTime) {
 		this.selectedTimeLabel.setText(DateAndTime);
@@ -287,7 +287,7 @@ public class RescheduleController implements Initializable {
 	/**
 	 * Setter for class variable order
 	 * 
-	 * @param order
+	 * @param order The order
 	 */
 	public void setOrder(Order order) {
 		this.order = order;
@@ -296,7 +296,7 @@ public class RescheduleController implements Initializable {
 	/**
 	 * Setter for class variable traveler
 	 * 
-	 * @param traveler
+	 * @param traveler The traveler who did the order
 	 */
 	public void setTraveler(Traveler traveler) {
 		this.traveler = traveler;
@@ -305,7 +305,7 @@ public class RescheduleController implements Initializable {
 	/**
 	 * Setter for class variable rescheduleStage
 	 * 
-	 * @param stage
+	 * @param stage The current stage
 	 */
 	public void setRescheduleStage(Stage stage) {
 		this.rescheduleStage = stage;
@@ -314,7 +314,7 @@ public class RescheduleController implements Initializable {
 	/**
 	 * Setter for class variable orderStage
 	 * 
-	 * @param stage
+	 * @param stage The order stage
 	 */
 	public void setOrderStage(Stage stage) {
 		this.orderStage = stage;
@@ -323,7 +323,7 @@ public class RescheduleController implements Initializable {
 	/**
 	 * Setter for class variable isOrderFromMain
 	 * 
-	 * @param isOrderFromMain
+	 * @param isOrderFromMain true if we opened the order's screen from the main screen
 	 */
 	public void setOrderFromMain(boolean isOrderFromMain) {
 		this.isOrderFromMain = isOrderFromMain;

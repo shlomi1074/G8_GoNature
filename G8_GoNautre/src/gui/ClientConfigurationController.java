@@ -127,7 +127,7 @@ public class ClientConfigurationController implements Initializable {
 	/**
 	 * Setter for the class variable stage
 	 * 
-	 * @param stage
+	 * @param stage The screen's stage
 	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;

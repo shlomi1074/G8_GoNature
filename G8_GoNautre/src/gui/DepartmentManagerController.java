@@ -83,7 +83,7 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * Setter for the class variable stage
 	 * 
-	 * @param stage
+	 * @param stage The current stage
 	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
@@ -92,7 +92,7 @@ public class DepartmentManagerController implements Initializable {
 	/**
 	 * Setter for the class variable mainScreenStage
 	 * 
-	 * @param stage
+	 * @param stage The main stage
 	 */
 	public void setMainScreenStage(Stage stage) {
 		this.mainScreenStage = stage;

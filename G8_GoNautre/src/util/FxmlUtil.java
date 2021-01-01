@@ -84,7 +84,7 @@ public class FxmlUtil {
 	/**
 	 * Setter for the class variable isWorker
 	 * 
-	 * @param isWorker
+	 * @param isWorker True if this screen is a worker screen
 	 */
 	public void setWorker(boolean isWorker) {
 		this.isWorker = isWorker;

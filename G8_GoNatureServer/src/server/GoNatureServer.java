@@ -33,7 +33,7 @@ public class GoNatureServer extends AbstractServer {
 	 * Constructs an instance of the GoNature Server.
 	 *
 	 * @param port The port number to connect on.
-	 * @param serverGUIController The Gui Controller of the server
+	 * @param serverGUIController The GUI Controller of the server
 	 * 
 	 * @throws Exception If failed to load the server
 	 */

@@ -129,9 +129,12 @@ public class AutenticationControl {
 	/**
 	 * This function handle the member(employee) login by subscriber id
 	 * 
-	 * @return 0 - on success
-	 * @return 1 - member already connected
-	 * @return 2 - member id does not exist
+	 * @param id The employee's id
+	 * @param password The employee's password
+	 * 
+	 * @return 0  on success
+	 * @return 1  member already connected
+	 * @return 2  member id does not exist
 	 */
 	public static int memberLoginHandler(String id, String password) {
 		boolean connected = isConnected(id);

@@ -91,7 +91,7 @@ public class MainScreenController implements Initializable {
 	/**
 	 * Setter for the class variable mainScreenStage
 	 * 
-	 * @param stage
+	 * @param stage The current stage
 	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;

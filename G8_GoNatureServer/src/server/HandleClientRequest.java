@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import controllers.EmailControl;
+import controllers.SmsSender;
 import controllers.sqlHandlers.EmployeeQueries;
 import controllers.sqlHandlers.OrderQueries;
 import controllers.sqlHandlers.ParkQueries;
@@ -534,6 +535,11 @@ public class HandleClientRequest implements Runnable {
 					response = new ServerToClientResponse();
 					response.setResultSet(reportsQueries.getGroupsOrdersVisitorsReport(month, parkID));
 					client.sendToClient(response);
+				}
+				if (request.getRequestType().equals(Request.SEND_SMS)) {
+					
+					SmsSender.sendSms((String)request.getParameters().get(0), (String)request.getParameters().get(1));
+					client.sendToClient("Finish");
 				}
 
 			} catch (IOException e) {

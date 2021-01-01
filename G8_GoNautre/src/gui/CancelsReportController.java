@@ -64,7 +64,7 @@ public class CancelsReportController implements Initializable{
 	/**
 	 * Setter for class variable monthNumber
 	 * 
-	 * @param month
+	 * @param month The mounth number
 	 */
 	public void setMonthNumber(int month){
 		this.monthNumber = month;	

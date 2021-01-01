@@ -116,9 +116,9 @@ public class CardReaderController implements Initializable {
 	 * This method generate message base on the parameters she gets.
 	 * each message is added to 'messages' arrayList
 	 * 
-	 * @param order
-	 * @param isExiting
-	 * @param id
+	 * @param order Order object
+	 * @param isExiting true if leaving the park
+	 * @param id the traveler id
 	 */
 	public void generateMsg(Order order, boolean isExiting, String id) {
 		String msgText = "";

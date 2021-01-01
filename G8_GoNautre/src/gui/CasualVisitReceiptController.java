@@ -76,7 +76,7 @@ public class CasualVisitReceiptController implements Initializable {
 	/**
 	 * Setter for the class variable order
 	 * 
-	 * @param recentOrder
+	 * @param recentOrder The last order the traveler did
 	 */
 	public void setOrder(Order recentOrder) {
 		this.order = recentOrder;

@@ -55,6 +55,8 @@ public class ClientController implements ChatIF {
 	/**
 	 * This method waits for input from the console. Once it is received, it sends
 	 * it to the client's message handler.
+	 * 
+	 * @param str  the input from the client
 	 */
 	public void accept(String str) {
 		client.handleMessageFromClientUI(str);
@@ -63,6 +65,8 @@ public class ClientController implements ChatIF {
 	/**
 	 * This method waits for input from the console. Once it is received, it sends
 	 * it to the client's message handler.
+	 * 
+	 * @param message The message to send to the server
 	 */
 	public void accept(ClientToServerRequest<?> message) {
 		client.handleMessageFromClientUI(message);
