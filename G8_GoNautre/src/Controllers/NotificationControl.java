@@ -58,7 +58,8 @@ public class NotificationControl {
 	 * This function gets a message and send it by mail. The function creates a new
 	 * thread and runs at the background.
 	 * 
-	 * @param msg - the message to send
+	 * @param msg  the message to send
+	 * @param email The email to send to
 	 */
 	public static void sendMailInBackgeound(Messages msg, String email) {
 		Task<Boolean> mailTask = new Task<Boolean>() {

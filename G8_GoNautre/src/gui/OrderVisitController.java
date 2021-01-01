@@ -676,7 +676,7 @@ public class OrderVisitController implements Initializable {
 	/**
 	 * Setter for class variable isOrderFromMain
 	 * 
-	 * @param isOrderFromMain
+	 * @param isOrderFromMain true if we opened this screen from the main screen
 	 */
 	public void setOrderFromMain(boolean isOrderFromMain) {
 		this.isOrderFromMain = isOrderFromMain;

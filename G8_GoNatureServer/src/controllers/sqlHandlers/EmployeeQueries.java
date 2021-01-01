@@ -70,7 +70,7 @@ public class EmployeeQueries {
 		 * This function gets an id as parameter 
 		 * and retrieve employee's password from the database
 		 * 
-		 * @param parameters The employee id
+		 * @param employeeId The employee id
 		 * @return The employee's password as string
 		 */
 		public String getEmployeePasswordById(int employeeId) {

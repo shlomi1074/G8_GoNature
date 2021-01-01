@@ -173,7 +173,7 @@ public class TravelersQueries {
 	/**
 	 * This function checks if traveler is registered in the system with provided id and password.
 	 * 
-	 * @param Parameters The traveler's id and password
+	 * @param parameters The traveler's id and password
 	 * @return Traveler object
 	 */
 	public Employees isMemberExist(ArrayList<?> parameters) {
@@ -223,7 +223,7 @@ public class TravelersQueries {
 	/**
 	 * This function removes the user from logedin table.
 	 * 
-	 * @param Parameters The user's id 
+	 * @param parameters The user's id 
 	 *
 	 */
 	public void removeFromLoggedInTable(ArrayList<?> parameters) {
@@ -242,7 +242,7 @@ public class TravelersQueries {
 	/**
 	 * This query deletes traveler from traveler table with given traveler ID
 	 * 
-	 * @param travelerId
+	 * @param parameters The traveler id
 	 */
 	public void deleteFromTravelerTable(ArrayList<?> parameters) {
 		String sql = "DELETE FROM g8gonature.traveler WHERE travelerId = ?";
@@ -260,7 +260,7 @@ public class TravelersQueries {
 	/**
 	 * This function inserts a new subscriber into subscriber table with given subscriber details
 	 * 
-	 * @param ArrayList with travelerId firstName lastName email phoneNumber creditCard subscriberType numberOfParticipants
+	 * @param parameters ArrayList with travelerId firstName lastName email phoneNumber creditCard subscriberType numberOfParticipants
 	 */
 	public void insertSubscriberToSubscriberTable(ArrayList<?> parameters) {
 		String sql = "INSERT INTO g8gonature.subscriber (travelerId, firstName, lastName, email, phoneNumber, creditCard, subscriberType, numberOfParticipants) values (?,?,?,?,?,?,?,?)";
@@ -285,7 +285,7 @@ public class TravelersQueries {
 	/**
 	 * This function gets traveler/subscriber messages from messages table by traveler/subscriber's ID
 	 * 
-	 * @param toId traveler/subscriber's ID
+	 * @param parameters toId traveler/subscriber's ID
 	 * @return ArrayList of messages
 	 */
 	public ArrayList<Messages> getMessages(ArrayList<?> parameters) {
@@ -312,7 +312,7 @@ public class TravelersQueries {
 	/**
 	 * This function add a new message for a specific traveler in the DB.
 	 * 
-	 * @param parameters - ArrayList containing: toId, sendDate, sendTime, subject, content, orderId
+	 * @param parameters  ArrayList containing: toId, sendDate, sendTime, subject, content, orderId
 	 * @return true on success, false otherwise
 	 */
 	public boolean sendMessageToTraveler(ArrayList<?> parameters) {
@@ -340,7 +340,7 @@ public class TravelersQueries {
 	/**
 	 * This function inserts new credit card into card table with given card details
 	 * 
-	 * @param ArrayList with subscriberId cardNumber cardExpiryDate CVC
+	 * @param parameters ArrayList with subscriberId cardNumber cardExpiryDate CVC
 	 */
 	public void insertCardToCreditCardTable(ArrayList<?> parameters) {
 		String sql = "INSERT INTO g8gonature.creditcard (subscriberId, cardNumber, cardExpiryDate, CVC) values (?,?,?,?)";

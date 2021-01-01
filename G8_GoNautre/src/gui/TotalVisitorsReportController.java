@@ -245,7 +245,7 @@ public class TotalVisitorsReportController implements Initializable {
 	/**
 	 * Setter for class variable monthNumber
 	 * 
-	 * @param month
+	 * @param month The month number
 	 */
 	public void setMonthNumber(int month) {
 		this.monthNumber = month;
@@ -254,7 +254,7 @@ public class TotalVisitorsReportController implements Initializable {
 	/**
 	 * Setter for class variable comment
 	 * 
-	 * @param comment
+	 * @param comment The park manager comment
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;
@@ -267,7 +267,7 @@ public class TotalVisitorsReportController implements Initializable {
 	/**
 	 * Setter for class variable parkID
 	 * 
-	 * @param parkID
+	 * @param parkID The park id
 	 */
 	public void setParkID(int parkID) {
 		this.parkID = parkID;
@@ -276,7 +276,7 @@ public class TotalVisitorsReportController implements Initializable {
 	/**
 	 * Setter for class variable isDepManager
 	 * 
-	 * @param b
+	 * @param b true if opened from department manager screen
 	 */
 	public void setIsDepManager(boolean b) {
 		this.isDepManager = b;

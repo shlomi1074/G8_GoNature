@@ -12,8 +12,7 @@ import logic.Order;
 import logic.OrderStatusName;
 
 /**
- * This class handles all the queries which are related to orders
- * 
+ * This class handles all the queries which are related to orders 
  */
 public class OrderQueries {
 	private Connection conn;
@@ -512,4 +511,5 @@ public class OrderQueries {
 		}
 		return orders;
 	}
+
 }

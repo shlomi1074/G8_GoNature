@@ -43,8 +43,8 @@ public class OrderControl {
 	 * DB if the date is available. And also notify the traveler via email, and
 	 * message in client
 	 * 
-	 * @param order
-	 * @param traveler
+	 * @param order The order to add to the database
+	 * @param traveler The traveler that made this order
 	 * @return Order object - the order that was inserted to the database
 	 */
 	public static Order addOrderAndNotify(Order order, Traveler traveler) {
@@ -329,7 +329,7 @@ public class OrderControl {
 	 * This function gets a traveler id and return the most recent order for this traveler
 	 * which it's status is 'Completed'
 	 * 
-	 * @param id
+	 * @param id The traveler id
 	 * @return Order most the recent order which it's status is 'Completed'
 	 */
 	public static Order getRelevantOrder_ParkExit(String id) {
@@ -344,7 +344,7 @@ public class OrderControl {
 	 * This function gets a traveler id and return the most recent order for this traveler
 	 * which it's status is 'Confirmed'
 	 * 
-	 * @param id
+	 * @param id The traveler id
 	 * @return Order most the recent order which it's status is 'Confirmed'
 	 */
 	public static Order getRelevantOrderByTravelerID_ParkEntrance(String id) {
@@ -369,8 +369,8 @@ public class OrderControl {
 	/**
 	 * This function change number of visitors in existing order.
 	 * 
-	 * @param orderId - String object
-	 * @param numberOfParticipantsInCurrentOrder - int variable
+	 * @param orderId  String object
+	 * @param numberOfParticipantsInCurrentOrder  int variable
 	 * @return true on success, false otherwise
 	 */
 	public static boolean changeNumberOfVisitorsInExisitingOrder(String orderId,

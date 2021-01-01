@@ -241,7 +241,7 @@ public class IncomeReportController implements Initializable {
 	/**
 	 * Setter for class variable monthNumber
 	 * 
-	 * @param month
+	 * @param month The month number
 	 */
 	public void setMonthNumber(int month) {
 		this.monthNumber = month;
@@ -250,7 +250,7 @@ public class IncomeReportController implements Initializable {
 	/**
 	 * Setter for class variable comment
 	 * 
-	 * @param comment
+	 * @param comment the park manager's comment
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;
@@ -263,7 +263,7 @@ public class IncomeReportController implements Initializable {
 	/**
 	 * Setter for class variable parkID
 	 * 
-	 * @param parkID
+	 * @param parkID The park id
 	 */
 	public void setParkID(int parkID) {
 		this.parkID = parkID;
@@ -272,7 +272,7 @@ public class IncomeReportController implements Initializable {
 	/**
 	 * Setter for class variable isDepManager
 	 * 
-	 * @param b
+	 * @param b true if this is the department manager screen
 	 */
 	public void setIsDepManager(boolean b) {
 		this.isDepManager = b;

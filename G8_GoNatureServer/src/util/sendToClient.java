@@ -13,7 +13,8 @@ public class sendToClient {
 	/**
 	 * This function sends String message to a given client
 	 * 
-	 * @param parameters - client to send the message to, ArrayList of object string that contain message
+	 * @param client client to send the message to
+	 * @param msg - The message to send to the client
 	 */
 	public static void sendToClientMsg(ConnectionToClient client, String msg) {
 		try {
@@ -26,7 +27,8 @@ public class sendToClient {
 	/**
 	 * This function sends String message to a given client
 	 * 
-	 * @param parameters - client to send the message to, ArrayList of object string that contain message
+	 * @param client client to send the message to
+	 * @param msg ArrayList of object string that contain message
 	 */
 	public static void sendToClientMsg(ConnectionToClient client, ArrayList<String> msg) {
 		try {

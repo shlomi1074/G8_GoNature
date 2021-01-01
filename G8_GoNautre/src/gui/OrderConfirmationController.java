@@ -125,7 +125,7 @@ public class OrderConfirmationController implements Initializable {
 	/**
 	 * Setter for class variable order
 	 * 
-	 * @param recentOrder
+	 * @param recentOrder The recent order the traveler did
 	 */
 	public void setOrder(Order recentOrder) {
 		this.order = recentOrder;
@@ -134,7 +134,7 @@ public class OrderConfirmationController implements Initializable {
 	/**
 	 * Setter for class variable traveler
 	 * 
-	 * @param traveler
+	 * @param traveler The traveler who did thye order
 	 */
 	public void setTraveler(Traveler traveler) {
 		this.traveler = traveler;
@@ -143,7 +143,7 @@ public class OrderConfirmationController implements Initializable {
 	/**
 	 * Setter for class variable paymentMethod
 	 * 
-	 * @param paymentMethod
+	 * @param paymentMethod The payment method
 	 */
 	public void setSummaryPayment(String paymentMethod) {
 		this.paymentMethod = paymentMethod;
@@ -152,7 +152,7 @@ public class OrderConfirmationController implements Initializable {
 	/**
 	 * Setter for class variable isWaitingList
 	 * 
-	 * @param isWaitingList
+	 * @param isWaitingList true if this is an order confirmation for waiting list
 	 */
 	public void setWaitingList(boolean isWaitingList) {
 		this.isWaitingList = isWaitingList;
@@ -161,7 +161,7 @@ public class OrderConfirmationController implements Initializable {
 	/**
 	 * Setter for class variable isOrderFromWeb
  
-	 * @param isOrderFromWeb
+	 * @param isOrderFromWeb true if order confirmation to order from the web
 	 */
 	public void setOrderFromWeb(boolean isOrderFromWeb) {
 		this.isOrderFromWeb = isOrderFromWeb;

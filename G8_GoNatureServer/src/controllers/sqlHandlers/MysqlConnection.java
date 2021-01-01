@@ -17,10 +17,10 @@ public class MysqlConnection {
 	/**
 	 * private constructor
 	 * 
-	 * @throws SQLException
-	 * @throws ClassNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
+	 * @throws SQLException	If got sql error
+	 * @throws ClassNotFoundException If failed to create jdbc driver
+	 * @throws InstantiationException if failed to connect to the database
+	 * @throws IllegalAccessException if failed to connect to the database
 	 */
 	private MysqlConnection()
 			throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
@@ -53,10 +53,10 @@ public class MysqlConnection {
 	 * 
 	 * @return MysqlConnection object
 	 * 
-	 * @throws ClassNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws SQLException
+	 * @throws SQLException	If got sql error
+	 * @throws ClassNotFoundException If failed to create jdbc driver
+	 * @throws InstantiationException if failed to connect to the database
+	 * @throws IllegalAccessException if failed to connect to the database
 	 */
 	public static MysqlConnection getInstance()
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {

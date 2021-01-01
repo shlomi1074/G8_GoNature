@@ -35,7 +35,7 @@ public class ParkControl {
 	/**
 	 * This function gets park's name and returns Park object.
 	 * 
-	 * @param parkName
+	 * @param parkName The park name
 	 * @return Park object
 	 */
 	public static Park getParkByName(String parkName) {
@@ -49,7 +49,7 @@ public class ParkControl {
 	/**
 	 * This function returns an array list with all the park's names.
 	 * 
-	 * @return ArrayList<String> - all the park's names
+	 * @return ArrayList with all the park's names
 	 */
 	public static ArrayList<String> getParksNames() {
 		ArrayList<Park> parks = getAllParks();
@@ -64,7 +64,7 @@ public class ParkControl {
 	/**
 	 * This function gets park's id and returns the park name.
 	 * 
-	 * @param parkId
+	 * @param parkId The park id
 	 * @return String - park name
 	 */
 	public static String getParkName(String parkId) {
@@ -78,7 +78,7 @@ public class ParkControl {
 	/**
 	 * This function returns an array list with all the parks in the DB.
 	 * 
-	 * @return ArrayList<Park>
+	 * @return ArrayList of Park objects
 	 */
 	public static ArrayList<Park> getAllParks() {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_ALL_PARKS);
@@ -120,7 +120,7 @@ public class ParkControl {
 	/**
 	 * this function changes park's parameters if Department Manager confirmed Park Manager's request.
 	 * 
-	 * @param array containing the type of parameter to be changed, the new value, and park ID.
+	 * @param changeParkParameterList containing the type of parameter to be changed, the new value, and park ID.
 	 */
 	public static void changeParkParameters(ArrayList<String> changeParkParameterList) {
 

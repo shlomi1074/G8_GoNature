@@ -57,7 +57,7 @@ public class ProfileController implements Initializable {
 	
 	/**
 	 * Setter for class variable isWorker
-	 * @param isWorker
+	 * @param isWorker true if this is a worker screen
 	 */
 	public void setWorker(boolean isWorker) {
 		this.isWorker = isWorker;

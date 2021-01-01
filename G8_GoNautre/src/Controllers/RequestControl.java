@@ -12,7 +12,7 @@ public class RequestControl {
 	/**
 	 * this function sends array containing Request parameters
 	 * 
-	 * @param arrayOfRequests
+	 * @param arrayOfRequests Array with the needed parameters
 	 */
 	public static void addNewRequest(ArrayList<?> arrayOfRequests) {
 		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.MANAGER_REQUEST, arrayOfRequests);
@@ -37,11 +37,12 @@ public class RequestControl {
 	}
 
 	/**
+	 * This function change the status of a given request
 	 * 
-	 * @param requestID
+	 * @param requestID The request id
 	 * @param bool      'true' to confirm, 'false' to cancel.
 	 */
-	public static void changeRequestStatus(Integer requestID, boolean bool) { // confirm if true, decline if false.
+	public static void changeRequestStatus(Integer requestID, boolean bool) { 
 		ArrayList<Integer> requestidList = new ArrayList<>();
 		requestidList.add(requestID);
 		if (bool)
@@ -53,8 +54,9 @@ public class RequestControl {
 	}
 
 	/**
-	 * 
-	 * @param discountId
+	 * This function change the status of a given discount
+ 	 *
+	 * @param discountId The discount id
 	 * @param bool       'true' to confirm, 'false' to cancel.
 	 */
 	public static void changeDiscountStatus(int discountId, boolean bool) {

@@ -74,7 +74,7 @@ public class VisitsReportController implements Initializable {
 	/**
 	 * Setter for class variable monthNumber
 	 * 
-	 * @param month
+	 * @param month The month number
 	 */
 	public void setMonthNumber(int month) {
 		this.monthNumber = month;

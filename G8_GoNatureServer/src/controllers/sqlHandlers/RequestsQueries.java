@@ -129,7 +129,7 @@ public class RequestsQueries {
 	/**
 	 * this method gets data from request table and put it in a Request object.
 	 * 
-	 * @return ArrayList<Request>
+	 * @return ArrayList of Request objects - all the requests from the database
 	 */
 	public ArrayList<?> GetRequestsFromDB() {
 		ArrayList<Request> requests = new ArrayList<>();
@@ -159,8 +159,8 @@ public class RequestsQueries {
 	/**
 	 * this method changes the status of a request according to Department Manager decision
 	 * 
-	 * @param bool       - 'true' to confirm, 'false' to cancel
-	 * @param requestsID
+	 * @param bool 'true' to confirm, 'false' to cancel
+	 * @param requestsID The request id to change
 	 */
 	public void changeStatusOfRequest(boolean bool, int requestsID) {
 		String sql;
@@ -187,8 +187,8 @@ public class RequestsQueries {
 	/**
 	 * this method changes the status of a discount according to Department Manager decision
 	 * 
-	 * @param bool        - 'true' to confirm, 'false' to cancel
-	 * @param discountsID
+	 * @param bool 'true' to confirm, 'false' to cancel
+	 * @param discountsID The discount id to change
 	 */
 	public void changeStatusOfDiscount(boolean bool, int discountsID) {
 
@@ -216,7 +216,7 @@ public class RequestsQueries {
 	/**
 	 * this method gets data from discount table and put it in a Discount object.
 	 * 
-	 * @return ArrayList<Discount>
+	 * @return ArrayList of Discount objects
 	 */
 	public ArrayList<?> GetDiscountsFromDB() {
 
@@ -242,9 +242,10 @@ public class RequestsQueries {
 	}
 
 	/**
+	 * This function gets the old value of specific parameter
 	 * 
-	 * @param nameOfColumn
-	 * @param parkID
+	 * @param nameOfColumn The name of the parameter
+	 * @param parkID The park id
 	 * @return value from park table
 	 */
 	public int getOldValFromParkParameters(String nameOfColumn, int parkID) {

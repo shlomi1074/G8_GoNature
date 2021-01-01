@@ -74,7 +74,7 @@ public class ReportsQueries {
 	/**
 	 * This creates objects of solo visitors dived by their entrance time
 	 * 
-	 * @param Parameters current year and selected month
+	 * @param parameters current year and selected month
 	 * @return ArrayList of VisitReport objects
 	 */
 	public ArrayList<VisitReport> CountSolosEnterTime(ArrayList<?> parameters) {
@@ -109,7 +109,7 @@ public class ReportsQueries {
 	/**
 	 * This creates objects of subscribers visitors dived by their entrance time
 	 * 
-	 * @param Parameters current year and selected month
+	 * @param parameters current year and selected month
 	 * @return ArrayList of VisitReport objects
 	 */
 	public ArrayList<VisitReport> CountSubsEnterTime(ArrayList<?> parameters) {
@@ -145,7 +145,7 @@ public class ReportsQueries {
 	/**
 	 * This creates objects of group visitors dived by their entrance time
 	 * 
-	 * @param Parameters current year and selected month
+	 * @param parameters current year and selected month
 	 * @return ArrayList of VisitReport objects
 	 */
 	public ArrayList<VisitReport> CountGroupsEnterTime(ArrayList<?> parameters) {
@@ -183,7 +183,7 @@ public class ReportsQueries {
 	/**
 	 * This creates objects of solo visitors dived by their stay time of visit
 	 * 
-	 * @param Parameters current year and selected month
+	 * @param parameters current year and selected month
 	 * @return ArrayList of VisitReport objects
 	 */
 	public ArrayList<VisitReport> CountSolosVisitTime(ArrayList<?> parameters) {
@@ -218,7 +218,7 @@ public class ReportsQueries {
 	/**
 	 * This creates objects of subscribers visitors dived by their stay time of visit
 	 * 
-	 * @param Parameters current year and selected month
+	 * @param parameters current year and selected month
 	 * @return ArrayList of VisitReport objects
 	 */
 	public ArrayList<VisitReport> CountSubsVisitTime(ArrayList<?> parameters) {
@@ -253,7 +253,7 @@ public class ReportsQueries {
 	/**
 	 * This creates objects of group visitors dived by their stay time of visit
 	 * 
-	 * @param Parameters current year and selected month
+	 * @param parameters current year and selected month
 	 * @return ArrayList of VisitReport objects
 	 */
 	public ArrayList<VisitReport> CountGroupsVisitTime(ArrayList<?> parameters) {
@@ -290,6 +290,7 @@ public class ReportsQueries {
 	/**
 	 * This function get reports from data base
 	 * 
+	 * @param parameters unused
 	 * @return ArrayList of reports objects
 	 */
 	public ArrayList<Report> getReports(ArrayList<?> parameters) {
@@ -315,7 +316,7 @@ public class ReportsQueries {
 	/**
 	 * This query gets cancelled orders from order table for park ID in specific month
 	 * 
-	 * @param ArrayList with parkId and month
+	 * @param parameters ArrayList with parkId and month
 	 * @return ArrayList with number of cancelled orders
 	 */
 	public ArrayList<Integer> getParkCancels(ArrayList<?> parameters) {
@@ -347,8 +348,8 @@ public class ReportsQueries {
 	/**
 	 * This function returns all the orders in a given month which are Solo visit and the traveler is not subscriber
 	 * 
-	 * @param month  the month of the orders
-	 * @param parkID
+	 * @param month  The month of the orders
+	 * @param parkID The park id
 	 * @return ArrayList of order object
 	 */
 	public ArrayList<Order> getSolosOrdersVisitorsReport(int month, int parkID) {
@@ -375,7 +376,9 @@ public class ReportsQueries {
 	/**
 	 * This function returns all the orders in a given month which made by Subscribers and the traveler is not subscriber
 	 * 
-	 * @param month the month of the orders
+	 * @param month  The month of the orders
+	 * @param parkID The park id
+	 * 
 	 * @return ArrayList of order object
 	 */
 	public ArrayList<Order> getSubscribersOrdersVisitorsReport(int month, int parkID) {
@@ -402,7 +405,9 @@ public class ReportsQueries {
 	/**
 	 * This function returns all the orders in a given month which are Group visit and the traveler is not subscriber
 	 * 
-	 * @param month the month of the orders
+	 * @param month  The month of the orders
+	 * @param parkID The park id
+	 * 
 	 * @return ArrayList of order object
 	 */
 	public ArrayList<Order> getGroupsOrdersVisitorsReport(int month, int parkID) {
@@ -428,8 +433,9 @@ public class ReportsQueries {
 	/**
 	 * this method calculates the number of visitors for each type and return it in a list.
 	 * 
-	 * @param month
-	 * @param parkID
+	 * @param month  The month of the orders
+	 * @param parkID The park id
+	 * 
 	 * @return The number of visitors for each type
 	 */
 	public ArrayList<?> createNumberOfVisitorsReport(int month, int parkID) { // individual visitors (solo,familty) , orginized (Group) , subscribers.
@@ -484,8 +490,9 @@ public class ReportsQueries {
 	/**
 	 * this method calculates the income from visitors for each type of visitor, and return it in a list.
 	 * 
-	 * @param month
-	 * @param parkID
+	 * @param month  The month of the orders
+	 * @param parkID The park id
+	 * 
 	 * @return The income from visitors for each type of visitor
 	 */
 	public ArrayList<?> createIncomeReport(int month, int parkID) { // individual visitors (solo,familty) , orginized (Group) , subscribers.
@@ -541,7 +548,7 @@ public class ReportsQueries {
 	/**
 	 * this method adds a new report in database.
 	 * 
-	 * @param parameters
+	 * @param parameters The report info to add tp the database
 	 */
 	public void createNewReportInDB(ArrayList<?> parameters) {
 
@@ -567,7 +574,7 @@ public class ReportsQueries {
 	/**
 	 * This query gets confirmed orders after date passed for park ID in specific month
 	 * 
-	 * @param ArrayList with parkId and month
+	 * @param parameters ArrayList with parkId and month
 	 * @return ArrayList with number of confirmed orders after date passed
 	 */
 	public ArrayList<Integer> getParkPendingDatePassed(ArrayList<?> parameters) {
