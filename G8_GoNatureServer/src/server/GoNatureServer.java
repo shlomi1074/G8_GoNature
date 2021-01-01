@@ -8,6 +8,7 @@ import gui.ServerGUIController;
 import javafx.scene.paint.Color;
 import ocsf.server.*;
 import server.threads.CancelOrders;
+import server.threads.NotifyThread;
 import server.threads.NotifyTravelers;
 import server.threads.UpdateTravelerExitStatus;
 
@@ -25,10 +26,9 @@ import server.threads.UpdateTravelerExitStatus;
  */
 public class GoNatureServer extends AbstractServer {
 
-
 	private ServerGUIController serverGUIController;
-	public static Connection mysqlconnection;	
-	
+	public static Connection mysqlconnection;
+
 	/**
 	 * Constructs an instance of the GoNature Server.
 	 *
@@ -50,26 +50,29 @@ public class GoNatureServer extends AbstractServer {
 			serverGUIController.updateTextAreaLog("Failed to load DB");
 			throw e;
 		}
-		
-		/* Create notify thread */
-		NotifyTravelers notifyTravelers = new NotifyTravelers(mysqlconnection);
-		new Thread(notifyTravelers).start();
-		
-		/* Create exit status and park update thread */
-		UpdateTravelerExitStatus updateTravelerExitStatus = new UpdateTravelerExitStatus(mysqlconnection);
-		new Thread(updateTravelerExitStatus).start();
-		
-		CancelOrders cancelUnconfirmedOrders = new CancelOrders(mysqlconnection);
-		new Thread(cancelUnconfirmedOrders).start();
+
+//		/* Create notify thread */
+//		NotifyTravelers notifyTravelers = new NotifyTravelers(mysqlconnection);
+//		new Thread(notifyTravelers).start();
+//		
+//		/* Create exit status and park update thread */
+//		UpdateTravelerExitStatus updateTravelerExitStatus = new UpdateTravelerExitStatus(mysqlconnection);
+//		new Thread(updateTravelerExitStatus).start();
+//		
+//		CancelOrders cancelUnconfirmedOrders = new CancelOrders(mysqlconnection);
+//		new Thread(cancelUnconfirmedOrders).start();
+
+		NotifyThread notifyThread = new NotifyThread(mysqlconnection);
+		new Thread(notifyThread).start();
 	}
 
 	// Instance methods ************************************************
 
 	/**
 	 * This method handles any messages received from the client.
-	 * For each client's request a new thread is created 
+	 * For each client's request a new thread is created
 	 *
-	 * @param msg    The message received from the client.
+	 * @param msg The message received from the client.
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
@@ -94,7 +97,7 @@ public class GoNatureServer extends AbstractServer {
 	}
 
 	/**
-	 * This method overrides the one in the superclass. 
+	 * This method overrides the one in the superclass.
 	 * Called when a client connect to the server.
 	 */
 	@Override
@@ -104,7 +107,7 @@ public class GoNatureServer extends AbstractServer {
 	}
 
 	/**
-	 * This method overrides the one in the superclass. 
+	 * This method overrides the one in the superclass.
 	 * Called when a client disconnect from the server.
 	 */
 	synchronized protected void clientDisconnected(ConnectionToClient client) {
@@ -112,7 +115,7 @@ public class GoNatureServer extends AbstractServer {
 	}
 
 	/**
-	 * This method overrides the one in the superclass. 
+	 * This method overrides the one in the superclass.
 	 * Called when a client disconnect and throw exception from the server.
 	 */
 	synchronized protected void clientException(ConnectionToClient client, Throwable exception) {

@@ -12,7 +12,7 @@ import logic.Order;
 import logic.OrderStatusName;
 
 /**
- * This class handles all the queries which are related to orders 
+ * This class handles all the queries which are related to orders
  */
 public class OrderQueries {
 	private Connection conn;
@@ -114,8 +114,8 @@ public class OrderQueries {
 	 * This function return orders in waiting list that can replace the can canceled order.
 	 * 
 	 * @param parameters ArrayList containing: parkId,maxVisitors in the park,
-	 *                   estimatedStayTime in the park, date of the canceled order, timeToCheck of the canceled order,
-	 *                   gap between max and current in the park
+	 * estimatedStayTime in the park, date of the canceled order, timeToCheck of the canceled order,
+	 * gap between max and current in the park
 	 * @return ArrayList of object Order containing matching orders.
 	 */
 	public ArrayList<Order> findMatchingOrdersInWaitingList(ArrayList<?> parameters) {
@@ -160,14 +160,11 @@ public class OrderQueries {
 			query.setString(5, OrderStatusName.WAITING.toString());
 			rs = query.executeQuery();
 			while (rs.next()) {
-				System.out.println("Number of participants = " + rs.getInt(7));
-				System.err.println("Count = " + count);
 				if (rs.getInt(7) + count <= maxAllowedInPark) {
 					Order order = new Order(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4),
 							rs.getString(5), rs.getString(6), rs.getInt(7), rs.getString(8), rs.getDouble(9),
 							rs.getString(10));
 					resultArray.add(order);
-					System.out.println("OrderID" + rs.getInt(1));
 				}
 			}
 
@@ -507,6 +504,127 @@ public class OrderQueries {
 
 		} catch (SQLException e) {
 			System.out.println("Could not execute getEnteredOrdersWithTimePassed");
+			e.printStackTrace();
+		}
+		return orders;
+	}
+
+	/**
+	 * This function adds a new order alert to orders_alert table in the database
+	 * 
+	 * @param orderId The order id associate with the alert
+	 * @param startTime The time the alert has been sent
+	 * @param endTime The time alert has been end
+	 * @param alertType The alert time
+	 * 
+	 * @return true on success, false otherwise
+	 */
+	public boolean addOrderAlert(int orderId, String date, String startTime, String endTime) {
+		int result = 0;
+		String sql = "INSERT INTO g8gonature.orders_alerts (orderId, alertDate, alertSendTime, alertEndTime) "
+				+ "values (?, ?, ?, ?)";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, orderId);
+			query.setString(2, date);
+			query.setString(3, startTime);
+			query.setString(4, endTime);
+			result = query.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Could not execute addOrderAlert query");
+			e.printStackTrace();
+		}
+		return result > 0;
+	}
+
+	/**
+	 * This function deletes order alert from orders_alert table in the database
+	 * 
+	 * @param alertId The alert id to delete
+	 * 
+	 * @return true on success, false otherwise
+	 */
+	public boolean deleteOrderAlert(int alertId) {
+		int result = 0;
+		String sql = "DELETE FROM g8gonature.orders_alerts WHERE alertId = ? ";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, alertId);
+			query.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Could not execute deleteOrderAlert query");
+			e.printStackTrace();
+		}
+		return result > 0;
+	}
+
+	/**
+	 * This function returns all the orders that their alert time has ended and they are not confirmed
+	 * 
+	 * @param date The current date
+	 * @param time The current time
+	 * 
+	 * @return ArrayList of orders
+	 */
+	public ArrayList<Order> getOrderWithExpiryAlertTime(String date, String time) {
+
+		ArrayList<Order> orders = new ArrayList<Order>();
+		String sql = "SELECT g8gonature.order.* " + "FROM g8gonature.orders_alerts, g8gonature.order "
+				+ "WHERE alertDate = ? AND alertEndTime < ? AND (orderStatus = ? OR orderStatus = ?) AND g8gonature.order.orderId = g8gonature.orders_alerts.orderId";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setString(1, date);
+			query.setString(2, time);
+			query.setString(3, OrderStatusName.PENDING_EMAIL_SENT.toString());
+			query.setString(4, OrderStatusName.WAITING_HAS_SPOT.toString());
+
+			ResultSet res = query.executeQuery();
+
+			while (res.next()) {
+				Order order = new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
+						res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
+						res.getString(10));
+				orders.add(order);
+			}
+		} catch (SQLException e) {
+			System.out.println("Could not execute getOrderWithExpiryAlertTime query");
+			e.printStackTrace();
+		}
+		return orders;
+
+	}
+
+	/**
+	 * This function returns all the orders that their alert time has ended and they are not confirmed
+	 * 
+	 * @param date The current date
+	 * @param time The current time
+	 * 
+	 * @return ArrayList of orders
+	 */
+	public ArrayList<Integer> getOrderAlertIdWithExpiryAlertTime(String date, String time) {
+
+		ArrayList<Integer> orders = new ArrayList<Integer>();
+		String sql = "SELECT g8gonature.orders_alerts.alertId " + "FROM g8gonature.orders_alerts, g8gonature.order "
+				+ "WHERE alertDate = ? AND alertEndTime < ? AND (orderStatus = ? OR orderStatus = ?) AND g8gonature.order.orderId = g8gonature.orders_alerts.orderId";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setString(1, date);
+			query.setString(2, time);
+			query.setString(3, OrderStatusName.CONFIRMED.toString());
+			query.setString(4, OrderStatusName.CANCELED.toString());
+
+			ResultSet res = query.executeQuery();
+
+			while (res.next())
+				orders.add(res.getInt(1));
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute getOrderWithExpiryAlertTime query");
 			e.printStackTrace();
 		}
 		return orders;

@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import controllers.EmailControl;
 import controllers.SmsSender;
+import controllers.WaitingListControl;
 import controllers.sqlHandlers.EmployeeQueries;
 import controllers.sqlHandlers.OrderQueries;
 import controllers.sqlHandlers.ParkQueries;
@@ -449,11 +450,8 @@ public class HandleClientRequest implements Runnable {
 				if (request.getRequestType().equals(Request.CHECK_WAITING_LIST)) {
 					int orderId = (Integer) request.getParameters().get(0);
 					Order order = orderQueries.getOrderByID(orderId);
-					System.out.println("Order in check waiting list - handle client request = " + order.getOrderId());
-					if (order != null) {
-						NotifyWaitingList notifyWaitingList = new NotifyWaitingList(order);
-						new Thread(notifyWaitingList).start();
-					}
+					if (order != null)
+						WaitingListControl.notifyPersonFromWaitingList(order);
 					client.sendToClient("Finished");
 				}
 
@@ -537,8 +535,8 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.SEND_SMS)) {
-					
-					SmsSender.sendSms((String)request.getParameters().get(0), (String)request.getParameters().get(1));
+
+					SmsSender.sendSms((String) request.getParameters().get(0), (String) request.getParameters().get(1));
 					client.sendToClient("Finish");
 				}
 
