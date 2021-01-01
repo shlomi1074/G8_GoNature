@@ -231,6 +231,9 @@ public class TravelerViewOrders implements Initializable {
 
 				// Check the waiting list.
 				OrderControl.checkWaitingList(Integer.parseInt(orderIdTxt.getText()));
+				
+				
+				
 				messageTravelerIfCancel(order);
 				return;
 			} else {
