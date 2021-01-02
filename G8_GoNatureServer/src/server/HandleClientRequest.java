@@ -539,6 +539,22 @@ public class HandleClientRequest implements Runnable {
 					SmsSender.sendSms((String) request.getParameters().get(0), (String) request.getParameters().get(1));
 					client.sendToClient("Finish");
 				}
+				
+				if (request.getRequestType().equals(Request.COUNT_ENTER_SUBS_VISITORS_WITH_DAYS)) {
+					response = new ServerToClientResponse();
+					response.setResultSet(reportsQueries.CountSubsEnterTimeWithDays(request.getParameters()));
+					client.sendToClient(response);
+				}
+				if (request.getRequestType().equals(Request.COUNT_ENTER_SOLOS_VISITORS_WITH_DAYS)) {
+					response = new ServerToClientResponse();
+					response.setResultSet(reportsQueries.CountSolosEnterTimeWithDays(request.getParameters()));
+					client.sendToClient(response);
+				}
+				if (request.getRequestType().equals(Request.COUNT_ENTER_GROUPS_VISITORS_WITH_DAYS)) {
+					response = new ServerToClientResponse();
+					response.setResultSet(reportsQueries.CountGroupsEnterTimeWithDays(request.getParameters()));
+					client.sendToClient(response);
+				}
 
 			} catch (IOException e) {
 				e.printStackTrace();

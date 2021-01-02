@@ -513,9 +513,9 @@ public class OrderQueries {
 	 * This function adds a new order alert to orders_alert table in the database
 	 * 
 	 * @param orderId The order id associate with the alert
+	 * @param date The date of the alert
 	 * @param startTime The time the alert has been sent
 	 * @param endTime The time alert has been end
-	 * @param alertType The alert time
 	 * 
 	 * @return true on success, false otherwise
 	 */
