@@ -30,7 +30,7 @@ public class WaitingListControl {
 	private static TravelersQueries travelerQueries = new TravelersQueries(GoNatureServer.mysqlconnection);
 
 	/**
-	 * This function recevice canceled order and notify the next order in the waiting list.
+	 * This function receives canceled order and notify the next order in the waiting list.
 	 * 
 	 * @param order The canceled order.
 	 */

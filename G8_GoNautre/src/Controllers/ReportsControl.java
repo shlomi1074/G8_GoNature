@@ -18,7 +18,7 @@ public class ReportsControl {
 	/**
 	 * This function gets a report and insert it to the database.
 	 * 
-	 * @param r  the report to add to database
+	 * @param r the report to add to database
 	 * @return true on success, false otherwise
 	 */
 	public static boolean addReport(Report r) {
@@ -32,7 +32,7 @@ public class ReportsControl {
 	/**
 	 * This function gets a report and delete it from the database.
 	 * 
-	 * @param r  the report to delete from the database
+	 * @param r the report to delete from the database
 	 */
 	private static void removeReport(Report r) {
 		ClientToServerRequest<Report> request = new ClientToServerRequest<>(Request.DELETE_REPORT,
@@ -56,7 +56,7 @@ public class ReportsControl {
 	 * This function receive month of current year and asks the server
 	 * to send the number of subscriber visitors at this month by entrance hour.
 	 * 
-	 * @param month the current month number 
+	 * @param month the current month number
 	 */
 	public static void countSubsEnterTime(int month) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_ENTER_SUBS_VISITORS,
@@ -127,8 +127,8 @@ public class ReportsControl {
 	/**
 	 * This function gets cancelled orders number for a certain park in a specific month - for cancel report.
 	 * 
-	 * @param parkID  park's ID
-	 * @param month   month we want report for
+	 * @param parkID park's ID
+	 * @param month  month we want report for
 	 * @return ArrayList with number of cancelled orders
 	 */
 	public static ArrayList<Integer> getParkCancels(int parkID, int month) {
@@ -141,7 +141,7 @@ public class ReportsControl {
 	/**
 	 * this function shows the report for the specified type and month
 	 * 
-	 * @param arrayOfRequests  the array contains month number and the park id
+	 * @param arrayOfRequests the array contains month number and the park id
 	 */
 	public static void showReport(ArrayList<String> arrayOfRequests) {
 		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.MANAGER_REPORT, arrayOfRequests);
@@ -151,7 +151,7 @@ public class ReportsControl {
 	/**
 	 * adds new report with the specified type and month.
 	 * 
-	 * @param monthAndType  month number and report type
+	 * @param monthAndType month number and report type
 	 */
 	public static void addNewReportToDB(ArrayList<String> monthAndType) {
 		ClientToServerRequest<?> request = new ClientToServerRequest<>(Request.ADD_REPORT_TO_DB, monthAndType);
@@ -161,8 +161,8 @@ public class ReportsControl {
 	/**
 	 * This function get pending orders after date has passed for a certain park in a specific month - for cancel report.
 	 * 
-	 * @param parkID  park's ID
-	 * @param month   month we want report for
+	 * @param parkID park's ID
+	 * @param month  month we want report for
 	 * @return ArrayList with number of pending orders that passed todays date
 	 */
 	public static ArrayList<Integer> getParkPendingDatePassed(int parkID, int month) {
@@ -175,8 +175,8 @@ public class ReportsControl {
 	/**
 	 * This function returns all the orders in a given month which are Solo visit and the traveler is not subscriber
 	 * 
-	 * @param parkID park's ID
-	 * @param monthNumber  the month of the orders
+	 * @param parkID      park's ID
+	 * @param monthNumber the month of the orders
 	 * 
 	 * @return ArrayList of order object
 	 */
@@ -191,7 +191,7 @@ public class ReportsControl {
 	 * This function returns all the orders in a given month which made by Subscribers
 	 * 
 	 * @param monthNumber the month of the orders
-	 * @param parkID The park id
+	 * @param parkID      The park id
 	 * 
 	 * @return ArrayList of order object
 	 */
@@ -206,7 +206,7 @@ public class ReportsControl {
 	 * This function returns all the orders in a given month which are Group visits
 	 * 
 	 * @param monthNumber the month of the orders
-	 * @param parkID The park id
+	 * @param parkID      The park id
 	 * 
 	 * @return ArrayList of order object
 	 */
@@ -215,6 +215,47 @@ public class ReportsControl {
 				new ArrayList<Integer>(Arrays.asList(monthNumber, parkID)));
 		ClientUI.chat.accept(request);
 		return ChatClient.responseFromServer.getResultSet();
+	}
+
+	/**
+	 * This function returns all the orders of a given month and day of current year
+	 * which are solo visitors
+	 * 
+	 * @param month The report's month
+	 * @param day The day in the month
+	 */
+	public static void countSolosEnterTimeWithDays(int month, String day) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(
+				Request.COUNT_ENTER_SOLOS_VISITORS_WITH_DAYS,
+				new ArrayList<String>(Arrays.asList(String.valueOf(month), day)));
+		ClientUI.chat.accept(request);
+	}
+
+	/**
+	 * This function returns all the orders of a given month and day of current year
+	 * which are subscriber visitors
+	 * 
+	 * @param month The report's month
+	 * @param day The day in the month
+	 */
+	public static void countSubsEnterTimeWithDays(int month, String day) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_ENTER_SUBS_VISITORS_WITH_DAYS,
+				new ArrayList<String>(Arrays.asList(String.valueOf(month), day)));
+		ClientUI.chat.accept(request);
+	}
+
+	/**
+	 * This function returns all the orders of a given month and day of current year
+	 * which are group visitors
+	 * 
+	 * @param month The report's month
+	 * @param day The day in the month
+	 */
+	public static void countGroupsEnterTimeWithDays(int month, String day) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(
+				Request.COUNT_ENTER_GROUPS_VISITORS_WITH_DAYS,
+				new ArrayList<String>(Arrays.asList(String.valueOf(month), day)));
+		ClientUI.chat.accept(request);
 	}
 
 }

@@ -83,8 +83,6 @@ public class NotifyThread implements Runnable {
 		}
 	}
 
-	
-
 	/*
 	 * This message is for a person to approve his visit.
 	 */
@@ -147,7 +145,6 @@ public class NotifyThread implements Runnable {
 	/*
 	 * This message is for a person in the waiting list.
 	 */
-	
 
 	private ArrayList<Order> getPendingOrders() {
 		return orderQueries.getPendingOrders();

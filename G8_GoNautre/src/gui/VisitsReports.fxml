@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="827.0" prefWidth="727.0" stylesheets="@../resources/projectTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="886.0" prefWidth="727.0" stylesheets="@../resources/projectTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="headerLabel" layoutX="275.0" layoutY="14.0" prefHeight="39.0" prefWidth="169.0" text="Visits Report" />
-      <LineChart fx:id="stayTime_chart" layoutX="9.0" layoutY="487.0" prefHeight="340.0" prefWidth="710.0" title="Stay Time Graph">
+      <LineChart fx:id="stayTime_chart" layoutY="532.0" prefHeight="340.0" prefWidth="710.0" title="Stay Time Graph">
         <xAxis>
           <NumberAxis fx:id="stayX2" label="Stay Time (In hours)" side="BOTTOM" />
         </xAxis>
         <yAxis>
-          <NumberAxis fx:id="stayY" label="Number of visitors" side="LEFT" />
+          <NumberAxis fx:id="stayY" label="\% Of Visitors " side="LEFT" />
         </yAxis>
       </LineChart>
-      <Line endX="-282.0" endY="193.0" layoutX="282.0" layoutY="278.0" opacity="0.19" startX="464.25" startY="193.0" stroke="WHITE" strokeWidth="1.5" />
-      <LineChart fx:id="entranceTime_chart" layoutY="116.0" prefHeight="340.0" prefWidth="710.0" title="Entrance Graph">
+      <Line endX="-282.0" endY="193.0" layoutX="282.0" layoutY="324.0" opacity="0.19" startX="464.25" startY="193.0" stroke="WHITE" strokeWidth="1.5" />
+      <LineChart fx:id="entranceTime_chart" layoutY="153.0" prefHeight="340.0" prefWidth="710.0" title="Entrance Graph">
          <xAxis>
             <NumberAxis fx:id="enterX2" label="Entrance hour" side="BOTTOM" />
          </xAxis>
@@ -26,8 +27,11 @@
             <NumberAxis fx:id="enterY" label="Number of visitors" side="LEFT" />
          </yAxis>
       </LineChart>
-      <Label fx:id="lblMonth" layoutX="365.0" layoutY="78.0" text="Label" />
-      <Label layoutX="289.0" layoutY="78.0" prefHeight="20.0" prefWidth="71.0" text="Reports For:" />
+      <Label fx:id="lblMonth" layoutX="378.0" layoutY="60.0" text="Label" />
+      <Label layoutX="300.0" layoutY="60.0" prefHeight="20.0" prefWidth="71.0" text="Reports For:" />
+      <Label layoutX="208.0" layoutY="130.0" text="Pick day of the month:" />
+      <JFXComboBox fx:id="comboBox" layoutX="360.0" layoutY="118.0" prefHeight="30.0" prefWidth="179.0" />
+      <Line endX="-282.0" endY="193.0" layoutX="282.0" layoutY="-84.0" opacity="0.19" startX="464.25" startY="193.0" stroke="WHITE" strokeWidth="1.5" />
 
       
    </children>

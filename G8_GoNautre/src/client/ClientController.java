@@ -39,7 +39,7 @@ public class ClientController implements ChatIF {
 	 *
 	 * @param host The host to connect to.
 	 * @param port The port to connect on.
-	 * @throws IOException 
+	 * @throws IOException If failed to connect to server
 	 */
 	public ClientController(String host, int port) throws IOException {
 		try {
