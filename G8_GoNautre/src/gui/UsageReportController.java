@@ -1,9 +1,12 @@
 package gui;
 
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -67,7 +70,7 @@ public class UsageReportController implements Initializable {
 
 	private int parkID;
 	private int monthNumber;
-	private int year = Calendar.getInstance().get(Calendar.YEAR);;
+	private int year = Calendar.getInstance().get(Calendar.YEAR);
 	private String comment;
 	private boolean isDepManager = false;
 
@@ -144,8 +147,27 @@ public class UsageReportController implements Initializable {
 			else {
 				cell.setStyle("-fx-background-color: #ffc0cb;");
 				String comment = "";
+				SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
+				Date prevTime = null;
+				try {
+					prevTime = parser.parse("07:00");
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
 				for (String str : result) {
-					comment += str + "\n";
+					String time = str.split(" ")[6];
+					String minusHour = String.valueOf(Integer.parseInt(time.split(":")[0]) - 1);
+					String min = time.split(":")[1];
+					String timeMinusHour = minusHour + ":" + min;
+					try {
+						Date timePlusHourTime = parser.parse(timeMinusHour);
+						if (timePlusHourTime.after(prevTime)) {
+							comment += str + "\n";
+							prevTime = parser.parse(time);
+						}
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
 				}
 				cell.setTooltip(new Tooltip(comment));
 			}
@@ -153,6 +175,10 @@ public class UsageReportController implements Initializable {
 	}
 
 	private ArrayList<String> isParkIsFullAtDate(int year, int monthNumber, int day) {
+		int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
+		if (monthNumber > currentMonth)
+			year--;
+		
 		String date = year + "-" + monthNumber + "-" + day;
 		return ParkControl.isParkIsFullAtDate(date, String.valueOf(parkID));
 	}
@@ -160,7 +186,6 @@ public class UsageReportController implements Initializable {
 	/**
 	 * Handle 'sendToManagerBtn' button
 	 * On click it sends a request to the server to add the report to the database
-	 * 
 	 */
 	@FXML
 	private void sendToManagerBtn() {

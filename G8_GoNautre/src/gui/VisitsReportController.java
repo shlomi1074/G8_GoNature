@@ -238,8 +238,6 @@ public class VisitsReportController implements Initializable {
 		stayY.setLowerBound(0);
 		if (totalNumOfVisitors == 0)
 			totalNumOfVisitors++;
-		System.out.println(maxNumOfVisitors);
-		System.out.println(totalNumOfVisitors);
 		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
 				: maxNumOfVisitors / totalNumOfVisitors * 100 + 5);
 		stayY.setTickUnit(1);
@@ -289,6 +287,8 @@ public class VisitsReportController implements Initializable {
 		String month = null;
 		if (monthNumber < 10)
 			month = "0" + monthNumber;
+		else
+			month = String.valueOf(monthNumber);
 		YearMonth ym = YearMonth.parse(Calendar.getInstance().get(Calendar.YEAR) + "-" + month);
 		return ym.lengthOfMonth();
 	}

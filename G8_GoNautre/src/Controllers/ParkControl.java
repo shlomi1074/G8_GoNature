@@ -90,8 +90,8 @@ public class ParkControl {
 	/**
 	 * This function return the park Id of given order Id
 	 * 
-	 * @param orders   ArrayList of object OrderTb, containing orders
-	 * @param orderId  int variable, the order we would like the park for.
+	 * @param orders  ArrayList of object OrderTb, containing orders
+	 * @param orderId int variable, the order we would like the park for.
 	 * 
 	 * @return park id on success, -1 if the park was not found.
 	 */
@@ -105,8 +105,8 @@ public class ParkControl {
 	/**
 	 * This function return the park Id of given order Id
 	 * 
-	 * @param pId  int variable, the park Id to update
-	 * @param num  int variable, the total number of visitors in the park
+	 * @param pId int variable, the park Id to update
+	 * @param num int variable, the total number of visitors in the park
 	 * 
 	 */
 	public static void updateCurrentVisitors(int pId, int num) {
@@ -155,9 +155,9 @@ public class ParkControl {
 		LocalDateTime now = LocalDateTime.now();
 		String dateAndTime = dtf.format(now);
 		String date = dateAndTime.split(" ")[0];
-		String time = dateAndTime.split(" ")[1];
+		// String time = dateAndTime.split(" ")[1];
 
-		String comment = "Full at: " + time;
+		String comment = park.getParkName() + " was full at: " + dateAndTime;
 
 		String parkId = String.valueOf(park.getParkId());
 		String maxVisitors = String.valueOf(park.getMaxVisitors());

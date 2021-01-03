@@ -10,6 +10,7 @@ import ocsf.server.*;
 import server.threads.CancelOrders;
 import server.threads.NotifyThread;
 import server.threads.NotifyTravelers;
+import server.threads.UpdateOrderStatusVisitCompleted;
 import server.threads.UpdateTravelerExitStatus;
 
 /**
@@ -22,7 +23,7 @@ import server.threads.UpdateTravelerExitStatus;
  * @author Lior Keren
  * @author Ofir Newman
  * 
- * @version December 2020
+ * @version January 2021
  */
 public class GoNatureServer extends AbstractServer {
 
@@ -64,6 +65,9 @@ public class GoNatureServer extends AbstractServer {
 
 		NotifyThread notifyThread = new NotifyThread(mysqlconnection);
 		new Thread(notifyThread).start();
+		
+		UpdateOrderStatusVisitCompleted updateOrderStatusVisitCompleted = new UpdateOrderStatusVisitCompleted(mysqlconnection);
+		new Thread(updateOrderStatusVisitCompleted).start();
 	}
 
 	// Instance methods ************************************************

@@ -114,8 +114,8 @@ public class OrderQueries {
 	 * This function return orders in waiting list that can replace the can canceled order.
 	 * 
 	 * @param parameters ArrayList containing: parkId,maxVisitors in the park,
-	 * estimatedStayTime in the park, date of the canceled order, timeToCheck of the canceled order,
-	 * gap between max and current in the park
+	 *                   estimatedStayTime in the park, date of the canceled order, timeToCheck of the canceled order,
+	 *                   gap between max and current in the park
 	 * @return ArrayList of object Order containing matching orders.
 	 */
 	public ArrayList<Order> findMatchingOrdersInWaitingList(ArrayList<?> parameters) {
@@ -512,10 +512,10 @@ public class OrderQueries {
 	/**
 	 * This function adds a new order alert to orders_alert table in the database
 	 * 
-	 * @param orderId The order id associate with the alert
-	 * @param date The date of the alert
+	 * @param orderId   The order id associate with the alert
+	 * @param date      The date of the alert
 	 * @param startTime The time the alert has been sent
-	 * @param endTime The time alert has been end
+	 * @param endTime   The time alert has been end
 	 * 
 	 * @return true on success, false otherwise
 	 */
@@ -628,6 +628,40 @@ public class OrderQueries {
 			e.printStackTrace();
 		}
 		return orders;
+	}
+
+	/**
+	 * This function returns all the orders that have been completed and their status is ENTERED_THE_PARK
+	 * 
+	 * @return ArrayList of Order objects
+	 */
+	public ArrayList<Order> getCompletedOrders() {
+		ArrayList<Order> orders = new ArrayList<Order>();
+		String sql = "SELECT g8gonature.order.* FROM g8gonature.order, g8gonature.visit"
+				+ " WHERE g8gonature.order.orderStatus = ? AND g8gonature.order.travelerId = g8gonature.visit.travelerId"
+				+ " AND g8gonature.order.parkId = g8gonature.visit.parkId AND g8gonature.order.parkId = g8gonature.visit.parkId"
+				+ " AND g8gonature.order.orderTime = g8gonature.visit.entrenceTime AND g8gonature.order.orderDate = g8gonature.visit.visitDate"
+				+ " AND g8gonature.visit.exitTime < ?";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setString(1, OrderStatusName.ENTERED_THE_PARK.toString());
+			query.setString(2, LocalTime.now().toString());
+			ResultSet res = query.executeQuery();
+
+			while (res.next()) {
+				Order order = new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
+						res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
+						res.getString(10));
+				orders.add(order);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute getCompletedOrders query");
+			e.printStackTrace();
+		}
+		return orders;
+
 	}
 
 }

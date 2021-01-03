@@ -11,9 +11,10 @@ import Controllers.OrderControl;
 import Controllers.ParkControl;
 import Controllers.TravelerControl;
 import Controllers.calculatePrice.CheckOut;
-import Controllers.calculatePrice.GroupCasualCheckOut;
+import Controllers.calculatePrice.GuidePrePayCheckOut;
 import Controllers.calculatePrice.RegularCheckOut;
-import Controllers.calculatePrice.SubscriberPayAtParkCheckOut;
+import Controllers.calculatePrice.RegularPreOrderCheckOut;
+import Controllers.calculatePrice.SubscriberPreOrderCheckOut;
 import alerts.CustomAlerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -254,13 +255,18 @@ public class ManageTravelerController implements Initializable {
 		// Change order status
 		OrderControl.changeOrderStatus(String.valueOf(clickedRow.getOrderId()), OrderStatusName.ENTERED_THE_PARK);
 
+		// Setting parameters for price.
+		String id = clickedRow.getTravelerId();
+		String type = clickedRow.getOrderType().toString();
+		price = clickedRow.getPrice();
+
 		// Change number of participants in the order
 		if (numberOfParticipantsInCurrentOrder != numberOfParticipantsInOriginalOrder) {
 			// Update the number of visitors in DB
 			OrderControl.changeNumberOfVisitorsInExisitingOrder(String.valueOf(clickedRow.getOrderId()),
 					numberOfParticipantsInCurrentOrder);
-			String id = clickedRow.getTravelerId();
-			String type = clickedRow.getOrderType().toString();
+			// String id = clickedRow.getTravelerId();
+			// String type = clickedRow.getOrderType().toString();
 			String orderId = String.valueOf(clickedRow.getOrderId());
 			price = calculatePriceForVisit(id, numberOfParticipantsInCurrentOrder, type);
 			// Update the price in DB
@@ -294,6 +300,7 @@ public class ManageTravelerController implements Initializable {
 
 	/*
 	 * This function calculate the order price.
+	 * Ofir edit.
 	 */
 	private double calculatePriceForVisit(String id, int visitorsNumber, String type) {
 		double price = 0;
@@ -303,27 +310,63 @@ public class ManageTravelerController implements Initializable {
 		String orderType = type;
 
 		// Setting up vars
-		Subscriber sub = null;
-		boolean existTraveler = TravelerControl.isTravelerExist(idOfTraveler);
+		Subscriber sub = TravelerControl.getSubscriber(idOfTraveler);
+		// boolean existTraveler = TravelerControl.isTravelerExist(idOfTraveler);
 		LocalDate today = LocalDate.now();
 		int parkId = MemberLoginController.member.getParkId();
 
-		// Setting up price class.
+		// Ofir Edit
+		// Regular Price
 		CheckOut chk = new RegularCheckOut(numberOfVisitors, parkId, today.toString());
 
-		// Order for group has no discount.
-		if (orderType.equals(OrderType.GROUP.toString())) {
-			price = (new GroupCasualCheckOut(chk)).getPrice();
+		// Order is for solo / family and the visit is pre-ordered,
+		// in addition the ordering person is not a guide
+		if (orderType.equals(OrderType.SOLO.toString()) || orderType.equals(OrderType.FAMILY.toString())) {
+			// chk = new RegularPreOrderCheckOut(chk);
+			if (sub != null && !sub.getSubscriberType().equals("Guide"))
+				price = new SubscriberPreOrderCheckOut(chk).getPrice();
+			else
+				price = new RegularPreOrderCheckOut(chk).getPrice();
+			return price;
+		} else {
+			// The group is a group visit.
+			if (sub == null) {
+				price = new RegularPreOrderCheckOut(chk).getPrice();
+			} else if (sub.getSubscriberType().equals("Guide")) {
+				price = new GuidePrePayCheckOut(chk).getPrice();
+			} else {
+				price = new SubscriberPreOrderCheckOut(chk).getPrice();
+			}
 			return price;
 		}
-		// If the traveler is subscriber.
-		if (existTraveler)
-			sub = TravelerControl.getSubscriber(idOfTraveler);
-		if (sub != null)
-			price = (new SubscriberPayAtParkCheckOut(chk)).getPrice();
-		else
-			price = chk.getPrice();
-		return price;
+
+//		if (sub == null) {
+//			price = chk.getPrice();
+//			return price;
+//		}
+//		if (sub.getSubscriberType().equals("Solo") || sub.getSubscriberType().equals("Family")) {
+//			price = (new SubscriberPreOrderCheckOut(chk)).getPrice();
+//			return price;
+//		}
+//
+//		// Setting up price class.
+//		// Ofir v edit.
+//		CheckOut chk = new RegularCheckOut(numberOfVisitors, parkId, today.toString());
+//		chk = new RegularPreOrderCheckOut(chk);
+//
+//		// Order for group has no discount.
+//		if (orderType.equals(OrderType.GROUP.toString())) {
+//			price = (new GroupCasualCheckOut(chk)).getPrice();
+//			return price;
+//		}
+//		// If the traveler is subscriber.
+//		if (existTraveler)
+//			sub = TravelerControl.getSubscriber(idOfTraveler);
+//		if (sub != null)
+//			price = (new SubscriberPayAtParkCheckOut(chk)).getPrice();
+//		else
+//			price = chk.getPrice();
+//		return price;
 	}
 
 	/*
@@ -381,7 +424,8 @@ public class ManageTravelerController implements Initializable {
 			return false;
 
 		// Order is within range
-		if (orderTime.isAfter(LocalTime.now().minusMinutes(15)) && orderTime.isBefore(LocalTime.now().plusHours(1)))
+		// Ofir edit
+		if (LocalTime.now().isAfter(orderTime.minusMinutes(15)) && orderTime.isBefore(orderTime.plusHours(1)))
 			return true;
 		return false;
 	}

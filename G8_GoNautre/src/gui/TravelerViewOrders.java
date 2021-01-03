@@ -192,7 +192,7 @@ public class TravelerViewOrders implements Initializable {
 				return;
 			} else {
 				new CustomAlerts(AlertType.ERROR, "System Error", "System Error",
-						"Could not confirm this order,please try again later.").showAndWait();
+						"Could not confirm this order, please try again later.").showAndWait();
 				return;
 			}
 		} else {

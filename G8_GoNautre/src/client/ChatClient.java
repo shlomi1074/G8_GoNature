@@ -1,7 +1,3 @@
-// This file contains material supporting section 3.7 of the textbook:
-// "Object Oriented Software Engineering" and is issued under the open-source
-// license found at www.lloseng.com 
-
 package client;
 
 import common.*;
@@ -16,10 +12,13 @@ import java.util.ArrayList;
  * This class overrides some of the methods defined in the abstract superclass
  * in order to give more functionality to the client.
  *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;
- * @author Fran&ccedil;ois B&eacute;langer
- * @version July 2000
+ * @author Shlomi Amar
+ * @author Alon Ivshin
+ * @author Ofir Vaknin
+ * @author Lior Keren
+ * @author Ofir Newman
+ * 
+ * @version January 2021
  */
 @SuppressWarnings("rawtypes")
 public class ChatClient extends AbstractClient {
@@ -127,10 +126,6 @@ public class ChatClient extends AbstractClient {
 			quit();
 		}
 	}
-
-	/* When The client closed this function called */
-//	protected void connectionClosed() {
-//	}
 
 	/**
 	 * This method terminates the client.
