@@ -31,9 +31,9 @@ import logic.Report;
 import logic.ReportTb;
 
 /**
- * Gets all reports from reports table 
- * Load all received reports to table for department manager to view 
- * Department manager can get report on cancelled orders when clicking on Cancels Report button 
+ * Gets all reports from reports table
+ * Load all received reports to table for department manager to view
+ * Department manager can get report on cancelled orders when clicking on Cancels Report button
  * Department manager can get visit report when clicking on visit Report button
  */
 public class DepartmentManagerReportsController implements Initializable {
@@ -103,6 +103,7 @@ public class DepartmentManagerReportsController implements Initializable {
 		try {
 			Stage thisStage = getStage();
 			FXMLLoader loader = null;
+			Stage newStage = new Stage();
 
 			if (name.equals("Usage")) {
 				screenTitle = "Usage Report";
@@ -135,7 +136,6 @@ public class DepartmentManagerReportsController implements Initializable {
 
 			loader.load();
 			Parent p = loader.getRoot();
-			Stage newStage = new Stage();
 
 			/* Block parent stage until child stage closes */
 			newStage.initModality(Modality.WINDOW_MODAL);

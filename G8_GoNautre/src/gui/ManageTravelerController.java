@@ -265,8 +265,7 @@ public class ManageTravelerController implements Initializable {
 			// Update the number of visitors in DB
 			OrderControl.changeNumberOfVisitorsInExisitingOrder(String.valueOf(clickedRow.getOrderId()),
 					numberOfParticipantsInCurrentOrder);
-			// String id = clickedRow.getTravelerId();
-			// String type = clickedRow.getOrderType().toString();
+
 			String orderId = String.valueOf(clickedRow.getOrderId());
 			price = calculatePriceForVisit(id, numberOfParticipantsInCurrentOrder, type);
 			// Update the price in DB
@@ -290,7 +289,7 @@ public class ManageTravelerController implements Initializable {
 
 		ParkControl.updateIfParkFull(p);
 
-		// Printing recepit
+		// Printing receipt
 		loadOrderConfirmation();
 
 		// Reloading the table view
@@ -300,7 +299,6 @@ public class ManageTravelerController implements Initializable {
 
 	/*
 	 * This function calculate the order price.
-	 * Ofir edit.
 	 */
 	private double calculatePriceForVisit(String id, int visitorsNumber, String type) {
 		double price = 0;
@@ -311,18 +309,15 @@ public class ManageTravelerController implements Initializable {
 
 		// Setting up vars
 		Subscriber sub = TravelerControl.getSubscriber(idOfTraveler);
-		// boolean existTraveler = TravelerControl.isTravelerExist(idOfTraveler);
 		LocalDate today = LocalDate.now();
 		int parkId = MemberLoginController.member.getParkId();
 
-		// Ofir Edit
 		// Regular Price
 		CheckOut chk = new RegularCheckOut(numberOfVisitors, parkId, today.toString());
 
 		// Order is for solo / family and the visit is pre-ordered,
 		// in addition the ordering person is not a guide
 		if (orderType.equals(OrderType.SOLO.toString()) || orderType.equals(OrderType.FAMILY.toString())) {
-			// chk = new RegularPreOrderCheckOut(chk);
 			if (sub != null && !sub.getSubscriberType().equals("Guide"))
 				price = new SubscriberPreOrderCheckOut(chk).getPrice();
 			else
@@ -340,33 +335,6 @@ public class ManageTravelerController implements Initializable {
 			return price;
 		}
 
-//		if (sub == null) {
-//			price = chk.getPrice();
-//			return price;
-//		}
-//		if (sub.getSubscriberType().equals("Solo") || sub.getSubscriberType().equals("Family")) {
-//			price = (new SubscriberPreOrderCheckOut(chk)).getPrice();
-//			return price;
-//		}
-//
-//		// Setting up price class.
-//		// Ofir v edit.
-//		CheckOut chk = new RegularCheckOut(numberOfVisitors, parkId, today.toString());
-//		chk = new RegularPreOrderCheckOut(chk);
-//
-//		// Order for group has no discount.
-//		if (orderType.equals(OrderType.GROUP.toString())) {
-//			price = (new GroupCasualCheckOut(chk)).getPrice();
-//			return price;
-//		}
-//		// If the traveler is subscriber.
-//		if (existTraveler)
-//			sub = TravelerControl.getSubscriber(idOfTraveler);
-//		if (sub != null)
-//			price = (new SubscriberPayAtParkCheckOut(chk)).getPrice();
-//		else
-//			price = chk.getPrice();
-//		return price;
 	}
 
 	/*
@@ -424,7 +392,6 @@ public class ManageTravelerController implements Initializable {
 			return false;
 
 		// Order is within range
-		// Ofir edit
 		if (LocalTime.now().isAfter(orderTime.minusMinutes(15)) && orderTime.isBefore(orderTime.plusHours(1)))
 			return true;
 		return false;
