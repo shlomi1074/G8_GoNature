@@ -146,6 +146,7 @@ public class CreateReportsController implements Initializable {
 	private void switchScenceWithController() {
 		try {
 			Stage thisStage = getStage();
+			Stage newStage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
 			if (totalVisitorsRB.isSelected()) {
 				TotalVisitorsReportController controller = new TotalVisitorsReportController();
@@ -169,7 +170,6 @@ public class CreateReportsController implements Initializable {
 			}
 			loader.load();
 			Parent p = loader.getRoot();
-			Stage newStage = new Stage();
 
 			/* Block parent stage until child stage closes */
 			newStage.initModality(Modality.WINDOW_MODAL);

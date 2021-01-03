@@ -553,6 +553,21 @@ public class HandleClientRequest implements Runnable {
 					response.setResultSet(reportsQueries.CountGroupsEnterTimeWithDays(request.getParameters()));
 					client.sendToClient(response);
 				}
+				if (request.getRequestType().equals(Request.COUNT_VISIT_SUBS_VISITORS_WITH_DAYS)) {
+					response = new ServerToClientResponse();
+					response.setResultSet(reportsQueries.CountSubsVisitTimeWithDays(request.getParameters()));
+					client.sendToClient(response);
+				}
+				if (request.getRequestType().equals(Request.COUNT_VISIT_SOLOS_VISITORS_WITH_DAYS)) {
+					response = new ServerToClientResponse();
+					response.setResultSet(reportsQueries.CountSolosVisitTimeWithDays(request.getParameters()));
+					client.sendToClient(response);
+				}
+				if (request.getRequestType().equals(Request.COUNT_VISIT_GROUPS_VISITORS_WITH_DAYS)) {
+					response = new ServerToClientResponse();
+					response.setResultSet(reportsQueries.CountGroupsVisitTimeWithDays(request.getParameters()));
+					client.sendToClient(response);
+				}
 
 			} catch (IOException e) {
 				e.printStackTrace();

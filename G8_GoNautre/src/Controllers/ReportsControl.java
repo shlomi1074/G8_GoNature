@@ -257,5 +257,45 @@ public class ReportsControl {
 				new ArrayList<String>(Arrays.asList(String.valueOf(month), day)));
 		ClientUI.chat.accept(request);
 	}
+	
+	/**
+	 *  This function receive month and day of current year and asks the server
+	 * to send the number of solo visitors at this month dived by their visit time.
+	 * 
+	 * @param month
+	 * @param day
+	 */
+	public static void countSolosVisitTimeWithDay(int month, String day) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_SOLOS_VISITORS_WITH_DAYS,
+				new ArrayList<String>(Arrays.asList(String.valueOf(month),day)));
+		ClientUI.chat.accept(request);
+		
+	}
+	/**
+	 *  This function receive month and day of current year and asks the server
+	 * to send the number of subscriber visitors at this month dived by their visit time.
+	 * 
+	 * @param month
+	 * @param day
+	 */
+	public static void countSubsVisitTimeWithDay(int month, String day) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_SUBS_VISITORS_WITH_DAYS,
+				new ArrayList<String>(Arrays.asList(String.valueOf(month),day)));
+		ClientUI.chat.accept(request);
+		
+	}
+	/**
+	 *  This function receive month and day of current year and asks the server
+	 * to send the number of group visitors at this month dived by their visit time.
+	 * 
+	 * @param month
+	 * @param day
+	 */
+	public static void countGroupsVisitTimeWithDay(int month, String day) {
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_GROUPS_VISITORS_WITH_DAYS,
+				new ArrayList<String>(Arrays.asList(String.valueOf(month),day)));
+		ClientUI.chat.accept(request);
+		
+	}
 
 }

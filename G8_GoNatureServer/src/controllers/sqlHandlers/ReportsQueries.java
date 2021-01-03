@@ -712,4 +712,117 @@ public class ReportsQueries {
 		return rep;
 	}
 
+	/**
+	 * This creates objects of solo visitors dived by their stay time of visit
+	 * 
+	 * @param parameters current year selected month and selected day
+	 * @return ArrayList of VisitReport objects
+	 */
+	public ArrayList<VisitReport> CountSolosVisitTimeWithDays(ArrayList<?> parameters) {
+		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
+		int month = Integer.parseInt((String) parameters.get(0));
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int day = Integer.parseInt((String) parameters.get(1));
+
+		String sql = "SELECT SUM(test.numberOfParticipants),TIMEDIFF (test.exitTime,test.entrenceTime) "
+				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime,visit.exitTime "
+				+ "FROM g8gonature.visit , g8gonature.order WHERE NOT exists ( SELECT subscriber.travelerId FROM g8gonature.subscriber "
+				+ "WHERE visit.travelerId = subscriber.travelerId) AND visit.travelerId = order.travelerId AND order.orderType = 'Solo Visit' "
+				+ "AND order.orderStatus = 'Visit completed' AND visit.visitDate = order.orderDate "
+				+ "AND MONTH(visit.visitDate) = ? AND YEAR(visit.visitDate) = ? AND DAY(visit.visitDate) = ?) as test GROUP BY TIMEDIFF(test.exitTime, test.entrenceTime);";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, month);
+			query.setInt(2, year);
+			query.setInt(3, day);
+			ResultSet res = query.executeQuery();
+			while (res.next()) {
+				VisitReport report = new VisitReport(res.getInt(1), res.getString(2));
+				rep.add(report);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute CountSolos query");
+			e.printStackTrace();
+		}
+		return rep;
+	}
+
+	/**
+	 * This creates objects of subscriber visitors dived by their stay time of visit
+	 * 
+	 * @param parameters current year selected month and selected day
+	 * @return ArrayList of VisitReport objects
+	 */
+	public ArrayList<VisitReport> CountSubsVisitTimeWithDays(ArrayList<?> parameters) {
+		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
+		int month = Integer.parseInt((String) parameters.get(0));
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int day = Integer.parseInt((String) parameters.get(1));
+
+		String sql = "SELECT SUM(test.numberOfParticipants),TIMEDIFF (test.exitTime,test.entrenceTime) "
+				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime, visit.exitTime "
+				+ "FROM g8gonature.visit, g8gonature.order, g8gonature.subscriber WHERE visit.travelerId = order.travelerId "
+				+ "AND (order.orderType = 'Solo Visit' OR order.orderType = 'Family Visit') AND visit.travelerId = subscriber.travelerId "
+				+ "AND order.orderStatus = 'Visit completed' AND visit.visitDate = order.orderDate "
+				+ "AND MONTH(visit.visitDate) = ? AND YEAR(visit.visitDate) = ? AND DAY(visit.visitDate) = ?) as test GROUP BY TIMEDIFF(test.exitTime, test.entrenceTime);;";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, month);
+			query.setInt(2, year);
+			query.setInt(3, day);
+			ResultSet res = query.executeQuery();
+			while (res.next()) {
+				VisitReport report = new VisitReport(res.getInt(1), res.getString(2));
+				rep.add(report);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute CountSubs query");
+			e.printStackTrace();
+		}
+		return rep;
+	}
+
+	/**
+	 * This creates objects of group visitors dived by their stay time of visit
+	 * 
+	 * @param parameters current year selected month and selected day
+	 * @return ArrayList of VisitReport objects
+	 */
+	public ArrayList<VisitReport> CountGroupsVisitTimeWithDays(ArrayList<?> parameters) {
+		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
+		int month = Integer.parseInt((String) parameters.get(0));
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int day = Integer.parseInt((String) parameters.get(1));
+
+		String sql = "SELECT SUM(test.numberOfParticipants),TIMEDIFF (test.exitTime,test.entrenceTime) "
+				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime, visit.exitTime "
+				+ "FROM g8gonature.visit,g8gonature.order  WHERE (NOT exists ( SELECT subscriber.travelerId "
+				+ "FROM g8gonature.subscriber WHERE visit.travelerId = subscriber.travelerId) AND NOT exists ( SELECT traveler.travelerId "
+				+ "FROM g8gonature.traveler WHERE visit.travelerId = traveler.travelerId) OR (SELECT subscriber.travelerId FROM g8gonature.subscriber "
+				+ "WHERE visit.travelerId = subscriber.travelerId)) AND visit.travelerId = order.travelerId AND order.orderType = 'Group Visit' "
+				+ "AND order.orderStatus = 'Visit completed' AND visit.visitDate = order.orderDate "
+				+ "AND MONTH(visit.visitDate) = ? AND YEAR(visit.visitDate) = ?  AND DAY(visit.visitDate) = ?) as test GROUP BY TIMEDIFF(test.exitTime, test.entrenceTime);";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setInt(1, month);
+			query.setInt(2, year);
+			query.setInt(3, day);
+			ResultSet res = query.executeQuery();
+			while (res.next()) {
+				VisitReport report = new VisitReport(res.getInt(1), res.getString(2));
+				rep.add(report);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute CountGroup query");
+			e.printStackTrace();
+		}
+		return rep;
+	}
+
 }
