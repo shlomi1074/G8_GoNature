@@ -320,12 +320,9 @@ public class ReportsQueries {
 	 * @return ArrayList with number of cancelled orders
 	 */
 	public ArrayList<Integer> getParkCancels(ArrayList<?> parameters) {
-		System.out.println("TEST if got to sql");
 		ArrayList<Integer> cancels = new ArrayList<Integer>();
 		int parkId = (int) parameters.get(0);
 		int month = (int) parameters.get(1);
-		System.out.println("park ID=" + parkId);
-		System.out.println("month=" + month);
 
 		String sql = "SELECT COUNT(*) FROM g8gonature.order WHERE parkId = ? AND MONTH(orderDate) = ? AND orderStatus = ?";
 		PreparedStatement query;
@@ -611,7 +608,6 @@ public class ReportsQueries {
 		int month = Integer.parseInt((String) parameters.get(0));
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		int day = Integer.parseInt((String) parameters.get(1));
-		System.out.println(day);
 
 		String sql = "SELECT SUM(test.numberOfParticipants),test.entrenceTime "
 				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime FROM g8gonature.visit , g8gonature.order "
@@ -649,7 +645,6 @@ public class ReportsQueries {
 		int month = Integer.parseInt((String) parameters.get(0));
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		int day = Integer.parseInt((String) parameters.get(1));
-		System.out.println(day);
 
 		String sql = "SELECT SUM(test.numberOfParticipants),test.entrenceTime "
 				+ "FROM (SELECT visit.travelerId,order.numberOfParticipants, visit.entrenceTime "

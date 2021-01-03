@@ -129,6 +129,8 @@ public class RescheduleController implements Initializable {
 				/* Send message by mail */
 				Messages msg = new Messages(0, traveler.getTravelerId(), date, time, MsgTemplates.orderConfirmation[0],
 						emailContent, recentOrder.getOrderId());
+				
+				//NotificationControl.sendSms(traveler.getPhoneNumber(), msg); //NEED TO DECOMMENT
 				NotificationControl.sendMailInBackgeound(msg, null);
 
 				if (isOrderFromMain)
@@ -206,7 +208,6 @@ public class RescheduleController implements Initializable {
 	}
 
 	private void init() {
-		/* Temp just so we can imagine how it suppose to be */
 		datesListView.getItems().clear();
 	}
 
@@ -232,6 +233,12 @@ public class RescheduleController implements Initializable {
 				NotificationControl.sendMessageToTraveler(traveler.getTravelerId(), date, time,
 						MsgTemplates.enterToWaitingList[0], msgContent, String.valueOf(recentOrder.getOrderId()));
 
+				/* Send message by mail */
+				Messages msg = new Messages(0, traveler.getTravelerId(), date, time, MsgTemplates.enterToWaitingList[0],
+						msgContent, recentOrder.getOrderId());
+				
+				// NotificationControl.sendSms(traveler.getPhoneNumber(), msg); //NEED TO DECOMMENT
+				NotificationControl.sendMailInBackgeound(msg, null);
 				isWaitingList = true;
 				loadOrderConfirmation();
 			}

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 import controllers.EmailControl;
 import controllers.WaitingListControl;
 import controllers.sqlHandlers.OrderQueries;
@@ -23,6 +22,15 @@ import logic.OrderStatusName;
 import logic.Park;
 import resources.MsgTemplates;
 
+/**
+ * NotifyThread class implements Runnable.
+ * 
+ * This class handle all the automated functionality:
+ * Send reminder 24 hours before visit.
+ * Cancel the visit if the traveler did not confirmed within two hours.
+ * Notify the next in the waiting list
+ *
+ */
 public class NotifyThread implements Runnable {
 
 	private final int second = 1000;
@@ -37,6 +45,12 @@ public class NotifyThread implements Runnable {
 		travelerQueries = new TravelersQueries(mysqlconnection);
 	}
 
+	/**
+	 * This function handle all the automated functionality:
+	 * Send reminder 24 hours before visit.
+	 * Cancel the visit if the traveler did not confirmed within two hours.
+	 * Notify the next in the waiting list
+	 */
 	@Override
 	public void run() {
 

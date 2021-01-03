@@ -6,7 +6,7 @@ package resources;
  */
 public class MsgTemplates {
 	
-	public static String [] orderConfirmation = {"Thank you for your order!", "Thanks you for your order!\n"
+	public static String [] orderConfirmation = {"Thank you for your order!", "Thank you for your order!\n"
 			+ "We will send you a reminder one day before your visit.\n"
 			+ "You need to confirm your order when you receive the reminder.\n\n"
 			+ "Your order information:\n"

@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import controllers.EmailControl;
 import controllers.SmsSender;
 import controllers.WaitingListControl;
@@ -28,7 +27,6 @@ import logic.Subscriber;
 import logic.Traveler;
 import logic.Report;
 import ocsf.server.ConnectionToClient;
-import server.threads.NotifyWaitingList;
 import util.sendToClient;
 
 /**
