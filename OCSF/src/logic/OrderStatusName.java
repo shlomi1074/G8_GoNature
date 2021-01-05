@@ -1,7 +1,7 @@
 package logic;
 
 /**
- * This class is responsible on the system's order statuss.
+ * This class is responsible on the system's order status.
  */
 public enum OrderStatusName {
 	CONFIRMED, CANCELED, PENDING, PENDING_EMAIL_SENT, WAITING, WAITING_HAS_SPOT, ENTERED_THE_PARK,COMPLETED;
