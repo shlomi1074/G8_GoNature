@@ -4,9 +4,10 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import controllers.sqlHandlers.OrderQueries;
-
+import controllers.sqlHandlers.ParkQueries;
 import logic.Order;
 import logic.OrderStatusName;
+import logic.Park;
 
 /**
  * updateOrderStatusVisitCompleted class implements Runnable.
@@ -18,9 +19,12 @@ public class UpdateOrderStatusVisitCompleted implements Runnable {
 	private final int second = 1000;
 	private final int minute = second * 60;
 	private OrderQueries orderQueries;
+	private ParkQueries parkQueries;
 
 	public UpdateOrderStatusVisitCompleted(Connection mysqlconnection) {
 		orderQueries = new OrderQueries(mysqlconnection);
+		parkQueries = new ParkQueries(mysqlconnection);
+
 	}
 
 	/**
@@ -37,6 +41,12 @@ public class UpdateOrderStatusVisitCompleted implements Runnable {
 				String status = OrderStatusName.COMPLETED.toString();
 				String orderId = String.valueOf(order.getOrderId());
 				orderQueries.setOrderStatusWithIDandStatus(new ArrayList<String>(Arrays.asList(status, orderId)));
+
+				String parkId = String.valueOf(order.getParkId());
+				Park park = parkQueries.getParkById(new ArrayList<String>(Arrays.asList(parkId)));
+				String newNumOfVisitors = String.valueOf(park.getCurrentVisitors() - order.getNumberOfParticipants());
+				parkQueries.updateNumberOfVisitors(new ArrayList<String>(Arrays.asList(newNumOfVisitors, parkId)));
+
 			}
 
 			try {

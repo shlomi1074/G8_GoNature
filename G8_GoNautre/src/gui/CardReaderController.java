@@ -56,6 +56,9 @@ public class CardReaderController implements Initializable {
 	@FXML
 	private Button exitBtn;
 
+	@FXML
+	private JFXTextField exitTimeTextField;
+
 	private String Msg = "Traveler ID: %s, Order ID: %s with %s visitors %s the park at %s";
 	private final String EXIT = "EXIT";
 	private final String ENTER = "ENTER";
@@ -66,7 +69,7 @@ public class CardReaderController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		startBtn.setFocusTraversable(false);
 		closeBtn.setFocusTraversable(false);
-		idLabel.setText("xxxxxxxxx");	
+		idLabel.setText("xxxxxxxxx");
 	}
 
 	@FXML
@@ -116,9 +119,9 @@ public class CardReaderController implements Initializable {
 	 * This method generate message base on the parameters she gets.
 	 * each message is added to 'messages' arrayList
 	 * 
-	 * @param order Order object
+	 * @param order     Order object
 	 * @param isExiting true if leaving the park
-	 * @param id the traveler id
+	 * @param id        the traveler id
 	 */
 	public void generateMsg(Order order, boolean isExiting, String id) {
 		String msgText = "";
@@ -132,11 +135,16 @@ public class CardReaderController implements Initializable {
 			String hour = entranceTime.split(":")[0];
 			String minutes = entranceTime.split(":")[1];
 			int timeToAdd = 3;
-			timeToAdd += Integer.parseInt(hour);
-			String ExitTime = timeToAdd + ":" + minutes;
+			String exitTime;
+			if (!exitTimeTextField.getText().isEmpty())
+				exitTime = exitTimeTextField.getText();
+			else {
+				timeToAdd += Integer.parseInt(hour);
+				exitTime = timeToAdd + ":" + minutes;
+			}
 
 			msgText = String.format(this.Msg.toString(), order.getTravelerId(), order.getOrderId(),
-					order.getNumberOfParticipants(), EXIT, ExitTime);
+					order.getNumberOfParticipants(), EXIT, exitTime);
 		}
 		messages.add(msgText);
 		ids.add(id);

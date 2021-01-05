@@ -164,7 +164,7 @@ public class VisitsReportController implements Initializable {
 		/* Y axis parameters setters */
 		enterY.setAutoRanging(false);
 		enterY.setLowerBound(0);
-		enterY.setUpperBound(maxNumOfVisitors);
+		enterY.setUpperBound(maxNumOfVisitors + 5);
 		enterY.setTickUnit(Math.ceil(maxNumOfVisitors*0.1));
 		enterY.setMinorTickVisible(false);
 
