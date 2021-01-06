@@ -10,6 +10,7 @@ import ocsf.server.*;
 import server.threads.CancelOrders;
 import server.threads.NotifyThread;
 import server.threads.NotifyTravelers;
+import server.threads.UpdateOrderStatusFromWaitingToCancel;
 import server.threads.UpdateOrderStatusVisitCompleted;
 import server.threads.UpdateTravelerExitStatus;
 
@@ -33,7 +34,7 @@ public class GoNatureServer extends AbstractServer {
 	/**
 	 * Constructs an instance of the GoNature Server.
 	 *
-	 * @param port The port number to connect on.
+	 * @param port                The port number to connect on.
 	 * @param serverGUIController The GUI Controller of the server
 	 * 
 	 * @throws Exception If failed to load the server
@@ -52,22 +53,15 @@ public class GoNatureServer extends AbstractServer {
 			throw e;
 		}
 
-//		/* Create notify thread */
-//		NotifyTravelers notifyTravelers = new NotifyTravelers(mysqlconnection);
-//		new Thread(notifyTravelers).start();
-//		
-//		/* Create exit status and park update thread */
-//		UpdateTravelerExitStatus updateTravelerExitStatus = new UpdateTravelerExitStatus(mysqlconnection);
-//		new Thread(updateTravelerExitStatus).start();
-//		
-//		CancelOrders cancelUnconfirmedOrders = new CancelOrders(mysqlconnection);
-//		new Thread(cancelUnconfirmedOrders).start();
-
 		NotifyThread notifyThread = new NotifyThread(mysqlconnection);
 		new Thread(notifyThread).start();
-		
-		UpdateOrderStatusVisitCompleted updateOrderStatusVisitCompleted = new UpdateOrderStatusVisitCompleted(mysqlconnection);
+
+		UpdateOrderStatusVisitCompleted updateOrderStatusVisitCompleted = new UpdateOrderStatusVisitCompleted(
+				mysqlconnection);
 		new Thread(updateOrderStatusVisitCompleted).start();
+
+		UpdateOrderStatusFromWaitingToCancel wtc = new UpdateOrderStatusFromWaitingToCancel(mysqlconnection);
+		new Thread(wtc).start();
 	}
 
 	// Instance methods ************************************************
@@ -76,7 +70,7 @@ public class GoNatureServer extends AbstractServer {
 	 * This method handles any messages received from the client.
 	 * For each client's request a new thread is created
 	 *
-	 * @param msg The message received from the client.
+	 * @param msg    The message received from the client.
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {

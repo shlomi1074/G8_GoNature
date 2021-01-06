@@ -270,8 +270,6 @@ public class ParkQueries {
 		String typeOfRequest = null;
 		String sql;
 
-		System.out.println((String) parameters.get(0));
-
 		if (((String) parameters.get(0)).equals("UPDATE MAX VISITORS"))
 			typeOfRequest = "maxVisitors";
 		if (((String) parameters.get(0)).equals("UPDATE ESTIMATED STAY TIME"))
@@ -282,12 +280,9 @@ public class ParkQueries {
 		try {
 
 			sql = "UPDATE g8gonature.park SET " + typeOfRequest + "=? WHERE parkId=" + parameters.get(2) + "";
-			System.out.println(sql);
 			query = conn.prepareStatement(sql);
 			query.setInt(1, Integer.parseInt((String) parameters.get(1)));
 			query.executeUpdate();
-
-			System.out.println("changeParkParametersInDB Success");
 
 		}
 
