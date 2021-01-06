@@ -1,11 +1,28 @@
 package gui;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+
 import Controllers.ReportsControl;
+import alerts.CustomAlerts;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import logic.GoNatureFinals;
 
 /**
@@ -14,6 +31,9 @@ import logic.GoNatureFinals;
  */
 public class CancelsReportController implements Initializable{
 	
+    @FXML
+    private AnchorPane rootPane;
+    
     @FXML
     private Label headerLabel;
 
@@ -59,6 +79,48 @@ public class CancelsReportController implements Initializable{
 		
 		cancels=cancelsPark1+cancelsPark2+cancelsPark3;								//calculate total
 		totalLabel.setText(String.valueOf(String.valueOf(cancels)));				//set total number of cancels
+	}
+	
+	@FXML
+	private void saveReportAsPdf() {
+		File directory = new File(System.getProperty("user.home") + "/Desktop/reports/");
+	    if (! directory.exists()){
+	        directory.mkdir();
+	    }
+	    
+		WritableImage nodeshot = rootPane.snapshot(new SnapshotParameters(), null);
+		String fileName = "Cancels Report - month number " + monthNumber + ".pdf";
+		File file = new File("test.png");
+
+		try {
+			ImageIO.write(SwingFXUtils.fromFXImage(nodeshot, null), "png", file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		PDDocument doc = new PDDocument();
+		PDPage page = new PDPage();
+		PDImageXObject pdimage;
+		PDPageContentStream content;
+		try {
+			pdimage = PDImageXObject.createFromFile("test.png", doc);
+			content = new PDPageContentStream(doc, page);
+			content.drawImage(pdimage, 50, 100, 500, 600);
+			content.close();
+			doc.addPage(page);
+			doc.save(System.getProperty("user.home") + "/Desktop/reports/" +fileName);
+			doc.close();
+			file.delete();
+			new CustomAlerts(AlertType.INFORMATION, "Success", "Success",
+					"The report was saved in your desktop under reports folder").showAndWait();
+		} catch (IOException ex) {
+			System.out.println("faild to create pdf");
+			ex.printStackTrace();
+		}
+		
+		Stage stage = (Stage) rootPane.getScene().getWindow();
+		stage.close();
+
 	}
 	
 	/**

@@ -1,5 +1,7 @@
 package gui;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,6 +12,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
@@ -20,19 +30,24 @@ import Controllers.ReportsControl;
 import alerts.CustomAlerts;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import logic.GoNatureFinals;
 import logic.Report;
@@ -47,6 +62,9 @@ import logic.Report;
  */
 public class UsageReportController implements Initializable {
 
+    @FXML
+    private StackPane rootPane;
+    
 	@FXML
 	private Label headerLabel;
 
@@ -87,8 +105,25 @@ public class UsageReportController implements Initializable {
 		if (isDepManager) {
 			commentTextArea.setEditable(false);
 			commentTextArea.setPromptText("Park manager comment:");
-			sendToManagerBtn.setDisable(true);
-			sendToManagerBtn.setVisible(false);
+			sendToManagerBtn.setText("         Save Report Locally         ");
+
+			sendToManagerBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					saveReportAsPdf();
+					getStage().close();
+				}
+
+			});
+		} else {
+			sendToManagerBtn.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					sendToManagerBtn();
+					getStage().close();
+				}
+			});
 		}
 
 	}
@@ -181,6 +216,44 @@ public class UsageReportController implements Initializable {
 		
 		String date = year + "-" + monthNumber + "-" + day;
 		return ParkControl.isParkIsFullAtDate(date, String.valueOf(parkID));
+	}
+	
+	private void saveReportAsPdf() {
+		File directory = new File(System.getProperty("user.home") + "/Desktop/reports/");
+	    if (! directory.exists()){
+	        directory.mkdir();
+	    }
+	    
+		WritableImage nodeshot = rootPane.snapshot(new SnapshotParameters(), null);
+		String fileName = "Usage Report - park " + parkID + " - month number " + monthNumber + ".pdf";
+		File file = new File("test.png");
+
+		try {
+			ImageIO.write(SwingFXUtils.fromFXImage(nodeshot, null), "png", file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		PDDocument doc = new PDDocument();
+		PDPage page = new PDPage();
+		PDImageXObject pdimage;
+		PDPageContentStream content;
+		try {
+			pdimage = PDImageXObject.createFromFile("test.png", doc);
+			content = new PDPageContentStream(doc, page);
+			content.drawImage(pdimage, 50, 100, 500, 600);
+			content.close();
+			doc.addPage(page);
+			doc.save(System.getProperty("user.home") + "/Desktop/reports/" +fileName);
+			doc.close();
+			file.delete();
+			new CustomAlerts(AlertType.INFORMATION, "Success", "Success",
+					"The report was saved in your desktop under reports folder").showAndWait();
+		} catch (IOException ex) {
+			System.out.println("faild to create pdf");
+			ex.printStackTrace();
+		}
+
 	}
 
 	/**

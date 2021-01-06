@@ -31,13 +31,13 @@ public class CardReaderControl {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.GET_SIMULATOR_TRAVELERS_IDS);
 		ClientUI.chat.accept(request);
 		ArrayList<String> travelersID = ChatClient.responseFromServer.getResultSet();
-
+		
 		for (String string : travelersID) {
 			String id = string.split(" ")[0];
 			String cardReaderLocation = string.split(" ")[1];
 			order = null;
 			if (cardReaderLocation.equals("Exit")) {
-				executeExitSequence(id, cardReaderController);
+				executeExitSequence(id,"", cardReaderController);
 			} else {
 				executeEntranceSequence(id, cardReaderController);
 			}
@@ -50,12 +50,13 @@ public class CardReaderControl {
 	 * Update park's current visitors.
 	 * 
 	 * @param id The id of the exiting traveler.
+	 * @param exitTime 
 	 * @param cardReaderController  The GUI controller to update.
 	 */
-	public static void executeExitSequence(String id, CardReaderController cardReaderController) {
+	public static void executeExitSequence(String id, String exitTime, CardReaderController cardReaderController) {
 		order = OrderControl.getRelevantOrder_ParkExit(id);
 		if (order != null) {
-			updateVisitExitTimeSimulator(order);
+			updateVisitExitTimeSimulator(order, exitTime);
 			OrderControl.changeOrderStatus(String.valueOf(order.getOrderId()), OrderStatusName.COMPLETED);
 			Park park = ParkControl.getParkById(String.valueOf(order.getParkId()));
 			ParkControl.updateCurrentVisitors(order.getParkId(),
@@ -92,9 +93,11 @@ public class CardReaderControl {
 	 * 
 	 * @param order the order to update.
 	 */
-	private static void updateVisitExitTimeSimulator(Order order) {
+	private static void updateVisitExitTimeSimulator(Order order, String exitTime) {
 		ClientToServerRequest<Order> request = new ClientToServerRequest<>(Request.UPDATE_EXIT_TIME_SIMULATOR);
 		request.setObj(order);
+		request.setInput(exitTime);
 		ClientUI.chat.accept(request);
 	}
+	
 }

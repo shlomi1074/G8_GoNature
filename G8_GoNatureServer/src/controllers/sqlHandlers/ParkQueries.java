@@ -233,12 +233,17 @@ public class ParkQueries {
 	 * This function is only for the card reader simulation.
 	 * 
 	 * @param order the order to update
+	 * @param exitTime 
 	 */
-	public void updateVisitExitTimeSimulator(Order order) {
+	public void updateVisitExitTimeSimulator(Order order, String exitTime) {
 		String sql = "UPDATE g8gonature.visit SET exitTime = ? WHERE travelerId = ? AND parkId = ? AND entrenceTime = ? AND visitDate = ?";
 		PreparedStatement query;
 		String time = order.getOrderTime();
-		String newExitTime = String.valueOf(Integer.parseInt(time.split(":")[0]) + 3) + ":" + time.split(":")[1];
+		String newExitTime = null;
+		if (exitTime.isEmpty())
+			newExitTime = String.valueOf(Integer.parseInt(time.split(":")[0]) + 3) + ":" + time.split(":")[1];
+		else 
+			newExitTime = exitTime;
 		try {
 			query = conn.prepareStatement(sql);
 			query.setString(1, newExitTime);

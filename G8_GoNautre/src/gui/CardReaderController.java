@@ -64,6 +64,8 @@ public class CardReaderController implements Initializable {
 	private final String ENTER = "ENTER";
 	private ArrayList<String> messages = new ArrayList<>();
 	private ArrayList<String> ids = new ArrayList<>();
+	String exitTime = null;
+	Order currentOrder = null;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -84,7 +86,7 @@ public class CardReaderController implements Initializable {
 	}
 
 	private void updateUI() {
-		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.5), new EventHandler<ActionEvent>() {
 			private int i = 0;
 
 			@Override
@@ -105,14 +107,21 @@ public class CardReaderController implements Initializable {
 
 	@FXML
 	private void enterBtn() {
-		if (!idTextField.getText().isEmpty())
+		messages.clear();
+		ids.clear();
+		if (!idTextField.getText().isEmpty()) {
 			CardReaderControl.executeEntranceSequence(idTextField.getText(), this);
+		}
+		updateUI();
 	}
 
 	@FXML
 	private void exitBtn() {
+		messages.clear();
+		ids.clear();
 		if (!idTextField.getText().isEmpty())
-			CardReaderControl.executeExitSequence(idTextField.getText(), this);
+			CardReaderControl.executeExitSequence(idTextField.getText(),exitTimeTextField.getText() , this);
+		updateUI();
 	}
 
 	/**
@@ -123,31 +132,35 @@ public class CardReaderController implements Initializable {
 	 * @param isExiting true if leaving the park
 	 * @param id        the traveler id
 	 */
-	public void generateMsg(Order order, boolean isExiting, String id) {
+	public void generateMsg(Order order,  boolean isExiting, String id) {
 		String msgText = "";
+		currentOrder = order;
 		if (order == null) {
 			msgText = "Could not find relevant order for traveler id: " + id + ". Please go to the Entrance worker.";
 		} else if (!isExiting) {
 			msgText = String.format(this.Msg.toString(), order.getTravelerId(), order.getOrderId(),
 					order.getNumberOfParticipants(), ENTER, order.getOrderTime());
 		} else {
-			String entranceTime = order.getOrderTime();
-			String hour = entranceTime.split(":")[0];
-			String minutes = entranceTime.split(":")[1];
-			int timeToAdd = 3;
-			String exitTime;
-			if (!exitTimeTextField.getText().isEmpty())
-				exitTime = exitTimeTextField.getText();
-			else {
-				timeToAdd += Integer.parseInt(hour);
-				exitTime = timeToAdd + ":" + minutes;
-			}
+			updateExitTime();
 
 			msgText = String.format(this.Msg.toString(), order.getTravelerId(), order.getOrderId(),
 					order.getNumberOfParticipants(), EXIT, exitTime);
 		}
 		messages.add(msgText);
 		ids.add(id);
+	}
+	
+	private void updateExitTime() {
+		String entranceTime = currentOrder.getOrderTime();
+		String hour = entranceTime.split(":")[0];
+		String minutes = entranceTime.split(":")[1];
+		int timeToAdd = 3;
+		if (!exitTimeTextField.getText().isEmpty())
+			exitTime = exitTimeTextField.getText();
+		else {
+			timeToAdd += Integer.parseInt(hour);
+			exitTime = timeToAdd + ":" + minutes;
+		}
 	}
 
 	private void updateTextFlow(String msg, Color c) {
