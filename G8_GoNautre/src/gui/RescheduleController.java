@@ -86,7 +86,7 @@ public class RescheduleController implements Initializable {
 				return true;
 			}
 		};
-		
+
 		pi.setVisible(true);
 		mainPane.setDisable(true);
 		new Thread(task).start();
@@ -98,7 +98,7 @@ public class RescheduleController implements Initializable {
 				mainPane.setDisable(false);
 			}
 		});
-		
+
 	}
 
 	@FXML
@@ -129,8 +129,8 @@ public class RescheduleController implements Initializable {
 				/* Send message by mail */
 				Messages msg = new Messages(0, traveler.getTravelerId(), date, time, MsgTemplates.orderConfirmation[0],
 						emailContent, recentOrder.getOrderId());
-				
-				//NotificationControl.sendSms(traveler.getPhoneNumber(), msg); //NEED TO DECOMMENT
+
+				// NotificationControl.sendSms(traveler.getPhoneNumber(), msg); //NEED TO DECOMMENT
 				NotificationControl.sendMailInBackgeound(msg, null);
 
 				if (isOrderFromMain)
@@ -162,7 +162,10 @@ public class RescheduleController implements Initializable {
 	private ArrayList<String> get6AvailableDatesList() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
-		Order tempOrder = order;
+//		Order tempOrder = order;
+		Order tempOrder = new Order(order.getOrderId(), order.getTravelerId(), order.getParkId(), order.getOrderDate(),
+				order.getOrderTime(), order.getOrderType(), order.getNumberOfParticipants(), order.getEmail(),
+				order.getPrice(), order.getOrderStatus());
 		String originalDate = order.getOrderDate();
 		try {
 			c.setTime(sdf.parse(originalDate));
@@ -214,6 +217,7 @@ public class RescheduleController implements Initializable {
 	@FXML
 	private void enterWaitingList() {
 		this.order.setOrderStatus(OrderStatusName.WAITING.toString());
+		System.out.println(order.getOrderDate());
 		if (OrderControl.addOrder(order, traveler)) {
 			System.out.println("Order added successfuly - waiting list");
 			/* NEED TO SEND EMAIL AND SEND MESSAGE */
@@ -236,7 +240,7 @@ public class RescheduleController implements Initializable {
 				/* Send message by mail */
 				Messages msg = new Messages(0, traveler.getTravelerId(), date, time, MsgTemplates.enterToWaitingList[0],
 						msgContent, recentOrder.getOrderId());
-				
+
 				// NotificationControl.sendSms(traveler.getPhoneNumber(), msg); //NEED TO DECOMMENT
 				NotificationControl.sendMailInBackgeound(msg, null);
 				isWaitingList = true;

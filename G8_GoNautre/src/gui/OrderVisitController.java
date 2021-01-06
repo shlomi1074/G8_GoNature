@@ -355,8 +355,7 @@ public class OrderVisitController implements Initializable {
 				GuidePayAtParkCheckOut checkOut = new GuidePayAtParkCheckOut(basic);
 				return checkOut.getPrice();
 
-			}
-			else {
+			} else {
 				RegularPreOrderCheckOut checkOut = new RegularPreOrderCheckOut(basic);
 				return checkOut.getPrice();
 			}
@@ -378,7 +377,7 @@ public class OrderVisitController implements Initializable {
 		}
 		// Number of Days to add
 		c.add(Calendar.DAY_OF_MONTH, 1);
-		c.add(Calendar.HOUR_OF_DAY, -1); //new
+		c.add(Calendar.HOUR_OF_DAY, -1); // new
 		currentDateAndTime = sdf.format(c.getTime());
 		Date orderDate = null;
 		Date dateOfTommorow = null;
@@ -471,7 +470,7 @@ public class OrderVisitController implements Initializable {
 				}
 			}
 		});
-		
+
 		phoneInput.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
@@ -619,6 +618,7 @@ public class OrderVisitController implements Initializable {
 			Stage thisStage = getStage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Reschedule.fxml"));
 			RescheduleController controller = new RescheduleController();
+			System.out.println("order " + order.getOrderDate());
 			controller.setOrder(order);
 			loader.setController(controller);
 			loader.load();

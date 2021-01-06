@@ -663,5 +663,37 @@ public class OrderQueries {
 		return orders;
 
 	}
+	
 
+	/**
+	 * This function returns all the orders that have been completed and their status is ENTERED_THE_PARK
+	 * 
+	 * @return ArrayList of Order objects
+	 */
+	public ArrayList<Order> getWaitingOrdersToCancel() {
+		ArrayList<Order> orders = new ArrayList<Order>();
+		String sql = "SELECT * FROM g8gonature.order WHERE orderStatus = ? AND ((orderDate = ? AND orderTime <= ?) || orderDate < ?)";
+		PreparedStatement query;
+		try {
+			query = conn.prepareStatement(sql);
+			query.setString(1, OrderStatusName.WAITING.toString());
+			query.setString(2, LocalDate.now().toString());
+			query.setString(3, LocalTime.now().toString());
+			query.setString(4, LocalDate.now().toString());
+			ResultSet res = query.executeQuery();
+
+			while (res.next()) {
+				Order order = new Order(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
+						res.getString(5), res.getString(6), res.getInt(7), res.getString(8), res.getDouble(9),
+						res.getString(10));
+				orders.add(order);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute getCompletedOrders query");
+			e.printStackTrace();
+		}
+		return orders;
+
+	}
 }

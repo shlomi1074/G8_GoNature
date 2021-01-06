@@ -84,6 +84,7 @@ public class ViewRequestsForChangesController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		selectedRequestLabel.setText("");
 		loadChanges();
 	}
 
@@ -118,17 +119,17 @@ public class ViewRequestsForChangesController implements Initializable {
 		TableViewSelectionModel<Request> request = null;
 		TableViewSelectionModel<Discount> discount;
 
-		if (tableChosen.equals("request")) {
+		if (tableChosen != null && tableChosen.equals("request")) {
 			request = parametersTable.getSelectionModel();
 			Request r = request.getSelectedItem();
-			if (r.getRequestStatus().equals(OrderStatusName.PENDING.toString())) {
+			if (r != null && r.getRequestStatus().equals(OrderStatusName.PENDING.toString())) {
 				RequestControl.changeRequestStatus(r.getRequestId(), true);
 				changeParkParameterList.add(r.getChangeName());
 				changeParkParameterList.add(r.getNewValue());
 				System.out.println(r.getParkId());
 				changeParkParameterList.add(String.valueOf(r.getParkId()));
 				new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent",
-						"Request" + r.getChangeName() + " was confirmed with value" + r.getNewValue()).showAndWait();
+						"Request " + r.getChangeName() + " was confirmed with value " + r.getNewValue()).showAndWait();
 
 				ParkControl.changeParkParameters(changeParkParameterList);
 
@@ -142,21 +143,21 @@ public class ViewRequestsForChangesController implements Initializable {
 
 		}
 
-		if (tableChosen.equals("discount")) {
+		if (tableChosen != null && tableChosen.equals("discount")) {
 			discount = discountTable.getSelectionModel();
 			Discount d = discount.getSelectedItem();
-			if (d.getStatus().equals(OrderStatusName.PENDING.toString())) {
+			if (d != null && d.getStatus().equals(OrderStatusName.PENDING.toString())) {
 
 				RequestControl.changeDiscountStatus(d.getDiscountId(), true);
 				new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent",
-						"Discount was confirmed with value" + d.getAmount()).showAndWait();
+						"Discount was confirmed with value " + d.getAmount()).showAndWait();
 			} else {
 				new CustomAlerts(AlertType.ERROR, "Sent", "Sent", "cannot change status that is not 'pending'")
 						.showAndWait();
 
 			}
 		}
-
+		selectedRequestLabel.setText("");
 		loadChanges();
 
 	}
@@ -207,7 +208,7 @@ public class ViewRequestsForChangesController implements Initializable {
 
 				RequestControl.changeRequestStatus(r.getRequestId(), false);
 				new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent",
-						"Request" + r.getChangeName() + " was declined with value" + r.getNewValue()).showAndWait();
+						"Request " + r.getChangeName() + " was declined with value " + r.getNewValue()).showAndWait();
 			} else {
 				new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent", "cannot change status that is not 'pending'")
 						.showAndWait();
@@ -223,7 +224,7 @@ public class ViewRequestsForChangesController implements Initializable {
 
 				RequestControl.changeDiscountStatus(d.getDiscountId(), false);
 				new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent",
-						"Discount was declined with value" + d.getAmount()).showAndWait();
+						"Discount was declined with value " + d.getAmount()).showAndWait();
 			} else {
 				new CustomAlerts(AlertType.INFORMATION, "Sent", "Sent", "cannot change status that is not 'pending'")
 						.showAndWait();
