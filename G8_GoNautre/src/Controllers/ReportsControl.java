@@ -262,8 +262,8 @@ public class ReportsControl {
 	 *  This function receive month and day of current year and asks the server
 	 * to send the number of solo visitors at this month dived by their visit time.
 	 * 
-	 * @param month
-	 * @param day
+	 * @param month The report's month
+	 * @param day The day in the month
 	 */
 	public static void countSolosVisitTimeWithDay(int month, String day) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_SOLOS_VISITORS_WITH_DAYS,
@@ -275,8 +275,8 @@ public class ReportsControl {
 	 *  This function receive month and day of current year and asks the server
 	 * to send the number of subscriber visitors at this month dived by their visit time.
 	 * 
-	 * @param month
-	 * @param day
+	 * @param month The report's month
+	 * @param day The day in the month
 	 */
 	public static void countSubsVisitTimeWithDay(int month, String day) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_SUBS_VISITORS_WITH_DAYS,
@@ -288,8 +288,8 @@ public class ReportsControl {
 	 *  This function receive month and day of current year and asks the server
 	 * to send the number of group visitors at this month dived by their visit time.
 	 * 
-	 * @param month
-	 * @param day
+	 * @param month The report's month
+	 * @param day The day in the month
 	 */
 	public static void countGroupsVisitTimeWithDay(int month, String day) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_GROUPS_VISITORS_WITH_DAYS,

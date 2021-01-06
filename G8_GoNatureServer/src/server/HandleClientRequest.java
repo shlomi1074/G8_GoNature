@@ -486,7 +486,7 @@ public class HandleClientRequest implements Runnable {
 					client.sendToClient(response);
 				}
 				if (request.getRequestType().equals(Request.UPDATE_EXIT_TIME_SIMULATOR)) {
-					parkQueries.updateVisitExitTimeSimulator((Order) request.getObj());
+					parkQueries.updateVisitExitTimeSimulator((Order) request.getObj(), request.getInput());
 					client.sendToClient("Finished");
 				}
 
