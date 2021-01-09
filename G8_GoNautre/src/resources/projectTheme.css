@@ -341,9 +341,16 @@
     -fx-text-fill: -fx-secondary;
 }
 
- #headerLabel {
+#headerLabel{
  	-fx-font-size: 20.0pt;
  	-fx-font-weight: bold;
+}
+
+#headerReport{
+	 -fx-font-size: 20.0pt;
+	 -fx-font-weight: bold;
+	 -fx-text-fill: #f7e479;
+	 
 }
 
 #topPane {

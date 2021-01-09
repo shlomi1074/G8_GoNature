@@ -233,7 +233,7 @@ public class ParkQueries {
 	 * This function is only for the card reader simulation.
 	 * 
 	 * @param order the order to update
-	 * @param exitTime 
+	 * @param exitTime The traveler exit time
 	 */
 	public void updateVisitExitTimeSimulator(Order order, String exitTime) {
 		String sql = "UPDATE g8gonature.visit SET exitTime = ? WHERE travelerId = ? AND parkId = ? AND entrenceTime = ? AND visitDate = ?";

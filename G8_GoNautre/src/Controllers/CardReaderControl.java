@@ -50,7 +50,7 @@ public class CardReaderControl {
 	 * Update park's current visitors.
 	 * 
 	 * @param id The id of the exiting traveler.
-	 * @param exitTime 
+	 * @param exitTime The traveler exit time
 	 * @param cardReaderController  The GUI controller to update.
 	 */
 	public static void executeExitSequence(String id, String exitTime, CardReaderController cardReaderController) {

@@ -22,5 +22,4 @@ public final class GoNatureFinals {
 	public final static String[] MONTHS = { "Month", "January", "February", "March", "April", "May", "June", "July",
 			"August", "September", "October", "November", "December" };
 	
-
 }

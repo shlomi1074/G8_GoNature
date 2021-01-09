@@ -73,7 +73,7 @@ public class OrderControl {
 				/* Send message by mail */
 				Messages msg = new Messages(0, traveler.getTravelerId(), date, time, MsgTemplates.orderConfirmation[0],
 						emailContent, recentOrder.getOrderId());
-				//NotificationControl.sendSms(traveler.getPhoneNumber(), msg); // Need to de-comment when showing
+				NotificationControl.sendSms(traveler.getPhoneNumber(), msg); // Need to de-comment when showing
 				NotificationControl.sendMailInBackgeound(msg, null);
 			}
 
