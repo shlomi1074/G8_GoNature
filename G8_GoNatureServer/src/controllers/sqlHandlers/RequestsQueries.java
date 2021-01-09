@@ -35,7 +35,7 @@ public class RequestsQueries {
 		PreparedStatement query;
 		try {
 			query = conn.prepareStatement(sql);
-			query.setString(1, "confirm");
+			query.setString(1, OrderStatusName.CONFIRMED.toString());
 			query.setInt(2, (int) Integer.parseInt((String) parameters.get(1)));
 			query.setString(3, (String) parameters.get(0));
 			query.setString(4, (String) parameters.get(0));
@@ -166,7 +166,7 @@ public class RequestsQueries {
 		String sql;
 
 		if (bool)
-			sql = "UPDATE g8gonature.request SET requestStatus='confirmed' WHERE requestId=" + requestsID;
+			sql = "UPDATE g8gonature.request SET requestStatus='Confirmed' WHERE requestId=" + requestsID;
 
 		else {
 			sql = "UPDATE g8gonature.request SET requestStatus='declined' WHERE requestId=" + requestsID;

@@ -51,9 +51,9 @@ import logic.VisitReport;
  */
 public class VisitsReportController implements Initializable {
 
-    @FXML
-    private AnchorPane rootPane;
-    
+	@FXML
+	private AnchorPane rootPane;
+
 	@FXML
 	private Label headerLabel;
 
@@ -150,7 +150,7 @@ public class VisitsReportController implements Initializable {
 		if (maxNumOfVisitors % 2 != 0)
 			maxNumOfVisitors++;
 		/* Y axis parameters setters */
-		enterY.setUpperBound(maxNumOfVisitors + 5);
+		enterY.setUpperBound(maxNumOfVisitors + 30);
 		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
 
 		rep3 = new ArrayList<VisitReport>();
@@ -186,12 +186,12 @@ public class VisitsReportController implements Initializable {
 		stayTime_chart.getData().add(series3);
 
 		setToolTip();
+		
 		/* Y axis parameters setters */
-
 		if (totalNumOfVisitors == 0)
 			totalNumOfVisitors++;
 		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
-				: maxNumOfVisitors / totalNumOfVisitors * 100 + 15);
+				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -225,7 +225,7 @@ public class VisitsReportController implements Initializable {
 		if (maxNumOfVisitors % 2 != 0)
 			maxNumOfVisitors++;
 		/* Y axis parameters setters */
-		enterY.setUpperBound(maxNumOfVisitors + 5);
+		enterY.setUpperBound(maxNumOfVisitors + 30);
 		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
 
 		rep2 = new ArrayList<VisitReport>();
@@ -266,7 +266,7 @@ public class VisitsReportController implements Initializable {
 		if (totalNumOfVisitors == 0)
 			totalNumOfVisitors++;
 		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
-				: maxNumOfVisitors / totalNumOfVisitors * 100 + 15);
+				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -298,9 +298,9 @@ public class VisitsReportController implements Initializable {
 		maxNumOfVisitors++;
 		if (maxNumOfVisitors % 2 != 0)
 			maxNumOfVisitors++;
-		/* Y axis parameters setters */
 
-		enterY.setUpperBound(maxNumOfVisitors + 5);
+		/* Y axis parameters setters */
+		enterY.setUpperBound(maxNumOfVisitors + 30);
 		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
 
 		if (!option.equals("Show whole month"))
@@ -341,7 +341,7 @@ public class VisitsReportController implements Initializable {
 		if (totalNumOfVisitors == 0)
 			totalNumOfVisitors++;
 		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
-				: maxNumOfVisitors / totalNumOfVisitors * 100 + 15);
+				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
 
 	}
 
@@ -453,15 +453,14 @@ public class VisitsReportController implements Initializable {
 		});
 
 	}
-	
+
 	@FXML
 	private void saveReportAsPdf() {
 		File directory = new File(System.getProperty("user.home") + "/Desktop/reports/");
-	    if (! directory.exists()){
-	        directory.mkdir();
-	    }
-	    
-	    
+		if (!directory.exists()) {
+			directory.mkdir();
+		}
+
 		WritableImage nodeshot = rootPane.snapshot(new SnapshotParameters(), null);
 		String fileName = "Visits Report - month number " + monthNumber + ".pdf";
 		File file = new File("test.png");
@@ -482,7 +481,7 @@ public class VisitsReportController implements Initializable {
 			content.drawImage(pdimage, 50, 100, 500, 600);
 			content.close();
 			doc.addPage(page);
-			doc.save(System.getProperty("user.home") + "/Desktop/reports/" +fileName);
+			doc.save(System.getProperty("user.home") + "/Desktop/reports/" + fileName);
 			doc.close();
 			file.delete();
 			new CustomAlerts(AlertType.INFORMATION, "Success", "Success",
@@ -491,7 +490,7 @@ public class VisitsReportController implements Initializable {
 			System.out.println("faild to create pdf");
 			ex.printStackTrace();
 		}
-		
+
 		Stage stage = (Stage) rootPane.getScene().getWindow();
 		stage.close();
 

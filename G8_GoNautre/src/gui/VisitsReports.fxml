@@ -10,7 +10,7 @@
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="966.0" prefWidth="729.0" stylesheets="@../resources/projectTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="headerLabel" layoutX="275.0" layoutY="14.0" prefHeight="39.0" prefWidth="169.0" text="Visits Report" />
+      <Label fx:id="headerReport" layoutX="275.0" layoutY="14.0" prefHeight="39.0" prefWidth="169.0" text="Visits Report" />
       <LineChart fx:id="stayTime_chart" layoutY="561.0" prefHeight="340.0" prefWidth="710.0" title="Stay Time Graph">
         <xAxis>
           <NumberAxis fx:id="stayX2" label="Stay Time (In hours)" side="BOTTOM" />

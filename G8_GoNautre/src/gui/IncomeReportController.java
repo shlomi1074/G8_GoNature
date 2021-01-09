@@ -195,7 +195,7 @@ public class IncomeReportController implements Initializable {
 
 	private void saveReportAsPdf() {
 		File directory = new File(System.getProperty("user.home") + "/Desktop/reports/");
-	    if (! directory.exists()){
+	    if (!directory.exists()){
 	        directory.mkdir();
 	    }
 		WritableImage nodeshot = rootPane.snapshot(new SnapshotParameters(), null);

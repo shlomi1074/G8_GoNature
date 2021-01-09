@@ -13,7 +13,7 @@
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="676.0" stylesheets="@../resources/projectTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="headerLabel" layoutX="220.0" layoutY="14.0" text="Total Visitors Report" />
+      <Label fx:id="headerReport" layoutX="217.0" layoutY="14.0" text="Total Visitors Report" />
       <Label layoutX="229.0" layoutY="134.0" text="Individual Visitors:" underline="true" />
       <Label layoutX="229.0" layoutY="174.0" text="Organized Groups:" underline="true" />
       <Label layoutX="229.0" layoutY="214.0" text="Subscribers:" underline="true" />
