@@ -17,7 +17,7 @@ public class MysqlConnection {
 	/**
 	 * private constructor
 	 * 
-	 * @throws SQLException	If got sql error
+	 * @throws SQLException	If got SQL error
 	 * @throws ClassNotFoundException If failed to create jdbc driver
 	 * @throws InstantiationException if failed to connect to the database
 	 * @throws IllegalAccessException if failed to connect to the database
@@ -53,8 +53,8 @@ public class MysqlConnection {
 	 * 
 	 * @return MysqlConnection object
 	 * 
-	 * @throws SQLException	If got sql error
-	 * @throws ClassNotFoundException If failed to create jdbc driver
+	 * @throws SQLException	If got SQL error
+	 * @throws ClassNotFoundException If failed to create JDBC driver
 	 * @throws InstantiationException if failed to connect to the database
 	 * @throws IllegalAccessException if failed to connect to the database
 	 */

@@ -132,6 +132,9 @@ public class MainScreenController implements Initializable {
 		hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> {
 			drawMenu.toggle();
 		});
+		menuLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> {
+			drawMenu.toggle();
+		});
 		drawMenu.setOnDrawerOpening((event) -> {
 			AnchorPane.setLeftAnchor(hamburger, 170.0);
 			AnchorPane.setLeftAnchor(menuLabel, 167.0);
