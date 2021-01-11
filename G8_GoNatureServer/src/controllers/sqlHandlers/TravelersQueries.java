@@ -24,7 +24,7 @@ public class TravelersQueries {
 	}
 
 	/**
-	 * This function checks if a given id is already loggen in
+	 * This function checks if a given id is already logged in
 	 * 
 	 * @param parameters the id to check
 	 * @return true if connected, false if not
@@ -74,7 +74,7 @@ public class TravelersQueries {
 	}
 
 	/**
-	 * This function INSERT row to loggedin table in the database
+	 * This function INSERT row to logged in table in the database
 	 * 
 	 * @param parameters id
 	 */

@@ -67,7 +67,7 @@ public class VisitsReportController implements Initializable {
 	private NumberAxis stayY;
 
 	@FXML
-	private LineChart<Number, Number> entranceTime_chart;
+	public LineChart<Number, Number> entranceTime_chart;
 
 	@FXML
 	private NumberAxis enterX2;
@@ -85,6 +85,15 @@ public class VisitsReportController implements Initializable {
 	private JFXComboBox<String> dataComboBox;
 
 	private int monthNumber; // the month number
+	
+	private XYChart.Series<Number, Number> series3; // Refactor
+	private XYChart.Series<Number, Number> series2; // Refactor
+	private XYChart.Series<Number, Number> series1; // Refactor
+	private XYChart.Series<Number, Number> series4; // Refactor
+	private XYChart.Series<Number, Number> series5; // Refactor
+	private XYChart.Series<Number, Number> series6; // Refactor
+
+	// ReportsControl rp = new ReportsControl();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -101,11 +110,22 @@ public class VisitsReportController implements Initializable {
 
 				entranceTime_chart.getData().clear();
 				stayTime_chart.getData().clear();
-				loadSolosData(comboBox.getSelectionModel().getSelectedItem());
-				loadSubscribersData(comboBox.getSelectionModel().getSelectedItem());
-				loadGroupData(comboBox.getSelectionModel().getSelectedItem());
+				loadEntranceSolosData(comboBox.getSelectionModel().getSelectedItem());
+				loadEntranceSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+				loadEntranceGroupData(comboBox.getSelectionModel().getSelectedItem());
+				loadStayTimeSolosData(comboBox.getSelectionModel().getSelectedItem());
+				loadStayTimeSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+				loadStayTimeGroupData(comboBox.getSelectionModel().getSelectedItem());
+				entranceTime_chart.getData().add(series1);
+				entranceTime_chart.getData().add(series3);
+				entranceTime_chart.getData().add(series5);
 
+				stayTime_chart.getData().add(series2);
+				stayTime_chart.getData().add(series4);
+				stayTime_chart.getData().add(series6);
+				setToolTip();
 			}
+
 		}));
 		timeline.setCycleCount(1);
 		timeline.play();
@@ -120,15 +140,15 @@ public class VisitsReportController implements Initializable {
 		this.monthNumber = month;
 	}
 
-	@SuppressWarnings("unchecked")
-	private void loadGroupData(String option) {
+	@SuppressWarnings("unused")
+	private void loadEntranceGroupData(String option) {
 		ArrayList<VisitReport> rep3 = new ArrayList<VisitReport>();
 		if (!option.equals("Show whole month"))
-			ReportsControl.countGroupsEnterTimeWithDays(monthNumber, option);
+			rep3 = ReportsControl.reportsManager.countGroupsEnterTimeWithDays(monthNumber, option);
 		else
-			ReportsControl.countGroupsEnterTime(monthNumber);
-		rep3 = (ArrayList<VisitReport>) ChatClient.responseFromServer.getResultSet();
-		XYChart.Series<Number, Number> series3 = new Series<Number, Number>();
+			rep3 = ReportsControl.reportsManager.countGroupsEnterTime(monthNumber);
+		// rep3 = (ArrayList<VisitReport>) ChatClient.responseFromServer.getResultSet(); // Refactor
+		series5 = new Series<Number, Number>();
 		double hour, min, time;
 		int maxNumOfVisitors = 0, sum;
 		for (int i = 0; i < rep3.size(); i++) {
@@ -139,21 +159,27 @@ public class VisitsReportController implements Initializable {
 			hour = Double.parseDouble(rep3.get(i).getData().substring(0, 2));
 			min = Double.parseDouble(rep3.get(i).getData().substring(3, 5)) / 60;
 			time = hour + min;
-			series3.getData().add(new Data<Number, Number>(time, sum));
+			series5.getData().add(new Data<Number, Number>(time, sum));
 		}
 
-		series3.setName("Groups");
-		entranceTime_chart.getData().add(series3);
+		series5.setName("Groups");
 
-		setToolTip();
 		maxNumOfVisitors++;
 		if (maxNumOfVisitors % 2 != 0)
 			maxNumOfVisitors++;
 		/* Y axis parameters setters */
-		enterY.setUpperBound(maxNumOfVisitors + 30);
-		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
+//		enterY.setUpperBound(maxNumOfVisitors + 30);
+//		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
+	}
 
+	@SuppressWarnings("unchecked")
+	private void loadStayTimeGroupData(String option) {
+		ArrayList<VisitReport> rep3 = new ArrayList<VisitReport>();
+
+		double hour, min, time;
+		int maxNumOfVisitors = 0, sum;
 		rep3 = new ArrayList<VisitReport>();
+
 		if (!option.equals("Show whole month"))
 			ReportsControl.countGroupsVisitTimeWithDay(monthNumber, option);
 		else
@@ -164,7 +190,7 @@ public class VisitsReportController implements Initializable {
 		for (int i = 0; i < rep3.size(); i++)
 			totalNumOfVisitors += rep3.get(i).getSum();
 
-		series3 = new Series<Number, Number>();
+		series6 = new Series<Number, Number>();
 		hour = 0;
 		min = 0;
 		time = 0;
@@ -179,31 +205,27 @@ public class VisitsReportController implements Initializable {
 			min = Double.parseDouble(rep3.get(i).getData().substring(3, 5)) / 60;
 			time = hour + min;
 
-			series3.getData().add(new Data<Number, Number>(time, sum / totalNumOfVisitors * 100));
+			series6.getData().add(new Data<Number, Number>(time, sum / totalNumOfVisitors * 100));
 		}
 
-		series3.setName("Groups");
-		stayTime_chart.getData().add(series3);
+		series6.setName("Groups");
 
-		setToolTip();
-		
 		/* Y axis parameters setters */
 		if (totalNumOfVisitors == 0)
 			totalNumOfVisitors++;
-		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
-				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
+//		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
+//				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
 	}
 
-	@SuppressWarnings("unchecked")
-	private void loadSubscribersData(String option) {
+	private void loadEntranceSubscribersData(String option) {
 		ArrayList<VisitReport> rep2 = new ArrayList<VisitReport>();
 		if (!option.equals("Show whole month"))
-			ReportsControl.countSubsEnterTimeWithDays(monthNumber, option);
+			rep2 = ReportsControl.reportsManager.countSubsEnterTimeWithDays(monthNumber, option);
 		else
-			ReportsControl.countSubsEnterTime(monthNumber);
-		rep2 = (ArrayList<VisitReport>) ChatClient.responseFromServer.getResultSet();
+			rep2 = ReportsControl.reportsManager.countSubsEnterTime(monthNumber);
+		// rep2 = (ArrayList<VisitReport>) ChatClient.responseFromServer.getResultSet(); // Refactor
 
-		XYChart.Series<Number, Number> series2 = new Series<Number, Number>();
+		series3 = new Series<Number, Number>();
 		double hour, min, time;
 		int maxNumOfVisitors = 0, sum;
 		for (int i = 0; i < rep2.size(); i++) {
@@ -214,20 +236,25 @@ public class VisitsReportController implements Initializable {
 			hour = Double.parseDouble(rep2.get(i).getData().substring(0, 2));
 			min = Double.parseDouble(rep2.get(i).getData().substring(3, 5)) / 60;
 			time = hour + min;
-			series2.getData().add(new Data<Number, Number>(time, sum));
+			series3.getData().add(new Data<Number, Number>(time, sum));
 		}
 
-		series2.setName("Subscribers");
-		entranceTime_chart.getData().add(series2);
+		series3.setName("Subscribers");
 
-		setToolTip();
 		maxNumOfVisitors++;
 		if (maxNumOfVisitors % 2 != 0)
 			maxNumOfVisitors++;
 		/* Y axis parameters setters */
-		enterY.setUpperBound(maxNumOfVisitors + 30);
-		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
+//		enterY.setUpperBound(maxNumOfVisitors + 30);
+//		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
 
+	}
+
+	@SuppressWarnings("unchecked")
+	private void loadStayTimeSubscribersData(String option) {
+		ArrayList<VisitReport> rep2 = new ArrayList<VisitReport>();
+		double hour, min, time;
+		int maxNumOfVisitors = 0, sum;
 		rep2 = new ArrayList<VisitReport>();
 		if (!option.equals("Show whole month"))
 			ReportsControl.countSubsVisitTimeWithDay(monthNumber, option);
@@ -240,7 +267,7 @@ public class VisitsReportController implements Initializable {
 		for (int i = 0; i < rep2.size(); i++)
 			totalNumOfVisitors += rep2.get(i).getSum();
 
-		series2 = new Series<Number, Number>();
+		series4 = new Series<Number, Number>();
 		hour = 0;
 		min = 0;
 		time = 0;
@@ -254,30 +281,26 @@ public class VisitsReportController implements Initializable {
 			hour = Double.parseDouble(rep2.get(i).getData().substring(0, 2));
 			min = Double.parseDouble(rep2.get(i).getData().substring(3, 5)) / 60;
 			time = hour + min;
-			series2.getData().add(new Data<Number, Number>(time, sum / totalNumOfVisitors * 100));
+			series4.getData().add(new Data<Number, Number>(time, sum / totalNumOfVisitors * 100));
 		}
 
-		series2.setName("Subscribers");
-		stayTime_chart.getData().add(series2);
+		series4.setName("Subscribers");
 
-		setToolTip();
 		/* Y axis parameters setters */
-
 		if (totalNumOfVisitors == 0)
 			totalNumOfVisitors++;
-		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
-				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
+//		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
+//				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
 	}
 
-	@SuppressWarnings("unchecked")
-	private void loadSolosData(String option) {
+	private void loadEntranceSolosData(String option) {
 		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
 		if (!option.equals("Show whole month"))
-			ReportsControl.countSolosEnterTimeWithDays(monthNumber, option);
+			rep = ReportsControl.reportsManager.countSolosEnterTimeWithDays(monthNumber, option);
 		else
-			ReportsControl.countSolosEnterTime(monthNumber);
-		rep = (ArrayList<VisitReport>) ChatClient.responseFromServer.getResultSet();
-		XYChart.Series<Number, Number> series = new Series<Number, Number>();
+			rep = ReportsControl.reportsManager.countSolosEnterTime(monthNumber);
+		// rep = (ArrayList<VisitReport>) ChatClient.responseFromServer.getResultSet(); // Refactor
+		series1 = new Series<Number, Number>();
 
 		double hour, min, time;
 		int maxNumOfVisitors = 0, sum;
@@ -289,20 +312,25 @@ public class VisitsReportController implements Initializable {
 			hour = Double.parseDouble(rep.get(i).getData().substring(0, 2));
 			min = Double.parseDouble(rep.get(i).getData().substring(3, 5)) / 60;
 			time = hour + min;
-			series.getData().add(new Data<Number, Number>(time, sum));
+			series1.getData().add(new Data<Number, Number>(time, sum));
 		}
-		series.setName("Solos      ");
-		entranceTime_chart.getData().add(series);
+		series1.setName("Solos      ");
 
-		setToolTip();
 		maxNumOfVisitors++;
 		if (maxNumOfVisitors % 2 != 0)
 			maxNumOfVisitors++;
 
 		/* Y axis parameters setters */
-		enterY.setUpperBound(maxNumOfVisitors + 30);
-		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
+//		enterY.setUpperBound(maxNumOfVisitors + 30);
+//		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
+	}
 
+	@SuppressWarnings("unchecked")
+	private void loadStayTimeSolosData(String option) {
+		ArrayList<VisitReport> rep = new ArrayList<VisitReport>();
+
+		double hour, min, time;
+		int maxNumOfVisitors = 0, sum;
 		if (!option.equals("Show whole month"))
 			ReportsControl.countSolosVisitTimeWithDay(monthNumber, option);
 		else
@@ -315,7 +343,7 @@ public class VisitsReportController implements Initializable {
 		for (int i = 0; i < rep.size(); i++)
 			totalNumOfVisitors += rep.get(i).getSum();
 
-		series = new Series<Number, Number>();
+		series2 = new Series<Number, Number>();
 		hour = 0;
 		min = 0;
 		time = 0;
@@ -329,30 +357,27 @@ public class VisitsReportController implements Initializable {
 			hour = Double.parseDouble(rep.get(i).getData().substring(0, 2));
 			min = Double.parseDouble(rep.get(i).getData().substring(3, 5)) / 60;
 			time = hour + min;
-			series.getData().add(new Data<Number, Number>(time, sum / totalNumOfVisitors * 100));
+			series2.getData().add(new Data<Number, Number>(time, sum / totalNumOfVisitors * 100));
 		}
 
-		series.setName("Solos      ");
-		stayTime_chart.getData().add(series);
+		series2.setName("Solos      ");
 
-		setToolTip();
 		/* Y axis parameters setters */
-
 		if (totalNumOfVisitors == 0)
 			totalNumOfVisitors++;
-		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
-				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
+//		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
+//				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
 
 	}
 
 	private void initGraphs() {
 		enterX2.setAutoRanging(false);
 		enterX2.setLowerBound(7.5);
-		enterX2.setUpperBound(18.0);
+		enterX2.setUpperBound(19);
 		enterX2.setMinorTickVisible(false);
 		enterX2.setTickUnit(0.5);
 
-		enterY.setAutoRanging(false);
+		enterY.setAutoRanging(true);
 		enterY.setLowerBound(0);
 		enterY.setMinorTickVisible(false);
 
@@ -362,7 +387,7 @@ public class VisitsReportController implements Initializable {
 		stayX2.setMinorTickVisible(false);
 		stayX2.setTickUnit(0.5);
 
-		stayY.setAutoRanging(false);
+		stayY.setAutoRanging(true);
 		stayY.setLowerBound(0);
 		stayY.setTickUnit(1);
 		stayY.setMinorTickVisible(false);
@@ -405,21 +430,44 @@ public class VisitsReportController implements Initializable {
 				if (dataComboBox.getSelectionModel().getSelectedItem().equals("Show All")) {
 					entranceTime_chart.getData().clear();
 					stayTime_chart.getData().clear();
-					loadSolosData(comboBox.getSelectionModel().getSelectedItem());
-					loadSubscribersData(comboBox.getSelectionModel().getSelectedItem());
-					loadGroupData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceSolosData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceGroupData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeSolosData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeGroupData(comboBox.getSelectionModel().getSelectedItem());
+					entranceTime_chart.getData().add(series1);
+					entranceTime_chart.getData().add(series3);
+					entranceTime_chart.getData().add(series5);
+
+					stayTime_chart.getData().add(series2);
+					stayTime_chart.getData().add(series4);
+					stayTime_chart.getData().add(series6);
+					setToolTip();
 				} else if (dataComboBox.getSelectionModel().getSelectedItem().equals("Solo Visits")) {
 					entranceTime_chart.getData().clear();
 					stayTime_chart.getData().clear();
-					loadSolosData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceSolosData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeSolosData(comboBox.getSelectionModel().getSelectedItem());
+					entranceTime_chart.getData().add(series1);
+					stayTime_chart.getData().add(series2);
+					setToolTip();
 				} else if (dataComboBox.getSelectionModel().getSelectedItem().equals("Subscribers Visits")) {
 					entranceTime_chart.getData().clear();
 					stayTime_chart.getData().clear();
-					loadSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+					entranceTime_chart.getData().add(series3);
+					stayTime_chart.getData().add(series4);
+					setToolTip();
 				} else if (dataComboBox.getSelectionModel().getSelectedItem().equals("Group Visits")) {
 					entranceTime_chart.getData().clear();
 					stayTime_chart.getData().clear();
-					loadGroupData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceGroupData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeGroupData(comboBox.getSelectionModel().getSelectedItem());
+					entranceTime_chart.getData().add(series5);
+					stayTime_chart.getData().add(series6);
+					setToolTip();
 				}
 			}
 		});
@@ -432,22 +480,45 @@ public class VisitsReportController implements Initializable {
 				if (newItem.equals("Show All")) {
 					entranceTime_chart.getData().clear();
 					stayTime_chart.getData().clear();
-					loadSolosData(comboBox.getSelectionModel().getSelectedItem());
-					loadSubscribersData(comboBox.getSelectionModel().getSelectedItem());
-					loadGroupData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceSolosData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceGroupData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeSolosData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeGroupData(comboBox.getSelectionModel().getSelectedItem());
+					entranceTime_chart.getData().add(series1);
+					entranceTime_chart.getData().add(series3);
+					entranceTime_chart.getData().add(series5);
 
+					stayTime_chart.getData().add(series2);
+					stayTime_chart.getData().add(series4);
+					stayTime_chart.getData().add(series6);
+					setToolTip();
 				} else if (newItem.equals("Solo Visits")) {
 					entranceTime_chart.getData().clear();
 					stayTime_chart.getData().clear();
-					loadSolosData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceSolosData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeSolosData(comboBox.getSelectionModel().getSelectedItem());
+					entranceTime_chart.getData().add(series1);
+					stayTime_chart.getData().add(series2);
+					setToolTip();
 				} else if (newItem.equals("Subscribers Visits")) {
 					entranceTime_chart.getData().clear();
 					stayTime_chart.getData().clear();
-					loadSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeSubscribersData(comboBox.getSelectionModel().getSelectedItem());
+					entranceTime_chart.getData().add(series3);
+					stayTime_chart.getData().add(series4);
+					setToolTip();
 				} else if (newItem.equals("Group Visits")) {
 					entranceTime_chart.getData().clear();
 					stayTime_chart.getData().clear();
-					loadGroupData(comboBox.getSelectionModel().getSelectedItem());
+					loadEntranceGroupData(comboBox.getSelectionModel().getSelectedItem());
+					loadStayTimeGroupData(comboBox.getSelectionModel().getSelectedItem());
+					entranceTime_chart.getData().add(series5);
+					stayTime_chart.getData().add(series6);
+					setToolTip();
+
 				}
 			}
 		});

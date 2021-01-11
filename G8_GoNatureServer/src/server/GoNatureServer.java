@@ -7,12 +7,9 @@ import controllers.sqlHandlers.MysqlConnection;
 import gui.ServerGUIController;
 import javafx.scene.paint.Color;
 import ocsf.server.*;
-import server.threads.CancelOrders;
 import server.threads.NotifyThread;
-import server.threads.NotifyTravelers;
 import server.threads.UpdateOrderStatusFromWaitingToCancel;
 import server.threads.UpdateOrderStatusVisitCompleted;
-import server.threads.UpdateTravelerExitStatus;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
