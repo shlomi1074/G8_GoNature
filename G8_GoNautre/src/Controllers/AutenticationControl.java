@@ -7,6 +7,7 @@ import client.ClientUI;
 import logic.ClientToServerRequest;
 import logic.ClientToServerRequest.Request;
 import logic.Employees;
+import logic.ServerToClientResponse;
 import logic.Subscriber;
 import logic.Traveler;
 
@@ -14,6 +15,14 @@ import logic.Traveler;
  * AutenticationControl class handles all the authentication related functionalities
  */
 public class AutenticationControl {
+
+	public static IAutenticationManager autenticationManager = new AutenticationManager();
+	public static IDataBaseManager dataBaseManager = new DataBaseManager();
+
+	public AutenticationControl(IAutenticationManager autenticationManager, IDataBaseManager dataBaseManager) {
+		AutenticationControl.autenticationManager = autenticationManager;
+		AutenticationControl.dataBaseManager = dataBaseManager;
+	}
 
 	/**
 	 * This function handle the traveler login by id
@@ -24,11 +33,11 @@ public class AutenticationControl {
 	 * @return 2 traveler id does not exist
 	 */
 	public static int loginById(String id) {
-		if (isConnected(id))
+		if (autenticationManager.isConnected(id))
 			return 1;
 		else {
-			if (TravelerControl.isTravelerExist(id)) {
-				insertTologgedinTable(id);
+			if (autenticationManager.isTravelerExist(id)) {
+				autenticationManager.insertTologgedinTable(id);
 				return 0;
 			}
 			return 2;
@@ -38,25 +47,27 @@ public class AutenticationControl {
 	/**
 	 * This function handle the traveler login by subscriber id
 	 * 
-	 * @param subID  the traveler's subscriber id
+	 * @param subID the traveler's subscriber id
 	 * @return 0 on success
 	 * @return 1 traveler already connected
 	 * @return 2 traveler id does not exist
 	 */
 	public static int loginBySubId(String subID) {
-		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.SUBSCRIBER_LOGIN_SUBID,
-				new ArrayList<String>(Arrays.asList(subID)));
-		ClientUI.chat.accept(request);
-		Subscriber sub = (Subscriber) ChatClient.responseFromServer.getResultSet().get(0);
+
+		Subscriber sub = dataBaseManager.getSubBySubId(subID);
 		if (sub == null)
 			return 2;
 		else {
 			String id = sub.getTravelerId();
-			if (isConnected(id)) {
+			if (autenticationManager.isConnected(id)) {
 				return 1;
 			} else {
-				insertTologgedinTable(id);
-				ClientUI.chat.accept(request);
+				autenticationManager.insertTologgedinTable(id);
+
+				// ClientUI.chat.accept(request);
+				ServerToClientResponse<Subscriber> response = new ServerToClientResponse<Subscriber>();
+				response.setResultSet(new ArrayList<Subscriber>(Arrays.asList(sub)));
+				ChatClient.responseFromServer = response;
 				return 0;
 			}
 
@@ -70,7 +81,7 @@ public class AutenticationControl {
 	 * 
 	 * @param id the traveler's id.
 	 */
-	private static void insertTologgedinTable(String id) {
+	public static void insertTologgedinTable(String id) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.INSERT_TO_LOGGEDIN,
 				new ArrayList<String>(Arrays.asList(id)));
 		ClientUI.chat.accept(request);
@@ -129,20 +140,20 @@ public class AutenticationControl {
 	/**
 	 * This function handle the member(employee) login by subscriber id
 	 * 
-	 * @param id The employee's id
+	 * @param id       The employee's id
 	 * @param password The employee's password
 	 * 
-	 * @return 0  on success
-	 * @return 1  member already connected
-	 * @return 2  member id does not exist
+	 * @return 0 on success
+	 * @return 1 member already connected
+	 * @return 2 member id does not exist
 	 */
 	public static int memberLoginHandler(String id, String password) {
-		boolean connected = isConnected(id);
-		boolean mem_exsit = isMemberExist(id, password);
+		boolean connected = autenticationManager.isConnected(id);
+		boolean mem_exsit = dataBaseManager.isMemberExist(id, password);
 		if (connected && mem_exsit)
 			return 1;
 		if (!connected && mem_exsit) {
-			insertTologgedinTable(id);
+			autenticationManager.insertTologgedinTable(id);
 			return 0;
 		}
 		return 2;
@@ -159,6 +170,45 @@ public class AutenticationControl {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.LOGOUT,
 				new ArrayList<String>(Arrays.asList(id)));
 		ClientUI.chat.accept(request);
+	}
+
+	/* Wrapper for authentication methods */
+	static class AutenticationManager implements IAutenticationManager {
+
+		@Override
+		public boolean isConnected(String id) {
+			return AutenticationControl.isConnected(id);
+		}
+
+		@Override
+		public boolean isTravelerExist(String id) {
+			return TravelerControl.isTravelerExist(id);
+		}
+
+		@Override
+		public void insertTologgedinTable(String id) {
+			AutenticationControl.insertTologgedinTable(id);
+
+		}
+
+	}
+
+	/* Wrapper for database methods */
+	static class DataBaseManager implements IDataBaseManager {
+
+		@Override
+		public Subscriber getSubBySubId(String subId) {
+			ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.SUBSCRIBER_LOGIN_SUBID,
+					new ArrayList<String>(Arrays.asList(subId)));
+			ClientUI.chat.accept(request);
+			return (Subscriber) ChatClient.responseFromServer.getResultSet().get(0);
+		}
+
+		@Override
+		public boolean isMemberExist(String id, String pass) {
+			return AutenticationControl.isMemberExist(id, pass);
+		}
+
 	}
 
 }
