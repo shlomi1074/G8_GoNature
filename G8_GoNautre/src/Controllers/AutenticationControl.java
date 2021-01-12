@@ -16,6 +16,7 @@ import logic.Traveler;
  */
 public class AutenticationControl {
 
+	// Refactor
 	public static IAutenticationManager autenticationManager = new AutenticationManager();
 	public static IDataBaseManager dataBaseManager = new DataBaseManager();
 
@@ -32,7 +33,7 @@ public class AutenticationControl {
 	 * @return 1 traveler already connected
 	 * @return 2 traveler id does not exist
 	 */
-	public static int loginById(String id) {
+	public static int loginById(String id) { // Refactor
 		if (autenticationManager.isConnected(id))
 			return 1;
 		else {
@@ -52,7 +53,7 @@ public class AutenticationControl {
 	 * @return 1 traveler already connected
 	 * @return 2 traveler id does not exist
 	 */
-	public static int loginBySubId(String subID) {
+	public static int loginBySubId(String subID) { // Refactor
 
 		Subscriber sub = dataBaseManager.getSubBySubId(subID);
 		if (sub == null)
@@ -70,9 +71,7 @@ public class AutenticationControl {
 				ChatClient.responseFromServer = response;
 				return 0;
 			}
-
 		}
-
 	}
 
 	/**
@@ -147,7 +146,7 @@ public class AutenticationControl {
 	 * @return 1 member already connected
 	 * @return 2 member id does not exist
 	 */
-	public static int memberLoginHandler(String id, String password) {
+	public static int memberLoginHandler(String id, String password) { // Refactor
 		boolean connected = autenticationManager.isConnected(id);
 		boolean mem_exsit = dataBaseManager.isMemberExist(id, password);
 		if (connected && mem_exsit)
@@ -172,6 +171,7 @@ public class AutenticationControl {
 		ClientUI.chat.accept(request);
 	}
 
+	// Refactor
 	/* Wrapper for authentication methods */
 	static class AutenticationManager implements IAutenticationManager {
 

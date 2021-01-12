@@ -16,16 +16,17 @@ import logic.Order;
 @SuppressWarnings("unchecked")
 public class ReportsControl {
 
-	public static IReportsManager reportsManager =  new ReportsManager();
+	// Refactor
+	public static IReportsManager reportsManager = new ReportsManager();
 
 	public ReportsControl() {
-		ReportsControl.reportsManager =  new ReportsManager();
+		ReportsControl.reportsManager = new ReportsManager();
 	}
-	
+
 	public ReportsControl(IReportsManager reportsManager) {
 		ReportsControl.reportsManager = reportsManager;
 	}
-	
+
 	/**
 	 * This function gets a report and insert it to the database.
 	 * 
@@ -61,7 +62,7 @@ public class ReportsControl {
 	public static ArrayList<VisitReport> countSolosEnterTime(int month) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_ENTER_SOLO_VISITORS,
 				new ArrayList<String>(Arrays.asList(String.valueOf(month))));
-		ClientUI.chat.accept(request); 
+		ClientUI.chat.accept(request);
 		return (ArrayList<VisitReport>) ChatClient.responseFromServer.getResultSet();
 	}
 
@@ -238,8 +239,8 @@ public class ReportsControl {
 	 * which are solo visitors
 	 * 
 	 * @param month The report's month
-	 * @param day The day in the month
-	 * @return 
+	 * @param day   The day in the month
+	 * @return
 	 */
 	public static ArrayList<VisitReport> countSolosEnterTimeWithDays(int month, String day) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(
@@ -254,8 +255,8 @@ public class ReportsControl {
 	 * which are subscriber visitors
 	 * 
 	 * @param month The report's month
-	 * @param day The day in the month
-	 * @return 
+	 * @param day   The day in the month
+	 * @return
 	 */
 	/* Refactor : changed from void to return ArrayList */
 	public static ArrayList<VisitReport> countSubsEnterTimeWithDays(int month, String day) {
@@ -270,8 +271,8 @@ public class ReportsControl {
 	 * which are group visitors
 	 * 
 	 * @param month The report's month
-	 * @param day The day in the month
-	 * @return 
+	 * @param day   The day in the month
+	 * @return
 	 */
 	/* Refactor : changed from void to return ArrayList */
 	public static ArrayList<VisitReport> countGroupsEnterTimeWithDays(int month, String day) {
@@ -281,80 +282,84 @@ public class ReportsControl {
 		ClientUI.chat.accept(request);
 		return (ArrayList<VisitReport>) ChatClient.responseFromServer.getResultSet();
 	}
-	
+
 	/**
-	 *  This function receive month and day of current year and asks the server
+	 * This function receive month and day of current year and asks the server
 	 * to send the number of solo visitors at this month dived by their visit time.
 	 * 
 	 * @param month The report's month
-	 * @param day The day in the month
+	 * @param day   The day in the month
 	 */
 	/* Refactor : changed from void to return ArrayList */
 	public static void countSolosVisitTimeWithDay(int month, String day) {
-		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_SOLOS_VISITORS_WITH_DAYS,
-				new ArrayList<String>(Arrays.asList(String.valueOf(month),day)));
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(
+				Request.COUNT_VISIT_SOLOS_VISITORS_WITH_DAYS,
+				new ArrayList<String>(Arrays.asList(String.valueOf(month), day)));
 		ClientUI.chat.accept(request);
-		
+
 	}
+
 	/**
-	 *  This function receive month and day of current year and asks the server
+	 * This function receive month and day of current year and asks the server
 	 * to send the number of subscriber visitors at this month dived by their visit time.
 	 * 
 	 * @param month The report's month
-	 * @param day The day in the month
+	 * @param day   The day in the month
 	 */
 	public static void countSubsVisitTimeWithDay(int month, String day) {
 		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_SUBS_VISITORS_WITH_DAYS,
-				new ArrayList<String>(Arrays.asList(String.valueOf(month),day)));
+				new ArrayList<String>(Arrays.asList(String.valueOf(month), day)));
 		ClientUI.chat.accept(request);
-		
+
 	}
+
 	/**
-	 *  This function receive month and day of current year and asks the server
+	 * This function receive month and day of current year and asks the server
 	 * to send the number of group visitors at this month dived by their visit time.
 	 * 
 	 * @param month The report's month
-	 * @param day The day in the month
+	 * @param day   The day in the month
 	 */
 	public static void countGroupsVisitTimeWithDay(int month, String day) {
-		ClientToServerRequest<String> request = new ClientToServerRequest<>(Request.COUNT_VISIT_GROUPS_VISITORS_WITH_DAYS,
-				new ArrayList<String>(Arrays.asList(String.valueOf(month),day)));
+		ClientToServerRequest<String> request = new ClientToServerRequest<>(
+				Request.COUNT_VISIT_GROUPS_VISITORS_WITH_DAYS,
+				new ArrayList<String>(Arrays.asList(String.valueOf(month), day)));
 		ClientUI.chat.accept(request);
-		
+
 	}
-	
+
+	// Refactor
 	/* Wrapper for reports methods */
 	public static class ReportsManager implements IReportsManager {
 
 		@Override
 		public ArrayList<VisitReport> countSolosEnterTime(int month) {
-			return ReportsControl.countSolosEnterTime(month);			
-			
+			return ReportsControl.countSolosEnterTime(month);
 		}
 
 		@Override
 		public ArrayList<VisitReport> countSubsEnterTime(int month) {
-			return ReportsControl.countSubsEnterTime(month);				
+			return ReportsControl.countSubsEnterTime(month);
 		}
 
 		@Override
 		public ArrayList<VisitReport> countGroupsEnterTime(int month) {
-			return ReportsControl.countGroupsEnterTime(month);				
+			return ReportsControl.countGroupsEnterTime(month);
 		}
 
 		@Override
 		public ArrayList<VisitReport> countSolosEnterTimeWithDays(int month, String day) {
-			return ReportsControl.countSolosEnterTimeWithDays(month, day);				
+			return ReportsControl.countSolosEnterTimeWithDays(month, day);
 		}
 
 		@Override
 		public ArrayList<VisitReport> countSubsEnterTimeWithDays(int month, String day) {
-			return ReportsControl.countSubsEnterTimeWithDays(month, day);				
+			return ReportsControl.countSubsEnterTimeWithDays(month, day);
 		}
 
 		@Override
 		public ArrayList<VisitReport> countGroupsEnterTimeWithDays(int month, String day) {
-			return ReportsControl.countGroupsEnterTimeWithDays(month, day);				
+			return ReportsControl.countGroupsEnterTimeWithDays(month, day);
 		}
 
 	}

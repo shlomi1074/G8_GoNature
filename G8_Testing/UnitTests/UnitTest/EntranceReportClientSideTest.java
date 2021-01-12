@@ -17,6 +17,10 @@ import logic.VisitReport;
 @SuppressWarnings("unchecked")
 public class EntranceReportClientSideTest {
 
+	/**
+	 * This is a stub class.
+	 * With this class we bypass all the dependencies which are related to ReportsManager.
+	 */
 	public class stubReportsManager implements IReportsManager {
 
 		@Override
@@ -78,6 +82,10 @@ public class EntranceReportClientSideTest {
 
 	/**
 	 * GROUP TEST
+	 * This test checks size of group data for whole month.
+	 * 
+	 * input: groupsData = ((9, "11:00:00"),(12, "13:00:00")), input = "Show whole month"
+	 * expected result: series with size 2
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -105,6 +113,18 @@ public class EntranceReportClientSideTest {
 
 	/**
 	 * GROUP TEST
+	 * This test checks X and Y values of group data for whole month.
+	 * 
+	 * input: groupsData = ((9, "11:00:00"),(12, "13:00:00")), input = "Show whole month"
+	 * expected result:
+	 * 
+	 * Y values of the series:
+	 * groupsData.get(0).getSum()
+	 * groupsData.get(1).getSum()
+	 * 
+	 * X values of the series:
+	 * 11.0
+	 * 13.0
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -136,6 +156,10 @@ public class EntranceReportClientSideTest {
 
 	/**
 	 * SOLOS TEST
+	 * This test checks size of solo data for whole month.
+	 * 
+	 * input: solosData =((7, "09:00:00"),(6, "16:00:00")), input = "Show whole month"
+	 * expected result: series with size 2
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -163,6 +187,18 @@ public class EntranceReportClientSideTest {
 
 	/**
 	 * SOLOS TEST
+	 * This test checks X and Y values of solo data for whole month.
+	 * 
+	 * input: solosData =((7, "09:00:00"),(6, "16:00:00")), input = "Show whole month"
+	 * expected result:
+	 * 
+	 * Y values of the series:
+	 * solosData.get(0).getSum()
+	 * solosData.get(1).getSum()
+	 * 
+	 * X values of the series:
+	 * 9.0
+	 * 16.0
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -194,6 +230,10 @@ public class EntranceReportClientSideTest {
 
 	/**
 	 * SUBS TEST
+	 * This test checks size of subscriber data for whole month.
+	 * 
+	 * input: subsData = ((10, "08:00:00"),(5, "10:00:00")), input = "Show whole month"
+	 * expected result: series with size 2
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -220,7 +260,19 @@ public class EntranceReportClientSideTest {
 	}
 
 	/**
-	 * SOLOS TEST
+	 * SUBS TEST
+	 * This test checks X and Y values of subscriber data for whole month.
+	 * 
+	 * input: subsData = ((10, "08:00:00"),(5, "10:00:00")), input = "Show whole month"
+	 * expected result:
+	 * 
+	 * Y values of the series:
+	 * subsData.get(0).getSum()
+	 * subsData.get(1).getSum()
+	 * 
+	 * X values of the series:
+	 * 8.0
+	 * 10.0
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -252,6 +304,10 @@ public class EntranceReportClientSideTest {
 
 	/**
 	 * GROUP TEST
+	 * This test size of group data for specific day.
+	 * 
+	 * input: groupsData = ((9, "11:00:00"),(12, "13:00:00")), input = "4"
+	 * expected result: series with size 0
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -283,6 +339,18 @@ public class EntranceReportClientSideTest {
 
 	/**
 	 * GROUP TEST
+	 * This test checks X and Y values of group data for specific day.
+	 * 
+	 * input: groupsData = ((9, "11:00:00"),(12, "13:00:00")), input = "4"
+	 * expected result:
+	 * 
+	 * Y values of the series:
+	 * groupsData.get(0).getSum()
+	 * groupsData.get(1).getSum()
+	 * 
+	 * X values of the series:
+	 * 11.0
+	 * 13.0
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -315,6 +383,10 @@ public class EntranceReportClientSideTest {
 
 	/**
 	 * SOLOS TEST
+	 * This test size of solo data for specific day.
+	 * 
+	 * input: solosData =((7, "09:00:00"),(6, "16:00:00")), input = "4"
+	 * expected result: series with size 2
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -337,11 +409,22 @@ public class EntranceReportClientSideTest {
 		/* Check the size of the series */
 		int dataSize = data.getData().size();
 		assertEquals(solosData.size(), dataSize);
-
 	}
 
 	/**
 	 * SOLOS TEST
+	 * This test checks X and Y values of solo data for specific day.
+	 * 
+	 * input: solosData =((7, "09:00:00"),(6, "16:00:00")), input = "4"
+	 * expected result:
+	 * 
+	 * Y values of the series:
+	 * solosData.get(0).getSum()
+	 * solosData.get(1).getSum()
+	 * 
+	 * X values of the series:
+	 * 9.0
+	 * 16.0
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -374,6 +457,10 @@ public class EntranceReportClientSideTest {
 
 	/**
 	 * SUBS TEST
+	 * This test size of subscriber data for specific day.
+	 * 
+	 * input: subsData = ((10, "08:00:00"),(5, "10:00:00")), input = "4"
+	 * expected result: series with size 2
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
@@ -402,7 +489,19 @@ public class EntranceReportClientSideTest {
 	}
 
 	/**
-	 * SOLOS TEST
+	 * SUBS TEST
+	 * This test checks X and Y values of subscriber data for specific day.
+	 * 
+	 * input: subsData = ((10, "08:00:00"),(5, "10:00:00")), input = "4"
+	 * expected result:
+	 * 
+	 * Y values of the series:
+	 * subsData.get(0).getSum()
+	 * subsData.get(1).getSum()
+	 * 
+	 * X values of the series:
+	 * 8.0
+	 * 10.0
 	 * 
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
