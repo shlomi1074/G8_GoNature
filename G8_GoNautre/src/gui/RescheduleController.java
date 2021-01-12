@@ -244,18 +244,23 @@ public class RescheduleController implements Initializable {
 				NotificationControl.sendSms(traveler.getPhoneNumber(), msg);
 				NotificationControl.sendMailInBackgeound(msg, null);
 				isWaitingList = true;
+				if (isOrderFromMain) {
+					orderStage.close();
+				}
+				rescheduleStage.close();
 				loadOrderConfirmation();
 			}
 
 		} else {
 			new CustomAlerts(AlertType.ERROR, MsgTemplates.enterToWaitingList[0], MsgTemplates.enterToWaitingList[0],
 					MsgTemplates.enterToWaitingList[1]).showAndWait();
+			if (isOrderFromMain) {
+				orderStage.close();
+			}
+			rescheduleStage.close();
 		}
 
-		if (isOrderFromMain) {
-			orderStage.close();
-		}
-		rescheduleStage.close();
+
 	}
 
 	private void loadOrderConfirmation() {
@@ -283,7 +288,6 @@ public class RescheduleController implements Initializable {
 			System.out.println("faild to load form");
 			e.printStackTrace();
 		}
-
 	}
 
 	/**

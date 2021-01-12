@@ -24,12 +24,12 @@ public class TravelersQueries {
 	}
 
 	/**
-	 * This function checks if a given id is already loggen in
+	 * This function checks if a given id is already logged in
 	 * 
 	 * @param parameters the id to check
 	 * @return true if connected, false if not
 	 */
-	public boolean checkIfConnected(ArrayList<?> parameters) {
+	public Boolean checkIfConnected(ArrayList<?> parameters) {
 		String sql = "SELECT * FROM g8gonature.loggedin WHERE id = ? ";
 		PreparedStatement query;
 		try {
@@ -39,9 +39,9 @@ public class TravelersQueries {
 			ResultSet res = query.executeQuery();
 			if (res.next())
 				return true;
-		} catch (SQLException e) {
+		} catch (NullPointerException | SQLException e) {
 			System.out.println("Could not execute checkIfConnected query");
-			e.printStackTrace();
+			return null;
 		}
 
 		return false;
@@ -65,16 +65,16 @@ public class TravelersQueries {
 			if (res.next())
 				traveler = new Traveler(res.getString(1), res.getString(2), res.getString(3), res.getString(4),
 						res.getString(5));
-		} catch (SQLException e) {
+		} catch (NullPointerException | SQLException e) {
 			System.out.println("Could not execute isTravelerExist query");
-			e.printStackTrace();
+			return null;
 		}
 
 		return traveler;
 	}
 
 	/**
-	 * This function INSERT row to loggedin table in the database
+	 * This function INSERT row to logged in table in the database
 	 * 
 	 * @param parameters id
 	 */
@@ -109,9 +109,9 @@ public class TravelersQueries {
 			if (res.next())
 				sub = new Subscriber(res.getInt(1), res.getString(2), res.getString(3), res.getString(4),
 						res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getInt(9));
-		} catch (SQLException e) {
+		} catch (NullPointerException | SQLException e) {
 			System.out.println("Could not execute getSubscriberBySubId query");
-			e.printStackTrace();
+			return null;
 		}
 
 		return sub;
@@ -135,9 +135,9 @@ public class TravelersQueries {
 			if (res.next())
 				sub = new Subscriber(res.getInt(1), res.getString(2), res.getString(3), res.getString(4),
 						res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getInt(9));
-		} catch (SQLException e) {
+		} catch (NullPointerException | SQLException e) {
 			System.out.println("Could not execute checkIfConnected query");
-			e.printStackTrace();
+			return null;
 		}
 
 		return sub;
@@ -213,9 +213,9 @@ public class TravelersQueries {
 							res.getString(4), res.getString(5), res.getString(6));
 				}
 			}
-		} catch (SQLException e) {
+		} catch (NullPointerException | SQLException e) {
 			System.out.println("Could not execute isMemberExist query");
-			e.printStackTrace();
+			return null;
 		}
 		return member;
 	}

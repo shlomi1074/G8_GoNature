@@ -59,9 +59,9 @@ public class MainScreenController implements Initializable {
 
 	@FXML
 	private JFXHamburger hamburger;
-	
-    @FXML
-    private ImageView goNatureLogo;
+
+	@FXML
+	private ImageView goNatureLogo;
 
 	@FXML
 	private Label menuLabel;
@@ -150,7 +150,7 @@ public class MainScreenController implements Initializable {
 			task.play();
 		});
 	}
-	
+
 	@FXML
 	private void loadCardReaderSimulator() {
 		try {

@@ -251,7 +251,8 @@ public class TotalVisitorsReportController implements Initializable {
 	}
 
 	private void initLabels() {
-		monthLabel.setText(GoNatureFinals.MONTHS[monthNumber]); // set the name of the month
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		monthLabel.setText(GoNatureFinals.MONTHS[monthNumber] + " - " + year);
 
 		newReportList = new ArrayList<>();
 

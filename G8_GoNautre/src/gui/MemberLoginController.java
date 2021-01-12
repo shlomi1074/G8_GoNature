@@ -123,7 +123,7 @@ public class MemberLoginController implements Initializable {
 					break;
 				}
 			} else if (res == 1) {
-				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error", "This employee is already logedin!")
+				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error", "You are already connected!")
 						.showAndWait();
 			} else {
 				new CustomAlerts(AlertType.ERROR, "Login Error", "Login Error", "Incorrect id or password!")

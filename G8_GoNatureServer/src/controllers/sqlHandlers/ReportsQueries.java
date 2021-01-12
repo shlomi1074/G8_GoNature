@@ -99,9 +99,9 @@ public class ReportsQueries {
 				rep.add(report);
 			}
 
-		} catch (SQLException e) {
+		} catch (NullPointerException | SQLException e) {
 			System.out.println("Could not execute CountSolos query");
-			e.printStackTrace();
+			return null;
 		}
 		return rep;
 	}
@@ -135,9 +135,9 @@ public class ReportsQueries {
 				rep.add(report);
 			}
 
-		} catch (SQLException e) {
+		} catch (NullPointerException | SQLException e) {
 			System.out.println("Could not execute CountSubs query");
-			e.printStackTrace();
+			return null;
 		}
 		return rep;
 	}
@@ -170,9 +170,9 @@ public class ReportsQueries {
 				rep.add(report);
 			}
 
-		} catch (SQLException e) {
+		} catch (NullPointerException | SQLException e) {
 			System.out.println("Could not execute CountGroup query");
-			e.printStackTrace();
+			return null;
 		}
 		return rep;
 	}
@@ -622,9 +622,9 @@ public class ReportsQueries {
 				rep.add(report);
 			}
 
-		} catch (SQLException e) {
-			System.out.println("Could not execute CountSolos query");
-			e.printStackTrace();
+		} catch (NullPointerException | SQLException e) {
+			System.out.println("Could not execute CountSolosEnterTimeWithDays query");
+			return null;
 		}
 		return rep;
 	}
@@ -660,9 +660,9 @@ public class ReportsQueries {
 				rep.add(report);
 			}
 
-		} catch (SQLException e) {
-			System.out.println("Could not execute CountSubs query");
-			e.printStackTrace();
+		} catch (NullPointerException | SQLException e) {
+			System.out.println("Could not execute CountSubsEnterTimeWithDays query");
+			return null;
 		}
 		return rep;
 	}
@@ -697,9 +697,9 @@ public class ReportsQueries {
 				rep.add(report);
 			}
 
-		} catch (SQLException e) {
-			System.out.println("Could not execute CountGroup query");
-			e.printStackTrace();
+		} catch (NullPointerException | SQLException e) {
+			System.out.println("Could not execute CountGroupsEnterTimeWithDays query");
+			return null;
 		}
 		return rep;
 	}
