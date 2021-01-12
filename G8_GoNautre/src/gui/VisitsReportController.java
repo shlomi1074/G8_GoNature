@@ -93,8 +93,6 @@ public class VisitsReportController implements Initializable {
 	private XYChart.Series<Number, Number> series5; // Refactor
 	private XYChart.Series<Number, Number> series6; // Refactor
 
-	// ReportsControl rp = new ReportsControl();
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		init();
@@ -167,9 +165,6 @@ public class VisitsReportController implements Initializable {
 		maxNumOfVisitors++;
 		if (maxNumOfVisitors % 2 != 0)
 			maxNumOfVisitors++;
-		/* Y axis parameters setters */
-//		enterY.setUpperBound(maxNumOfVisitors + 30);
-//		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -209,12 +204,6 @@ public class VisitsReportController implements Initializable {
 		}
 
 		series6.setName("Groups");
-
-		/* Y axis parameters setters */
-		if (totalNumOfVisitors == 0)
-			totalNumOfVisitors++;
-//		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
-//				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
 	}
 
 	private void loadEntranceSubscribersData(String option) {
@@ -240,14 +229,6 @@ public class VisitsReportController implements Initializable {
 		}
 
 		series3.setName("Subscribers");
-
-		maxNumOfVisitors++;
-		if (maxNumOfVisitors % 2 != 0)
-			maxNumOfVisitors++;
-		/* Y axis parameters setters */
-//		enterY.setUpperBound(maxNumOfVisitors + 30);
-//		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -285,12 +266,6 @@ public class VisitsReportController implements Initializable {
 		}
 
 		series4.setName("Subscribers");
-
-		/* Y axis parameters setters */
-		if (totalNumOfVisitors == 0)
-			totalNumOfVisitors++;
-//		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
-//				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
 	}
 
 	private void loadEntranceSolosData(String option) {
@@ -315,14 +290,6 @@ public class VisitsReportController implements Initializable {
 			series1.getData().add(new Data<Number, Number>(time, sum));
 		}
 		series1.setName("Solos      ");
-
-		maxNumOfVisitors++;
-		if (maxNumOfVisitors % 2 != 0)
-			maxNumOfVisitors++;
-
-		/* Y axis parameters setters */
-//		enterY.setUpperBound(maxNumOfVisitors + 30);
-//		enterY.setTickUnit(Math.ceil(maxNumOfVisitors * 0.1));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -362,11 +329,6 @@ public class VisitsReportController implements Initializable {
 
 		series2.setName("Solos      ");
 
-		/* Y axis parameters setters */
-		if (totalNumOfVisitors == 0)
-			totalNumOfVisitors++;
-//		stayY.setUpperBound(maxNumOfVisitors / totalNumOfVisitors * 100 + 5 > 100 ? 100
-//				: Math.ceil(maxNumOfVisitors / totalNumOfVisitors * 100 + 30));
 
 	}
 

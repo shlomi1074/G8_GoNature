@@ -1,14 +1,11 @@
-package autentication;
+package UnitTest;
 
 import static org.junit.Assert.*;
-
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import controllers.sqlHandlers.MysqlConnection;
 import controllers.sqlHandlers.TravelersQueries;
 import logic.Employees;
@@ -57,6 +54,20 @@ public class AutenticationControlServerSideTest {
 	}
 
 	/**
+	 * This test check if isTravelerExist returns null when it failed to execute the SQL query
+	 * 
+	 * input: parameters = "555000000"
+	 * expected result: null.
+	 */
+	@Test
+	public void isTravelerExistFailedSQLTest() {
+		dbQueries = new TravelersQueries(null);
+		parameters = new ArrayList<String>(Arrays.asList("555000000"));
+		Traveler actual = dbQueries.isTravelerExist(parameters);
+		assertEquals(null, actual);
+	}
+
+	/**
 	 * This test checks if getSubscriberBySubId returns null if the subscriber id does not exist in the database
 	 * 
 	 * input: parameters = "5555"
@@ -81,6 +92,20 @@ public class AutenticationControlServerSideTest {
 		parameters = new ArrayList<String>(Arrays.asList("5556"));
 		Subscriber actualTraveler = dbQueries.getSubscriberBySubId(parameters);
 		assertEquals(5556, actualTraveler.getSubscriberNumber());
+	}
+
+	/**
+	 * This test check if getSubscriberBySubId returns null when it failed to execute the SQL query
+	 * 
+	 * input: parameters = "5556"
+	 * expected result: null.
+	 */
+	@Test
+	public void getSubscriberBySubIdFailedSQLTest() {
+		dbQueries = new TravelersQueries(null);
+		parameters = new ArrayList<String>(Arrays.asList("5556"));
+		Subscriber actual = dbQueries.getSubscriberBySubId(parameters);
+		assertEquals(null, actual);
 	}
 
 	/**
@@ -111,6 +136,20 @@ public class AutenticationControlServerSideTest {
 	}
 
 	/**
+	 * This test check if getSubscriberById returns null when it failed to execute the SQL query
+	 * 
+	 * input: parameters = "206487274"
+	 * expected result: null.
+	 */
+	@Test
+	public void getSubscriberByIdFailedSQLTest() {
+		dbQueries = new TravelersQueries(null);
+		parameters = new ArrayList<String>(Arrays.asList("206487274"));
+		Subscriber actual = dbQueries.getSubscriberById(parameters);
+		assertEquals(null, actual);
+	}
+
+	/**
 	 * This test checks if isMemberExist returns null if the worker's id does not exist in the database
 	 * 
 	 * input: parameters = "747374632", "123"
@@ -136,6 +175,20 @@ public class AutenticationControlServerSideTest {
 		Employees actual = dbQueries.isMemberExist(parameters);
 		assertEquals(123456789, actual.getEmployeeId());
 		assertEquals(WorkerType.DEPARTMENT_MANAGER, actual.getRole());
+	}
+
+	/**
+	 * This test check if isMemberExist returns null when it failed to execute the SQL query
+	 * 
+	 * input: parameters = "123456789", "123"
+	 * expected result: null.
+	 */
+	@Test
+	public void isMemberExistFailedSQLTest() {
+		dbQueries = new TravelersQueries(null);
+		parameters = new ArrayList<String>(Arrays.asList("123456789", "123"));
+		Employees actual = dbQueries.isMemberExist(parameters);
+		assertEquals(null, actual);
 	}
 
 	/**
@@ -172,6 +225,20 @@ public class AutenticationControlServerSideTest {
 
 		assertEquals(expected, actual);
 
+	}
+
+	/**
+	 * This test check if checkIfConnected returns null when it failed to execute the SQL query
+	 * 
+	 * input: parameters = "123456789", "123"
+	 * expected result: null.
+	 */
+	@Test
+	public void checkIfConnectedFailedSQLTest() {
+		dbQueries = new TravelersQueries(null);
+		parameters = new ArrayList<String>(Arrays.asList("123456789", "123"));
+		Boolean actual = dbQueries.checkIfConnected(parameters);
+		assertEquals(null, actual);
 	}
 
 }
