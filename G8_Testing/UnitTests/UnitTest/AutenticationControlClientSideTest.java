@@ -6,9 +6,7 @@ import org.junit.Test;
 import Controllers.AutenticationControl;
 import Controllers.IAutenticationManager;
 import Controllers.IDataBaseManager;
-import logic.Employees;
 import logic.Subscriber;
-import logic.WorkerType;
 
 public class AutenticationControlClientSideTest {
 
@@ -58,7 +56,6 @@ public class AutenticationControlClientSideTest {
 	public IDataBaseManager dbc;
 
 	public static Subscriber sub;
-	public static Employees employee;
 
 	/* Conditions variables */
 	public static boolean connectedCondition;
@@ -72,7 +69,6 @@ public class AutenticationControlClientSideTest {
 		memberExistCondition = false;
 
 		sub = new Subscriber(0, "308438084", "Shlomi", "Amar", "s@gmail.com", "0544411005", null, "Solo", 1);
-		employee = new Employees(0, WorkerType.SERVICE, 0, "Shlomi", "Amar", "Serice@gmail.com");
 
 		/* Constructor injection */
 		acm = new stubAutenticationManager();

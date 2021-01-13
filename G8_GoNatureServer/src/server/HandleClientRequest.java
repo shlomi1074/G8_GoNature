@@ -537,7 +537,7 @@ public class HandleClientRequest implements Runnable {
 					SmsSender.sendSms((String) request.getParameters().get(0), (String) request.getParameters().get(1));
 					client.sendToClient("Finish");
 				}
-				
+
 				if (request.getRequestType().equals(Request.COUNT_ENTER_SUBS_VISITORS_WITH_DAYS)) {
 					response = new ServerToClientResponse();
 					response.setResultSet(reportsQueries.CountSubsEnterTimeWithDays(request.getParameters()));
